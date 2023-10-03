@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: affinityapp
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:9000"
+    command: "php artisan serve --host 0.0.0.0 --port ${PORT}" # Map container port to host
+    environment:
+      - DB_CONNECTION=mysql # Set Laravel to use MySQL as the database
+      - DB_HOST=127.0.0.1 # The name of the MySQL service in this Docker Compose file
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    env_file:
+      - .env
+
+  db:
+    image: mysql:8.0 # Use the official MySQL image
+    container_name: affinitydb
+    environment:
+      MYSQL_ROOT_PASSWORD: affinity2023
+      MYSQL_DATABASE: affinityv2
+      MYSQL_USER: affinityv2
+      MYSQL_PASSWORD: affinity2023
+    ports:
+      - "3306:3306" # Map container port to host

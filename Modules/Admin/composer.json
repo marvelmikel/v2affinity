@@ -1,0 +1,27 @@
+{
+    "name": "modules/admin",
+    "description": "",
+    "authors": [
+        {
+            "name": "Aaron Dev",
+            "email": "airondev@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Admin\\VoyagerServiceProvider",
+                "Modules\\Admin\\Providers\\VoyagerDummyServiceProvider"
+            ],
+            "files": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Admin\\": ""
+        }
+    }
+}

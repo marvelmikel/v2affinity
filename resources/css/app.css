@@ -1,0 +1,48 @@
+@import "../../public/fonts/pro/css/all.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] { display: none !important; }
+
+body{
+    font-family: "Livvic",sans-serif;
+}
+
+.tboder {
+    border: 1px solid red !important;
+}
+
+.landing-bottom-image {
+    background-image: url('/images/swoosh.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: auto;
+}
+
+.bg-img {
+    background-image: url('/images/background-pattern.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: auto;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #C82090;
+}
+
+/* Animations */
+.animate-enter{
+    animation:enter ease-out 0.2s forwards;
+}
+@keyframes enter{
+    0%{
+        transform:translateY(10px);
+        opacity:0;
+    }
+    100%{
+        transform:translateY(0px);
+        opacity:1;
+    }
+}
