@@ -10,8 +10,10 @@ class Store extends Model
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'store_name',
-        'next_invoice_number',
+        // 'next_invoice_number',
+        'invoice_prefix',
         'address_line_1',
         'address_line_2',
         'address_city',
@@ -19,6 +21,7 @@ class Store extends Model
         'address_country',
         'address_postcode',
         'company_no',
+        'company_id',
         'vat_no',
         'phone_no',
         'logo',
@@ -29,5 +32,9 @@ class Store extends Model
 
     public function company() {
         return $this->belongsTo(Company::class);
+    }
+
+    public function invoices() {
+        return $this->hasMany(Invoice::class);
     }
 }

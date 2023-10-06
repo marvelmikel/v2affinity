@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Str;
 use Modules\Admin\Events\Routing;
 use Modules\Admin\Events\RoutingAdmin;
 use Modules\Admin\Events\RoutingAdminAfter;
 use Modules\Admin\Events\RoutingAfter;
 use Modules\Admin\Facades\Voyager;
-
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Voyager Routes
@@ -129,8 +130,24 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
 
+
+       
+
+
+
         event(new RoutingAdminAfter());
     });
+
+
+    //  // Invoice Routes
+     Route::group(['prefix' => 'admin', 'middleware' => 'admin.user' ], function ()  {
+        Route::get('invoices',   [InvoiceController::class, 'index'])->name('admin.invoices.index');
+        Route::get('invoices/create',   [InvoiceController::class, 'create'])->name('admin.invoices.create');
+        // Route::get('invoices/{invoice}/create',   [InvoiceController::class, 'edit'])->name('admin.invoices.edit');
+    });
+
+   
+
 
     //Asset Routes
     Route::get('voyager-assets', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'voyager_assets']);

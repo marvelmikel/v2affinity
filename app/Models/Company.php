@@ -26,4 +26,10 @@ class Company extends Model
     protected $casts = [
         'active'
     ];
+
+
+    // Todo: companies should be able to see all invoices from its stores
+    public function invoices() {
+        return $this->hasManyThrough(Invoice::class, Store::class); 
+    }
 }
