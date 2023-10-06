@@ -9,7 +9,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-news"></i>
-        New Invoice
+        Add Invoice Items
     </h1>
 @stop
 
@@ -45,19 +45,19 @@
                           
                             <div class="form-group">
                                 <label for="name">Title</label>
-                                <input class="form-control" type="text" value="{{ old('title') }}" name="title" id="">
+                                <input class="form-control" type="text" value="{{ $invoice->title }}" name="title" id="">
                             </div>
 
                             <div class="form-group">
                                 <label for="name">Description</label>
-                                <input class="form-control" type="text"  value="{{ old('description') }}" name="description" id="">
+                                <input class="form-control" type="text"  value="{{ $invoice->description }}" name="description" id="">
                             </div>
 
 
                             <div class="form-group row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Store</label>
-                                    <select class="form-control select" value="{{ old('store_id') }}" name="store_id" id="">
+                                    <select class="form-control select" value="{{ $invoice->store_id }}" name="store_id" id="">
                                         <option value="1">Miana Store</option>
                                         <option value="2">Suppiuns Store</option>
                                     </select>
@@ -66,7 +66,7 @@
 
                                 <div class="form-group col-md-6">
                                     <label for="name">Due Date</label>
-                                    <input type="date" class="form-control" type="text" value="{{ old('due_at') }}" name="due_at" id="">
+                                    <input type="date" class="form-control" type="text" value="{{ $invoice->due_at }}" name="due_at" id="">
                                 </div>
                             </div>
 
@@ -75,11 +75,11 @@
                             <div class="form-group row">
                                 <div class="col-md-6 form-group">
                                     <label for="name">Customer Name</label>
-                                    <input type="text" class="form-control" type="text" value="{{ old('customer_name') }}" name="customer_name" id="">
+                                    <input type="text" class="form-control" type="text" value="{{ $invoice->customer->name }}" name="customer_name" id="">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="name">Customer Email</label>
-                                    <input type="text" class="form-control" type="text" value="{{ old('customer_email') }}"  name="customer_email" id="">
+                                    <input type="text" class="form-control" type="text" value="{{ $invoice->customer->email }}"  name="customer_email" id="">
                                 </div>
                             </div>
 
@@ -88,11 +88,11 @@
                             <div class="form-group row">
                                 <div class="col-md-6 form-group">
                                     <label for="name">Customer Address Line 1</label>
-                                    <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_1') }}" name="customer_address_line_1" id="">
+                                    <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_line_1 }}" name="customer_address_line_1" id="">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="name">Customer Address Line 2</label>
-                                    <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_2') }}" name="customer_address_line_2" id="">
+                                    <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_line_2 }}" name="customer_address_line_2" id="">
                                 </div>
                             </div>
 
@@ -100,17 +100,17 @@
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <label for="name">Customer City</label>
-                                    <input type="text" class="form-control" type="text"  value="{{ old('customer_address_city') }}" name="customer_address_city" id="">
+                                    <input type="text" class="form-control" type="text"  value="{{ $invoice->customer->address_city }}" name="customer_address_city" id="">
                                 </div>
 
                                 <div class="col-md-4">
                                     <label for="name">Customer Country</label>
-                                    <input type="text" class="form-control" type="text" value="{{ old('customer_address_country') }}" name="customer_address_country" id="">
+                                    <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_country }}" name="customer_address_country" id="">
                                 </div>
 
                                 <div class="col-md-4">
                                     <label for="name">Customer Postcode</label>
-                                    <input type="text" class="form-control" type="text" value="{{ old('customer_address_postcode') }}" name="customer_address_postcode" id="">
+                                    <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_postcode }}" name="customer_address_postcode" id="">
                                 </div>
                             </div>
 

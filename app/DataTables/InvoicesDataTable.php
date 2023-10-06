@@ -25,9 +25,19 @@ class InvoicesDataTable extends DataTable
         return (new EloquentDataTable($query))
             // ->addColumn('action'  )
             ->addColumn('action', function($row){
-                $btn = '<div style="display:flex;"><a href="viewformdetails/{{$row->id}}" style="margin-right:2px" class="btn m- btn-primary btn-xs"><i class="voyager-eye"></i></a>
-                <a href="viewformdetails/{{$row->id}}" style="margin-right:2px" class="btn btn-danger btn-xs"><i class="voyager-trash"></i></a></div>';
+
+
+                $showUrl = route('voyager.invoices.show', $row->id);
+                $editUrl = route('voyager.invoices.edit', $row->id);
+
+                $btn = "<div style='display:flex;'><a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
+                <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a></div>";
                  return $btn;
+
+
+              
+
+
             })
          ->rawColumns(['action'])
             ->setRowId('id');

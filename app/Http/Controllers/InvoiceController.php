@@ -90,10 +90,12 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return 
      */
-    public function edit(Request $request, Invoice $invoice)
+    public function edit(Request $request,  $id)
     {
+        // dd($invoice);
+        $invoice = Invoice::find($id);
         if(!$invoice->items()->exists() ){
-            
+
             $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
 
             $meta = [

@@ -25,8 +25,14 @@ class Invoice extends Model
     ];
 
 
+    public $with = ['customer'];
+
     public function items(){
         return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function customer(){
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
     public function store() {
