@@ -120,7 +120,7 @@
                         </div><!-- panel-body -->
                       
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Next</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>
 
@@ -139,62 +139,63 @@
                 <div class="clear"></div>
                 <br>
                 <div class="card">
-                    <table class="table " style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Value</th>
-                                <th>Indentifier</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input class="form-control" type="text" name="title" value="Title" id=""></td>
-                                <td><input class="form-control" type="text" name="title_value" id=""></td>
-                                <td><input class="form-control" type="text" name="title_indentifier" id=""></td>
-                            </tr>
 
-                            <tr>
-                                <td><input class="form-control" type="text" name="price" value="Price" id=""></td>
-                                <td><input class="form-control" type="text" name="value" id=""></td>
-                                <td><input class="form-control" type="text" name="indentifier" id=""></td>
-                            </tr>
+                    @foreach($invoice->items as $invoiceItem)
+                        <table class="table " style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                    <th>Indentifier</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input class="form-control" type="text" name="title" value="Title" id=""></td>
+                                    <td><input class="form-control" type="text" name="title_value" id=""></td>
+                                    <td><input class="form-control" type="text" name="title_indentifier" id=""></td>
+                                </tr>
 
-                            <tr>
-                                <td><input class="form-control" type="text" name="quantity" value="Quantity" id=""></td>
-                                <td><input class="form-control" type="text" name="quantity_value" id=""></td>
-                                <td><input class="form-control" type="text" name="quantity_indentifier" id=""></td>
+                                <tr>
+                                    <td><input class="form-control" type="text" name="price" value="Price" id=""></td>
+                                    <td><input class="form-control" type="text" name="value" id=""></td>
+                                    <td><input class="form-control" type="text" name="indentifier" id=""></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="form-control" type="text" name="quantity" value="Quantity" id=""></td>
+                                    <td><input class="form-control" type="text" name="quantity_value" id=""></td>
+                                    <td><input class="form-control" type="text" name="quantity_indentifier" id=""></td>
+                                    
+                                </tr>
+
+                                <tr>
+                                    <td><input class="form-control" type="text" name="custom" value="" placeholder="Column Name" id=""></td>
+                                    <td><input class="form-control" type="text" name="custom_value"  placeholder="Column Value" id=""></td>
+                                    <td><input disabled readonly class="form-control" type="text" name="custom_indentifier"  placeholder="Column Key" id=""></td>
+                                </tr>
+
+
+                                <tr>
+                                    <td colspan="3"><a href="{{ route('voyager.invoices.create') }}"  class="btn btn-secondary btn-xs"><i class="voyager-plus"></i>Add Column</a>  </td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="form-control" type="text" name="formula" value="Formula" id=""></td>
+                                    <td colspan="2"><input class="form-control" type="text" name="formula_indentifier" id=""></td>
+                                </tr>
+
+                                <tr><td>
+                                    <a href="{{ route('voyager.invoices.create') }}"  class="btn btn-primary btn-xs"><i class="voyager"></i>Save Item</a> 
+                                </td></tr>
+
                                 
-                            </tr>
-
-                            <tr>
-                                <td><input class="form-control" type="text" name="custom" value="" placeholder="Column Name" id=""></td>
-                                <td><input class="form-control" type="text" name="custom_value"  placeholder="Column Value" id=""></td>
-                                <td><input disabled readonly class="form-control" type="text" name="custom_indentifier"  placeholder="Column Key" id=""></td>
-                            </tr>
-
-
-                            <tr>
-                                <td colspan="3"><a href="{{ route('voyager.invoices.create') }}"  class="btn btn-secondary btn-xs"><i class="voyager-plus"></i>Add Column</a>  </td>
-                            </tr>
-
-                            <tr>
-                                <td><input class="form-control" type="text" name="formula" value="Formula" id=""></td>
-                                <td colspan="2"><input class="form-control" type="text" name="formula_indentifier" id=""></td>
-                            </tr>
-
-                            <tr><td>
-                                <a href="{{ route('voyager.invoices.create') }}"  class="btn btn-primary btn-xs"><i class="voyager"></i>Save Item</a> 
-                            </td></tr>
 
                             
-
-                           
-                        </tbody>
-                    </table>
-
-
-                    <br>
+                            </tbody>
+                        </table>
+                    @endforeach
+                   
 
                   
                 </div>

@@ -93,7 +93,7 @@ class InvoiceController extends Controller
     public function edit(Request $request,  $id)
     {
         // dd($invoice);
-        $invoice = Invoice::find($id);
+        $invoice = Invoice::find($id)->load('items');
         if(!$invoice->items()->exists() ){
 
             $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
@@ -110,6 +110,8 @@ class InvoiceController extends Controller
             }
             
         }
+
+        
         return view('voyager::invoices.edit', compact('invoice'));
     }
 

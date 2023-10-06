@@ -21,8 +21,9 @@ class InvoiceItemMeta extends Model
 	    parent::boot();
 
 	    static::creating(function ($model) {
-        
-	        $model->identifier = uniqid('IM'.$model->invoice_item_id .  $model->id, 4);
+            $last  =static::latest('id')->first();
+            $id = $last ? $last->id+1 : 1;
+	        $model->identifier = 'IM'.$model->invoice_item_id. $id;
 	    });
 
         
