@@ -139,16 +139,6 @@ Route::group(['as' => 'voyager.'], function () {
     });
 
 
-    //  // Invoice Routes
-     Route::group(['prefix' => 'admin', 'middleware' => 'admin.user' ], function ()  {
-        Route::get('invoices',   [InvoiceController::class, 'index'])->name('admin.invoices.index');
-        Route::get('invoices/create',   [InvoiceController::class, 'create'])->name('admin.invoices.create');
-        // Route::get('invoices/{invoice}/create',   [InvoiceController::class, 'edit'])->name('admin.invoices.edit');
-    });
-
-   
-
-
     //Asset Routes
     Route::get('voyager-assets', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'voyager_assets']);
 

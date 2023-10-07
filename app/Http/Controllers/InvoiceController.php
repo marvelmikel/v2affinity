@@ -6,6 +6,7 @@ use App\DataTables\InvoicesDataTable;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
+use App\Models\InvoiceItemMeta;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -68,6 +69,12 @@ class InvoiceController extends Controller
         ]);
 
         $invoice->update(['customer_id' =>  $customer->id]);
+
+
+        // add first item here
+        $this->addItem($invoice->id);
+        // $this->addOptions($invoice->id);
+        $this->addPricing($invoice->id);
         
         //
        return redirect()->route('voyager.invoices.edit', $invoice->id);
@@ -92,27 +99,17 @@ class InvoiceController extends Controller
      */
     public function edit(Request $request,  $id)
     {
-        // dd($invoice);
-        $invoice = Invoice::find($id)->load('items');
-        if(!$invoice->items()->exists() ){
-
-            $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
-
-            $meta = [
-                [ 'name' => 'title', 'value' => ''],
-                [ 'name' => 'description', 'value' => ''],
-                [ 'name' => 'price', 'value' => 0],
-                [ 'name' => 'quantity', 'value' => 0],
-                [ 'name' => 'formular', 'value' => 'price*quantity'],
-            ];
-            foreach ($meta as $met ) {
-                $item->meta()->create($met);
-            }
-            
+        $invoice = Invoice::find($id)->load('items', 'pricings');
+        if( $invoice->items->count() < 1 ){
+            $this->addItem($invoice->id);            
         }
 
+        $this->addPricing($invoice->id);
         
-        return view('voyager::invoices.edit', compact('invoice'));
+      $formular = $invoice->getPricing('formular')->value;
+        // $total_amount = math_eval($formular );
+        $total_amount = evaluate_formular($formular );
+        return view('voyager::invoices.edit', compact('invoice', 'total_amount'));
     }
 
     /**
@@ -137,4 +134,118 @@ class InvoiceController extends Controller
     {
         //
     }
+
+
+    /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    public function addItem($id)
+    {
+        $invoice = Invoice::find($id)->load('items');
+        $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
+        $meta = [
+            [ 'name' => 'title', 'value' => ''],
+            [ 'name' => 'description', 'value' => ''],
+            [ 'name' => 'price', 'value' => 0],
+            [ 'name' => 'quantity', 'value' => 0]
+        ];
+
+        foreach ($meta as $met ) {
+            $item->meta()->create($met);
+        }
+
+        //add def formular here
+        if($item->getMeta('price') &&  $item->getMeta('quantity') ){
+            $price = $item->getMeta('price');
+            $quantity = $item->getMeta('quantity');
+            $item->meta()->updateOrCreate(['name' => 'formula'], [ 'name' => 'formular', 'value' => "$price->identifier*$quantity->identifier"]);
+        }
+        return redirect()->route('voyager.invoices.edit', $invoice->id);        
+    }
+
+
+
+     /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    public function saveItem(Request $request, $invoiceId,  $itemId)
+    {
+        $invoiceItem = InvoiceItem::find($itemId);
+        $invoice = Invoice::find($invoiceId);
+        $meta= $request->all();
+        foreach ($meta as $me) {
+            InvoiceItemMeta::where('identifier', $me[1])->first()->update(['value' => $me[0]]);
+        }
+
+
+        // recalculate invoice subtotal here whenever an item is saved
+        $invoice->calculateSubtotal();
+        return redirect()->back();   
+            
+    }
+
+     /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    public function addItemMetaColumn(Request $request, $invoiceId)
+    {
+        $invoiceItem = InvoiceItem::find($request->item_id);
+        $invoiceItem->meta()->create([
+            'name' => $request->name,
+            'value' => $request->value
+        ]);
+        return redirect()->back();   
+            
+    }
+
+
+
+
+
+
+    /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    public function addPricing($id)
+    {
+        if(!$invoice = Invoice::find($id)){
+            return;
+        }
+      
+        $meta = [
+            [ 'name' => 'subtotal', 'value' => 0],
+            [ 'name' => 'tax', 'value' => 0],
+            [ 'name' => 'discount', 'value' => 0],
+        ];
+
+        foreach ($meta as $met ) {
+            if(!$invoice->getPricing($met['name'])){
+                $invoice->pricings()->create($met);
+            }
+           
+        }
+
+        //add def formular here
+        if($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount') ){
+            $subtotal = $invoice->getPricing('subtotal');
+            $tax = $invoice->getPricing('tax');
+            $discount = $invoice->getPricing('discount');
+
+            $invoice->pricings()->updateOrCreate(['name' => 'formular'], [ 'name' => 'formular', 'value' => "$subtotal->identifier*$tax->identifier*$discount->identifier"]);
+        }
+        return redirect()->route('voyager.invoices.edit', $invoice->id);        
+    }
+
 }

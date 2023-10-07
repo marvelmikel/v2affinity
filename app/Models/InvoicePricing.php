@@ -5,16 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InvoiceItemMeta extends Model
+class InvoicePricing extends Model
 {
     use HasFactory;
 
+
     protected $fillable =[
-        'invoice_item_id',
+        'invoice_id',
         'name',
         'value',
         'identifier',
     ];
+
+
+    public function invoice (){
+        return $this->belongsTo(Invoice::class);
+    }
+    
 
 
     protected static function boot() {
@@ -23,7 +30,7 @@ class InvoiceItemMeta extends Model
 	    static::creating(function ($model) {
             $last  =static::latest('id')->first();
             $id = $last ? $last->id+1 : 1;
-	        $model->identifier = 'M'.$model->invoice_item_id. $id;
+	        $model->identifier = 'P'.$model->invoice_id. $id;
 	    });	    
 	}
 }

@@ -30,6 +30,13 @@ class Invoice extends Model
     public function items(){
         return $this->hasMany(InvoiceItem::class);
     }
+    public function pricings(){
+        return $this->hasMany(InvoicePricing::class);
+    }
+
+    public function getPricing($name){
+        return $this->pricings()->where('name', $name)->first();
+    }
 
     public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id', 'id');

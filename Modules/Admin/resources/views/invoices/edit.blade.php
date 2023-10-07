@@ -114,9 +114,6 @@
                                 </div>
                             </div>
 
-
-                          
-
                         </div><!-- panel-body -->
                       
                         <div class="panel-footer">
@@ -124,6 +121,96 @@
                         </div>
                     </form>
 
+                </div>
+
+
+                <div class="card">
+                    <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
+                        <h3><i class="voyager-window-list"></i> {{ __('Invoice Options') }}</h3>
+                                      
+                    </div>
+                    <div class="clear"></div>
+                    <br>
+
+                    <table class="table " style="width:100%; margin: 40px 0;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>Indentifier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input class="form-control" type="text" name="title" value="Title" id=""></td>
+                                <td><input class="form-control" type="text" name="title_value" id=""></td>
+                                <td><input class="form-control" type="text" name="title_indentifier" id=""></td>
+                            </tr>
+
+                           
+
+                            <tr>
+                                <td colspan="3"><a href="{{ route('voyager.invoices.create') }}"  class="btn btn-secondary btn-xs"><i class="voyager-plus"></i>Add Column</a>  </td>
+                            </tr>
+
+                            <tr>
+                                <td><input class="form-control" type="text" name="formula" value="Formula" id=""></td>
+                                <td colspan="2"><input class="form-control" type="text" name="formula_indentifier" id=""></td>
+                            </tr>
+
+                            <tr><td>
+                                <a href="{{ route('voyager.invoices.create') }}"  class="btn btn-primary btn-xs"><i class="voyager"></i>Save Item</a> 
+                            </td></tr>
+
+                            
+
+                        
+                        </tbody>
+                    </table>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="card">
+                    <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
+                        <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
+                    </div>
+                    <div class="clear"></div>
+                    <br>
+
+                    <table class="table " style="width:100%; margin: 40px 0;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>Indentifier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($invoice->pricings as $pricing)
+                            <tr>
+                                <td><input disabled readonly  class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }}" ></td>
+                                <td><input class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"  ></td>
+                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"  ></td>
+                            </tr>
+                            @endforeach
+
+                            <tr>
+                                <td colspan="3"><a href="{{ route('voyager.invoices.create') }}"  class="btn btn-secondary btn-xs"><i class="voyager-plus"></i>Add Pricing Item</a>  </td>
+                            </tr>
+
+                    
+
+                            <tr><td>
+                                <a href="{{ route('voyager.invoices.create') }}"  class="btn btn-primary btn-xs"><i class="voyager"></i>Save Item</a> 
+                            </td></tr>
+
+                            
+
+                        
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -133,15 +220,15 @@
                 <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
                     <h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>
                     <div>
-                        <a href="{{ route('voyager.invoices.create') }}"  class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Add New</a>  
+                        <a href="{{ route('voyager.invoices.add-item', $invoice->id) }}"  class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Add New Item</a>  
                     </div>                  
                 </div>
                 <div class="clear"></div>
                 <br>
-                <div class="card">
 
+                <div class="card" style="max-height: 1200px; overflow: scroll;">
                     @foreach($invoice->items as $invoiceItem)
-                        <table class="table " style="width:100%;">
+                        <table class="table " style="width:100%; margin: 40px 0;">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -150,69 +237,94 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><input class="form-control" type="text" name="title" value="Title" id=""></td>
-                                    <td><input class="form-control" type="text" name="title_value" id=""></td>
-                                    <td><input class="form-control" type="text" name="title_indentifier" id=""></td>
-                                </tr>
+                                <form action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
+                                    @foreach($invoiceItem->meta as $meta)
+                                        <tr>
+                                            <td><input disabled readonly  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}" ></td>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"  ></td>
+                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"  ></td>
+                                        </tr>
 
-                                <tr>
-                                    <td><input class="form-control" type="text" name="price" value="Price" id=""></td>
-                                    <td><input class="form-control" type="text" name="value" id=""></td>
-                                    <td><input class="form-control" type="text" name="indentifier" id=""></td>
-                                </tr>
-
-                                <tr>
-                                    <td><input class="form-control" type="text" name="quantity" value="Quantity" id=""></td>
-                                    <td><input class="form-control" type="text" name="quantity_value" id=""></td>
-                                    <td><input class="form-control" type="text" name="quantity_indentifier" id=""></td>
-                                    
-                                </tr>
-
-                                <tr>
-                                    <td><input class="form-control" type="text" name="custom" value="" placeholder="Column Name" id=""></td>
-                                    <td><input class="form-control" type="text" name="custom_value"  placeholder="Column Value" id=""></td>
-                                    <td><input disabled readonly class="form-control" type="text" name="custom_indentifier"  placeholder="Column Key" id=""></td>
-                                </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="3"><a href="#"   onclick="AddColumn(event)" data-invoiceitemid="{{ $invoiceItem->id  }}" class="btn btn-secondary btn-xs add-column-btn"><i class="voyager-plus"></i>Add Column</a>  </td>
+                                    </tr>
 
 
                                 <tr>
-                                    <td colspan="3"><a href="{{ route('voyager.invoices.create') }}"  class="btn btn-secondary btn-xs"><i class="voyager-plus"></i>Add Column</a>  </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save Item</button>
+                                    </td>
                                 </tr>
 
-                                <tr>
-                                    <td><input class="form-control" type="text" name="formula" value="Formula" id=""></td>
-                                    <td colspan="2"><input class="form-control" type="text" name="formula_indentifier" id=""></td>
-                                </tr>
-
-                                <tr><td>
-                                    <a href="{{ route('voyager.invoices.create') }}"  class="btn btn-primary btn-xs"><i class="voyager"></i>Save Item</a> 
-                                </td></tr>
-
-                                
-
-                            
+                              </form>
                             </tbody>
                         </table>
                     @endforeach
-                   
-
-                  
                 </div>
-            
-    
+
+
             </div><!-- .row -->
-
-
         </div>
 
 
+    <!-- Add column modal -->
+
+    <div class="modal modal-info fade" tabindex="-1" id="add_column_modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span  aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="voyager-data"></i> Add Column</h4>
+                </div>
+                <form action="{{ route('voyager.invoices.add-meta-column', $invoice->id) }}" method="post">
+                    @csrf()
+                    <div class="modal-body" style="overflow:scroll">
+                   
+
+                        <div>
+                            <label for=""> Column Name </label>
+                            <input  name="name" type="text" class="form-control"></input>
+                        </div>
+
+                        <div style="margin: 10px 0;">
+                            <label for=""> Column Value </label>
+                            <input name="value" type="text" class="form-control"></input>
+                        </div>
+                    
+                        <input type="hidden" name="item_id" class="form-control"></input>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     </div>
 @stop
 
 @section('javascript')
     <script>
-        
+
+        $(document).ready(function(){
+            $('.add-column-btn').click(function(e){
+                e.preventDefault();
+                let invoiceitemid = $(this).data('invoiceitemid')
+                console.log(invoiceitemid)
+                $('input[name="item_id"]').val(invoiceitemid)
+                $('#add_column_modal').modal('show');
+            })
+        })
+        function AddColumn(event){
+            // console.log(event)
+            // let target = event.target;
+            // let invoiceitemid = target.attr('invoiceitemid');
+            // console.log(target)
+            // $('#add_column_modal').modal('show');
+        }
     </script>
 @stop

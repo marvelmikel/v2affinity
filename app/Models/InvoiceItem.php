@@ -19,10 +19,14 @@ class InvoiceItem extends Model
     ];
 
 
-   
+   public $with = ['meta'];
 
     public function meta(){
         return $this->hasMany(InvoiceItemMeta::class);
+    }
+
+    public function getMeta($name){
+        return $this->meta()->where('name', $name)->first();
     }
 
     public function invoice(){
