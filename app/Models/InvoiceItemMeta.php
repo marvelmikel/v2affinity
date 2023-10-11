@@ -23,7 +23,7 @@ class InvoiceItemMeta extends Model
 	    static::creating(function ($model) {
             $last  =static::latest('id')->first();
             $id = $last ? $last->id+1 : 1;
-	        $model->identifier = 'M'.$model->invoice_item_id. $id;
+	        $model->identifier = 'I'.$model->invoice_item_id. $id;
 	    });	    
 	}
 }

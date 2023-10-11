@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
+use App\Models\InvoicePricing;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -84,11 +85,11 @@ class InvoiceController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+
      */
     public function show($id)
     {
-        //
+        return view('voyager::invoices.show');
     }
 
     /**
@@ -106,10 +107,19 @@ class InvoiceController extends Controller
 
         $this->addPricing($invoice->id);
         
-      $formular = $invoice->getPricing('formular')->value;
-        // $total_amount = math_eval($formular );
-        $total_amount = evaluate_formular($formular );
+        $formular = $invoice->getPricing('formular')->value;
+
+        // cal this method when opening invoice or editing invoice
+        $invoice->calculateSubtotal();
+
+        $total_amount = evaluate_formular($formular, 'InvoicePricing' );
+
+
+        // dd($invoiceSubtotal);
         return view('voyager::invoices.edit', compact('invoice', 'total_amount'));
+
+
+       
     }
 
     /**
@@ -168,7 +178,7 @@ class InvoiceController extends Controller
 
 
 
-     /**
+    /**
      * 
      *
      * @param  int  $id
@@ -186,6 +196,36 @@ class InvoiceController extends Controller
 
         // recalculate invoice subtotal here whenever an item is saved
         $invoice->calculateSubtotal();
+       
+
+        return redirect()->back();   
+            
+    }
+
+
+    /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    public function savePricing(Request $request, $invoiceId)
+    {
+  
+        $invoice = Invoice::find($invoiceId);
+        $meta= $request->all();
+        foreach ($meta as $me) {
+            InvoicePricing::where('identifier', $me[1])->first()->update(['value' => $me[0]]);
+        }
+
+
+
+
+        // recalculate invoice subtotal here whenever an item is saved
+        // $invoice->calculateSubtotal();
+        // dd($invoiceItem->item_total);
+
+       
         return redirect()->back();   
             
     }
@@ -200,6 +240,23 @@ class InvoiceController extends Controller
     {
         $invoiceItem = InvoiceItem::find($request->item_id);
         $invoiceItem->meta()->create([
+            'name' => $request->name,
+            'value' => $request->value
+        ]);
+        return redirect()->back();   
+            
+    }
+
+     /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    public function addPricingColumn(Request $request, $id)
+    {
+        $invoice = Invoice::find($id);
+        $invoice->pricings()->create([
             'name' => $request->name,
             'value' => $request->value
         ]);
@@ -243,7 +300,7 @@ class InvoiceController extends Controller
             $tax = $invoice->getPricing('tax');
             $discount = $invoice->getPricing('discount');
 
-            $invoice->pricings()->updateOrCreate(['name' => 'formular'], [ 'name' => 'formular', 'value' => "$subtotal->identifier*$tax->identifier*$discount->identifier"]);
+            $invoice->pricings()->updateOrCreate(['name' => 'formular', 'value' => "$subtotal->identifier*$tax->identifier*$discount->identifier"], [ 'name' => 'formular', 'value' => "$subtotal->identifier*$tax->identifier*$discount->identifier"]);
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);        
     }

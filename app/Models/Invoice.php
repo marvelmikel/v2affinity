@@ -26,6 +26,7 @@ class Invoice extends Model
 
 
     public $with = ['customer'];
+    public $append = ['total'];
 
     public function items(){
         return $this->hasMany(InvoiceItem::class);
@@ -36,6 +37,26 @@ class Invoice extends Model
 
     public function getPricing($name){
         return $this->pricings()->where('name', $name)->first();
+    }
+
+    public function calculateSubtotal(){
+        $subtotal =  $this->items->map( function($item){
+            return $item->item_total;
+        })->sum();
+
+        //update pricing here and then return
+        $this->pricings()->updateOrCreate(['value' => $subtotal],[
+           'name' => 'subtotal',
+           'value' =>  $subtotal
+        ]);
+
+        return $subtotal;
+
+    }
+
+    public function getTotalAttribute(){
+        $formular = $this->getPricing('formular')->value;
+        return  evaluate_formular($formular, 'InvoicePricing' );
     }
 
     public function customer(){

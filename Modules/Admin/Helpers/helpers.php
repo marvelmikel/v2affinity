@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\InvoiceItemMeta;
 use App\Models\InvoicePricing;
 
 if (!function_exists('setting')) {
@@ -37,43 +38,57 @@ if (!function_exists('get_file_name')) {
 
 
 if (!function_exists('evaluate_formular')) {
-    function evaluate_formular($equation)
+    function evaluate_formular($formular, $model)
     {
        
 
 
         // sanitize imput
-        $equation = preg_replace("/[^a-zA-Z0-9+\-.*\/()%]/","",$equation);
+        $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/()%]/","",$formular);
         
 
         // convert alphabet to $variabel 
-        $equation = preg_replace("/([a-z])+/i", "\$0", $equation); 
+        $formular = preg_replace("/([a-z])+/i", "\$0", $formular); 
 
 
         // $pattern = '/(\$[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)/';
         $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
 
 
-        preg_match_all($pattern, $equation, $matches); 
+        preg_match_all($pattern, $formular, $matches); 
 
-        // dd($equation, $matches[0]);
+        // dd($formular, $matches[0]);
 
         $evaluation = [];
-        foreach ($matches[0] as $val ) {
-           if($pricing = InvoicePricing::where('identifier', $val)->first()) {
-                preg_match('/\d+(\.\d+)?/', $pricing->value, $match); // this prevents dangerious eval statements in value expressions
-                array_push($evaluation, $match[0]);
-           }else{
-                array_push($evaluation, $val);
-           }
-           
+        
+        if($model == 'InvoicePricing'){
+            foreach ($matches[0] as $val ) {
+                if($pricing = InvoicePricing::where('identifier', $val)->first()) {
+                        preg_match('/\d+(\.\d+)?/', $pricing->value, $match); // this prevents dangerious eval statements in value expressions
+                        array_push($evaluation, $match[0]);
+                }else{
+                        array_push($evaluation, $val);
+                } 
+            }
+        }
+
+        if($model == 'InvoiceItemMeta'){
+            foreach ($matches[0] as $val ) {
+                if($pricing = InvoiceItemMeta::where('identifier', $val)->first()) {
+                        preg_match('/\d+(\.\d+)?/', $pricing->value, $match); // this prevents dangerious eval statements in value expressions
+                        array_push($evaluation, $match[0]);
+                }else{
+                        array_push($evaluation, $val);
+                } 
+            }
         }
 
         $stringEval = implode("", $evaluation);
+        // dd($stringEval);
         $result =  @eval("return " . $stringEval . ";" );
 
         return $result;
-        // dd(['equation' => $equation, 'evaluation' => $evaluation, 'stringEval' => $stringEval, 'result'=> $result]);
+        // dd(['formular' => $formular, 'evaluation' => $evaluation, 'stringEval' => $stringEval, 'result'=> $result]);
 
 
     }

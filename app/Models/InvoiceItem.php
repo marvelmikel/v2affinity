@@ -20,6 +20,7 @@ class InvoiceItem extends Model
 
 
    public $with = ['meta'];
+   public $append = ['item_total'];
 
     public function meta(){
         return $this->hasMany(InvoiceItemMeta::class);
@@ -27,6 +28,15 @@ class InvoiceItem extends Model
 
     public function getMeta($name){
         return $this->meta()->where('name', $name)->first();
+    }
+
+    public function getItemTotalAttribute(){
+        // get meta formula
+        if($formulaCol = $this->getMeta('formular')){
+            $formular = $formulaCol->value;
+            $total_amount = evaluate_formular($formular, 'InvoiceItemMeta' );
+            return $total_amount;
+        }
     }
 
     public function invoice(){
