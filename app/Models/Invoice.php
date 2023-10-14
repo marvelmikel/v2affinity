@@ -45,8 +45,7 @@ class Invoice extends Model
         })->sum();
 
         //update pricing here and then return
-        $this->pricings()->updateOrCreate(['value' => $subtotal],[
-           'name' => 'subtotal',
+        $this->pricings()->where('name', 'subtotal')->update([
            'value' =>  $subtotal
         ]);
 

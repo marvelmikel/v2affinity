@@ -195,7 +195,7 @@ class InvoiceController extends Controller
 
 
         // recalculate invoice subtotal here whenever an item is saved
-        $invoice->calculateSubtotal();
+        $invoice->calculateSubtotal(); 
        
 
         return redirect()->back();   
@@ -217,14 +217,6 @@ class InvoiceController extends Controller
         foreach ($meta as $me) {
             InvoicePricing::where('identifier', $me[1])->first()->update(['value' => $me[0]]);
         }
-
-
-
-
-        // recalculate invoice subtotal here whenever an item is saved
-        // $invoice->calculateSubtotal();
-        // dd($invoiceItem->item_total);
-
        
         return redirect()->back();   
             
@@ -300,7 +292,13 @@ class InvoiceController extends Controller
             $tax = $invoice->getPricing('tax');
             $discount = $invoice->getPricing('discount');
 
-            $invoice->pricings()->updateOrCreate(['name' => 'formular', 'value' => "$subtotal->identifier*$tax->identifier*$discount->identifier"], [ 'name' => 'formular', 'value' => "$subtotal->identifier*$tax->identifier*$discount->identifier"]);
+            $invoice->pricings()->updateOrCreate([
+                'name' => 'formular', 
+                'value' => "$subtotal->identifier-$subtotal->identifier*$tax->identifier-$subtotal->identifier*$discount->identifier"], 
+                [ 
+                    'name' => 'formular', 
+                    'value' => "$subtotal->identifier-$subtotal->identifier*$tax->identifier-$subtotal->identifier*$discount->identifier"
+                ]);
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);        
     }

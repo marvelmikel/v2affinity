@@ -4,6 +4,14 @@
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+    </style>
 @stop
 
 @section('page_header')
@@ -150,11 +158,19 @@
                                 
                                 @foreach($invoice->pricings as $pricing)
                                     @if($pricing->name != 'formular')
+                                        @if($pricing->name =='tax' || $pricing->name == 'discount')
+                                        <tr>
+                                            <td><input disabled readonly  class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }}" ></td>
+                                            <td><input class="form-control" type="number" max="1" min="0" step="any" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"  ></td>
+                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"  ></td>
+                                        </tr>
+                                        @else
                                         <tr>
                                             <td><input disabled readonly  class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }}" ></td>
                                             <td><input class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"  ></td>
                                             <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"  ></td>
                                         </tr>
+                                        @endif
                                     @endif
                                 @endforeach
 
