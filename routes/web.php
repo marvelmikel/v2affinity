@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\Facades\Voyager;
@@ -32,15 +33,23 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 
      //  // Invoice Routes
-     Route::group(['prefix' => 'admin', 'middleware' => 'admin.user' ], function ()  {
-        Route::get('invoices',   [InvoiceController::class, 'index']);
-        Route::get('invoices/create',   [InvoiceController::class, 'create']);
+     Route::group(['middleware' => 'admin.user' ], function ()  {
+        Route::get('invoices',   [InvoiceController::class, 'index'])->name('voyager.invoices.index');
+        Route::get('invoices/create',   [InvoiceController::class, 'create'])->name('voyager.invoices.create');
+
         Route::get('invoices/{invoice}/add-item',   [InvoiceController::class, 'addItem'])->name('voyager.invoices.add-item');
         Route::get('invoices/{invoice}/save-item/{item}',   [InvoiceController::class, 'saveItem'])->name('voyager.invoices.save-item');
         Route::get('invoices/{invoice}/save-pricing/',   [InvoiceController::class, 'savePricing'])->name('voyager.invoices.save-pricing');
-        
         Route::post('invoices/{invoice}/add-meta-column',   [InvoiceController::class, 'addItemMetaColumn'])->name('voyager.invoices.add-meta-column');
         Route::post('invoices/{invoice}/add-pricing-column',   [InvoiceController::class, 'addPricingColumn'])->name('voyager.invoices.add-pricing-column');
+    });
+
+
+     //  // Product Routes
+     Route::group(['prefix' => 'admin', 'middleware' => 'admin.user' ], function ()  {
+        Route::resource('products',   ProductController::class, ['as' => 'voyager']);
+        Route::post('products/{product}/add-product-column',   [ProductController::class, 'addProductColumn'])->name('voyager.products.add-product-column');
+       
     });
 
 });

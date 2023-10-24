@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->string('title')->nullable();
+            $table->longText('description')->nullable();
+            $table->tinyInteger('in_stock')->default(1);
             $table->timestamps();
         });
     }

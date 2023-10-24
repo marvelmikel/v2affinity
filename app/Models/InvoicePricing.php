@@ -14,6 +14,8 @@ class InvoicePricing extends Model
         'invoice_id',
         'name',
         'value',
+        'visibility',
+        'type',
         'identifier',
     ];
 

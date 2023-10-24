@@ -13,19 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_pricings', function (Blueprint $table) {
-            $table->id();
 
-            $table->foreignId('invoice_id')->nullable();
-            $table->string('name')->nullable(); // example: subtotal
+        Schema::create('product_metas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->nullable();
+            $table->string('name')->nullable();
             $table->string('value')->nullable();
-            
             $table->string('visibility')->nullable(); // readonly, hidden, default
             $table->string('type')->nullable()->default('text'); // type = text, number, formular
-
-            $table->string('identifier')->unique(); // P471 
-            
-
+            $table->string('identifier')->unique(); // PM41, PM54 - ProductMeta where the number corresponds to the product_id and product_meta_id 
             $table->timestamps();
         });
     }
@@ -37,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_pricings');
+        Schema::dropIfExists('product_metas');
     }
 };

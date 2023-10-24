@@ -19,6 +19,10 @@ return new class extends Migration
             $table->foreignId('invoice_item_id')->nullable();
             $table->string('name')->nullable();
             $table->string('value')->nullable();
+            
+            $table->string('visibility')->nullable(); // readonly, hidden, default
+            $table->string('type')->nullable()->default('text'); // type = text, number, formular
+
             $table->string('identifier')->unique(); // IIM41, IIM54 - InvoiceItemMeta where the number corresponds to the invoice_item_id field
             
             $table->timestamps();
