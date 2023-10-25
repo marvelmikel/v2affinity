@@ -32,4 +32,9 @@ class Company extends Model
     public function invoices() {
         return $this->hasManyThrough(Invoice::class, Store::class); 
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

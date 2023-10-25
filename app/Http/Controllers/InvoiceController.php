@@ -51,6 +51,7 @@ class InvoiceController extends Controller
             'customer_name' => 'required',
             'customer_address_line_1' => 'required',
             'customer_address_line_2' => 'sometimes',
+            'customer_phone_number' => 'required',
             'customer_address_city' => 'sometimes',
             'customer_address_country' => 'sometimes',
             'customer_address_postcode' => 'sometimes',
@@ -64,6 +65,7 @@ class InvoiceController extends Controller
             'email' => $request->customer_email,
             'address_line_1' => $request->customer_address_line_1,
             'address_line_2' => $request->customer_address_line_2,
+            'phone' => $request->customer_phone_number,
             'address_city' => $request->customer_address_city,
             'address_country' => $request->customer_address_country,
             'address_postcode' => $request->customer_address_postcode,
@@ -103,7 +105,7 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($id)->load('items', 'pricings');
         if( $invoice->items->count() < 1 ){
-            $this->addItem($invoice->id);            
+            $this->addItem($request, $invoice->id);            
         }
 
         $this->addPricing($invoice->id);
@@ -122,6 +124,8 @@ class InvoiceController extends Controller
 
        
     }
+
+    
 
     /**
      * Update the specified resource in storage.
@@ -315,5 +319,15 @@ class InvoiceController extends Controller
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);        
     }
+    public function delete($id)
+{
+    $invoice = Invoice::findOrFail($id);
+    
+    $invoice->delete();
+
+    // Redirect back to the initial page
+    return redirect()->route('voyager.invoices.index')->with('success', 'Invoice deleted successfully');
+}
+
 
 }

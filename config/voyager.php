@@ -147,7 +147,7 @@ return [
         'widgets' => [
             'Modules\\Admin\\Widgets\\UserDimmer',
             // 'Modules\\Admin\\Widgets\\PostDimmer',
-            'Modules\\Admin\\Widgets\\PageDimmer',
+            // 'Modules\\Admin\\Widgets\\PageDimmer',
             // 'Modules\\Admin\\Widgets\\PlansDimmer',
             // 'Modules\\Admin\\Widgets\\PlansDimmer',
             // 'Modules\\Admin\\Widgets\\PlansDimmer',

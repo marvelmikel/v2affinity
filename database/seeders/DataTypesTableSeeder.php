@@ -54,6 +54,48 @@ class DataTypesTableSeeder extends Seeder
                 'description'           => '',
             ])->save();
         }
+
+        $dataType = $this->dataType('slug', 'invoices');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'invoices',
+                'display_name_singular' => __('voyager::seeders.data_types.invoice.singular'),
+                'display_name_plural'   => __('voyager::seeders.data_types.invoice.plural'),
+                'icon'                  => 'voyager-file-text',
+                'model_name'            => 'App\Models\Invoice',
+                'controller'            => 'App\Http\Controllers\InvoiceController',
+                'generate_permissions'  => 1,
+                'description'           => 'Invoice Module',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'products');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'products',
+                'display_name_singular' => __('voyager::seeders.data_types.product.singular'),
+                'display_name_plural'   => __('voyager::seeders.data_types.product.plural'),
+                'icon'                  => 'voyager-bag',
+                'model_name'            => 'App\Models\Product',
+                'controller'            => 'App\Http\Controllers\ProductController',
+                'generate_permissions'  => 1,
+                'description'           => 'Product Module',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'stores');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'stores',
+                'display_name_singular' => __('voyager::seeders.data_types.store.singular'),
+                'display_name_plural'   => __('voyager::seeders.data_types.store.plural'),
+                'icon'                  => 'voyager-basket',
+                'model_name'            => 'App\Models\Store',
+                'controller'            => 'App\Http\Controllers\StoreController',
+                'generate_permissions'  => 1,
+                'description'           => 'Store Module',
+            ])->save();
+        }
     }
 
     /**

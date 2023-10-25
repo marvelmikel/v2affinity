@@ -12,6 +12,8 @@ class User extends \Modules\Admin\Models\User
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,9 +47,13 @@ class User extends \Modules\Admin\Models\User
         'email_verified_at' => 'datetime',
     ];
 
-    public function company() {
-        return $this->belongsTo(Company::class);
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id'); // Assuming 'company_id' is the foreign key in the users table referencing the companies table
     }
+    
+    
+    
 
     public function store() {
         return $this->belongsTo(Store::class);

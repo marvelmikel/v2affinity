@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\StoresController;
 use Illuminate\Support\Str;
 use Modules\Admin\Events\Routing;
 use Modules\Admin\Events\RoutingAdmin;

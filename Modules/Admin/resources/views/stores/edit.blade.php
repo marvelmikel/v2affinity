@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('Build Invoice'))
+@section('page_title', __('Build Store'))
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -66,7 +66,8 @@
                                 <div class="form-group col-md-6">
                                     <label for="name">Store</label>
                                     <select class="form-control select" value="{{ $invoice->store_id }}" name="store_id" id="">
-                                        <option value="1">United Carpet Store</option>
+                                        <option value="1">United Store</option>
+                                        <option value="2">GoldCrest Store</option>
                                     </select>
                                 </div>
 
@@ -93,17 +94,13 @@
 
 
                             <div class="form-group row">
-                                <div class="col-md-4">
+                                <div class="col-md-6 form-group">
                                     <label for="name">Customer Address Line 1</label>
                                     <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_line_1 }}" name="customer_address_line_1" id="">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6 form-group">
                                     <label for="name">Customer Address Line 2</label>
                                     <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_line_2 }}" name="customer_address_line_2" id="">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="name">Customer Phone Number</label>
-                                    <input type="text" class="form-control" type="text" value="{{ $invoice->customer->phone }}" name="customer_phone_number" id="">
                                 </div>
                             </div>
 
@@ -133,6 +130,10 @@
                     </form>
 
                 </div>
+
+
+               
+
                 <br>
                 <br>
 
@@ -160,7 +161,7 @@
                                         @if($pricing->name =='tax' || $pricing->name == 'discount')
                                         <tr>
                                             <td><input disabled readonly  class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }}" ></td>
-                                            <td><input class="form-control" type="number" max="1" min="0" step="any" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"  ></td>
+                                            <td><input class="form-control" type="number" max="100" min="0" step="any" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"  ></td>
                                             <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"  ></td>
                                         </tr>
                                         @else
@@ -181,7 +182,7 @@
                                 </tr>
 
 
-                                <!-- item total here -->
+                                <!-- Total here -->
                                 <tr>
                                     <td><input disabled readonly  class="form-control" type="text" value="Amount" ></td>
                                     <td colspan="2" ><input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($invoice->total, 2) }}"  ></td>
@@ -190,20 +191,19 @@
                                 <tr>
                                     <td colspan="3"><a href="#"   data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn"><i class="voyager-plus"></i>Add Pricing Item </a> </td>
                                 </tr>
-
-                        
-
-                                <tr><td>
-                                    <button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save Pricing</button>
-                                </td></tr>
-
-                                
-
+                                <tr>
+                                    <td><button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save Pricing</button></td>
+                               </tr>
+                                <!-- <td><a  class="btn btn-primary btn-xs" href="">Preview Invoice PDF<a/></td> -->
+                             
+                               
                             </form>
                         </tbody>
                     </table>
                 </div>
+               
             </div>
+            
 
 
             <!-- invoice items -->

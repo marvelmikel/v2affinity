@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('Create Invoice'))
+@section('page_title', __('Create Store'))
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -8,8 +8,8 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-file-text"></i>
-        New Invoice
+        <i class="voyager-basket"></i>
+       New Store
     </h1>
 @stop
 
@@ -22,10 +22,8 @@
                 <div class="panel panel-bordered">
                     <!-- form start -->
                     <form class="form-edit-add" role="form"
-                          action="{{ route('voyager.invoices.store') }}"
+                          action=""
                           method="POST">
-
-                      
 
                         <!-- CSRF TOKEN -->
                         {{ csrf_field() }}
@@ -44,72 +42,53 @@
 
                           
                             <div class="form-group">
-                                <label for="name">Title</label>
-                                <input class="form-control" type="text" value="{{ old('title') }}" name="title" id="">
+                                <label for="name">Store Name</label>
+                                <input class="form-control" type="text" value="{{ old('store_name') }}" name="store_name" id="">
                             </div>
 
                             <div class="form-group">
-                                <label for="name">Description</label>
-                                <input class="form-control" type="text"  value="{{ old('description') }}" name="description" id="">
+                                <label for="name"> Store Logo</label>
+                                <input class="form-control" type="file"  value="{{ old('store_logo') }}" name="store_logo" id="">
                             </div>
 
+                        
                             <div class="form-group row">
                                 <div class="col-md-6 form-group">
-                                    <label for="name">Customer Name</label>
+                                    <label for="name">Store Telephone No</label>
                                     <input type="text" class="form-control" type="text" value="{{ old('customer_name') }}" name="customer_name" id="">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="name">Customer Email</label>
+                                    <label for="name">Store Email</label>
                                     <input type="text" class="form-control" type="text" value="{{ old('customer_email') }}"  name="customer_email" id="">
                                 </div>
                             </div>
 
 
-                            <div class="form-group row">
-                                <div class="form-group col-md-6">
-                                    <label for="name">Store</label>
-                                    <select class="form-control select" value="{{ old('store_id') }}" name="store_id" id="">
-                                        <option value="1">United Carpet</option>
-                                        <!-- <option value="2">Suppiuns Store</option> -->
-                                    </select>
-                                </div>
-
-
-                                <div class="form-group col-md-6">
-                                    <label for="name">Due Date</label>
-                                    <input type="date" class="form-control" type="text" value="{{ old('due_at') }}" name="due_at" id="">
-                                </div>
-                            </div>
 
                             <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label for="name">Customer Address Line 1</label>
+                                <div class="col-md-6 form-group">
+                                    <label for="name">Store Address Line 1</label>
                                     <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_1') }}" name="customer_address_line_1" id="">
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="name">Customer Address Line 2</label>
+                                <div class="col-md-6 form-group">
+                                    <label for="name">Store Address Line 2</label>
                                     <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_2') }}" name="customer_address_line_2" id="">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="name">Customer Phone Number</label>
-                                    <input type="text" class="form-control" type="text" value="{{ old('customer_phone_number') }}" name="customer_phone_number" id="">
                                 </div>
                             </div>
 
-                          
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <label for="name">Customer City</label>
+                                    <label for="name">Store Address City</label>
                                     <input type="text" class="form-control" type="text"  value="{{ old('customer_address_city') }}" name="customer_address_city" id="">
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="name">Customer Country</label>
+                                    <label for="name">Store Address Country</label>
                                     <input type="text" class="form-control" type="text" value="{{ old('customer_address_country') }}" name="customer_address_country" id="">
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="name">Customer Postcode</label>
+                                    <label for="name">Store Address Postcode</label>
                                     <input type="text" class="form-control" type="text" value="{{ old('customer_address_postcode') }}" name="customer_address_postcode" id="">
                                 </div>
                             </div>
@@ -120,7 +99,7 @@
                         </div><!-- panel-body -->
                       
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Next</button>
+                            <button type="submit" class="btn btn-primary">Save Store</button>
                         </div>
                     </form>
 

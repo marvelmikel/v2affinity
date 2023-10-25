@@ -11,6 +11,9 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Contracts\Auth\Access\Gate;
+use Modules\Admin\Facades\Voyager;
+
 
 class InvoicesDataTable extends DataTable
 {
@@ -25,19 +28,23 @@ class InvoicesDataTable extends DataTable
         return (new EloquentDataTable($query))
             // ->addColumn('action'  )
             ->addColumn('action', function($row){
-
-
                 $showUrl = route('voyager.invoices.show', $row->id);
                 $editUrl = route('voyager.invoices.edit', $row->id);
+                $deleteUrl = route('voyager.invoices.delete', $row->id);
+                
+                $btn = "<div style='display:flex;'>
+                <a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
+                <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
+                <form action='$deleteUrl' method='POST' style='display:inline'>
+                    " . csrf_field() . "
+                    " . method_field('DELETE') . "
+                    <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice?\")'>
+                        <i class='voyager-trash'></i>
+                    </button>
+                </form>
+                </div>";
 
-                $btn = "<div style='display:flex;'><a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
-                <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a></div>";
                  return $btn;
-
-
-              
-
-
             })
          ->rawColumns(['action'])
             ->setRowId('id');
@@ -91,7 +98,7 @@ class InvoicesDataTable extends DataTable
             Column::make('title'),
             Column::make('description'),
             Column::make('due_at'),
-            Column::make('paid_at'),
+            // Column::make('paid_at'),
             Column::make('created_at'),
             Column::make('updated_at'),
             // Column::callback(['id', 'name'], function ($id, $name) {
