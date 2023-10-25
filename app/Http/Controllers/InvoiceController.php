@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
 use App\Models\InvoicePricing;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -73,7 +74,7 @@ class InvoiceController extends Controller
 
 
         // add first item here
-        $this->addItem($invoice->id);
+        // $this->addItem($invoice->id);
         // $this->addOptions($invoice->id);
         $this->addPricing($invoice->id);
         
@@ -152,27 +153,39 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return 
      */
-    public function addItem($id)
+    public function addItem(Request $request, $id)
     {
+        $request->validate([
+            'product_id' => 'required',
+        ]);
         $invoice = Invoice::find($id)->load('items');
         $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
-        $meta = [
-            [ 'name' => 'title', 'value' => ''],
-            [ 'name' => 'description', 'value' => ''],
-            [ 'name' => 'price', 'value' => 0],
-            [ 'name' => 'quantity', 'value' => 0]
-        ];
+        // $meta = [
+        //     [ 'name' => 'title', 'value' => ''],
+        //     [ 'name' => 'description', 'value' => ''],
+        //     [ 'name' => 'price', 'value' => 0],
+        //     [ 'name' => 'quantity', 'value' => 0]
+        // ];
+
+        // foreach ($meta as $met ) {
+        //     $item->meta()->create($met);
+        // }
+
+        // //add def formular here
+        // if($item->getMeta('price') &&  $item->getMeta('quantity') ){
+        //     $price = $item->getMeta('price');
+        //     $quantity = $item->getMeta('quantity');
+        //     $item->meta()->updateOrCreate(['name' => 'formula'], [ 'name' => 'formular', 'value' => "$price->identifier*$quantity->identifier"]);
+        // }
+
+        // new implementation
+        $product = Product::find($request->product_id);
+        $meta = $product->meta;
 
         foreach ($meta as $met ) {
             $item->meta()->create($met);
         }
 
-        //add def formular here
-        if($item->getMeta('price') &&  $item->getMeta('quantity') ){
-            $price = $item->getMeta('price');
-            $quantity = $item->getMeta('quantity');
-            $item->meta()->updateOrCreate(['name' => 'formula'], [ 'name' => 'formular', 'value' => "$price->identifier*$quantity->identifier"]);
-        }
         return redirect()->route('voyager.invoices.edit', $invoice->id);        
     }
 
