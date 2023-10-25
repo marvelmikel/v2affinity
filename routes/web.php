@@ -48,7 +48,7 @@ Route::group(['prefix' => 'admin'], function () {
 
      //  // Product Routes
      Route::group(['middleware' => 'admin.user' ], function ()  {
-        Route::resource('products',   ProductController::class, ['as' => 'voyager']);
+        // Route::resource('products',   ProductController::class, ['as' => 'voyager']);
         Route::post('products/{product}/add-product-column',   [ProductController::class, 'addProductColumn'])->name('voyager.products.add-product-column');
        
     });
