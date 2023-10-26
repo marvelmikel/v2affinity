@@ -238,7 +238,7 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Value</th>
-                                    <th>Indentifier</th>
+                                    <!-- <th>Indentifier</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -248,7 +248,7 @@
                                         @if($meta->name != 'formular')
                                             <tr>
                                                 <td><input disabled readonly  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}" ></td>
-                                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"  ></td>
+                                                <td><input style="background-color: white;"  class="form-control" name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}" {{ $meta->visibility }}   ></td>
                                                 <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"  ></td>
                                             </tr>
                                         @endif
@@ -258,8 +258,15 @@
                                    <!-- formula here -->
                                     <tr>
                                         <td><input disabled readonly  class="form-control" type="text" name="formular[]" value="formular" ></td>
-                                        <td><input class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['value'] : ''  }}"  ></td>
-                                        <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['identifier'] : '' }}"  ></td>
+                                        <td><input readonly style="background-color: white;"  class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['value'] : ''  }}"  ></td>
+                                        <td><input  readonly  style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['identifier'] : '' }}"  ></td>
+                                    </tr>
+
+
+                                     <!-- item total here -->
+                                    <tr>
+                                        <td><input disabled readonly  class="form-control" type="text" value="Item Total" ></td>
+                                        <td colspan="2" ><input readonly style="background-color: white;" class="form-control" type="text" value="{{ $invoiceItem->item_total }}"  ></td>
                                     </tr>
 
 

@@ -32,17 +32,16 @@ class Product extends Model
 
 	    static::created(function ($model) {
             $meta = [
-                [ 'name' => 'unit_price', 'value' => 1, 'type' => 'number', 'visibility' => ''], //type = text, number, formular
+                [ 'name' => 'unit_price', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
                 [ 'name' => 'quantity', 'value' => 1, 'type' => 'number', 'visibility' => '']
             ];
 
-
-            $model->meta()->create([ 'name' => 'title', 'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly' ]);
-            $model->meta()->create([ 'name' => 'description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'readonly' ]);
             foreach($meta as $me){
                 $model->meta()->create($me);
             }
 
+            $model->meta()->create([ 'name' => 'title', 'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly' ]);
+            $model->meta()->create([ 'name' => 'description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'readonly' ]);
 
              //add def formular here
             if($model->getMeta('unit_price') &&  $model->getMeta('quantity') ){

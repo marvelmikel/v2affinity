@@ -197,8 +197,17 @@ class InvoiceController extends Controller
                 if($meta = $product->meta->toArray() ){
                     $item = InvoiceItem::create( ['invoice_id' => $invoice->id, 'product_id' => $product->id] );
                     foreach ($meta as $met ) {
-                        $item->meta()->create($met);
+                        $item->meta()->create($met); // create all meta first
                     }
+
+                    // then translate product formular to invoice item formulars
+                    // $item->meta()->each(function($m){
+                    //     if($m['type'] == 'formula'){
+                    //         // will need translate product formula to invoice item formula here
+                    //         $formula = $m->value;
+                    //     }
+                    // });
+                    
                 }
                
             }

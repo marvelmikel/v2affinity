@@ -96,6 +96,8 @@ class ProductController extends Controller
         // dd($request->except(['_method', '_token']));
         $meta= $request->except(['_method', '_token']);
 
+        // dd($meta);
+
         foreach ($meta as $me) {
             if($product_meta = ProductMeta::where('identifier', $me[1])->first()){
                 $product_meta->update(['value' => $me[0]]);
@@ -133,10 +135,10 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->meta()->create([
-            'name' => $request->name,
+            'name' =>  strtolower($request->name),
             'value' => $request->value,
-            'visibility' => $request->name,
-            'type' => $request->value
+            'visibility' => $request->type == 'formular' ? 'readonly' : $request->visibility,
+            'type' => $request->type
         ]);
         return redirect()->back()->with([
             'message' =>' Product attribut added successfully'

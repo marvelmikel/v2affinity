@@ -76,25 +76,27 @@ if (!function_exists('evaluate_formular')) {
 
         if($model == 'InvoiceItemMeta'){
             foreach ($matches[0] as $val ) {
-                if($pricing = InvoiceItemMeta::where('identifier', $val)->first()) {
-                        preg_match('/\d+(\.\d+)?/', $pricing->value, $match); // this prevents dangerious eval statements in value expressions
+                if($meta = InvoiceItemMeta::where('identifier', $val)->first()) {
+
+                    // pick corresponding value from identifier
+                    // But here we check if type is formual and evalute it lol - hmmm
+
+                    if($meta->type == 'formular'){
+                        $vall = evaluate_formular($meta->value, $model);
+                        array_push($evaluation, $vall);
+                    }else{
+                        preg_match('/\d+(\.\d+)?/', $meta->value, $match); // this prevents dangerious eval statements in value expressions
                         array_push($evaluation, $match[0]);
+                    }
+                   
                 }else{
-                        array_push($evaluation, $val);
+                    // push value to evaluation
+                    array_push($evaluation, $val);
                 } 
             }
         }
 
-        if($model == 'Product'){
-            foreach ($matches[0] as $val ) {
-                if($product = ProductMeta::where('identifier', $val)->first()) {
-                        preg_match('/\d+(\.\d+)?/', $product->value, $match); // this prevents dangerious eval statements in value expressions
-                        array_push($evaluation, $match[0]);
-                }else{
-                        array_push($evaluation, $val);
-                } 
-            }
-        }
+       
 
         $stringEval = implode("", $evaluation);
         // dd($stringEval);

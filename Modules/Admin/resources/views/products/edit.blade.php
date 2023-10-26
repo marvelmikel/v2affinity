@@ -60,16 +60,9 @@
                                 <tr>
                                     <td><input disabled readonly  class="form-control" type="text" name="formular[]" value="formular" ></td>
                                     <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->value }}"  ></td>
-                                    <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $product->getPricing }}"  ></td>
+                                    <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"  ></td>
                                 </tr>
 
-
-                                <!-- item total here -->
-                                <tr>
-                                    <td><input disabled readonly  class="form-control" type="text" value="Amount" ></td>
-                                    <td colspan="2" ><input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($product->total, 2) }}"  ></td>
-                                    
-                                </tr>
 
                                 <tr>
                                     <td colspan="3"><a href="#"   data-productid="{{ $product->id  }}" class="btn btn-secondary btn-xs add-product-column-btn"><i class="voyager-plus"></i>Add Product Attribute </a> </td>
@@ -112,16 +105,15 @@
                         </div>
 
                         <div style="margin: 10px 0;">
-                            <label for=""> Column Value </label>
+                            <label for=""> Default Value </label>
                             <input name="value" type="text" class="form-control"></input>
                         </div>
 
                         <div style="margin: 10px 0;">
                             <label for=""> Column Visibility </label>
                             <select class="form-control" name="visibility" id="">
-                                <option value="visible">Visible</option>
+                                <option value="default">Default</option>
                                 <option value="readonly">Readonly</option>
-                                <option value="hidden">Hidden</option>
                             </select>
                         </div>
 
@@ -131,6 +123,7 @@
                                 <option value="text">Text</option>
                                 <option value="number">Number</option>
                                 <option value="formular">Formular</option>
+                                <option value="hidden">Hidden</option>
                             </select>
                         </div>
                     
