@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager::generic.media'))
+@section('page_title', __('Invoices'))
 
 @section('content')
 <div class="page-content container-fluid">

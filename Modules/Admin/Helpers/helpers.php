@@ -2,6 +2,8 @@
 
 use App\Models\InvoiceItemMeta;
 use App\Models\InvoicePricing;
+use App\Models\Product;
+use App\Models\ProductMeta;
 
 if (!function_exists('setting')) {
     function setting($key, $default = null)
@@ -76,6 +78,17 @@ if (!function_exists('evaluate_formular')) {
             foreach ($matches[0] as $val ) {
                 if($pricing = InvoiceItemMeta::where('identifier', $val)->first()) {
                         preg_match('/\d+(\.\d+)?/', $pricing->value, $match); // this prevents dangerious eval statements in value expressions
+                        array_push($evaluation, $match[0]);
+                }else{
+                        array_push($evaluation, $val);
+                } 
+            }
+        }
+
+        if($model == 'Product'){
+            foreach ($matches[0] as $val ) {
+                if($product = ProductMeta::where('identifier', $val)->first()) {
+                        preg_match('/\d+(\.\d+)?/', $product->value, $match); // this prevents dangerious eval statements in value expressions
                         array_push($evaluation, $match[0]);
                 }else{
                         array_push($evaluation, $val);

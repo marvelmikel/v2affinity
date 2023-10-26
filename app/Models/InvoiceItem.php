@@ -12,10 +12,7 @@ class InvoiceItem extends Model
 
     protected $fillable = [
         'invoice_id',
-        'title',
-        'description',
-        'quantity',
-        'price',
+        'product_id',
     ];
 
 
@@ -34,7 +31,7 @@ class InvoiceItem extends Model
         // get meta formula
         if($formulaCol = $this->getMeta('formular')){
             $formular = $formulaCol->value;
-            $total_amount = evaluate_formular($formular, 'InvoiceItemMeta' );
+            $total_amount = evaluate_formular($formular, 'Product' );
             return $total_amount;
         }
     }

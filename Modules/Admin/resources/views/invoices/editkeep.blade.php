@@ -255,13 +255,23 @@
 
                                     @endforeach
 
-                                   <!-- formula here -->
-                                    <tr>
+                                    <!-- formula here -->
+                                    <!-- <tr>
                                         <td><input disabled readonly  class="form-control" type="text" name="formular[]" value="formular" ></td>
-                                        <td><input class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['value'] : ''  }}"  ></td>
-                                        <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['identifier'] : '' }}"  ></td>
-                                    </tr>
+                                        <td><input class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular')['value'] }}"  ></td>
+                                        <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular')['identifier'] }}"  ></td>
+                                    </tr> -->
 
+                                    <!-- item total here -->
+                                    <!-- <tr>
+                                        <td><input disabled readonly  class="form-control" type="text" value="Item Total" ></td>
+                                        <td colspan="2" ><input readonly style="background-color: white;" class="form-control" type="text" value="{{ $invoiceItem->item_total }}"  ></td>
+                                    </tr> -->
+
+
+                                    <!-- <tr>
+                                        <td colspan="3"><a href="#"   data-invoiceitemid="{{ $invoiceItem->id  }}" class="btn btn-secondary btn-xs add-column-btn"><i class="voyager-plus"></i>Add Column</a>  </td>
+                                    </tr> -->
 
 
                                 <tr>
@@ -368,9 +378,12 @@
                         <div>
                             <strong>Select Products:</strong>
                             <select id="multiple-checkboxes" name="product_ids[]" multiple="multiple">
-                                @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->title }}</option>
-                                @endforeach
+                                <option value="1">Beans</option>
+                                <option value="3">Rice</option>
+                                <option value="4">Ewa</option>
+                                <option value="5">SQL</option>
+                                <option value="20">Jquery</option>
+                                <option value="30">.Net</option>
                             </select>
                         </div>
 
@@ -424,7 +437,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script> -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
 <!-- <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>

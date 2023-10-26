@@ -105,7 +105,7 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($id)->load('items', 'pricings');
         if( $invoice->items->count() < 1 ){
-            $this->addItem($request, $invoice->id);            
+            // $this->addItem($request, $invoice->id);            
         }
 
         $this->addPricing($invoice->id);
@@ -117,9 +117,10 @@ class InvoiceController extends Controller
 
         $total_amount = evaluate_formular($formular, 'InvoicePricing' );
 
+        $products  = Product::all();
 
         // dd($invoiceSubtotal);
-        return view('voyager::invoices.edit', compact('invoice', 'total_amount'));
+        return view('voyager::invoices.edit', compact('invoice', 'total_amount', 'products'));
 
 
        
@@ -159,11 +160,12 @@ class InvoiceController extends Controller
      */
     public function addItem(Request $request, $id)
     {
-        $request->validate([
-            'product_id' => 'required',
+        $productids = $request->validate([
+            'product_ids' => 'required',
         ]);
-        $invoice = Invoice::find($id)->load('items');
-        $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
+        $invoice = Invoice::find($id);
+        
+        // $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
         // $meta = [
         //     [ 'name' => 'title', 'value' => ''],
         //     [ 'name' => 'description', 'value' => ''],
@@ -183,13 +185,25 @@ class InvoiceController extends Controller
         // }
 
         // new implementation
-        $product = Product::find($request->product_id);
-        $meta = $product->meta;
 
-        foreach ($meta as $met ) {
-            $item->meta()->create($met);
+        
+        foreach($productids as $productid){
+            if($product = Product::find($productid)->first() ){
+
+                if(InvoiceItem::where('invoice_id', $invoice->id)->where('product_id', $product->id)->exists() ){
+                    continue;
+                }
+
+                if($meta = $product->meta->toArray() ){
+                    $item = InvoiceItem::create( ['invoice_id' => $invoice->id, 'product_id' => $product->id] );
+                    foreach ($meta as $met ) {
+                        $item->meta()->create($met);
+                    }
+                }
+               
+            }
         }
-
+       
         return redirect()->route('voyager.invoices.edit', $invoice->id);        
     }
 
