@@ -40,7 +40,7 @@ if (!function_exists('get_file_name')) {
 
 
 if (!function_exists('evaluate_formular')) {
-    function evaluate_formular($formular, $model)
+    function evaluate_formular($formular, $model, $entity_id = null)
     {
        
 
@@ -75,14 +75,19 @@ if (!function_exists('evaluate_formular')) {
         }
 
         if($model == 'InvoiceItemMeta'){
-            foreach ($matches[0] as $val ) {
-                if($meta = InvoiceItemMeta::where('identifier', $val)->first()) {
 
+            // dd(InvoiceItemMeta::where('identifier', 'PM16')->where('invoice_item_id', $entity_id)->first());
+            foreach ($matches[0] as $val ) {
+               
+                $meta = InvoiceItemMeta::where('identifier', $val)->where('invoice_item_id', $entity_id)->first();
+
+                if($meta = InvoiceItemMeta::where('identifier', $val)->where('invoice_item_id', $entity_id)->first() ) {
+                    // dd($meta);
                     // pick corresponding value from identifier
                     // But here we check if type is formual and evalute it lol - hmmm
 
                     if($meta->type == 'formular'){
-                        $vall = evaluate_formular($meta->value, $model);
+                        $vall = evaluate_formular($meta->value, $model, $entity_id);
                         array_push($evaluation, $vall);
                     }else{
                         preg_match('/\d+(\.\d+)?/', $meta->value, $match); // this prevents dangerious eval statements in value expressions
@@ -99,8 +104,10 @@ if (!function_exists('evaluate_formular')) {
        
 
         $stringEval = implode("", $evaluation);
-        // dd($stringEval);
+       
         $result =  @eval("return " . $stringEval . ";" );
+
+        // dd($result);
 
         return $result;
         // dd(['formular' => $formular, 'evaluation' => $evaluation, 'stringEval' => $stringEval, 'result'=> $result]);

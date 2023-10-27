@@ -165,28 +165,6 @@ class InvoiceController extends Controller
         ]);
         $invoice = Invoice::find($id);
         
-        // $item = InvoiceItem::create(['invoice_id' => $invoice->id]);
-        // $meta = [
-        //     [ 'name' => 'title', 'value' => ''],
-        //     [ 'name' => 'description', 'value' => ''],
-        //     [ 'name' => 'price', 'value' => 0],
-        //     [ 'name' => 'quantity', 'value' => 0]
-        // ];
-
-        // foreach ($meta as $met ) {
-        //     $item->meta()->create($met);
-        // }
-
-        // //add def formular here
-        // if($item->getMeta('price') &&  $item->getMeta('quantity') ){
-        //     $price = $item->getMeta('price');
-        //     $quantity = $item->getMeta('quantity');
-        //     $item->meta()->updateOrCreate(['name' => 'formula'], [ 'name' => 'formular', 'value' => "$price->identifier*$quantity->identifier"]);
-        // }
-
-        // new implementation
-
-        
         foreach($productids as $productid){
             if($product = Product::find($productid)->first() ){
 
@@ -199,15 +177,6 @@ class InvoiceController extends Controller
                     foreach ($meta as $met ) {
                         $item->meta()->create($met); // create all meta first
                     }
-
-                    // then translate product formular to invoice item formulars
-                    // $item->meta()->each(function($m){
-                    //     if($m['type'] == 'formula'){
-                    //         // will need translate product formula to invoice item formula here
-                    //         $formula = $m->value;
-                    //     }
-                    // });
-                    
                 }
                
             }
@@ -230,7 +199,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($invoiceId);
         $meta= $request->all();
         foreach ($meta as $me) {
-            InvoiceItemMeta::where('identifier', $me[1])->first()->update(['value' => $me[0]]);
+            InvoiceItemMeta::where('identifier', $me[1])->where('invoice_item_id', $invoiceItem->id )->first()->update(['value' => $me[0]]);
         }
 
 

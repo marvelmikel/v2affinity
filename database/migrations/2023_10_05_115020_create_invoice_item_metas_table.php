@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('visibility')->nullable(); // readonly, hidden, default
             $table->string('type')->nullable()->default('text'); // type = text, number, formular
 
-            $table->string('identifier')->unique(); // IIM41, IIM54 - InvoiceItemMeta where the number corresponds to the invoice_item_id field
+            $table->string('identifier')->nullable(); // IIM41, IIM54 - InvoiceItemMeta where the number corresponds to the invoice_item_id field
             
             $table->timestamps();
         });
