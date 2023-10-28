@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 25, 2023 at 03:52 PM
+-- Generation Time: Oct 26, 2023 at 01:22 PM
 -- Server version: 8.1.0
 -- PHP Version: 8.0.30
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `affinity`
+-- Database: `affinitydev`
 --
 
 -- --------------------------------------------------------
@@ -109,7 +109,11 @@ INSERT INTO `customers` (`id`, `user_id`, `store_id`, `name`, `email`, `phone`, 
 (5, NULL, 1, 'John Deo', 'airondev@gmail.com', NULL, 'Gwagwas', 'Abuja', 'FCT', NULL, 'Nigeria', '1231', NULL, '2023-10-06 06:56:47', '2023-10-06 06:56:47'),
 (6, NULL, 1, 'John Deo', 'airondev@gmail.com', NULL, 'Gwagwas', 'Abuja', 'FCT', NULL, 'Nigeria', '1231', NULL, '2023-10-06 06:57:29', '2023-10-06 06:57:29'),
 (7, NULL, 1, 'John Deo', 'airondev@gmail.com', NULL, 'Gwagwas', 'Abuja', 'FCT', NULL, 'Nigeria', '1231', NULL, '2023-10-06 06:57:38', '2023-10-06 06:57:38'),
-(8, NULL, 1, 'test', 'test@gmail.com', '111111', 'derby', 'derby', 'derby', NULL, 'uk', 'b219ex', NULL, '2023-10-25 10:18:38', '2023-10-25 12:29:00');
+(8, NULL, 1, 'sa', 'as', NULL, 'as', 'sa', 'as', NULL, 'as', 'aS', NULL, '2023-10-14 12:06:36', '2023-10-14 12:06:36'),
+(9, NULL, 1, 'sad', 'sad', NULL, 'asd', 'asd', 'asd', NULL, 'asd', 'asd', NULL, '2023-10-14 12:11:22', '2023-10-14 12:11:22'),
+(10, NULL, 1, 'asd', 'ads', NULL, 'ads', 'ads', 'dsa', NULL, 'ad', 'ads', NULL, '2023-10-14 12:16:10', '2023-10-14 12:16:10'),
+(11, NULL, 1, 'q', 'q', NULL, 'q', 'q', 'as', NULL, 'W', 'Q', NULL, '2023-10-14 12:19:51', '2023-10-14 12:19:51'),
+(12, NULL, 1, 'Greentech', 'greentech@gmail.com', '213213', 'Gwagwas', 'Abaji', 'London', NULL, 'UK', '123213', NULL, '2023-10-26 07:50:42', '2023-10-26 07:50:42');
 
 -- --------------------------------------------------------
 
@@ -209,29 +213,8 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (84, 12, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
 (85, 12, 'company_id', 'text', 'Company Id', 0, 1, 1, 1, 1, 1, '{}', 2),
 (86, 12, 'user_id', 'text', 'User Id', 0, 1, 1, 1, 1, 1, '{}', 3),
-(87, 12, 'title', 'text', 'Title', 0, 1, 1, 1, 1, 1, '{}', 4),
-(88, 12, 'description', 'text', 'Description', 0, 1, 1, 1, 1, 1, '{}', 5),
-(89, 12, 'in_stock', 'text', 'In Stock', 1, 1, 1, 1, 1, 1, '{}', 6),
-(90, 12, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 7),
-(91, 12, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 8),
-(92, 13, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
-(93, 13, 'company_id', 'text', 'Company Id', 1, 1, 1, 1, 1, 1, '{}', 2),
-(94, 13, 'store_name', 'text', 'Store Name', 1, 1, 1, 1, 1, 1, '{}', 3),
-(95, 13, 'next_invoice_number', 'text', 'Next Invoice Number', 1, 1, 1, 1, 1, 1, '{}', 4),
-(96, 13, 'address_line_1', 'text', 'Address Line 1', 1, 1, 1, 1, 1, 1, '{}', 5),
-(97, 13, 'address_line_2', 'text', 'Address Line 2', 0, 1, 1, 1, 1, 1, '{}', 6),
-(98, 13, 'address_city', 'text', 'Address City', 1, 1, 1, 1, 1, 1, '{}', 7),
-(99, 13, 'address_county', 'text', 'Address County', 0, 1, 1, 1, 1, 1, '{}', 8),
-(100, 13, 'address_country', 'text', 'Address Country', 1, 1, 1, 1, 1, 1, '{}', 9),
-(101, 13, 'address_postcode', 'text', 'Address Postcode', 1, 1, 1, 1, 1, 1, '{}', 10),
-(102, 13, 'store_email', 'text', 'Store Email', 0, 1, 1, 1, 1, 1, '{}', 11),
-(103, 13, 'store_phone', 'text', 'Store Phone', 0, 1, 1, 1, 1, 1, '{}', 12),
-(104, 13, 'logo', 'text', 'Logo', 0, 1, 1, 1, 1, 1, '{}', 13),
-(105, 13, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 14),
-(106, 13, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 15),
-(107, 13, 'deleted_at', 'timestamp', 'Deleted At', 0, 1, 1, 1, 1, 1, '{}', 16),
-(108, 8, 'currency', 'text', 'Currency', 0, 1, 1, 1, 1, 1, '{}', 7),
-(109, 8, 'deleted_at', 'timestamp', 'Deleted At', 0, 1, 1, 1, 1, 1, '{}', 15);
+(87, 12, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 4),
+(88, 12, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 5);
 
 -- --------------------------------------------------------
 
@@ -268,9 +251,8 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 (4, 'categories', 'categories', 'Category', 'Categories', 'voyager-categories', 'Modules\\Admin\\Models\\Category', NULL, '', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (5, 'posts', 'posts', 'Post', 'Posts', 'voyager-news', 'Modules\\Admin\\Models\\Post', 'Modules\\Admin\\Policies\\PostPolicy', '', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (6, 'pages', 'pages', 'Page', 'Pages', 'voyager-file-text', 'Modules\\Admin\\Models\\Page', NULL, '', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
-(8, 'invoices', 'invoices', 'Invoice', 'Invoices', NULL, 'App\\Models\\Invoice', 'InvoicePolicy', 'App\\Http\\Controllers\\InvoiceController', NULL, 1, 1, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-10-05 10:06:39', '2023-10-25 12:05:45'),
-(12, 'products', 'products', 'Product', 'Products', NULL, 'App\\Models\\Product', NULL, 'App\\Http\\Controllers\\ProductController', NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-10-25 10:11:32', '2023-10-25 12:12:41'),
-(13, 'stores', 'stores', 'Store', 'Stores', NULL, 'App\\Models\\Store', NULL, 'App\\Http\\Controllers\\StoreController', NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2023-10-25 10:12:22', '2023-10-25 10:12:22');
+(8, 'invoices', 'invoices', 'Invoice', 'Invoices', NULL, 'App\\Models\\Invoice', 'InvoicePolicy', '\\App\\Http\\Controllers\\InvoiceController', NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-10-05 10:06:39', '2023-10-05 13:23:50'),
+(12, 'products', 'products', 'Product', 'Products', NULL, 'App\\Models\\Product', NULL, 'App\\Http\\Controllers\\ProductController', NULL, 1, 0, '{\"order_column\":\"created_at\",\"order_display_column\":\"created_at\",\"order_direction\":\"desc\",\"default_search_key\":null}', '2023-10-24 17:46:33', '2023-10-24 17:46:33');
 
 -- --------------------------------------------------------
 
@@ -317,25 +299,7 @@ CREATE TABLE `invoices` (
 --
 
 INSERT INTO `invoices` (`id`, `user_id`, `store_id`, `customer_id`, `title`, `description`, `currency`, `note`, `due_at`, `paid_at`, `sent_at`, `is_recurring`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-10-05 13:33:40', '2023-10-25 10:25:26', '2023-10-25 10:25:26'),
-(2, NULL, 1, NULL, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:54:25', '2023-10-06 06:54:25', NULL),
-(3, NULL, 1, NULL, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:55:41', '2023-10-25 12:03:01', '2023-10-25 12:03:01'),
-(4, NULL, 1, NULL, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:55:55', '2023-10-25 12:02:57', '2023-10-25 12:02:57'),
-(5, NULL, 1, NULL, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:56:15', '2023-10-25 10:25:50', '2023-10-25 10:25:50'),
-(6, NULL, 1, 5, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:56:47', '2023-10-25 10:25:46', '2023-10-25 10:25:46'),
-(7, NULL, 1, 6, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:57:29', '2023-10-25 10:25:43', '2023-10-25 10:25:43'),
-(8, NULL, 1, 7, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:57:38', '2023-10-25 10:25:40', '2023-10-25 10:25:40'),
-(9, NULL, 1, 1, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-20', NULL, NULL, 0, '2023-10-06 06:57:53', '2023-10-25 10:25:37', '2023-10-25 10:25:37'),
-(10, NULL, 1, 1, 'Greentech Projectqew', 'Description of invoice here', NULL, NULL, '2023-10-06', NULL, NULL, 0, '2023-10-06 07:42:03', '2023-10-25 10:25:23', '2023-10-25 10:25:23'),
-(11, NULL, 1, 8, 'test', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 10:18:38', '2023-10-25 10:18:38', NULL),
-(12, NULL, 1, 8, 'test', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 11:41:49', '2023-10-25 11:41:49', NULL),
-(13, NULL, 1, 8, 'test', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 11:51:24', '2023-10-25 12:03:21', '2023-10-25 12:03:21'),
-(14, NULL, 1, 8, 'test', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 11:52:18', '2023-10-25 12:03:13', '2023-10-25 12:03:13'),
-(15, NULL, 1, 8, 'test', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 12:28:19', '2023-10-25 12:28:19', NULL),
-(16, NULL, 1, 8, 'Logicbarn', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 12:28:34', '2023-10-25 12:28:34', NULL),
-(17, NULL, 1, 8, 'test', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 12:28:50', '2023-10-25 12:28:50', NULL),
-(18, NULL, 1, 8, 'test', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 12:29:00', '2023-10-25 12:29:00', NULL),
-(19, NULL, 1, 8, 'LogicBarn', 'good', NULL, NULL, '2023-10-26', NULL, NULL, 0, '2023-10-25 13:45:01', '2023-10-25 13:45:01', NULL);
+(1, NULL, 1, 12, 'Greentech Sales Invoice', 'Greentech Sales Invoice Description', NULL, NULL, '2023-10-27', NULL, NULL, 0, '2023-10-26 07:50:42', '2023-10-26 07:50:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -346,10 +310,7 @@ INSERT INTO `invoices` (`id`, `user_id`, `store_id`, `customer_id`, `title`, `de
 CREATE TABLE `invoice_items` (
   `id` bigint UNSIGNED NOT NULL,
   `invoice_id` bigint UNSIGNED DEFAULT NULL,
-  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `quantity` int DEFAULT NULL,
-  `price` int DEFAULT NULL,
+  `product_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -358,18 +319,9 @@ CREATE TABLE `invoice_items` (
 -- Dumping data for table `invoice_items`
 --
 
-INSERT INTO `invoice_items` (`id`, `invoice_id`, `title`, `description`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
-(9, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:09:04', '2023-10-06 10:09:04'),
-(10, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:09:18', '2023-10-06 10:09:18'),
-(11, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:10:02', '2023-10-06 10:10:02'),
-(12, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:11:16', '2023-10-06 10:11:16'),
-(13, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:12:37', '2023-10-06 10:12:37'),
-(14, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:13:40', '2023-10-06 10:13:40'),
-(15, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:14:33', '2023-10-06 10:14:33'),
-(16, NULL, NULL, NULL, NULL, NULL, '2023-10-06 10:15:21', '2023-10-06 10:15:21'),
-(17, 11, NULL, NULL, NULL, NULL, '2023-10-25 10:58:28', '2023-10-25 10:58:28'),
-(18, 11, NULL, NULL, NULL, NULL, '2023-10-25 10:58:37', '2023-10-25 10:58:37'),
-(19, 11, NULL, NULL, NULL, NULL, '2023-10-25 10:58:43', '2023-10-25 10:58:43');
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2023-10-26 08:52:43', '2023-10-26 08:52:43'),
+(2, 1, 2, '2023-10-26 09:44:54', '2023-10-26 09:44:54');
 
 -- --------------------------------------------------------
 
@@ -382,6 +334,8 @@ CREATE TABLE `invoice_item_metas` (
   `invoice_item_id` bigint UNSIGNED DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visibility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'text',
   `identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -391,67 +345,23 @@ CREATE TABLE `invoice_item_metas` (
 -- Dumping data for table `invoice_item_metas`
 --
 
-INSERT INTO `invoice_item_metas` (`id`, `invoice_item_id`, `name`, `value`, `identifier`, `created_at`, `updated_at`) VALUES
-(1, 8, 'title', '', 'IM8651feaa3f33d09.18752700', '2023-10-06 10:08:19', '2023-10-06 10:08:19'),
-(2, 8, 'description', '', 'IM8651feaa400c0e1.73907894', '2023-10-06 10:08:20', '2023-10-06 10:08:20'),
-(3, 8, 'price', '0', 'IM8651feaa4014063.53922853', '2023-10-06 10:08:20', '2023-10-06 10:08:20'),
-(4, 8, 'quantity', '0', 'IM8651feaa4018d68.56442233', '2023-10-06 10:08:20', '2023-10-06 10:08:20'),
-(5, 8, 'formular', 'price*quantity', 'IM8651feaa401da40.94424236', '2023-10-06 10:08:20', '2023-10-06 10:08:20'),
-(6, 9, 'title', '', 'IM9651fead0baed79.05627064', '2023-10-06 10:09:04', '2023-10-06 10:09:04'),
-(7, 9, 'description', '', 'IM9651fead0bb4517.13735870', '2023-10-06 10:09:04', '2023-10-06 10:09:04'),
-(8, 9, 'price', '0', 'IM9651fead0bb9b99.65195034', '2023-10-06 10:09:04', '2023-10-06 10:09:04'),
-(9, 9, 'quantity', '0', 'IM9651fead0bbd325.21547334', '2023-10-06 10:09:04', '2023-10-06 10:09:04'),
-(10, 9, 'formular', 'price*quantity', 'IM9651fead0bc09a6.71122907', '2023-10-06 10:09:04', '2023-10-06 10:09:04'),
-(11, 10, 'title', '', 'IM10651feadebabf05.89464549', '2023-10-06 10:09:18', '2023-10-06 10:09:18'),
-(12, 10, 'description', '', 'IM10651feadebb0761.93370778', '2023-10-06 10:09:18', '2023-10-06 10:09:18'),
-(13, 10, 'price', '0', 'IM10651feadebb3e36.85533026', '2023-10-06 10:09:18', '2023-10-06 10:09:18'),
-(14, 10, 'quantity', '0', 'IM10651feadebb7947.62429910', '2023-10-06 10:09:18', '2023-10-06 10:09:18'),
-(15, 10, 'formular', 'price*quantity', 'IM10651feadebbcab4.38472110', '2023-10-06 10:09:18', '2023-10-06 10:09:18'),
-(16, 11, 'title', '', 'IM11651feb0a5f3061.14857549', '2023-10-06 10:10:02', '2023-10-06 10:10:02'),
-(17, 11, 'description', '', 'IM11651feb0a5f7340.39243849', '2023-10-06 10:10:02', '2023-10-06 10:10:02'),
-(18, 11, 'price', '0', 'IM11651feb0a5fa210.08059784', '2023-10-06 10:10:02', '2023-10-06 10:10:02'),
-(19, 11, 'quantity', '0', 'IM11651feb0a5fde71.72681476', '2023-10-06 10:10:02', '2023-10-06 10:10:02'),
-(20, 11, 'formular', 'price*quantity', 'IM11651feb0a601443.44811416', '2023-10-06 10:10:02', '2023-10-06 10:10:02'),
-(21, 12, 'title', '', 'IM12651feb5467a806.75745720', '2023-10-06 10:11:16', '2023-10-06 10:11:16'),
-(22, 12, 'description', '', 'IM12651feb5467e511.69577187', '2023-10-06 10:11:16', '2023-10-06 10:11:16'),
-(23, 12, 'price', '0', 'IM12651feb54680ea7.40897360', '2023-10-06 10:11:16', '2023-10-06 10:11:16'),
-(24, 12, 'quantity', '0', 'IM12651feb54683624.21196277', '2023-10-06 10:11:16', '2023-10-06 10:11:16'),
-(25, 12, 'formular', 'price*quantity', 'IM12651feb54685d17.41680590', '2023-10-06 10:11:16', '2023-10-06 10:11:16'),
-(26, 13, 'title', '', 'IM13651feba5251e69.27578498', '2023-10-06 10:12:37', '2023-10-06 10:12:37'),
-(27, 13, 'description', '', 'IM13651feba5259188.23670673', '2023-10-06 10:12:37', '2023-10-06 10:12:37'),
-(28, 13, 'price', '0', 'IM13651feba525ed61.93615064', '2023-10-06 10:12:37', '2023-10-06 10:12:37'),
-(29, 13, 'quantity', '0', 'IM13651feba52633d7.30544451', '2023-10-06 10:12:37', '2023-10-06 10:12:37'),
-(30, 13, 'formular', 'price*quantity', 'IM13651feba5267151.13786129', '2023-10-06 10:12:37', '2023-10-06 10:12:37'),
-(31, 14, 'title', '', 'IM14651febe4a8eee2.42314720', '2023-10-06 10:13:40', '2023-10-06 10:13:40'),
-(32, 14, 'description', '', 'IM14651febe4a92a07.59826646', '2023-10-06 10:13:40', '2023-10-06 10:13:40'),
-(33, 14, 'price', '0', 'IM14651febe4a95799.17320798', '2023-10-06 10:13:40', '2023-10-06 10:13:40'),
-(34, 14, 'quantity', '0', 'IM14651febe4a982a7.19274137', '2023-10-06 10:13:40', '2023-10-06 10:13:40'),
-(35, 14, 'formular', 'price*quantity', 'IM14651febe4a9aaf4.12868501', '2023-10-06 10:13:40', '2023-10-06 10:13:40'),
-(36, 15, 'title', '', 'IM15651fec195f5c45.58260525', '2023-10-06 10:14:33', '2023-10-06 10:14:33'),
-(37, 15, 'description', '', 'IM15651fec195f9a82.81629350', '2023-10-06 10:14:33', '2023-10-06 10:14:33'),
-(38, 15, 'price', '0', 'IM15651fec195fd565.50015413', '2023-10-06 10:14:33', '2023-10-06 10:14:33'),
-(39, 15, 'quantity', '0', 'IM15651fec19600728.23887075', '2023-10-06 10:14:33', '2023-10-06 10:14:33'),
-(40, 15, 'formular', 'price*quantity', 'IM15651fec19602cf1.45262985', '2023-10-06 10:14:33', '2023-10-06 10:14:33'),
-(41, 16, 'title', '', 'IM16651fec491b7dc8.50153394', '2023-10-06 10:15:21', '2023-10-06 10:15:21'),
-(42, 16, 'description', '', 'IM16651fec491bb9f4.82301213', '2023-10-06 10:15:21', '2023-10-06 10:15:21'),
-(43, 16, 'price', '0', 'IM16651fec491bf3b8.42280243', '2023-10-06 10:15:21', '2023-10-06 10:15:21'),
-(44, 16, 'quantity', '0', 'IM16651fec491c27f2.91183824', '2023-10-06 10:15:21', '2023-10-06 10:15:21'),
-(45, 16, 'formular', 'price*quantity', 'IM16651fec491c51f9.12990554', '2023-10-06 10:15:21', '2023-10-06 10:15:21'),
-(46, 17, 'title', '', 'I1746', '2023-10-25 10:58:28', '2023-10-25 10:58:28'),
-(47, 17, 'description', '', 'I1747', '2023-10-25 10:58:28', '2023-10-25 10:58:28'),
-(48, 17, 'price', '0', 'I1748', '2023-10-25 10:58:28', '2023-10-25 10:58:28'),
-(49, 17, 'quantity', '0', 'I1749', '2023-10-25 10:58:28', '2023-10-25 10:58:28'),
-(50, 17, 'formular', 'I1748*I1749', 'I1750', '2023-10-25 10:58:28', '2023-10-25 10:58:28'),
-(51, 18, 'title', '', 'I1851', '2023-10-25 10:58:37', '2023-10-25 10:58:37'),
-(52, 18, 'description', '', 'I1852', '2023-10-25 10:58:37', '2023-10-25 10:58:37'),
-(53, 18, 'price', '0', 'I1853', '2023-10-25 10:58:37', '2023-10-25 10:58:37'),
-(54, 18, 'quantity', '0', 'I1854', '2023-10-25 10:58:37', '2023-10-25 10:58:37'),
-(55, 18, 'formular', 'I1853*I1854', 'I1855', '2023-10-25 10:58:37', '2023-10-25 10:58:37'),
-(56, 19, 'title', '', 'I1956', '2023-10-25 10:58:43', '2023-10-25 10:58:43'),
-(57, 19, 'description', '', 'I1957', '2023-10-25 10:58:43', '2023-10-25 10:58:43'),
-(58, 19, 'price', '0', 'I1958', '2023-10-25 10:58:43', '2023-10-25 10:58:43'),
-(59, 19, 'quantity', '0', 'I1959', '2023-10-25 10:58:43', '2023-10-25 10:58:43'),
-(60, 19, 'formular', 'I1958*I1959', 'I1960', '2023-10-25 10:58:43', '2023-10-25 10:58:43');
+INSERT INTO `invoice_item_metas` (`id`, `invoice_item_id`, `name`, `value`, `visibility`, `type`, `identifier`, `created_at`, `updated_at`) VALUES
+(1, 1, 'unit_price', '190', 'readonly', 'number', 'PM11', '2023-10-26 08:52:43', '2023-10-26 08:52:43'),
+(2, 1, 'quantity', '499', '', 'number', 'PM12', '2023-10-26 08:52:43', '2023-10-26 09:28:47'),
+(3, 1, 'title', 'Carpet', 'readonly', 'text', 'PM13', '2023-10-26 08:52:43', '2023-10-26 08:52:43'),
+(4, 1, 'description', 'Lorem Descriprion here ds', 'readonly', 'text', 'PM14', '2023-10-26 08:52:43', '2023-10-26 08:52:43'),
+(5, 1, 'formular', 'PM11*PM12+PM18', 'readonly', 'formular', 'PM15', '2023-10-26 08:52:43', '2023-10-26 08:52:43'),
+(6, 1, 'Height', '490', NULL, 'number', 'PM16', '2023-10-26 08:52:43', '2023-10-26 09:28:58'),
+(7, 1, 'Width', '90', NULL, 'number', 'PM17', '2023-10-26 08:52:43', '2023-10-26 09:28:47'),
+(8, 1, 'Fitting Cost', 'PM16*PM17', 'readonly', 'formular', 'PM18', '2023-10-26 08:52:43', '2023-10-26 08:52:43'),
+(9, 2, 'unit_price', '450', 'readonly', 'number', 'PM29', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(10, 2, 'quantity', '4', '', 'number', 'PM210', '2023-10-26 09:44:54', '2023-10-26 09:45:15'),
+(11, 2, 'title', 'Paint Emusifier', 'readonly', 'text', 'PM211', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(12, 2, 'description', 'Paint Emusifier Description', 'readonly', 'text', 'PM212', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(13, 2, 'formular', 'PM29*PM210+PM216', 'readonly', 'formular', 'PM213', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(14, 2, 'height', '1', 'default', 'number', 'PM214', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(15, 2, 'width', '1', 'default', 'number', 'PM215', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(16, 2, 'casting cost', 'PM214*PM215', 'readonly', 'formular', 'PM216', '2023-10-26 09:44:54', '2023-10-26 09:44:54');
 
 -- --------------------------------------------------------
 
@@ -464,8 +374,6 @@ CREATE TABLE `invoice_pricings` (
   `invoice_id` bigint UNSIGNED DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visibility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'text',
   `identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -475,43 +383,11 @@ CREATE TABLE `invoice_pricings` (
 -- Dumping data for table `invoice_pricings`
 --
 
-INSERT INTO `invoice_pricings` (`id`, `invoice_id`, `name`, `value`, `visibility`, `type`, `identifier`, `created_at`, `updated_at`) VALUES
-(1, 11, 'subtotal', '0', NULL, 'text', 'P111', '2023-10-25 10:18:38', '2023-10-25 14:51:37'),
-(2, 11, 'tax', '0', NULL, 'text', 'P112', '2023-10-25 10:18:38', '2023-10-25 10:18:38'),
-(3, 11, 'discount', '0', NULL, 'text', 'P113', '2023-10-25 10:18:38', '2023-10-25 10:18:38'),
-(4, 11, 'formular', 'P111-P111*P112-P111*P113', NULL, 'text', 'P114', '2023-10-25 10:18:38', '2023-10-25 10:18:38'),
-(5, 12, 'subtotal', '0', NULL, 'text', 'P125', '2023-10-25 11:41:49', '2023-10-25 11:41:49'),
-(6, 12, 'tax', '0', NULL, 'text', 'P126', '2023-10-25 11:41:49', '2023-10-25 11:41:49'),
-(7, 12, 'discount', '0', NULL, 'text', 'P127', '2023-10-25 11:41:49', '2023-10-25 11:41:49'),
-(8, 12, 'formular', 'P125-P125*P126-P125*P127', NULL, 'text', 'P128', '2023-10-25 11:41:49', '2023-10-25 11:41:49'),
-(9, 13, 'subtotal', '0', NULL, 'text', 'P139', '2023-10-25 11:51:24', '2023-10-25 11:51:24'),
-(10, 13, 'tax', '0', NULL, 'text', 'P1310', '2023-10-25 11:51:24', '2023-10-25 11:51:24'),
-(11, 13, 'discount', '0', NULL, 'text', 'P1311', '2023-10-25 11:51:24', '2023-10-25 11:51:24'),
-(12, 13, 'formular', 'P139-P139*P1310-P139*P1311', NULL, 'text', 'P1312', '2023-10-25 11:51:24', '2023-10-25 11:51:24'),
-(13, 14, 'subtotal', '0', NULL, 'text', 'P1413', '2023-10-25 11:52:18', '2023-10-25 11:52:18'),
-(14, 14, 'tax', '0', NULL, 'text', 'P1414', '2023-10-25 11:52:18', '2023-10-25 11:52:18'),
-(15, 14, 'discount', '0', NULL, 'text', 'P1415', '2023-10-25 11:52:18', '2023-10-25 11:52:18'),
-(16, 14, 'formular', 'P1413-P1413*P1414-P1413*P1415', NULL, 'text', 'P1416', '2023-10-25 11:52:18', '2023-10-25 11:52:18'),
-(17, 15, 'subtotal', '0', NULL, 'text', 'P1517', '2023-10-25 12:28:19', '2023-10-25 12:28:19'),
-(18, 15, 'tax', '0', NULL, 'text', 'P1518', '2023-10-25 12:28:19', '2023-10-25 12:28:19'),
-(19, 15, 'discount', '0', NULL, 'text', 'P1519', '2023-10-25 12:28:19', '2023-10-25 12:28:19'),
-(20, 15, 'formular', 'P1517-P1517*P1518-P1517*P1519', NULL, 'text', 'P1520', '2023-10-25 12:28:19', '2023-10-25 12:28:19'),
-(21, 16, 'subtotal', '0', NULL, 'text', 'P1621', '2023-10-25 12:28:34', '2023-10-25 12:28:34'),
-(22, 16, 'tax', '0', NULL, 'text', 'P1622', '2023-10-25 12:28:34', '2023-10-25 12:28:34'),
-(23, 16, 'discount', '0', NULL, 'text', 'P1623', '2023-10-25 12:28:34', '2023-10-25 12:28:34'),
-(24, 16, 'formular', 'P1621-P1621*P1622-P1621*P1623', NULL, 'text', 'P1624', '2023-10-25 12:28:34', '2023-10-25 12:28:34'),
-(25, 17, 'subtotal', '0', NULL, 'text', 'P1725', '2023-10-25 12:28:50', '2023-10-25 12:28:50'),
-(26, 17, 'tax', '0', NULL, 'text', 'P1726', '2023-10-25 12:28:50', '2023-10-25 12:28:50'),
-(27, 17, 'discount', '0', NULL, 'text', 'P1727', '2023-10-25 12:28:50', '2023-10-25 12:28:50'),
-(28, 17, 'formular', 'P1725-P1725*P1726-P1725*P1727', NULL, 'text', 'P1728', '2023-10-25 12:28:50', '2023-10-25 12:28:50'),
-(29, 18, 'subtotal', '0', NULL, 'text', 'P1829', '2023-10-25 12:29:00', '2023-10-25 12:29:00'),
-(30, 18, 'tax', '0', NULL, 'text', 'P1830', '2023-10-25 12:29:00', '2023-10-25 12:29:00'),
-(31, 18, 'discount', '0', NULL, 'text', 'P1831', '2023-10-25 12:29:00', '2023-10-25 12:29:00'),
-(32, 18, 'formular', 'P1829-P1829*P1830-P1829*P1831', NULL, 'text', 'P1832', '2023-10-25 12:29:00', '2023-10-25 12:29:00'),
-(33, 19, 'subtotal', '0', NULL, 'text', 'P1933', '2023-10-25 13:45:01', '2023-10-25 13:45:01'),
-(34, 19, 'tax', '0', NULL, 'text', 'P1934', '2023-10-25 13:45:01', '2023-10-25 13:45:01'),
-(35, 19, 'discount', '0', NULL, 'text', 'P1935', '2023-10-25 13:45:01', '2023-10-25 13:45:01'),
-(36, 19, 'formular', 'P1933-P1933*P1934-P1933*P1935', NULL, 'text', 'P1936', '2023-10-25 13:45:01', '2023-10-25 13:45:01');
+INSERT INTO `invoice_pricings` (`id`, `invoice_id`, `name`, `value`, `identifier`, `created_at`, `updated_at`) VALUES
+(1, 1, 'subtotal', '140711', 'P11', '2023-10-26 07:50:42', '2023-10-26 12:22:35'),
+(2, 1, 'tax', '0', 'P12', '2023-10-26 07:50:42', '2023-10-26 07:50:42'),
+(3, 1, 'discount', '0', 'P13', '2023-10-26 07:50:42', '2023-10-26 07:50:42'),
+(4, 1, 'formular', 'P11-P11*P12-P11*P13', 'P14', '2023-10-26 07:50:42', '2023-10-26 07:50:42');
 
 -- --------------------------------------------------------
 
@@ -576,18 +452,17 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 (2, 1, 'Media', '', '_self', 'voyager-images', NULL, NULL, 4, '2023-09-24 23:14:58', '2023-10-06 10:25:26', 'voyager.media.index', NULL),
 (3, 1, 'Users', '', '_self', 'voyager-person', NULL, NULL, 3, '2023-09-24 23:14:58', '2023-09-24 23:14:58', 'voyager.users.index', NULL),
 (4, 1, 'Roles', '', '_self', 'voyager-lock', NULL, NULL, 2, '2023-09-24 23:14:58', '2023-09-24 23:14:58', 'voyager.roles.index', NULL),
-(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 8, '2023-09-24 23:14:58', '2023-10-25 12:07:09', NULL, NULL),
+(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 10, '2023-09-24 23:14:58', '2023-10-24 17:47:02', NULL, NULL),
 (6, 1, 'Menu Builder', '', '_self', 'voyager-list', NULL, 5, 1, '2023-09-24 23:14:58', '2023-10-05 09:23:07', 'voyager.menus.index', NULL),
 (7, 1, 'Database', '', '_self', 'voyager-data', NULL, 5, 2, '2023-09-24 23:14:58', '2023-10-05 09:23:07', 'voyager.database.index', NULL),
 (8, 1, 'Compass', '', '_self', 'voyager-compass', NULL, 5, 3, '2023-09-24 23:14:58', '2023-10-05 09:23:07', 'voyager.compass.index', NULL),
 (9, 1, 'BREAD', '', '_self', 'voyager-bread', NULL, 5, 4, '2023-09-24 23:14:58', '2023-10-05 09:23:07', 'voyager.bread.index', NULL),
-(10, 1, 'Settings', '', '_self', 'voyager-settings', NULL, NULL, 9, '2023-09-24 23:14:58', '2023-10-25 12:07:09', 'voyager.settings.index', NULL),
-(15, 1, 'Invoices', '', '_self', 'voyager-file-text', '#000000', NULL, 7, '2023-10-05 10:06:39', '2023-10-25 12:07:12', 'voyager.invoices.index', 'null'),
-(18, 1, 'Products', '', '_self', 'voyager-bag', '#000000', NULL, 5, '2023-10-25 10:11:32', '2023-10-25 12:07:09', 'voyager.products.index', 'null'),
-(19, 1, 'Stores', '', '_self', 'voyager-basket', '#000000', NULL, 6, '2023-10-25 10:12:22', '2023-10-25 12:07:12', 'voyager.stores.index', 'null'),
-(21, 1, 'Invoices', '', '_self', 'voyager-file-text', '#000000', NULL, 11, '2023-10-25 14:41:36', '2023-10-25 14:49:11', 'voyager.invoices.index', 'null'),
-(22, 1, 'Stores', '', '_self', 'voyager-shop', '#000000', NULL, 12, '2023-10-25 14:41:36', '2023-10-25 14:50:17', 'voyager.stores.index', 'null'),
-(23, 1, 'Products', '', '_self', 'voyager-basket', '#000000', NULL, 13, '2023-10-25 14:41:36', '2023-10-25 14:49:39', 'voyager.products.index', 'null');
+(10, 1, 'Settings', '', '_self', 'voyager-settings', NULL, NULL, 11, '2023-09-24 23:14:58', '2023-10-24 17:47:02', 'voyager.settings.index', NULL),
+(11, 1, 'Categories', '', '_self', 'voyager-categories', NULL, NULL, 9, '2023-09-24 23:14:58', '2023-10-24 17:47:02', 'voyager.categories.index', NULL),
+(12, 1, 'Posts', '', '_self', 'voyager-news', NULL, NULL, 5, '2023-09-24 23:14:58', '2023-10-06 10:25:26', 'voyager.posts.index', NULL),
+(13, 1, 'Pages', '', '_self', 'voyager-file-text', NULL, NULL, 8, '2023-09-24 23:14:58', '2023-10-24 17:47:02', 'voyager.pages.index', NULL),
+(18, 1, 'Invoices', '', '_self', 'voyager-file-text', NULL, NULL, 6, '2023-09-24 23:14:58', '2023-10-06 10:26:09', 'voyager.invoices.index', NULL),
+(19, 1, 'Products', '', '_self', 'voyager-bag', '#000000', NULL, 7, '2023-10-24 17:46:33', '2023-10-24 17:47:39', 'voyager.products.index', 'null');
 
 -- --------------------------------------------------------
 
@@ -641,14 +516,43 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (61, '2023_09_29_162727_create_subscriptions_table', 2),
 (62, '2023_10_05_111523_create_invoices_table', 3),
 (63, '2023_10_05_111645_create_customers_table', 3),
-(64, '2023_10_05_114944_create_invoice_items_table', 3),
-(65, '2023_10_05_115020_create_invoice_item_metas_table', 3),
 (66, '2023_10_05_121512_create_invoice_schedules_table', 3),
 (67, '2023_10_06_104953_add_currency_to_invoices_table', 4),
 (68, '2023_10_07_083106_create_invoice_pricings_table', 5),
-(69, '2023_10_17_161209_add_deleted_at_to_invoices_table', 5),
-(70, '2023_10_24_113435_create_products_table', 5),
-(71, '2023_10_24_121449_create_product_metas_table', 5);
+(73, '2023_10_24_113435_create_products_table', 6),
+(74, '2023_10_24_121449_create_product_metas_table', 6),
+(75, '2023_10_05_114944_create_invoice_items_table', 7),
+(76, '2023_10_05_115020_create_invoice_item_metas_table', 7),
+(77, '2023_10_17_161209_add_deleted_at_to_invoices_table', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pages`
+--
+
+CREATE TABLE `pages` (
+  `id` int UNSIGNED NOT NULL,
+  `author_id` int NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `excerpt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meta_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meta_keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` enum('ACTIVE','INACTIVE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'INACTIVE',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pages`
+--
+
+INSERT INTO `pages` (`id`, `author_id`, `title`, `excerpt`, `body`, `image`, `slug`, `meta_description`, `meta_keywords`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Hello World', 'Hang the jib grog grog blossom grapple dance the hempen jig gangway pressgang bilge rat to go on account lugger. Nelsons folly gabion line draught scallywag fire ship gaff fluke fathom case shot. Sea Legs bilge rat sloop matey gabion long clothes run a shot across the bow Gold Road cog league.', '<p>Hello World. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>\r\n<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>', 'pages/September2023/wnh60VYjFOFbXPorjeMf.png', 'hello-world', 'Yar Meta Description', 'Keyword1, Keyword2', 'ACTIVE', '2023-09-24 23:14:58', '2023-09-29 07:08:45'),
+(2, 1, 'test', 'working', NULL, 'pages/September2023/Obw5BRJ15GSxWRFWgTCV.jpg', 'testing', 'working', 'test', 'ACTIVE', '2023-09-28 23:45:18', '2023-09-29 07:08:15');
 
 -- --------------------------------------------------------
 
@@ -726,16 +630,11 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 (43, 'edit_invoices', 'invoices', '2023-10-05 10:06:39', '2023-10-05 10:06:39'),
 (44, 'add_invoices', 'invoices', '2023-10-05 10:06:39', '2023-10-05 10:06:39'),
 (45, 'delete_invoices', 'invoices', '2023-10-05 10:06:39', '2023-10-05 10:06:39'),
-(56, 'browse_products', 'products', '2023-10-25 10:11:32', '2023-10-25 10:11:32'),
-(57, 'read_products', 'products', '2023-10-25 10:11:32', '2023-10-25 10:11:32'),
-(58, 'edit_products', 'products', '2023-10-25 10:11:32', '2023-10-25 10:11:32'),
-(59, 'add_products', 'products', '2023-10-25 10:11:32', '2023-10-25 10:11:32'),
-(60, 'delete_products', 'products', '2023-10-25 10:11:32', '2023-10-25 10:11:32'),
-(61, 'browse_stores', 'stores', '2023-10-25 10:12:22', '2023-10-25 10:12:22'),
-(62, 'read_stores', 'stores', '2023-10-25 10:12:22', '2023-10-25 10:12:22'),
-(63, 'edit_stores', 'stores', '2023-10-25 10:12:22', '2023-10-25 10:12:22'),
-(64, 'add_stores', 'stores', '2023-10-25 10:12:22', '2023-10-25 10:12:22'),
-(65, 'delete_stores', 'stores', '2023-10-25 10:12:22', '2023-10-25 10:12:22');
+(56, 'browse_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
+(57, 'read_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
+(58, 'edit_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
+(59, 'add_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
+(60, 'delete_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33');
 
 -- --------------------------------------------------------
 
@@ -802,30 +701,25 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (39, 1),
 (40, 1),
 (41, 1),
+(41, 2),
 (41, 4),
 (42, 1),
+(42, 2),
 (42, 4),
 (43, 1),
+(43, 2),
 (43, 4),
 (44, 1),
+(44, 2),
 (44, 4),
 (45, 1),
+(45, 2),
 (45, 4),
 (56, 1),
-(56, 2),
 (57, 1),
-(57, 2),
 (58, 1),
-(58, 2),
 (59, 1),
-(59, 2),
-(60, 1),
-(60, 2),
-(61, 2),
-(62, 2),
-(63, 2),
-(64, 2),
-(65, 2);
+(60, 1);
 
 -- --------------------------------------------------------
 
@@ -880,6 +774,40 @@ INSERT INTO `plans` (`id`, `name`, `description`, `price`, `currencyIsoCode`, `b
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int UNSIGNED NOT NULL,
+  `author_id` int NOT NULL,
+  `category_id` int DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `seo_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `excerpt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meta_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meta_keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` enum('PUBLISHED','DRAFT','PENDING') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DRAFT',
+  `featured` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `author_id`, `category_id`, `title`, `seo_title`, `excerpt`, `body`, `image`, `slug`, `meta_description`, `meta_keywords`, `status`, `featured`, `created_at`, `updated_at`) VALUES
+(1, 0, NULL, 'Lorem Ipsum Post', NULL, 'This is the excerpt for the Lorem Ipsum Post', '<p>This is the body of the lorem ipsum post</p>', 'posts/post1.jpg', 'lorem-ipsum-post', 'This is the meta description', 'keyword1, keyword2, keyword3', 'PUBLISHED', 0, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
+(2, 0, NULL, 'My Sample Post', NULL, 'This is the excerpt for the sample Post', '<p>This is the body for the sample post, which includes the body.</p>\n                <h2>We can use all kinds of format!</h2>\n                <p>And include a bunch of other stuff.</p>', 'posts/post2.jpg', 'my-sample-post', 'Meta Description for sample post', 'keyword1, keyword2, keyword3', 'PUBLISHED', 0, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
+(3, 0, NULL, 'Latest Post', NULL, 'This is the excerpt for the latest post', '<p>This is the body for the latest post</p>', 'posts/post3.jpg', 'latest-post', 'This is the meta description', 'keyword1, keyword2, keyword3', 'PUBLISHED', 0, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
+(4, 0, NULL, 'Yarr Post', NULL, 'Reef sails nipperkin bring a spring upon her cable coffer jury mast spike marooned Pieces of Eight poop deck pillage. Clipper driver coxswain galleon hempen halter come about pressgang gangplank boatswain swing the lead. Nipperkin yard skysail swab lanyard Blimey bilge water ho quarter Buccaneer.', '<p>Swab deadlights Buccaneer fire ship square-rigged dance the hempen jig weigh anchor cackle fruit grog furl. Crack Jennys tea cup chase guns pressgang hearties spirits hogshead Gold Road six pounders fathom measured fer yer chains. Main sheet provost come about trysail barkadeer crimp scuttle mizzenmast brig plunder.</p>\n<p>Mizzen league keelhaul galleon tender cog chase Barbary Coast doubloon crack Jennys tea cup. Blow the man down lugsail fire ship pinnace cackle fruit line warp Admiral of the Black strike colors doubloon. Tackle Jack Ketch come about crimp rum draft scuppers run a shot across the bow haul wind maroon.</p>\n<p>Interloper heave down list driver pressgang holystone scuppers tackle scallywag bilged on her anchor. Jack Tar interloper draught grapple mizzenmast hulk knave cable transom hogshead. Gaff pillage to go on account grog aft chase guns piracy yardarm knave clap of thunder.</p>', 'posts/post4.jpg', 'yarr-post', 'this be a meta descript', 'keyword1, keyword2, keyword3', 'PUBLISHED', 0, '2023-09-24 23:14:58', '2023-09-24 23:14:58');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -899,9 +827,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `company_id`, `user_id`, `title`, `description`, `in_stock`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 'Vinyls', 'good', 1, '2023-10-25 10:20:12', '2023-10-25 14:51:48'),
-(2, 1, 2, 'Carpet', 'good carpet', 1, '2023-10-25 10:22:33', '2023-10-25 10:22:33'),
-(3, 1, 2, 'bag', 'Createing an Invoice for LogicBarn Carpets', 1, '2023-10-25 11:04:30', '2023-10-25 11:04:30');
+(1, 1, 1, 'Carpet', 'Lorem Descriprion here ds', 1, '2023-10-26 07:18:26', '2023-10-26 07:27:26'),
+(2, 1, 1, 'Paint Emusifier', 'Paint Emusifier Description', 1, '2023-10-26 07:21:01', '2023-10-26 07:21:01');
 
 -- --------------------------------------------------------
 
@@ -926,22 +853,22 @@ CREATE TABLE `product_metas` (
 --
 
 INSERT INTO `product_metas` (`id`, `product_id`, `name`, `value`, `visibility`, `type`, `identifier`, `created_at`, `updated_at`) VALUES
-(1, 1, 'title', 'Vinyls', 'readonly', 'text', 'PM11', '2023-10-25 10:20:12', '2023-10-25 14:51:48'),
-(2, 1, 'description', 'good', 'readonly', 'text', 'PM12', '2023-10-25 10:20:12', '2023-10-25 10:22:14'),
-(3, 1, 'unit_price', '200', '', 'number', 'PM13', '2023-10-25 10:20:12', '2023-10-25 10:22:14'),
-(4, 1, 'quantity', '1', '', 'number', 'PM14', '2023-10-25 10:20:12', '2023-10-25 10:20:12'),
-(5, 1, 'formular', 'PM13*PM14', 'readonly', 'formular', 'PM15', '2023-10-25 10:20:12', '2023-10-25 10:20:12'),
-(6, 2, 'title', 'Carpet', 'readonly', 'text', 'PM26', '2023-10-25 10:22:33', '2023-10-25 10:22:33'),
-(7, 2, 'description', 'good carpet', 'readonly', 'text', 'PM27', '2023-10-25 10:22:33', '2023-10-25 10:22:33'),
-(8, 2, 'unit_price', '200', '', 'number', 'PM28', '2023-10-25 10:22:33', '2023-10-25 10:22:43'),
-(9, 2, 'quantity', '1', '', 'number', 'PM29', '2023-10-25 10:22:33', '2023-10-25 10:22:33'),
-(10, 2, 'formular', 'PM28*PM29', 'readonly', 'formular', 'PM210', '2023-10-25 10:22:33', '2023-10-25 10:22:33'),
-(11, 3, 'title', 'bag', 'readonly', 'text', 'PM311', '2023-10-25 11:04:30', '2023-10-25 11:04:30'),
-(12, 3, 'description', 'Createing an Invoice for LogicBarn Carpets', 'readonly', 'text', 'PM312', '2023-10-25 11:04:30', '2023-10-25 11:04:30'),
-(13, 3, 'unit_price', '1', '', 'number', 'PM313', '2023-10-25 11:04:30', '2023-10-25 11:04:30'),
-(14, 3, 'quantity', '1', '', 'number', 'PM314', '2023-10-25 11:04:30', '2023-10-25 11:04:30'),
-(15, 3, 'formular', 'PM313*PM314', 'readonly', 'formular', 'PM315', '2023-10-25 11:04:30', '2023-10-25 11:04:30'),
-(16, 1, 'Fitting', '200', 'Fitting', '200', 'PM116', '2023-10-25 11:11:47', '2023-10-25 11:11:47');
+(1, 1, 'unit_price', '190', 'readonly', 'number', 'PM11', '2023-10-26 07:18:26', '2023-10-26 07:18:26'),
+(2, 1, 'quantity', '1', '', 'number', 'PM12', '2023-10-26 07:18:26', '2023-10-26 07:18:26'),
+(3, 1, 'title', 'Carpet', 'readonly', 'text', 'PM13', '2023-10-26 07:18:26', '2023-10-26 07:18:26'),
+(4, 1, 'description', 'Lorem Descriprion here ds', 'readonly', 'text', 'PM14', '2023-10-26 07:18:26', '2023-10-26 07:27:26'),
+(5, 1, 'formular', 'PM11*PM12+PM18', 'readonly', 'formular', 'PM15', '2023-10-26 07:18:26', '2023-10-26 07:32:03'),
+(6, 1, 'Height', '1', NULL, 'number', 'PM16', '2023-10-26 07:20:01', '2023-10-26 07:20:01'),
+(7, 1, 'Width', '1', NULL, 'number', 'PM17', '2023-10-26 07:20:14', '2023-10-26 07:20:14'),
+(8, 1, 'Fitting Cost', 'PM16*PM17', 'readonly', 'formular', 'PM18', '2023-10-26 07:20:37', '2023-10-26 07:20:37'),
+(9, 2, 'unit_price', '450', 'readonly', 'number', 'PM29', '2023-10-26 07:21:01', '2023-10-26 07:21:01'),
+(10, 2, 'quantity', '1', '', 'number', 'PM210', '2023-10-26 07:21:01', '2023-10-26 07:21:01'),
+(11, 2, 'title', 'Paint Emusifier', 'readonly', 'text', 'PM211', '2023-10-26 07:21:01', '2023-10-26 07:21:01'),
+(12, 2, 'description', 'Paint Emusifier Description', 'readonly', 'text', 'PM212', '2023-10-26 07:21:01', '2023-10-26 07:21:01'),
+(13, 2, 'formular', 'PM29*PM210+PM216', 'readonly', 'formular', 'PM213', '2023-10-26 07:21:01', '2023-10-26 09:44:26'),
+(14, 2, 'height', '1', 'default', 'number', 'PM214', '2023-10-26 09:37:22', '2023-10-26 09:37:22'),
+(15, 2, 'width', '1', 'default', 'number', 'PM215', '2023-10-26 09:37:37', '2023-10-26 09:37:37'),
+(16, 2, 'casting cost', 'PM214*PM215', 'readonly', 'formular', 'PM216', '2023-10-26 09:38:16', '2023-10-26 09:38:16');
 
 -- --------------------------------------------------------
 
@@ -965,7 +892,7 @@ INSERT INTO `roles` (`id`, `name`, `display_name`, `created_at`, `updated_at`) V
 (1, 'admin', 'Administrator', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (2, 'Company', 'Company Admin', '2023-09-24 23:14:58', '2023-09-24 23:17:45'),
 (3, 'Store', 'Store Admin', '2023-09-24 23:14:58', '2023-09-24 23:17:05'),
-(4, 'Sales Person', 'Sales Person', '2023-09-24 23:14:58', '2023-10-25 12:08:30');
+(4, 'user', 'Normal User', '2023-09-24 23:14:58', '2023-09-24 23:14:58');
 
 -- --------------------------------------------------------
 
@@ -1143,9 +1070,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role_id`, `company_id`, `store_id`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `remember_token`, `settings`, `created_at`, `updated_at`) VALUES
-(1, 1, NULL, NULL, 'Admin', 'admin@admin.com', 'users/September2023/i444jtQRWLHqBjOiugxB.png', NULL, '$2y$10$I.KSqF2b84ZkFHYWedlCeetioSMka9TD1DatBaYwrjSCDS6PACxaW', 'ezHaAWQjadivOZV9PAKyOZZbR3mTaa0PbQT4DhxgagSYOyxoK3p77zJvFnnY', '{\"locale\":\"en\"}', '2023-09-24 23:14:58', '2023-09-29 07:07:21'),
+(1, 1, 1, NULL, 'Admin', 'admin@admin.com', 'users/September2023/i444jtQRWLHqBjOiugxB.png', NULL, '$2y$10$I.KSqF2b84ZkFHYWedlCeetioSMka9TD1DatBaYwrjSCDS6PACxaW', 'LHV3hCmxLz63hlJOsCsDo537g7d3tvSoi9q5UUFkjzpJYhn67RJf0MhY6CNR', '{\"locale\":\"en\"}', '2023-09-24 23:14:58', '2023-09-29 07:07:21'),
 (2, 2, 1, NULL, 'Aaron A', 'airondev@gmail.com', 'users/default.png', NULL, '$2y$10$HE8OFO7W40hfCf7MXuA9TesJOu9F61kQGvf8zXC9ywI7lAUq1OvFK', NULL, NULL, '2023-10-05 09:13:57', '2023-10-05 09:16:41'),
-(3, 4, NULL, NULL, 'sales person', 'test@gmail.com', 'users/default.png', NULL, '$2y$10$GStM7Oy7TTda49gekzTNeOYpE6zJf5/gPrXJXbtXyiFkOvCdG0zjm', NULL, NULL, '2023-10-25 11:13:59', '2023-10-25 11:13:59');
+(3, 4, NULL, NULL, 'sales person', 'test@gmail.com', 'users/October2023/7rigScHxajpMpZnvCzS2.png', NULL, '$2y$10$PE49m/u/oU.PcDMMVntGXeFffdOkBOLClD9qtN/BRHPn6YCFmqu0K', NULL, NULL, '2023-10-26 12:20:52', '2023-10-26 12:22:11');
 
 -- --------------------------------------------------------
 
@@ -1264,6 +1191,13 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pages`
+--
+ALTER TABLE `pages`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `pages_slug_unique` (`slug`);
+
+--
 -- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -1297,6 +1231,13 @@ ALTER TABLE `personal_access_tokens`
 --
 ALTER TABLE `plans`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `posts_slug_unique` (`slug`);
 
 --
 -- Indexes for table `products`
@@ -1381,19 +1322,19 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `data_rows`
 --
 ALTER TABLE `data_rows`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `data_types`
 --
 ALTER TABLE `data_types`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -1405,25 +1346,25 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `invoice_items`
 --
 ALTER TABLE `invoice_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `invoice_item_metas`
 --
 ALTER TABLE `invoice_item_metas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `invoice_pricings`
 --
 ALTER TABLE `invoice_pricings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `invoice_schedules`
@@ -1441,19 +1382,25 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_items`
 --
 ALTER TABLE `menu_items`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+
+--
+-- AUTO_INCREMENT for table `pages`
+--
+ALTER TABLE `pages`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1462,10 +1409,16 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `product_metas`
@@ -1477,7 +1430,7 @@ ALTER TABLE `product_metas`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `settings`

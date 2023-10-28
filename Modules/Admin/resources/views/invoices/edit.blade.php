@@ -225,13 +225,13 @@
                     <h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>
                     <div>
                         <!-- <a href="{{ route('voyager.invoices.add-item', $invoice->id) }}"  class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Add New Item</a>   -->
-                        <a data-toggle="modal" data-target="#add_product_modal"   class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Add New Item</a>  
+                        <a data-toggle="modal" data-target="#add_product_modal"   class="btn btn-primary"><i class="voyager-plus"></i>Add New Item</a>  
                     </div>                  
                 </div>
                 <div class="clear"></div>
                 <br>
 
-                <div class="card" style="max-height: 1200px; overflow: scroll;">
+                <div class="card" style="max-height: 540px; overflow: scroll;">
                     @foreach($invoice->items as $invoiceItem)
                         <table class="table " style="width:100%; margin: 40px 0;">
                             <thead>
@@ -249,19 +249,18 @@
                                             <tr>
                                                 <td><input disabled readonly  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}" ></td>
                                                 <td><input style="background-color: white;"  class="form-control" name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}" {{ $meta->visibility }}   ></td>
-                                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"  ></td>
+                                                <!-- <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"  ></td> -->
                                             </tr>
                                         @endif
 
                                     @endforeach
 
                                    <!-- formula here -->
-                                    <tr>
+                                    <!-- <tr>
                                         <td><input disabled readonly  class="form-control" type="text" name="formular[]" value="formular" ></td>
                                         <td><input readonly style="background-color: white;"  class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['value'] : ''  }}"  ></td>
                                         <td><input  readonly  style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['identifier'] : '' }}"  ></td>
-                                    </tr>
-
+                                    </tr> -->
 
                                      <!-- item total here -->
                                     <tr>
@@ -273,8 +272,10 @@
 
                                 <tr>
                                     <td>
-                                        <button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save Item</button>
+                                        <button type="submit" class="btn btn-success"><i class="voyager"></i>Save Item</button>
+                                        <td colspan="3"><a href="#" style="text-decoration: none;"  data-invoiceid="" class="btn btn-sm btn-danger"><i class="voyager-trash"></i> Remove item </a> </td>
                                     </td>
+                                    <td>
                                 </tr>
 
                               </form>
