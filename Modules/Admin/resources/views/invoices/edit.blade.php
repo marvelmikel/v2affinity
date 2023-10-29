@@ -201,14 +201,24 @@
                                 </tr>
 
                                 <tr>
-                                    <td colspan="3"><a href="#"   data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn"><i class="voyager-plus"></i>Add Pricing Item </a> </td>
+                                    <td colspan="3"><a href="#"   data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn"><i class="voyager-plus"></i>Add Pricing Item Cost </a> </td>
                                 </tr>
 
                         
 
-                                <tr><td>
-                                    <button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save Pricing</button>
-                                </td></tr>
+                                <tr>
+                                    <td>
+                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save Invoice</button>
+                                    <a style="text-decoration: none;"  href="" class="btn btn-primary"><i class="voyager"></i>Print Invoice</a>
+                                </td>
+                                <td>  
+                                    <a style="text-decoration: none;"  href="" class="btn btn-primary"><i class="voyager"></i>Email Invoice </a>
+                                    <a style="text-decoration: none;"  href="" class="btn btn-primary"><i class="voyager"></i>Invoice Pdf</a>
+                                </td>
+                               
+                            </tr>
+
+
 
                                 
 
