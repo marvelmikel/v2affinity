@@ -36,12 +36,14 @@ class Product extends Model
                 [ 'name' => 'quantity', 'value' => 1, 'type' => 'number', 'visibility' => '']
             ];
 
-            foreach($meta as $me){
-                $model->meta()->create($me);
-            }
+           
 
             $model->meta()->create([ 'name' => 'title', 'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly' ]);
             $model->meta()->create([ 'name' => 'description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'readonly' ]);
+
+            foreach($meta as $me){
+                $model->meta()->create($me);
+            }
 
              //add def formular here
             if($model->getMeta('unit_price') &&  $model->getMeta('quantity') ){

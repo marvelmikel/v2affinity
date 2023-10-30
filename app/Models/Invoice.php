@@ -67,6 +67,15 @@ class Invoice extends Model
     public function store() {
         return $this->belongsTo(Store::class);
     }
+
+
+    protected static function boot() {
+	    parent::boot();
+
+	    static::deleting(function ($model) {
+            $model->items()->delete();
+	    });	    
+	}
 }
 
 

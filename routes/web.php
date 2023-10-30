@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::post('invoices/{invoice}/add-item',   [InvoiceController::class, 'addItem'])->name('voyager.invoices.add-item');
         Route::get('invoices/{invoice}/save-item/{item}',   [InvoiceController::class, 'saveItem'])->name('voyager.invoices.save-item');
+        Route::get('invoices/{invoice}/delete-item/{item}',   [InvoiceController::class, 'deleteItem'])->name('voyager.invoices.delete-item');
         Route::post('invoices/{invoice}/add-meta-column',   [InvoiceController::class, 'addItemMetaColumn'])->name('voyager.invoices.add-meta-column');
 
 

@@ -207,7 +207,33 @@ class InvoiceController extends Controller
         $invoice->calculateSubtotal(); 
        
 
-        return redirect()->back();   
+        return redirect()->back()->with([
+            'message' =>' Invoice item saved successfully'
+        ]);   
+
+            
+    }
+    /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    public function deleteItem(Request $request, $invoiceId,  $itemId)
+    {
+        $invoiceItem = InvoiceItem::find($itemId);
+        $invoice = Invoice::find($invoiceId);
+        
+        $invoiceItem->delete();
+
+        // recalculate invoice subtotal here whenever an item is deleted
+        $invoice->calculateSubtotal(); 
+       
+
+        return redirect()->back()->with([
+            'message' =>' Invoice item deleted successfully'
+        ]);   
+
             
     }
 
@@ -223,11 +249,16 @@ class InvoiceController extends Controller
   
         $invoice = Invoice::find($invoiceId);
         $meta= $request->all();
+
+        $meta= $request->except(['_method', '_token']);
+        
         foreach ($meta as $me) {
             InvoicePricing::where('identifier', $me[1])->first()->update(['value' => $me[0]]);
         }
        
-        return redirect()->back();   
+        return redirect()->back()->with([
+            'message' =>' Invoice pricing saved successfully'
+        ]);   
             
     }
 
