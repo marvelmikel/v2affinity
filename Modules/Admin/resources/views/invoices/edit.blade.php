@@ -259,7 +259,7 @@
                                             <tr>
                                                 <td><input disabled readonly  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}" ></td>
                                                 <td><input style="background-color: white;"  class="form-control" name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}" {{ $meta->visibility }}   ></td>
-                                                <!-- <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"  ></td> -->
+                                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"  ></td>
                                             </tr>
                                         @endif
 
