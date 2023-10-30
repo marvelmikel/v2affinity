@@ -40,5 +40,12 @@ class InvoiceItem extends Model
         return $this->belongsTo(Invoice::class, 'invoice_id');
     }
 
+    protected static function boot() {
+	    parent::boot();
+
+	    static::deleting(function ($model) {
+            $model->meta()->delete();
+	    });	    
+	}
 
 }
