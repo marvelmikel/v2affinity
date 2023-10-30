@@ -266,11 +266,11 @@
                                     @endforeach
 
                                    <!-- formula here -->
-                                    <!-- <tr>
+                                    <tr>
                                         <td><input disabled readonly  class="form-control" type="text" name="formular[]" value="formular" ></td>
                                         <td><input readonly style="background-color: white;"  class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['value'] : ''  }}"  ></td>
                                         <td><input  readonly  style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['identifier'] : '' }}"  ></td>
-                                    </tr> -->
+                                    </tr>
 
                                      <!-- item total here -->
                                     <tr>
