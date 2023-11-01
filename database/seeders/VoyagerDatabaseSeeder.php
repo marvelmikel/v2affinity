@@ -14,7 +14,6 @@ class VoyagerDatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            UsersTableSeeder ::class,
             DataTypesTableSeeder::class,
             DataRowsTableSeeder::class,
             MenusTableSeeder::class,
@@ -23,6 +22,7 @@ class VoyagerDatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
             PermissionRoleTableSeeder::class,
             SettingsTableSeeder::class,
+            UsersTableSeeder ::class,
         ]);
     }
 }
