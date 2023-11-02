@@ -15,14 +15,15 @@ class StoreRequest extends FormRequest
     {
         return [
             'store_name' => 'required',
-            'store_logo' => 'required|image|max:2048',
-            'store_phone' => 'required',
             'store_email' => 'required|email',
-            'address_line_1' => 'required',
-            'address_line_2' => 'required',
+            'store_phone' => 'required',
             'address_city' => 'required',
             'address_county' => 'required',
             'address_postcode' => 'required',
+            'address_line_1' => 'required',
+            'address_line_2' => 'nullable',
+            'store_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust maximum file size as needed
         ];
+        
     }
 }

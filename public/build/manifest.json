@@ -1,75 +1,11 @@
 {
-  "fa-brands-400.ttf": {
-    "file": "assets/fa-brands-400-df4fbf59.ttf",
-    "src": "fa-brands-400.ttf"
+  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff": {
+    "file": "assets/bootstrap-icons-4d4572ef.woff",
+    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff"
   },
-  "fa-brands-400.woff": {
-    "file": "assets/fa-brands-400-ef755cc0.woff",
-    "src": "fa-brands-400.woff"
-  },
-  "fa-brands-400.woff2": {
-    "file": "assets/fa-brands-400-288f3bb8.woff2",
-    "src": "fa-brands-400.woff2"
-  },
-  "fa-duotone-900.ttf": {
-    "file": "assets/fa-duotone-900-a177b043.ttf",
-    "src": "fa-duotone-900.ttf"
-  },
-  "fa-duotone-900.woff": {
-    "file": "assets/fa-duotone-900-21519c22.woff",
-    "src": "fa-duotone-900.woff"
-  },
-  "fa-duotone-900.woff2": {
-    "file": "assets/fa-duotone-900-6cb8b04c.woff2",
-    "src": "fa-duotone-900.woff2"
-  },
-  "fa-light-300.ttf": {
-    "file": "assets/fa-light-300-1b8591f6.ttf",
-    "src": "fa-light-300.ttf"
-  },
-  "fa-light-300.woff": {
-    "file": "assets/fa-light-300-4497a097.woff",
-    "src": "fa-light-300.woff"
-  },
-  "fa-light-300.woff2": {
-    "file": "assets/fa-light-300-81e356b4.woff2",
-    "src": "fa-light-300.woff2"
-  },
-  "fa-regular-400.ttf": {
-    "file": "assets/fa-regular-400-0611c85a.ttf",
-    "src": "fa-regular-400.ttf"
-  },
-  "fa-regular-400.woff": {
-    "file": "assets/fa-regular-400-e29ca7b3.woff",
-    "src": "fa-regular-400.woff"
-  },
-  "fa-regular-400.woff2": {
-    "file": "assets/fa-regular-400-5a220cca.woff2",
-    "src": "fa-regular-400.woff2"
-  },
-  "fa-solid-900.ttf": {
-    "file": "assets/fa-solid-900-9dc7553f.ttf",
-    "src": "fa-solid-900.ttf"
-  },
-  "fa-solid-900.woff": {
-    "file": "assets/fa-solid-900-38794e48.woff",
-    "src": "fa-solid-900.woff"
-  },
-  "fa-solid-900.woff2": {
-    "file": "assets/fa-solid-900-5950d2f3.woff2",
-    "src": "fa-solid-900.woff2"
-  },
-  "fa-thin-100.ttf": {
-    "file": "assets/fa-thin-100-c5da54a7.ttf",
-    "src": "fa-thin-100.ttf"
-  },
-  "fa-thin-100.woff": {
-    "file": "assets/fa-thin-100-fde6ef1c.woff",
-    "src": "fa-thin-100.woff"
-  },
-  "fa-thin-100.woff2": {
-    "file": "assets/fa-thin-100-8f2c37e7.woff2",
-    "src": "fa-thin-100.woff2"
+  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2": {
+    "file": "assets/bootstrap-icons-bacd70af.woff2",
+    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
   },
   "public/fonts/pro/webfonts/fa-brands-400.ttf": {
     "file": "assets/fa-brands-400-df4fbf59.ttf",
@@ -144,12 +80,12 @@
     "src": "public/fonts/pro/webfonts/fa-thin-100.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-f8e10c13.css",
+    "file": "assets/app-b0ab055e.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/js/app.js": {
-    "file": "assets/app-540823bc.js",
+    "file": "assets/app-c5f56793.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }

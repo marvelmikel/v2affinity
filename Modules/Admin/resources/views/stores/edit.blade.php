@@ -28,12 +28,14 @@ input[type=number]::-webkit-outer-spin-button {
 
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="" method="POST">
+                <form class="form-edit-add" role="form" action="{{ route('stores.update', ['storeId' => $store->id]) }}"
+                    method="POST" enctype="multipart/form-data">
 
 
 
                     <!-- CSRF TOKEN -->
-                    {{ csrf_field() }}
+                    @csrf
+                    @method('PUT')
 
                     <div class="panel-body">
 
@@ -51,18 +53,21 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="name">Store Name</label>
-                                <input class="form-control" type="text" value="" name="title" id="">
+                                <input class="form-control" type="text" value="{{ $store->store_name}}"
+                                    name="store_name" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Store Email</label>
-                                <input class="form-control" type="text" value="" name="description" id="">
+                                <input class="form-control" type="text" value="{{ $store->store_email}}"
+                                    name="store_email" id="">
                             </div>
 
 
                             <div class="col-md-4">
                                 <label for="name">Store Phone</label>
-                                <input class="form-control" type="text" value="" name="description" id="">
+                                <input class="form-control" type="text" value="{{ $store->store_phone}}"
+                                    name="store_phone" id="">
                             </div>
 
                         </div>
@@ -71,67 +76,62 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="name">Address City</label>
-                                <input type="address" class="form-control" type="text" value="" name="due_at" id="">
+                                <input class="form-control" type="text" value="{{ $store->address_city}}"
+                                    name="address_city" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Address Country</label>
-                                <input type="text" class="form-control" type="text" value="" name="customer_email"
-                                    id="">
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <label for="name">Company Registration No.</label>
-                                <input type="text" class="form-control" value="" name="customer_email" id="">
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label for="name">Store Logo</label>
-                                <input type="text" class="form-control" type="text" value=""
-                                    name="customer_address_line_2" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="name">VAT Registration No.</label>
-                                <input type="text" class="form-control" value="" name="customer_address_country" id="">
+                                <input type="text" class="form-control" type="text" value="{{ $store->address_county}}"
+                                    name="address_county" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Next Invoice Number</label>
-                                <input type="number" class="form-control" value="" name="customer_address_country"
-                                    id="">
+                                <input type="number" class="form-control" value="{{ $store->next_invoice_number}}"
+                                    name="next_invoice_number" id="">
                             </div>
 
-
                         </div>
-
 
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="name">Store Address Postcode</label>
-                                <input type="text" class="form-control" type="text" value=""
-                                    name="customer_address_city" id="">
+                                <input type="text" class="form-control" type="text"
+                                    value="{{ $store->address_postcode}}" name="address_postcode" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Store Address Line 1</label>
-                                <input type="text" class="form-control" type="text" value=""
-                                    name="customer_address_country" id="">
+                                <input type="text" class="form-control" type="text" value="{{ $store->address_line_1}}"
+                                    name="address_line_1" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Store Address Line 2</label>
-                                <input type="text" class="form-control" type="text" value=""
-                                    name="customer_address_postcode" id="">
+                                <input type="text" class="form-control" value="{{ $store->address_line_2}}"
+                                    name="address_line_2" id="">
                             </div>
                         </div>
 
-                    </div><!-- panel-body -->
 
+
+                        <div class="form-group row">
+
+                            <div class="col-md-4">
+                                @if($store->store_logo)
+                                <img src="{{ asset('storage/' . $store->store_logo) }}" alt="Store Logo"
+                                    style="width: 100%; height: auto;">
+                                @else
+                                <p>No logo uploaded</p>
+                                @endif
+                            </div>
+
+                            <input type="file" value="{{ $store->store_logo}}" name="store_logo" id="">
+
+                        </div>
+
+                    </div><!-- panel-body -->
                     <div class="panel-footer">
                         <button type="submit" class="btn btn-primary">Update Store</button>
                     </div>
@@ -151,129 +151,65 @@ input[type=number]::-webkit-outer-spin-button {
                 <br>
                 <div style="max-height: 500px; overflow-y: auto;">
 
-                <table class="table " style="width:100%; margin: 40px 0;">
-                    <thead>
-                        <tr>
-                            <th>Employee Name</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <form action=" ">
-
+                    <table class="table " style="width:100%; margin: 40px 0;">
+                        <thead>
                             <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td><input readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td colspan="3">
-                                    <a href="#" data-toggle="modal" data-target="#add_item_column_modal"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"
-                                        style="text-decoration: none;">
-                                        <i class="voyager-eye"></i>View User Info
-                                    </a>
-
-                                </td>
-
+                                <th>Employee Name</th>
+                                <th>Role</th>
+                                <th>Actions</th>
                             </tr>
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="" value="test"></td>
+                        </thead>
+                        <tbody>
+                            <form action=" ">
 
-                                <td><input readonly class="form-control" type="text" name="" value="test"></td>
+                                <tr>
+                                    <td><input disabled readonly class="form-control" type="text" name=""
+                                            value="Hannah"></td>
 
-                                <td colspan="3">
-                                    <a href="#" data-toggle="modal" data-target="#add_item_column_modal"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"
-                                        style="text-decoration: none;">
-                                        <i class="voyager-eye"></i>View User Info
-                                    </a>
+                                    <td><input readonly class="form-control" type="text" name="" value="Store Manager">
+                                    </td>
 
-                                </td>
+                                    <td colspan="3">
+                                        <a href="#" style='margin-right:2px; text-decoration: none;'
+                                            class='btn btn-success btn-xs' data-toggle="modal"
+                                            data-target="#add_item_column_modal"
+                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
+                                            <i class="voyager-eye"></i>View</a>
 
-                            </tr>
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="" value="test"></td>
+                                        <a href="#" style='margin-right:2px; text-decoration: none;'
+                                            class='btn btn-danger btn-xs' data-toggle="modal" data-target=""
+                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
+                                            <i class="voyager-trash"></i>Delete</a>
+                                    </td>
 
-                                <td><input readonly class="form-control" type="text" name="" value="test"></td>
 
-                                <td colspan="3">
-                                    <a href="#" data-toggle="modal" data-target="#add_item_column_modal"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"
-                                        style="text-decoration: none;">
-                                        <i class="voyager-eye"></i>View User Info
-                                    </a>
 
-                                </td>
+                                </tr>
+                                <tr>
+                                    <td><input disabled readonly class="form-control" type="text" name="" value="jyair">
+                                    </td>
 
-                            </tr>
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="" value="test"></td>
+                                    <td><input readonly class="form-control" type="text" name="" value="Sales person">
+                                    </td>
 
-                                <td><input readonly class="form-control" type="text" name="" value="test"></td>
+                                    <td colspan="3">
+                                        <a href="#" style='margin-right:2px; text-decoration: none;'
+                                            class='btn btn-success btn-xs' data-toggle="modal"
+                                            data-target="#add_item_column_modal"
+                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
+                                            <i class="voyager-eye"></i>View</a>
 
-                                <td colspan="3">
-                                    <a href="#" data-toggle="modal" data-target="#add_item_column_modal"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"
-                                        style="text-decoration: none;">
-                                        <i class="voyager-eye"></i>View User Info
-                                    </a>
+                                        <a href="#" style='margin-right:2px; text-decoration: none;'
+                                            class='btn btn-danger btn-xs' data-toggle="modal" data-target=""
+                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
+                                            <i class="voyager-trash"></i>Delete</a>
+                                    </td>
 
-                                </td>
+                                </tr>
 
-                            </tr>
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td><input readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td colspan="3">
-                                    <a href="#" data-toggle="modal" data-target="#add_item_column_modal"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"
-                                        style="text-decoration: none;">
-                                        <i class="voyager-eye"></i>View User Info
-                                    </a>
-
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td><input readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td colspan="3">
-                                    <a href="#" data-toggle="modal" data-target="#add_item_column_modal"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"
-                                        style="text-decoration: none;">
-                                        <i class="voyager-eye"></i>View User Info
-                                    </a>
-
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td><input readonly class="form-control" type="text" name="" value="test"></td>
-
-                                <td colspan="3">
-                                    <a href="#" data-toggle="modal" data-target="#add_item_column_modal"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"
-                                        style="text-decoration: none;">
-                                        <i class="voyager-eye"></i>View User Info
-                                    </a>
-
-                                </td>
-
-                            </tr>
-                            
-                            
-
-                        </form>
-                    </tbody>
-                </table>
+                            </form>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -293,7 +229,7 @@ input[type=number]::-webkit-outer-spin-button {
             <br>
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="" method="POST">
+                <form class="form-edit-add" role="form" action="" method="">
 
 
 
@@ -388,16 +324,16 @@ input[type=number]::-webkit-outer-spin-button {
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline mx-3 pull-right"
                             data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                        <button type="submit" class="btn btn-danger pull-left" "><i class="voyager-trash"></i>{{ __('voyager::generic.delete') }}</button>
-                    </div> 
+                        <!-- <button type="submit" class="btn btn-danger pull-left" "><i class="voyager-trash"></i>{{ __('voyager::generic.delete') }}</button> -->
+                    </div>
                 </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    </div>
+</div>
 @stop
 @section('javascript')
-    <!-- <script type=" text/javascript">
+<!-- <script type=" text/javascript">
                             $(document).ready(function () {
                             $('.add-column-btn').click(function (e) {
                             e.preventDefault();
@@ -424,11 +360,10 @@ input[type=number]::-webkit-outer-spin-button {
                             });
                             </script> -->
 
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer>
-                            </script>
-                            <script
-                                src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js">
-                            </script>
-                            <link rel="stylesheet"
-                                href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-                            @endsection
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js">
+</script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+@endsection

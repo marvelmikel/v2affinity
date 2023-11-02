@@ -24,6 +24,7 @@ class Invoice extends Model
         'due_at',
         'paid_at',
         'sent_at',
+        'company_id',
     ];
 
 

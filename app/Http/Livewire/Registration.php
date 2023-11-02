@@ -22,7 +22,8 @@ class Registration extends Component
 
     public $load = false;
     public $step = 1;
-    public $client, $plans, $total;
+    public $discount_code_check = 'RTEUAV';
+    public $client, $plans, $total, $show_discount, $discount_code;
 
     public $user = [
         'name' => '',
@@ -249,6 +250,19 @@ class Registration extends Component
 
                 }
             }
+        }
+    }
+
+    public function checkDiscount()
+    {
+        if ($this->discount_code == $this->discount_code_check) {
+            /* Initialize braintree payment connection */
+            $gateway = $this->openGateway();
+
+            /* Find discounts */
+            $discounts = collect($gateway->discount()->all());
+
+            dd($discounts);
         }
     }
 

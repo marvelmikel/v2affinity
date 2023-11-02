@@ -57,11 +57,26 @@ class InvoiceController extends Controller
             'customer_address_country' => 'sometimes',
             'customer_address_postcode' => 'sometimes',
         ]);
-
-        $invoiceData =
-        $invoice = Invoice::create($request->all());
-
-        $customer = Customer::updateOrCreate(['email' => $request->customer_email],[
+    
+        // Check if the user has a company_id
+        if (!auth()->user()->company_id) {
+            return redirect()->back()->with([
+                'message' => 'You do not have a company, please create a company first.',
+                'alert-type' => 'warning',
+            ]);
+        }
+    
+        // Add the user_id and company_id to the request data
+        $requestData = $request->all();
+        $requestData['user_id'] = auth()->user()->id;
+        $requestData['company_id'] = auth()->user()->company_id;
+    
+        // Create the invoice with user_id and company_id
+        $invoice = Invoice::create($requestData);
+    
+        $customer = Customer::updateOrCreate(['email' => $request->customer_email], [
+            'company_id' => auth()->user()->company_id,
+            'user_id' => auth()->user()->id,
             'name' => $request->customer_name,
             'email' => $request->customer_email,
             'address_line_1' => $request->customer_address_line_1,
@@ -72,18 +87,17 @@ class InvoiceController extends Controller
             'address_postcode' => $request->customer_address_postcode,
             'store_id' => $request->store_id,
         ]);
-
-        $invoice->update(['customer_id' =>  $customer->id]);
-
-
-        // add first item here
+    
+        $invoice->update(['customer_id' => $customer->id]);
+    
+        // Add first item here
         // $this->addItem($invoice->id);
         // $this->addOptions($invoice->id);
         $this->addPricing($invoice->id);
-
-        //
-       return redirect()->route('voyager.invoices.edit', $invoice->id);
+    
+        return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
+    
 
     /**
      * Display the specified resource.
@@ -150,6 +164,16 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function delete($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+    
+        $invoice->delete();
+    
+        // Redirect back to the initial page
+        return redirect()->route('voyager.invoices.index')->with('success', 'Invoice deleted successfully');
     }
 
 
@@ -355,15 +379,7 @@ class InvoiceController extends Controller
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
-    public function delete($id)
-{
-    $invoice = Invoice::findOrFail($id);
-
-    $invoice->delete();
-
-    // Redirect back to the initial page
-    return redirect()->route('voyager.invoices.index')->with('success', 'Invoice deleted successfully');
-}
+   
 
 
 }

@@ -219,7 +219,7 @@
                                         <x-input-error :messages="$errors->get('company.company_address')" class="mt-2" />
                                     </p>
                                     <p class="col-span-1">
-                                        <x-label for="logo">Store Logo</x-label>
+                                        <x-label for="logo">Company Logo</x-label>
                                         <x-input wire:model="company.logo" name="logo" id="logo" type="file" />
                                         <x-input-error :messages="$errors->get('company.logo')" class="mt-2" />
                                     </p>
@@ -286,14 +286,24 @@
                             switch($plans[ $selected_plan['plan_id'] ]['billingFrequency']){
                                 case "12":
                                     $period = 'year';
+                                    $show_discount = false;
                                     break;
                                 case "1":
                                 default:
                                     $period = 'month';
+                                    $show_discount = true;
                                     break;
                             }
                         @endphp
                         <div>
+                            @if($show_discount)
+                                <div class="flex">
+                                    <b>Discount Code:</b>
+                                    <div>
+                                        <x-input wire:keyup="checkDiscount" wire:model="discount_code" class="ml-2 w-1/4" type="text" />
+                                    </div>
+                                </div>
+                            @endif
                             <header class="flex gap-6 font-medium text-slate-400 text-sm tracking-wider uppercase py-2">
                                 <p class="w-full lg:w-1/2">Package</p>
                                 <p class="hidden lg:block w-1/6">Price</p>

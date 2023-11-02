@@ -37,7 +37,6 @@ Route::group(['prefix' => 'admin'], function () {
      Route::group(['middleware' => 'admin.user' ], function ()  {
         Route::get('invoices',   [InvoiceController::class, 'index'])->name('voyager.invoices.index');
         Route::get('invoices/create',   [InvoiceController::class, 'create'])->name('voyager.invoices.create');
-
         Route::post('invoices/{invoice}/add-item',   [InvoiceController::class, 'addItem'])->name('voyager.invoices.add-item');
         Route::get('invoices/{invoice}/save-item/{item}',   [InvoiceController::class, 'saveItem'])->name('voyager.invoices.save-item');
         Route::get('invoices/{invoice}/delete-item/{item}',   [InvoiceController::class, 'deleteItem'])->name('voyager.invoices.delete-item');
@@ -48,7 +47,6 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('invoices/{invoice}/save-pricing/',   [InvoiceController::class, 'savePricing'])->name('voyager.invoices.save-pricing');
         Route::post('invoices/{invoice}/add-pricing-column',   [InvoiceController::class, 'addPricingColumn'])->name('voyager.invoices.add-pricing-column');
-
         Route::delete('/invoices/{id}/delete', [InvoiceController::class, 'delete'])->name('voyager.invoices.delete');
 
     });
@@ -66,6 +64,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/stores/create', [StoreController::class, 'create'])->name('voyager.stores.create');
         Route::post('stores', [StoreController::class, 'store'])->name('voyager.stores.store');
         Route::delete('/stores/{id}/delete', [StoreController::class, 'delete'])->name('voyager.stores.delete');
+        Route::put('/stores/{storeId}', [StoreController::class, 'update'])->name('stores.update');
+       
+       
     });
 
 

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\DataTables\StoresDataTable;
 use App\Http\Requests\StoreRequest;
+use App\Http\Requests\UpdateStoreRequest;
 use App\Models\Store;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 
@@ -30,7 +32,7 @@ class StoreController extends Controller
     {
         // Validate request
         $validated = $request->validated();
-
+    
         // Check if the user has a company_id
         if (!auth()->user()->company_id) {
             return redirect()->back()->with([
@@ -38,22 +40,23 @@ class StoreController extends Controller
                 'alert-type' => 'warning',
             ]);
         }
-
+    
         // Handle the file upload for store_logo
         $filename = null; // Default to null if no file is uploaded
         if ($request->hasFile('store_logo')) {
             $file = $request->file('store_logo');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = public_path('storage/store_logos/');
-            $file->move($path, $filename);
-            $filename = 'storage/store_logos/' . $filename; // Adjusted to the correct path
+            // Store the file in the 'public/store_logos' directory which is within 'storage/app/public'
+            $path = $file->storeAs('public/store_logos', $filename);
+            // Store only the filename, not the entire path
+            $filename = basename($path); // This will get the filename without any path
         }
-
+    
         // Actually create the store
         $store = Store::create([
             'company_id' => auth()->user()->company_id,
             'store_name' => $validated['store_name'],
-            'store_logo' => $filename, // Use the generated filename
+            'store_logo' => $filename, // Store the filename here
             'store_phone' => $validated['store_phone'],
             'store_email' => $validated['store_email'],
             'address_line_1' => $validated['address_line_1'],
@@ -61,15 +64,56 @@ class StoreController extends Controller
             'address_city' => $validated['address_city'],
             'address_county' => $validated['address_county'],
             'address_postcode' => $validated['address_postcode'],
-
         ]);
-
+    
         // Redirect with success message
-        return redirect()->route('voyager.stores.index')->with([ // Assuming this is the correct redirect route
+        return redirect()->route('voyager.stores.index')->with([
             'message' => 'Successfully created store.',
             'alert-type' => 'success',
         ]);
     }
+
+
+    /// Function to Update Store Information
+    public function update(UpdateStoreRequest $request, $storeId)
+{
+    // Validate the input
+    $validatedData = $request->validated();
+    
+    // Find the store
+    $store = Store::findOrFail($storeId);
+
+    // If a new store logo is supplied, update the logo
+    if ($request->hasFile('store_logo')) {
+        // Delete the old logo if it exists
+        $oldLogoPath = str_replace('storage/', '', $store->store_logo); // Assuming store_logo is saved as 'storage/store_logos/filename.ext'
+        if ($store->store_logo && Storage::disk('public')->exists($oldLogoPath)) {
+            Storage::disk('public')->delete($oldLogoPath);
+        }
+
+        // Store the new logo
+        $imageName = time() . '.' . $request->file('store_logo')->getClientOriginalExtension();
+        $request->file('store_logo')->storeAs('store_logos', $imageName, 'public');
+        $store->store_logo = 'store_logos/' . $imageName; // Saving the path relative to the 'storage/app/public' directory
+    }
+
+    // Update the rest of the store details
+    $store->fill($validatedData);
+
+    // Exclude the store_logo from the $validatedData array because it's already been handled
+    if (isset($validatedData['store_logo'])) {
+        unset($validatedData['store_logo']);
+    }
+
+    // Save the updated store
+    $store->save();
+
+    // Redirect to the store edit page with a success message
+    return redirect()->route('voyager.stores.edit', ['id' => $store->id])->with('success', 'Store Information Updated successfully');
+}
+
+
+
 
     public function edit(Request $request,  $id)
     {

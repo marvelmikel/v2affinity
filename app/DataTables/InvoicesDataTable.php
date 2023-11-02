@@ -10,6 +10,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 use Modules\Admin\Facades\Voyager;
+use Illuminate\Support\Facades\Auth;
 
 
 class InvoicesDataTable extends DataTable
@@ -54,9 +55,12 @@ class InvoicesDataTable extends DataTable
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Invoice $model): QueryBuilder
-    {
-        return $model->newQuery();
-    }
+{
+    $companyId = Auth::user()->company_id;
+
+    return $model->newQuery()
+        ->where('company_id', $companyId);
+}
 
     /**
      * Optional method if you want to use html builder.

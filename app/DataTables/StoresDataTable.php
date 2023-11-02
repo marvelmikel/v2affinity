@@ -9,6 +9,7 @@ use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Button;
+use Illuminate\Support\Facades\Auth;
 
 
 class StoresDataTable extends DataTable
@@ -46,13 +47,12 @@ class StoresDataTable extends DataTable
 
     public function query(Store $model): QueryBuilder
     {
-      
+        $companyId = Auth::user()->company_id;
+    
         return $model->newQuery()
             ->select('stores.*', 'companies.company_name as company_name')
-            ->leftJoin('companies', 'stores.company_id', '=', 'companies.id');
-
-
-           
+            ->leftJoin('companies', 'stores.company_id', '=', 'companies.id')
+            ->where('stores.company_id', $companyId);
     }
 
      /**
