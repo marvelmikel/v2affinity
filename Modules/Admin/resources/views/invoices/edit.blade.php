@@ -225,8 +225,6 @@
                                         value="{{ $invoiceItem->item_total }}">
                                 </td>
 
-
-
                                 <td>
                                     <button type="submit" class="btn btn-success"><i class="voyager-book"></i></button>
                                 <td colspan="3"><a
@@ -272,7 +270,7 @@
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
-                                <td><input class="form-control" type="number" max="1" min="0" step="any"
+                                <td><input  class="form-control" type="number" max="1" min="0" step="any"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
@@ -281,7 +279,7 @@
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
-                                <td><input readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
+                                <td><input  readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
                                         value="{{ $pricing->value }}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
@@ -294,7 +292,7 @@
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text" name="formular[]"
                                         value="formular"></td>
-                                <td><input readonly class="form-control" type="text" name="formular[]"
+                                <td><input  class="form-control" type="text" name="formular[]"
                                         value="{{ $invoice->getPricing('formular')['value'] }}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="formular[]" value="{{ $invoice->getPricing('formular')['identifier'] }}">
@@ -324,6 +322,10 @@
                                     <a style="text-decoration: none;"
                                         href="{{ route('voyager.invoices.show', $invoice->id) }}"
                                         class="btn btn-primary"><i class="voyager"></i>Preview Invoice</a>
+                                    <a style="text-decoration: none;"
+                                       target="_blank"
+                                       href="{{ route('voyager.invoices.pdf', $invoice->id) }}"
+                                       class="btn btn-primary"><i class="voyager"></i>Invoice PDF</a>
                                 </td>
 
 
@@ -477,16 +479,16 @@
                 let invoiceitemid = $(this).data('invoiceitemid')
                 console.log(invoiceitemid)
 
-                $('input[name=" item_id"]').val(invoiceitemid) 
+                $('input[name=" item_id"]').val(invoiceitemid)
                 $('#add_item_column_modal').modal('show');
             })
             $('.add-pricing-column-btn').click(function (e) {
-                e.preventDefault(); 
+                e.preventDefault();
                 let invoiceid = $(this).data('invoiceid')
-                
-                console.log(invoiceid) 
+
+                console.log(invoiceid)
                 $('input[name="invoice_id"]').val(invoiceid)
-                                                                    
+
                 $('#add_pricing_column_modal').modal('show');
             })
         })

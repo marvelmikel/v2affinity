@@ -22,11 +22,10 @@ return new class extends Migration
             $table->string('address_line_2')->nullable();
             $table->string('address_city');
             $table->string('address_county')->nullable();
-            $table->string('address_country');
             $table->string('address_postcode');
             $table->string('store_email')->nullable();
             $table->string('store_phone')->nullable();
-            $table->string('logo')->nullable();
+            $table->string('store_logo')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

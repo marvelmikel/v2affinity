@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2023 at 01:22 PM
+-- Generation Time: Oct 30, 2023 at 07:30 PM
 -- Server version: 8.1.0
 -- PHP Version: 8.0.30
 
@@ -113,7 +113,8 @@ INSERT INTO `customers` (`id`, `user_id`, `store_id`, `name`, `email`, `phone`, 
 (9, NULL, 1, 'sad', 'sad', NULL, 'asd', 'asd', 'asd', NULL, 'asd', 'asd', NULL, '2023-10-14 12:11:22', '2023-10-14 12:11:22'),
 (10, NULL, 1, 'asd', 'ads', NULL, 'ads', 'ads', 'dsa', NULL, 'ad', 'ads', NULL, '2023-10-14 12:16:10', '2023-10-14 12:16:10'),
 (11, NULL, 1, 'q', 'q', NULL, 'q', 'q', 'as', NULL, 'W', 'Q', NULL, '2023-10-14 12:19:51', '2023-10-14 12:19:51'),
-(12, NULL, 1, 'Greentech', 'greentech@gmail.com', '213213', 'Gwagwas', 'Abaji', 'London', NULL, 'UK', '123213', NULL, '2023-10-26 07:50:42', '2023-10-26 07:50:42');
+(12, NULL, 1, 'Greentech', 'greentech@gmail.com', '213213', 'Gwagwas', 'Abaji', 'London', NULL, 'UK', '123213', NULL, '2023-10-26 07:50:42', '2023-10-26 07:50:42'),
+(13, NULL, 1, 'Harry', 'Harry@gmail.com', '00000000', 'Qwe', 'Qwe', 'derby', NULL, 'united kingdom', 'Qwe', NULL, '2023-10-30 18:40:22', '2023-10-30 18:40:22');
 
 -- --------------------------------------------------------
 
@@ -163,13 +164,6 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (19, 3, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, NULL, 4),
 (20, 3, 'display_name', 'text', 'Display Name', 1, 1, 1, 1, 1, 1, NULL, 5),
 (21, 1, 'role_id', 'text', 'Role', 1, 1, 1, 1, 1, 1, NULL, 9),
-(22, 4, 'id', 'number', 'ID', 1, 0, 0, 0, 0, 0, NULL, 1),
-(23, 4, 'parent_id', 'select_dropdown', 'Parent', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"null\":\"\",\"options\":{\"\":\"-- None --\"},\"relationship\":{\"key\":\"id\",\"label\":\"name\"}}', 2),
-(24, 4, 'order', 'text', 'Order', 1, 1, 1, 1, 1, 1, '{\"default\":1}', 3),
-(25, 4, 'name', 'text', 'Name', 1, 1, 1, 1, 1, 1, NULL, 4),
-(26, 4, 'slug', 'text', 'Slug', 1, 1, 1, 1, 1, 1, '{\"slugify\":{\"origin\":\"name\"}}', 5),
-(27, 4, 'created_at', 'timestamp', 'Created At', 0, 0, 1, 0, 0, 0, NULL, 6),
-(28, 4, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, NULL, 7),
 (29, 5, 'id', 'number', 'ID', 1, 0, 0, 0, 0, 0, NULL, 1),
 (30, 5, 'author_id', 'text', 'Author', 1, 0, 1, 1, 0, 1, NULL, 2),
 (31, 5, 'category_id', 'text', 'Category', 1, 0, 1, 1, 1, 0, NULL, 3),
@@ -214,7 +208,23 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (85, 12, 'company_id', 'text', 'Company Id', 0, 1, 1, 1, 1, 1, '{}', 2),
 (86, 12, 'user_id', 'text', 'User Id', 0, 1, 1, 1, 1, 1, '{}', 3),
 (87, 12, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 4),
-(88, 12, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 5);
+(88, 12, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 5),
+(89, 13, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
+(90, 13, 'company_id', 'text', 'Company Id', 1, 1, 1, 1, 1, 1, '{}', 2),
+(91, 13, 'store_name', 'text', 'Store Name', 1, 1, 1, 1, 1, 1, '{}', 3),
+(92, 13, 'next_invoice_number', 'text', 'Next Invoice Number', 1, 1, 1, 1, 1, 1, '{}', 4),
+(93, 13, 'address_line_1', 'text', 'Address Line 1', 1, 1, 1, 1, 1, 1, '{}', 5),
+(94, 13, 'address_line_2', 'text', 'Address Line 2', 0, 1, 1, 1, 1, 1, '{}', 6),
+(95, 13, 'address_city', 'text', 'Address City', 1, 1, 1, 1, 1, 1, '{}', 7),
+(96, 13, 'address_county', 'text', 'Address County', 0, 1, 1, 1, 1, 1, '{}', 8),
+(97, 13, 'address_country', 'text', 'Address Country', 1, 1, 1, 1, 1, 1, '{}', 9),
+(98, 13, 'address_postcode', 'text', 'Address Postcode', 1, 1, 1, 1, 1, 1, '{}', 10),
+(99, 13, 'store_email', 'text', 'Store Email', 0, 1, 1, 1, 1, 1, '{}', 11),
+(100, 13, 'store_phone', 'text', 'Store Phone', 0, 1, 1, 1, 1, 1, '{}', 12),
+(101, 13, 'logo', 'text', 'Logo', 0, 1, 1, 1, 1, 1, '{}', 13),
+(102, 13, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 14),
+(103, 13, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 15),
+(104, 13, 'deleted_at', 'timestamp', 'Deleted At', 0, 1, 1, 1, 1, 1, '{}', 16);
 
 -- --------------------------------------------------------
 
@@ -248,11 +258,11 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 (1, 'users', 'users', 'User', 'Users', 'voyager-person', 'Modules\\Admin\\Models\\User', 'Modules\\Admin\\Policies\\UserPolicy', 'Modules\\Admin\\Http\\Controllers\\VoyagerUserController', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (2, 'menus', 'menus', 'Menu', 'Menus', 'voyager-list', 'Modules\\Admin\\Models\\Menu', NULL, '', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (3, 'roles', 'roles', 'Role', 'Roles', 'voyager-lock', 'Modules\\Admin\\Models\\Role', NULL, 'Modules\\Admin\\Http\\Controllers\\VoyagerRoleController', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
-(4, 'categories', 'categories', 'Category', 'Categories', 'voyager-categories', 'Modules\\Admin\\Models\\Category', NULL, '', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (5, 'posts', 'posts', 'Post', 'Posts', 'voyager-news', 'Modules\\Admin\\Models\\Post', 'Modules\\Admin\\Policies\\PostPolicy', '', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (6, 'pages', 'pages', 'Page', 'Pages', 'voyager-file-text', 'Modules\\Admin\\Models\\Page', NULL, '', '', 1, 0, NULL, '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (8, 'invoices', 'invoices', 'Invoice', 'Invoices', NULL, 'App\\Models\\Invoice', 'InvoicePolicy', '\\App\\Http\\Controllers\\InvoiceController', NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-10-05 10:06:39', '2023-10-05 13:23:50'),
-(12, 'products', 'products', 'Product', 'Products', NULL, 'App\\Models\\Product', NULL, 'App\\Http\\Controllers\\ProductController', NULL, 1, 0, '{\"order_column\":\"created_at\",\"order_display_column\":\"created_at\",\"order_direction\":\"desc\",\"default_search_key\":null}', '2023-10-24 17:46:33', '2023-10-24 17:46:33');
+(12, 'products', 'products', 'Product', 'Products', NULL, 'App\\Models\\Product', NULL, 'App\\Http\\Controllers\\ProductController', NULL, 1, 0, '{\"order_column\":\"created_at\",\"order_display_column\":\"created_at\",\"order_direction\":\"desc\",\"default_search_key\":null}', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
+(13, 'stores', 'stores', 'Store', 'Stores', NULL, 'App\\Models\\Store', NULL, 'App\\Http\\Controllers\\StoreController', NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2023-10-30 18:30:39', '2023-10-30 18:30:39');
 
 -- --------------------------------------------------------
 
@@ -299,7 +309,8 @@ CREATE TABLE `invoices` (
 --
 
 INSERT INTO `invoices` (`id`, `user_id`, `store_id`, `customer_id`, `title`, `description`, `currency`, `note`, `due_at`, `paid_at`, `sent_at`, `is_recurring`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, NULL, 1, 12, 'Greentech Sales Invoice', 'Greentech Sales Invoice Description', NULL, NULL, '2023-10-27', NULL, NULL, 0, '2023-10-26 07:50:42', '2023-10-26 07:50:42', NULL);
+(1, NULL, 1, 12, 'Greentech Sales Invoice', 'Greentech Sales Invoice Description', NULL, NULL, '2023-10-27', NULL, NULL, 0, '2023-10-26 07:50:42', '2023-10-26 07:50:42', NULL),
+(2, NULL, 1, 13, 'Logicbarn', 'Create Invoice for LogicBarn', NULL, NULL, '2023-10-25', NULL, NULL, 0, '2023-10-30 18:40:22', '2023-10-30 18:40:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -321,7 +332,9 @@ CREATE TABLE `invoice_items` (
 
 INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, '2023-10-26 08:52:43', '2023-10-26 08:52:43'),
-(2, 1, 2, '2023-10-26 09:44:54', '2023-10-26 09:44:54');
+(2, 1, 2, '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(15, 2, 3, '2023-10-30 19:29:38', '2023-10-30 19:29:38'),
+(16, 2, 4, '2023-10-30 19:29:46', '2023-10-30 19:29:46');
 
 -- --------------------------------------------------------
 
@@ -361,7 +374,17 @@ INSERT INTO `invoice_item_metas` (`id`, `invoice_item_id`, `name`, `value`, `vis
 (13, 2, 'formular', 'PM29*PM210+PM216', 'readonly', 'formular', 'PM213', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
 (14, 2, 'height', '1', 'default', 'number', 'PM214', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
 (15, 2, 'width', '1', 'default', 'number', 'PM215', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
-(16, 2, 'casting cost', 'PM214*PM215', 'readonly', 'formular', 'PM216', '2023-10-26 09:44:54', '2023-10-26 09:44:54');
+(16, 2, 'casting cost', 'PM214*PM215', 'readonly', 'formular', 'PM216', '2023-10-26 09:44:54', '2023-10-26 09:44:54'),
+(69, 15, 'title', 'Vinyl', 'readonly', 'text', 'PM317', '2023-10-30 19:29:38', '2023-10-30 19:29:38'),
+(70, 15, 'description', 'good', 'readonly', 'text', 'PM318', '2023-10-30 19:29:38', '2023-10-30 19:29:38'),
+(71, 15, 'unit_price', '1', 'readonly', 'number', 'PM319', '2023-10-30 19:29:38', '2023-10-30 19:29:38'),
+(72, 15, 'quantity', '1', '', 'number', 'PM320', '2023-10-30 19:29:38', '2023-10-30 19:29:38'),
+(73, 15, 'formular', 'PM319*PM320', 'readonly', 'formular', 'PM321', '2023-10-30 19:29:38', '2023-10-30 19:29:38'),
+(74, 16, 'title', 'Carpet', 'readonly', 'text', 'PM422', '2023-10-30 19:29:46', '2023-10-30 19:29:46'),
+(75, 16, 'description', 'good', 'readonly', 'text', 'PM423', '2023-10-30 19:29:46', '2023-10-30 19:29:46'),
+(76, 16, 'unit_price', '1', 'readonly', 'number', 'PM424', '2023-10-30 19:29:46', '2023-10-30 19:29:46'),
+(77, 16, 'quantity', '1', '', 'number', 'PM425', '2023-10-30 19:29:46', '2023-10-30 19:29:46'),
+(78, 16, 'formular', 'PM424*PM425', 'readonly', 'formular', 'PM426', '2023-10-30 19:29:46', '2023-10-30 19:29:46');
 
 -- --------------------------------------------------------
 
@@ -387,7 +410,13 @@ INSERT INTO `invoice_pricings` (`id`, `invoice_id`, `name`, `value`, `identifier
 (1, 1, 'subtotal', '140711', 'P11', '2023-10-26 07:50:42', '2023-10-26 12:22:35'),
 (2, 1, 'tax', '0', 'P12', '2023-10-26 07:50:42', '2023-10-26 07:50:42'),
 (3, 1, 'discount', '0', 'P13', '2023-10-26 07:50:42', '2023-10-26 07:50:42'),
-(4, 1, 'formular', 'P11-P11*P12-P11*P13', 'P14', '2023-10-26 07:50:42', '2023-10-26 07:50:42');
+(4, 1, 'formular', 'P11-P11*P12-P11*P13', 'P14', '2023-10-26 07:50:42', '2023-10-26 07:50:42'),
+(5, 2, 'subtotal', '2', 'P25', '2023-10-30 18:40:22', '2023-10-30 19:29:51'),
+(6, 2, 'tax', '1', 'P26', '2023-10-30 18:40:22', '2023-10-30 19:01:47'),
+(7, 2, 'discount', '1', 'P27', '2023-10-30 18:40:22', '2023-10-30 19:01:54'),
+(8, 2, 'formular', 'P25 * P26 - P27 + P29', 'P28', '2023-10-30 18:40:22', '2023-10-30 19:09:01'),
+(9, 2, 'Total Fitting cost', '100', 'P29', '2023-10-30 18:53:45', '2023-10-30 19:08:37'),
+(10, 2, 'formular', 'P25-P25*P26-P25*P27', 'P210', '2023-10-30 19:01:33', '2023-10-30 19:01:33');
 
 -- --------------------------------------------------------
 
@@ -458,11 +487,10 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 (8, 1, 'Compass', '', '_self', 'voyager-compass', NULL, 5, 3, '2023-09-24 23:14:58', '2023-10-05 09:23:07', 'voyager.compass.index', NULL),
 (9, 1, 'BREAD', '', '_self', 'voyager-bread', NULL, 5, 4, '2023-09-24 23:14:58', '2023-10-05 09:23:07', 'voyager.bread.index', NULL),
 (10, 1, 'Settings', '', '_self', 'voyager-settings', NULL, NULL, 11, '2023-09-24 23:14:58', '2023-10-24 17:47:02', 'voyager.settings.index', NULL),
-(11, 1, 'Categories', '', '_self', 'voyager-categories', NULL, NULL, 9, '2023-09-24 23:14:58', '2023-10-24 17:47:02', 'voyager.categories.index', NULL),
 (12, 1, 'Posts', '', '_self', 'voyager-news', NULL, NULL, 5, '2023-09-24 23:14:58', '2023-10-06 10:25:26', 'voyager.posts.index', NULL),
-(13, 1, 'Pages', '', '_self', 'voyager-file-text', NULL, NULL, 8, '2023-09-24 23:14:58', '2023-10-24 17:47:02', 'voyager.pages.index', NULL),
 (18, 1, 'Invoices', '', '_self', 'voyager-file-text', NULL, NULL, 6, '2023-09-24 23:14:58', '2023-10-06 10:26:09', 'voyager.invoices.index', NULL),
-(19, 1, 'Products', '', '_self', 'voyager-bag', '#000000', NULL, 7, '2023-10-24 17:46:33', '2023-10-24 17:47:39', 'voyager.products.index', 'null');
+(19, 1, 'Products', '', '_self', 'voyager-bag', '#000000', NULL, 7, '2023-10-24 17:46:33', '2023-10-24 17:47:39', 'voyager.products.index', 'null'),
+(22, 1, 'Store', '', '_self', 'voyager-shop', '#000000', NULL, 8, '2023-10-30 19:17:02', '2023-10-30 19:17:09', 'voyager.stores.index', NULL);
 
 -- --------------------------------------------------------
 
@@ -610,11 +638,6 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 (23, 'edit_settings', 'settings', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (24, 'add_settings', 'settings', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (25, 'delete_settings', 'settings', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
-(26, 'browse_categories', 'categories', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
-(27, 'read_categories', 'categories', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
-(28, 'edit_categories', 'categories', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
-(29, 'add_categories', 'categories', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
-(30, 'delete_categories', 'categories', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (31, 'browse_posts', 'posts', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (32, 'read_posts', 'posts', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
 (33, 'edit_posts', 'posts', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
@@ -634,7 +657,12 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 (57, 'read_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
 (58, 'edit_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
 (59, 'add_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
-(60, 'delete_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33');
+(60, 'delete_products', 'products', '2023-10-24 17:46:33', '2023-10-24 17:46:33'),
+(61, 'browse_stores', 'stores', '2023-10-30 18:30:39', '2023-10-30 18:30:39'),
+(62, 'read_stores', 'stores', '2023-10-30 18:30:39', '2023-10-30 18:30:39'),
+(63, 'edit_stores', 'stores', '2023-10-30 18:30:39', '2023-10-30 18:30:39'),
+(64, 'add_stores', 'stores', '2023-10-30 18:30:39', '2023-10-30 18:30:39'),
+(65, 'delete_stores', 'stores', '2023-10-30 18:30:39', '2023-10-30 18:30:39');
 
 -- --------------------------------------------------------
 
@@ -654,11 +682,14 @@ CREATE TABLE `permission_role` (
 INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (1, 1),
 (1, 2),
+(1, 3),
 (1, 4),
 (2, 1),
 (3, 1),
 (4, 1),
 (4, 2),
+(4, 3),
+(4, 4),
 (5, 1),
 (6, 1),
 (7, 1),
@@ -685,11 +716,6 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (23, 1),
 (24, 1),
 (25, 1),
-(26, 1),
-(27, 1),
-(28, 1),
-(29, 1),
-(30, 1),
 (31, 1),
 (32, 1),
 (33, 1),
@@ -702,24 +728,44 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (40, 1),
 (41, 1),
 (41, 2),
+(41, 3),
 (41, 4),
 (42, 1),
 (42, 2),
+(42, 3),
 (42, 4),
 (43, 1),
 (43, 2),
+(43, 3),
 (43, 4),
 (44, 1),
 (44, 2),
+(44, 3),
 (44, 4),
 (45, 1),
 (45, 2),
+(45, 3),
 (45, 4),
 (56, 1),
+(56, 3),
 (57, 1),
+(57, 3),
 (58, 1),
+(58, 3),
 (59, 1),
-(60, 1);
+(59, 3),
+(60, 1),
+(60, 3),
+(61, 1),
+(61, 3),
+(62, 1),
+(62, 3),
+(63, 1),
+(63, 3),
+(64, 1),
+(64, 3),
+(65, 1),
+(65, 3);
 
 -- --------------------------------------------------------
 
@@ -827,8 +873,10 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `company_id`, `user_id`, `title`, `description`, `in_stock`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'Carpet', 'Lorem Descriprion here ds', 1, '2023-10-26 07:18:26', '2023-10-26 07:27:26'),
-(2, 1, 1, 'Paint Emusifier', 'Paint Emusifier Description', 1, '2023-10-26 07:21:01', '2023-10-26 07:21:01');
+(3, 1, 1, 'Vinyl', 'good', 1, '2023-10-30 18:39:07', '2023-10-30 18:39:07'),
+(4, 1, 1, 'Carpet', 'good', 1, '2023-10-30 18:42:44', '2023-10-30 18:42:44'),
+(5, 1, 1, 'Book', 'good', 1, '2023-10-30 18:42:53', '2023-10-30 18:42:53'),
+(6, 1, 1, 'Computer', 'good', 1, '2023-10-30 18:43:05', '2023-10-30 18:43:05');
 
 -- --------------------------------------------------------
 
@@ -868,7 +916,27 @@ INSERT INTO `product_metas` (`id`, `product_id`, `name`, `value`, `visibility`, 
 (13, 2, 'formular', 'PM29*PM210+PM216', 'readonly', 'formular', 'PM213', '2023-10-26 07:21:01', '2023-10-26 09:44:26'),
 (14, 2, 'height', '1', 'default', 'number', 'PM214', '2023-10-26 09:37:22', '2023-10-26 09:37:22'),
 (15, 2, 'width', '1', 'default', 'number', 'PM215', '2023-10-26 09:37:37', '2023-10-26 09:37:37'),
-(16, 2, 'casting cost', 'PM214*PM215', 'readonly', 'formular', 'PM216', '2023-10-26 09:38:16', '2023-10-26 09:38:16');
+(16, 2, 'casting cost', 'PM214*PM215', 'readonly', 'formular', 'PM216', '2023-10-26 09:38:16', '2023-10-26 09:38:16'),
+(17, 3, 'title', 'Vinyl', 'readonly', 'text', 'PM317', '2023-10-30 18:39:07', '2023-10-30 18:39:07'),
+(18, 3, 'description', 'good', 'readonly', 'text', 'PM318', '2023-10-30 18:39:07', '2023-10-30 18:39:07'),
+(19, 3, 'unit_price', '1', 'readonly', 'number', 'PM319', '2023-10-30 18:39:07', '2023-10-30 18:39:07'),
+(20, 3, 'quantity', '1', '', 'number', 'PM320', '2023-10-30 18:39:07', '2023-10-30 18:39:07'),
+(21, 3, 'formular', 'PM319*PM320', 'readonly', 'formular', 'PM321', '2023-10-30 18:39:07', '2023-10-30 18:39:07'),
+(22, 4, 'title', 'Carpet', 'readonly', 'text', 'PM422', '2023-10-30 18:42:44', '2023-10-30 18:42:44'),
+(23, 4, 'description', 'good', 'readonly', 'text', 'PM423', '2023-10-30 18:42:44', '2023-10-30 18:42:44'),
+(24, 4, 'unit_price', '1', 'readonly', 'number', 'PM424', '2023-10-30 18:42:44', '2023-10-30 18:42:44'),
+(25, 4, 'quantity', '1', '', 'number', 'PM425', '2023-10-30 18:42:44', '2023-10-30 18:42:44'),
+(26, 4, 'formular', 'PM424*PM425', 'readonly', 'formular', 'PM426', '2023-10-30 18:42:44', '2023-10-30 18:42:44'),
+(27, 5, 'title', 'Book', 'readonly', 'text', 'PM527', '2023-10-30 18:42:53', '2023-10-30 18:42:53'),
+(28, 5, 'description', 'good', 'readonly', 'text', 'PM528', '2023-10-30 18:42:53', '2023-10-30 18:42:53'),
+(29, 5, 'unit_price', '1', 'readonly', 'number', 'PM529', '2023-10-30 18:42:53', '2023-10-30 18:42:53'),
+(30, 5, 'quantity', '1', '', 'number', 'PM530', '2023-10-30 18:42:53', '2023-10-30 18:42:53'),
+(31, 5, 'formular', 'PM529*PM530', 'readonly', 'formular', 'PM531', '2023-10-30 18:42:53', '2023-10-30 18:42:53'),
+(32, 6, 'title', 'Computer', 'readonly', 'text', 'PM632', '2023-10-30 18:43:05', '2023-10-30 18:43:05'),
+(33, 6, 'description', 'good', 'readonly', 'text', 'PM633', '2023-10-30 18:43:05', '2023-10-30 18:43:05'),
+(34, 6, 'unit_price', '1', 'readonly', 'number', 'PM634', '2023-10-30 18:43:05', '2023-10-30 18:43:05'),
+(35, 6, 'quantity', '1', '', 'number', 'PM635', '2023-10-30 18:43:05', '2023-10-30 18:43:05'),
+(36, 6, 'formular', 'PM634*PM635', 'readonly', 'formular', 'PM636', '2023-10-30 18:43:05', '2023-10-30 18:43:05');
 
 -- --------------------------------------------------------
 
@@ -889,10 +957,10 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `display_name`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Administrator', '2023-09-24 23:14:58', '2023-09-24 23:14:58'),
+(1, 'Admin', 'Administrator', '2023-09-24 23:14:58', '2023-10-30 19:22:42'),
 (2, 'Company', 'Company Admin', '2023-09-24 23:14:58', '2023-09-24 23:17:45'),
-(3, 'Store', 'Store Admin', '2023-09-24 23:14:58', '2023-09-24 23:17:05'),
-(4, 'user', 'Normal User', '2023-09-24 23:14:58', '2023-09-24 23:14:58');
+(3, 'Store Manager', 'Store Manager', '2023-09-24 23:14:58', '2023-10-30 19:25:04'),
+(4, 'Sales Person', 'Sales Person', '2023-09-24 23:14:58', '2023-10-30 19:25:49');
 
 -- --------------------------------------------------------
 
@@ -1070,8 +1138,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role_id`, `company_id`, `store_id`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `remember_token`, `settings`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, NULL, 'Admin', 'admin@admin.com', 'users/September2023/i444jtQRWLHqBjOiugxB.png', NULL, '$2y$10$I.KSqF2b84ZkFHYWedlCeetioSMka9TD1DatBaYwrjSCDS6PACxaW', 'LHV3hCmxLz63hlJOsCsDo537g7d3tvSoi9q5UUFkjzpJYhn67RJf0MhY6CNR', '{\"locale\":\"en\"}', '2023-09-24 23:14:58', '2023-09-29 07:07:21'),
-(2, 2, 1, NULL, 'Aaron A', 'airondev@gmail.com', 'users/default.png', NULL, '$2y$10$HE8OFO7W40hfCf7MXuA9TesJOu9F61kQGvf8zXC9ywI7lAUq1OvFK', NULL, NULL, '2023-10-05 09:13:57', '2023-10-05 09:16:41'),
+(1, 1, 1, NULL, 'Admin', 'admin@admin.com', 'users/September2023/i444jtQRWLHqBjOiugxB.png', NULL, '$2y$10$I.KSqF2b84ZkFHYWedlCeetioSMka9TD1DatBaYwrjSCDS6PACxaW', 'guCfPQcsqDpikW0cCTaogv8uUOaEPCj3mBXlpt5RhAYQK3vN3FQ7qXxEFBiQ', '{\"locale\":\"en\"}', '2023-09-24 23:14:58', '2023-09-29 07:07:21'),
+(2, 2, 1, NULL, 'Aaron A', 'airondev@gmail.com', 'users/October2023/E8JXynDcAFUj05aLoxI1.png', NULL, '$2y$10$HE8OFO7W40hfCf7MXuA9TesJOu9F61kQGvf8zXC9ywI7lAUq1OvFK', NULL, NULL, '2023-10-05 09:13:57', '2023-10-30 19:27:15'),
 (3, 4, NULL, NULL, 'sales person', 'test@gmail.com', 'users/October2023/7rigScHxajpMpZnvCzS2.png', NULL, '$2y$10$PE49m/u/oU.PcDMMVntGXeFffdOkBOLClD9qtN/BRHPn6YCFmqu0K', NULL, NULL, '2023-10-26 12:20:52', '2023-10-26 12:22:11');
 
 -- --------------------------------------------------------
@@ -1322,19 +1390,19 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `data_rows`
 --
 ALTER TABLE `data_rows`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT for table `data_types`
 --
 ALTER TABLE `data_types`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -1346,25 +1414,25 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `invoice_items`
 --
 ALTER TABLE `invoice_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `invoice_item_metas`
 --
 ALTER TABLE `invoice_item_metas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `invoice_pricings`
 --
 ALTER TABLE `invoice_pricings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `invoice_schedules`
@@ -1382,7 +1450,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_items`
 --
 ALTER TABLE `menu_items`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1400,7 +1468,7 @@ ALTER TABLE `pages`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1418,13 +1486,13 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_metas`
 --
 ALTER TABLE `product_metas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `roles`

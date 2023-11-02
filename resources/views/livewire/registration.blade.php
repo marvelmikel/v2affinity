@@ -49,7 +49,7 @@
                         2
                     @endif
                 </span>
-                    <strong class="hidden sm:block font-semibold @if($step > 2) text-green-600 @elseif($step === 2) text-slate-400 @else text-slate-400 @endif">Store<span class="hidden lg:inline"> Details</span></strong>
+                    <strong class="hidden sm:block font-semibold @if($step > 2) text-green-600 @elseif($step === 2) text-slate-400 @else text-slate-400 @endif">Company<span class="hidden lg:inline"> Details</span></strong>
                 </li>
                 <li class="flex gap-4 items-center">
                 <span
@@ -135,7 +135,7 @@
                     <div>
                         @csrf
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step 1</span>
-                        <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">User Details</h2>
+                        <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Company Admin Details</h2>
                         <p class="font-medium lg:text-lg text-slate-500">Please enter your account registration details below.</p>
                     </div>
                     <div class="grid grid-cols-2 gap-6">

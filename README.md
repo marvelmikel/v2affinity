@@ -3,9 +3,9 @@
 
 # Affinity Invoice  System
 
-## Installation
+## Installation Guide
 
-Follow these steps to install and run the application on your local machine:
+Follow these steps to install and run the application on your local machine or deploy online server:
 
 ```
 git clone https://github.com/Logic-Barn/Affinityv2.git
@@ -14,6 +14,7 @@ cd Affinityv2
 
 ## Install Dependencies
 
+```
 composer install
 ```
 
@@ -21,7 +22,7 @@ composer install
 npm install
 ```
 
-or if you use yarn
+## or if you use yarn
 
 ```
  yarn install
@@ -29,12 +30,11 @@ or if you use yarn
 
 ## Setting Up Environment Variables
 
+```
 copy .env.example to .env
-
 ```
-Open the .env file in your favorite text editor and replace the database, email, and other configuration values to match your local setup.
+## Open the .env file in your favorite text editor and replace the database, email, and other configuration values to match your local setup.
 
-```
 
 ## Generate Key
 And run this command to generate key
@@ -43,13 +43,13 @@ And run this command to generate key
 php artisan key:generate
 ```
 
-Create a mysql database using phpmyadmin or anyother client and configure those details in your env file
+## Create a mysql database using phpmyadmin or anyother client and configure those details in your env file
 
 ```
 DB_USERNAME=YOUR_DATABASE_USERNAME
 ```
 
-## **Running Migrations**
+## Running Migrations
 
 After setting up the environment variables, run the following command to create the tables in the database:
 
@@ -57,28 +57,28 @@ After setting up the environment variables, run the following command to create 
 php artisan migrate
 ```
 
-## ** Seeding fake data**
+## Seeding fake data
 
 ```
 php artisan db:seed --class=VoyagerDatabaseSeeder
 ```
 
 
-## ** Braintree command**
+## Braintree command
 
 ```
 php artisan braintree:plans
 ```
 
-## **Compiling Assets**
+## Compiling Assets
 
 Run the following command to compile the assets:
 
 ```
-npm run dev
+npm run dev or npm run build
 ```
 
-## **Starting the Application**
+## Starting the Application
 
 To start the Laravel server, run the following command:
 
@@ -86,9 +86,9 @@ To start the Laravel server, run the following command:
 php artisan serve
 ```
 
-## ** Admin, candidate, employer test Login details**
+## Admin, candidate, employer test Login details
 
-## Admin
+Admin
 
 ```
 email => admin@admin.com
@@ -96,19 +96,28 @@ password => password
 
 ```
 
-<!-- ## Candidate
+## Company Admin
 
 ```
-email => candidate@humujob.com
+email => logicbarn@gmail.com
 password => password
 
 ```
 
-## employer
+## Store Manager
 
 ```
-email => employer@humujob.com
+email => storemanager@gmail.com
 password => password
 
-``` -->
+```
 
+## Sales Person
+
+```
+email => salesperson@gmail.com
+password => password
+
+```
+
+## NOTE: Before pushing to Dev, run 'npm run build' to push any new assets.

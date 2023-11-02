@@ -9,6 +9,7 @@ use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
 use App\Models\InvoicePricing;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -26,7 +27,7 @@ class InvoiceController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return 
+     * @return
      */
     public function create()
     {
@@ -37,7 +38,7 @@ class InvoiceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return 
+     * @return
      */
     public function store(Request $request)
     {
@@ -57,9 +58,9 @@ class InvoiceController extends Controller
             'customer_address_postcode' => 'sometimes',
         ]);
 
-        $invoiceData = 
+        $invoiceData =
         $invoice = Invoice::create($request->all());
-        
+
         $customer = Customer::updateOrCreate(['email' => $request->customer_email],[
             'name' => $request->customer_name,
             'email' => $request->customer_email,
@@ -79,7 +80,7 @@ class InvoiceController extends Controller
         // $this->addItem($invoice->id);
         // $this->addOptions($invoice->id);
         $this->addPricing($invoice->id);
-        
+
         //
        return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
@@ -99,17 +100,17 @@ class InvoiceController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function edit(Request $request,  $id)
     {
         $invoice = Invoice::find($id)->load('items', 'pricings');
         if( $invoice->items->count() < 1 ){
-            // $this->addItem($request, $invoice->id);            
+            // $this->addItem($request, $invoice->id);
         }
 
         $this->addPricing($invoice->id);
-        
+
         $formular = $invoice->getPricing('formular')->value;
 
         // cal this method when opening invoice or editing invoice
@@ -123,10 +124,10 @@ class InvoiceController extends Controller
         return view('voyager::invoices.edit', compact('invoice', 'total_amount', 'products'));
 
 
-       
+
     }
 
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -153,10 +154,10 @@ class InvoiceController extends Controller
 
 
     /**
-     * 
+     *
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function addItem(Request $request, $id)
     {
@@ -164,7 +165,7 @@ class InvoiceController extends Controller
             'product_ids' => 'required',
         ]);
         $invoice = Invoice::find($id);
-        
+
         foreach($productids as $productid){
             if($product = Product::find($productid)->first() ){
 
@@ -178,20 +179,20 @@ class InvoiceController extends Controller
                         $item->meta()->create($met); // create all meta first
                     }
                 }
-               
+
             }
         }
-       
-        return redirect()->route('voyager.invoices.edit', $invoice->id);        
+
+        return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 
 
 
     /**
-     * 
+     *
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function saveItem(Request $request, $invoiceId,  $itemId)
     {
@@ -204,69 +205,81 @@ class InvoiceController extends Controller
 
 
         // recalculate invoice subtotal here whenever an item is saved
-        $invoice->calculateSubtotal(); 
-       
+        $invoice->calculateSubtotal();
+
 
         return redirect()->back()->with([
             'message' =>' Invoice item saved successfully'
-        ]);   
+        ]);
 
-            
+
     }
     /**
-     * 
+     *
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function deleteItem(Request $request, $invoiceId,  $itemId)
     {
         $invoiceItem = InvoiceItem::find($itemId);
         $invoice = Invoice::find($invoiceId);
-        
+
         $invoiceItem->delete();
 
         // recalculate invoice subtotal here whenever an item is deleted
-        $invoice->calculateSubtotal(); 
-       
+        $invoice->calculateSubtotal();
+
 
         return redirect()->back()->with([
             'message' =>' Invoice item deleted successfully'
-        ]);   
+        ]);
 
-            
+
     }
 
 
     /**
-     * 
+     *
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function savePricing(Request $request, $invoiceId)
     {
-  
+
         $invoice = Invoice::find($invoiceId);
         $meta= $request->all();
 
         $meta= $request->except(['_method', '_token']);
-        
+
         foreach ($meta as $me) {
             InvoicePricing::where('identifier', $me[1])->first()->update(['value' => $me[0]]);
         }
-       
+
         return redirect()->back()->with([
             'message' =>' Invoice pricing saved successfully'
-        ]);   
-            
+        ]);
+
+    }
+
+    public function generatePdf(Request $request, Invoice $invoice)
+    {
+        $pdf = PDF::loadView('voyager::invoices.pdf', [
+            'invoice' => $invoice,
+            'customer' => $invoice->customer,
+            'user' => auth()->user(),
+            'count' => $invoice->items->count(),
+        ]);
+
+        return $pdf->stream('invoice.pdf');
     }
 
      /**
-     * 
+     *
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function addItemMetaColumn(Request $request, $invoiceId)
     {
@@ -275,15 +288,15 @@ class InvoiceController extends Controller
             'name' => $request->name,
             'value' => $request->value
         ]);
-        return redirect()->back();   
-            
+        return redirect()->back();
+
     }
 
      /**
-     * 
+     *
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function addPricingColumn(Request $request, $id)
     {
@@ -292,8 +305,8 @@ class InvoiceController extends Controller
             'name' => $request->name,
             'value' => $request->value
         ]);
-        return redirect()->back();   
-            
+        return redirect()->back();
+
     }
 
 
@@ -302,17 +315,17 @@ class InvoiceController extends Controller
 
 
     /**
-     * 
+     *
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function addPricing($id)
     {
         if(!$invoice = Invoice::find($id)){
             return;
         }
-      
+
         $meta = [
             [ 'name' => 'subtotal', 'value' => 0],
             [ 'name' => 'tax', 'value' => 0],
@@ -323,7 +336,7 @@ class InvoiceController extends Controller
             if(!$invoice->getPricing($met['name'])){
                 $invoice->pricings()->create($met);
             }
-           
+
         }
 
         //add def formular here
@@ -333,19 +346,19 @@ class InvoiceController extends Controller
             $discount = $invoice->getPricing('discount');
 
             $invoice->pricings()->updateOrCreate([
-                'name' => 'formular', 
-                'value' => "$subtotal->identifier-$subtotal->identifier*$tax->identifier-$subtotal->identifier*$discount->identifier"], 
-                [ 
-                    'name' => 'formular', 
+                'name' => 'formular',
+                'value' => "$subtotal->identifier-$subtotal->identifier*$tax->identifier-$subtotal->identifier*$discount->identifier"],
+                [
+                    'name' => 'formular',
                     'value' => "$subtotal->identifier-$subtotal->identifier*$tax->identifier-$subtotal->identifier*$discount->identifier"
                 ]);
         }
-        return redirect()->route('voyager.invoices.edit', $invoice->id);        
+        return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
     public function delete($id)
 {
     $invoice = Invoice::findOrFail($id);
-    
+
     $invoice->delete();
 
     // Redirect back to the initial page

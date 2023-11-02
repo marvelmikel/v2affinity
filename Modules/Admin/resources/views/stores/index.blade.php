@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="admin-section-title">
-                <h3><i class="voyager-book"></i>{{ __('Stores') }}</h3>
+                <h3><i class="icon voyager-shop"></i>{{ __('Stores') }}</h3>
                 <div style="display:flex;">
                     <a href="{{ route('voyager.stores.create') }}" style="margin-right:2px" class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Create New Store</a></div>
             </div>

@@ -53,6 +53,8 @@
                                        value="{{ old('email', $dataTypeContent->email ?? '') }}">
                             </div>
 
+                            
+
                             <div class="form-group">
                                 <label for="password">{{ __('voyager::generic.password') }}</label>
                                 @if(isset($dataTypeContent->password))

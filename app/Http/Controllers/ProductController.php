@@ -16,9 +16,26 @@ class ProductController extends Controller
      * @return 
      */
     public function index(ProductsDataTable $dataTable)
-    {
-        return $dataTable->render('voyager::products.index');
-    }
+{
+    $companyId = auth()->user()->company_id;
+    $dataTable->addScope(new class($companyId) implements \Yajra\DataTables\Contracts\DataTableScope {
+        private $companyId;
+
+        public function __construct($companyId)
+        {
+            $this->companyId = $companyId;
+        }
+
+        public function apply($query)
+        {
+            return $query->where('company_id', $this->companyId);
+        }
+    });
+
+    return $dataTable->render('voyager::products.index');
+}
+
+    
 
     /**
      * Show the form for creating a new resource.

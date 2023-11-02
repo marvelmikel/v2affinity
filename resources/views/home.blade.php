@@ -34,11 +34,11 @@
         <div class="mx-auto px-8 sm:px-16 lg:px-4 2xl:max-w-screen-2xl xl:max-w-screen-xl flex flex-wrap lg:flex-nowrap items-center gap-12">
             <div class="w-full lg:w-1/2 space-y-4 text-lg text-slate-500 font-medium livvic-font-medium">
                 <h2 class="font-bold livvic-font-bold mb-3 text-3xl text-slate-700">Ensure that every m<sup>2</sup> counts</h2>
-                <p>Affinity is a quotation and invoicing software for flooring businesses, allowing sales team to create invoices on the shop floor. It streamlines the billing process, saves time, and has advanced features and a user-friendly interface. Choose Affinity for a smarter invoicing solution.</p>
+                <p>Affinity is a quotation and invoicing software for flooring businesses, allowing sales teams to create invoices on the shop floor. It streamlines the billing process, saves time, and has advanced features and a user-friendly interface. Choose Affinity for a smarter invoicing solution.</p>
                 <x-home-flex-col class="px-0 text-base mt-8">
                     @livewire('list-with-icon', ['title' => "Automatic Price Calculation", "description"=>"Enter your fitting costs and price per m2 and the system will take  care of the test. No more manual calculations.", "icon"=>"fa-regular fa-calculator"])
-                    @livewire('list-with-icon', ['title' => "Invoice Generation", "description"=>"Generate customer invoices in 1 click, network print or send directly to the customer email address", "icon"=>"fa-regular fa-file-invoice"])
-                    @livewire('list-with-icon', ['title' => "Focus on sales not spread", "description"=>"cut down the time managing sales manually and put the time back in to selling.", "icon"=>"fa-solid fa-chart-line-up"])
+                    @livewire('list-with-icon', ['title' => "Invoice Generation", "description"=>"Generate customer invoices in 1 click, print or send directly to the customer's email address.", "icon"=>"fa-regular fa-file-invoice"])
+                    @livewire('list-with-icon', ['title' => "Focus on sales not spread", "description"=>"Cut down the time managing sales manually and put the time back into selling.", "icon"=>"fa-solid fa-chart-line-up"])
                 </x-home-flex-col>
             </div>
             <figure class="w-full lg:w-1/2">
@@ -127,7 +127,23 @@
                 @livewire('faq',['faq_id'=>'faq1','question'=>'What is Affinity ?','answer'=>'Affinity is an all-in-one flooring cost calculator, saving you time and money. The system can be used on any device that has access to the internet.','expanded'=>'show'])
                 @livewire('faq',['faq_id'=>'faq2','question'=>'Is there trial period?','answer'=>'Yes, there is a 7 day, no obligation trial period.'])
                 @livewire('faq',['faq_id'=>'faq3','question'=>'Is there a cancellation policy?','answer'=>'We simply require 30 days cancellation notice.'])
-                @livewire('faq',['faq_id'=>'faq4','question'=>'How much does it cost?','answer'=>'The system costs £125 plus VAT per store. No hidden costs and you can have up to 5 users per stope. We can add further users upon request.'])
+                @livewire('faq',['faq_id'=>'faq4','question'=>'How much does it cost?','answer'=>'The system costs £125 plus VAT per store. No hidden costs and you can have up to 3 users per store. We can add further users upon request.'])
+                <div x-data="{ open: false }" class="accordion-item bg-white border-y border-gray-200">
+                    <h2 class="accordion-header mb-0 livvic-font-medium font-bold" id="faq_label_faq5">
+                        <button x-on:click="open = ! open" class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none" type="button">
+                            What are the differences in users?
+                        </button>
+                    </h2>
+                    <div x-show="open" x-transition id="faq5" aria-labelledby="faq_label_faq5">
+                        <div class="accordion-body py-4 px-5">
+                            <ul>
+                                <li><b>Company Admin</b><br>Can create Stores Users and Invoices; has access to manage all Company information.</li><br>
+                                <li><b>Store Manager</b><br>Can create Users and manage their own Store.</li><br>
+                                <li><b>Sales Person</b><br>Can create invoices to their assigned Store.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </x-home-faq-section>
         </div>
     </section>
@@ -138,7 +154,7 @@
             <div class="mx-auto flex bg-slate-700 justify-center p-16 rounded-3xl w-full">
                 <div class="w-full md:w-1/2 text-center text-white">
                     <h3 class="font-bold livvic-font-bold mb-3 text-3xl">Let's get started</h3>
-                    <p class="text-lg mb-5 font-medium livvic-font-medium">Simply Call LogicBarn (the creator of Affinity) on 0303 223 0110 and choose the option 1for Sales. Thank you. www.logicbarn.com.</p>
+                    <p class="text-lg mb-5 font-medium livvic-font-medium">Simply Call LogicBarn (the creator of Affinity) on 0303 223 0110 and choose option 1 for Sales. Thank you! www.logicbarn.com.</p>
                     <button @click="$dispatch('modal:contact')" type="button" class="rounded border border-2 border-white px-4 py-2 font-semibold livvic-font-semibold text-lg hover:bg-white hover:text-main-color transition">Get Started</button>
                 </div>
             </div>

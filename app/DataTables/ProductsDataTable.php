@@ -3,7 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -15,22 +15,23 @@ class ProductsDataTable extends DataTable
     /**
      * Build DataTable class.
      *
-     * @param QueryBuilder $query Results from query() method.
+     * @param EloquentBuilder $query Results from query() method.
      * @return \Yajra\DataTables\EloquentDataTable
      */
-    public function dataTable(QueryBuilder $query): EloquentDataTable
+    public function dataTable($query): EloquentDataTable
     {
-        return (new EloquentDataTable($query))
-            // ->addColumn('action'  )
-            ->addColumn('action', function($row){
+        return datatables()
+            ->eloquent($query)
+            ->addColumn('action', function ($row) {
                 $editUrl = route('voyager.products.edit', $row->id);
 
                 $btn = "<div style='display:flex;'>
-                <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a></div>";
-                 return $btn;
-
+                    <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
+                </div>";
+                
+                return $btn;
             })
-         ->rawColumns(['action'])
+            ->rawColumns(['action'])
             ->setRowId('id');
     }
 
@@ -40,9 +41,10 @@ class ProductsDataTable extends DataTable
      * @param \App\Models\Product $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Product $model): QueryBuilder
+    public function query(Product $model): EloquentBuilder
     {
-        return $model->with('meta');
+        $companyId = auth()->user()->company_id;
+        return $model->newQuery()->where('company_id', $companyId)->with('meta');
     }
 
     /**
@@ -53,21 +55,21 @@ class ProductsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('invoices-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('add'),
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('invoices-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('add'),
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
     }
 
     /**
@@ -85,10 +87,10 @@ class ProductsDataTable extends DataTable
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')
-                  ->exportable(true)
-                  ->printable(true)
-                  ->width(60)
-                  ->addClass('text-center'),
+                ->exportable(true)
+                ->printable(true)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 

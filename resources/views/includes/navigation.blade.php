@@ -94,7 +94,7 @@
                         </li>
                         <li>
                             <i class="far fa-check text-green-500 mr-1"></i>
-                            5 users per store
+                            3 users per store
                         </li>
                         <li>
                             <i class="far fa-check text-green-500 mr-1"></i>
