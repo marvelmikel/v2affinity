@@ -52,6 +52,9 @@
                                             <td><input disabled readonly  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}" ></td>
                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"  ></td>
                                             <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"  ></td>
+                                            <td><a href="#" style=' text-decoration: none;'
+                                            class='btn btn-danger btn-xs' data-toggle="modal" data-target="">
+                                            <i class="voyager-trash"></i></a></td>
                                         </tr>
                                     @endif
                                 @endforeach

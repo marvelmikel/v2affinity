@@ -191,6 +191,19 @@
                                 <!-- did this so I can put the formular at the end of the meta list -->
 
                                 @if($meta->name != 'formular')
+                                @if($meta->name == 'quantity/area')
+
+                                <td style="min-width: 200px;">
+                                    <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
+                                        value="{{ $meta->name.' (㎡)' }}">
+                                    <input style="background-color: white;" class="form-control"
+                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
+                                        {{ $meta->visibility }}>
+
+                                    <input readonly style="background-color: white;" class="form-control" type="hidden"
+                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
+                                </td>
+                                @else
 
                                 <td style="min-width: 200px;">
                                     <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
@@ -202,6 +215,7 @@
                                     <input readonly style="background-color: white;" class="form-control" type="hidden"
                                         name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
                                 </td>
+                                @endif
 
 
                                 @endif
@@ -220,9 +234,9 @@
                                 <!-- item total here -->
 
                                 <td style="min-width: 200px;">
-                                    <input disabled readonly class="form-control" type="text" value="Item Total">
+                                    <input disabled readonly class="form-control" type="text" value="Item Total (£)">
                                     <input readonly style="background-color: white;" class="form-control" type="text"
-                                        value="{{ $invoiceItem->item_total }}">
+                                        value="{{ number_format($invoiceItem->item_total,2) }}">
                                 </td>
 
                                 <td>
@@ -280,7 +294,7 @@
                                 <td><input disabled readonly class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
                                 <td><input  readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
-                                        value="{{ $pricing->value }}"></td>
+                                        value="{{ number_format($pricing->value,2)}}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
                             </tr>
@@ -452,8 +466,6 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-
-
 
                                                             </div>
                                                             <div class="modal-footer">

@@ -32,8 +32,8 @@ class Product extends Model
 
 	    static::created(function ($model) {
             $meta = [
-                [ 'name' => 'unit_price', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
-                [ 'name' => 'quantity', 'value' => 1, 'type' => 'number', 'visibility' => '']
+                [ 'name' => 'unit_price(£)', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
+                [ 'name' => 'quantity/area per m²', 'value' => 1, 'type' => 'number', 'visibility' => '']
             ];
 
            
@@ -46,9 +46,9 @@ class Product extends Model
             }
 
              //add def formular here
-            if($model->getMeta('unit_price') &&  $model->getMeta('quantity') ){
-                $price = $model->getMeta('unit_price');
-                $quantity = $model->getMeta('quantity');
+            if($model->getMeta('unit_price(£)') &&  $model->getMeta('quantity/area per m²') ){
+                $price = $model->getMeta('unit_price(£)');
+                $quantity = $model->getMeta('quantity/area per m²');
                 $model->meta()->updateOrCreate(['name' => 'formula'], [ 
                     'name' => 'formular', 
                     'value' => "$price->identifier*$quantity->identifier", 

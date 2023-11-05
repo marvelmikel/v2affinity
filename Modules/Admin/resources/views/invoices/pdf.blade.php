@@ -554,19 +554,18 @@
         <div class="table-header">
             <span class="table-cell cell-description">Item</span>
             <span class="table-cell cell-colour">Description</span>
-            <span class="table-cell cell-size">Size</span>
-            <span class="table-cell cell-quantity">Quantity</span>
-            <span class="table-cell cell-code">Area</span>
-            <span class="table-cell cell-selling-price empty">&nbsp;</span>
+            <!-- <span class="table-cell cell-size">Size</span> -->
+            <span class="table-cell cell-quantity">Area (m²)</span>
+            <span class="table-cell cell-selling-price empty">&nbsp; Item Price</span>
         </div>
 
         @foreach($invoice->items()->get() as $item)
             <div class="table-row">
                 <span class="table-cell cell-description">{{ $item->getMeta('title')?->value }}</span>
                 <span class="table-cell cell-colour" style="font-size: xx-small">{{ Str::limit($item->getMeta('description')?->value, 15) }}</span>
-                <span class="table-cell cell-size">{{ $item->getMeta('Height')?->value . ' x ' . $item->getMeta('Width')?->value }}</span>
-                <span class="table-cell cell-quantity">{{ $item->getMeta('quantity')?->value }}</span>
-                <span class="table-cell cell-code">{{ $item->getMeta('hsl')?->value ?? 'N/A' }}</span>
+                <!-- <span class="table-cell cell-size">{{ $item->getMeta('Height')?->value . ' x ' . $item->getMeta('Width')?->value }}</span> -->
+                <span class="table-cell cell-quantity">{{ $item->getMeta('quantity/area per m²')?->value }}</span>
+                <span class="table-cell cell-code">{{ $item->getMeta('item_total')?->value ?? 'N/A' }}</span>
                 <span class="table-cell cell-selling-price empty">&nbsp;</span>
             </div>
         @endforeach
@@ -577,7 +576,7 @@
                 <div class="table-row">
                     <span class="table-cell cell-description">&nbsp;</span>
                     <span class="table-cell cell-colour">&nbsp;</span>
-                    <span class="table-cell cell-size">&nbsp;</span>
+                    <!-- <span class="table-cell cell-size">&nbsp;</span> -->
                     <span class="table-cell cell-quantity">&nbsp;</span>
                     <span class="table-cell cell-code">&nbsp;</span>
                     <span class="table-cell cell-selling-price empty">&nbsp;</span>
