@@ -56,6 +56,9 @@ class User extends \Modules\Admin\Models\User
     
 
     public function store() {
+        
         return $this->belongsTo(Store::class);
     }
+
+    
 }

@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\DataTables\InvoicesDataTable;
 use App\Models\Customer;
+use App\Models\Company;
+use App\Models\User;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
 use App\Models\InvoicePricing;
 use App\Models\Product;
+use App\Models\Store;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+
+
 
 class InvoiceController extends Controller
 {
@@ -105,10 +110,24 @@ class InvoiceController extends Controller
      * @param  int  $id
 
      */
-    public function show($id)
-    {
-        return view('voyager::invoices.show');
-    }
+ 
+     public function show($id)
+     {
+         $invoice = Invoice::find($id);
+         
+         // Fetch related data
+         $customer = Customer::find($invoice->customer_id);
+         $items = InvoiceItem::where('invoice_id', $invoice->id)->get();
+         $pricing = InvoicePricing::where('invoice_id', $invoice->id)->first();
+         $store = Store::find($invoice->store_id); 
+         $users_id = $invoice->user_id;
+         $user = User::find($users_id); 
+         $company = Company::find($invoice->company_id);
+     
+         return view('voyager::invoices.show', compact('invoice', 'customer', 'items', 'pricing', 'store', 'user', 'company'));
+     }
+    
+    
 
     /**
      * Show the form for editing the specified resource.

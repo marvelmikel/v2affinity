@@ -3,6 +3,7 @@
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AddUserController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\Facades\Voyager;
@@ -67,6 +68,16 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/stores/{storeId}', [StoreController::class, 'update'])->name('stores.update');
        
        
+    });
+
+
+    // Add Users Routes Store Manager & Sales Person 
+    Route::group(['middleware' => 'admin.user' ], function ()  {
+        Route::get('users',   [AddUserController::class, 'index'])->name('voyager.users.index');
+        Route::get('/users/create', [AddUserController::class, 'create'])->name('voyager.users.create');
+        Route::post('users', [AddUserController::class, 'store'])->name('voyager.users.store');
+
+        
     });
 
 
