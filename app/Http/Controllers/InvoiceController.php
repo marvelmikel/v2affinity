@@ -148,11 +148,31 @@ class InvoiceController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,  $id)
     {
-        //
+        $invoice = Invoice::find($id);
+        $customer = $invoice->customer;
+
+        $customer->updateOrCreate(['email' => $request->customer_email], [
+            'company_id' => auth()->user()->company_id,
+            'user_id' => auth()->user()->id,
+            'name' => $request->customer_name,
+            'email' => $request->customer_email,
+            'address_line_1' => $request->customer_address_line_1,
+            'address_line_2' => $request->customer_address_line_2,
+            'phone' => $request->customer_phone_number,
+            'address_city' => $request->customer_address_city,
+            'address_country' => $request->customer_address_country,
+            'address_postcode' => $request->customer_address_postcode,
+            'store_id' => $request->store_id,
+        ]);
+
+        $invoice->update($request->all());
+        return redirect()->back()->with([
+            'message' =>' Invoice updated successfully'
+        ]);
     }
 
     /**
