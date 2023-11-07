@@ -33,7 +33,9 @@ class Product extends Model
 	    static::created(function ($model) {
             $meta = [
                 [ 'name' => 'unit_price(£)', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
-                [ 'name' => 'quantity/area per m²', 'value' => 1, 'type' => 'number', 'visibility' => '']
+                // [ 'name' => 'quantity/area per m²', 'value' => 1, 'type' => 'number', 'visibility' => '']
+                [ 'name' => 'lenght', 'value' => 0, 'type' => 'number', 'visibility' => ''],
+                [ 'name' => 'width', 'value' => 0, 'type' => 'number', 'visibility' => '']
             ];
 
            
@@ -45,17 +47,33 @@ class Product extends Model
                 $model->meta()->create($me);
             }
 
-             //add def formular here
-            if($model->getMeta('unit_price(£)') &&  $model->getMeta('quantity/area per m²') ){
-                $price = $model->getMeta('unit_price(£)');
-                $quantity = $model->getMeta('quantity/area per m²');
-                $model->meta()->updateOrCreate(['name' => 'formula'], [ 
-                    'name' => 'formular', 
-                    'value' => "$price->identifier*$quantity->identifier", 
+            
+            if($model->getMeta('length') &&  $model->getMeta('width') ){
+                $length = $model->getMeta('length');
+                $width = $model->getMeta('width');
+
+                $model->meta()->updateOrCreate(['name' => 'area'], [ 
+                    'name' => 'area', 
+                    'value' => "$length->identifier*$width->identifier", 
                     'type' => 'formular',
                     'visibility' => 'readonly'
                 ]);
+                
             }
+
+             //add def formular here
+             if($model->getMeta('unit_price(£)') &&  $model->getMeta('area') ){
+                $price = $model->getMeta('unit_price(£)');
+                $area = $model->getMeta('area');
+                $model->meta()->updateOrCreate(['name' => 'formular'], [ 
+                    'name' => 'formular', 
+                    'value' => "$price->identifier*$area->identifier", 
+                    'type' => 'formular',
+                    'visibility' => 'readonly'
+                ]);
+                
+            }
+
 
 
 	    });	    

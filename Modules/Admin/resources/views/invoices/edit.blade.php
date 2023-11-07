@@ -32,6 +32,9 @@
 </h1>
 @stop
 
+
+
+
 @section('content')
 <div class="page-content container-fluid">
     @include('voyager::alerts')
@@ -177,13 +180,6 @@
             <div class="card" style="max-height: 540px; overflow: scroll;">
                 @foreach($invoice->items as $invoiceItem)
                 <table class="table " style="width:100%; margin: 40px 0;">
-                    <!-- <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Value</th>
-                                    <th>Indentifier</th>
-                                </tr>
-                            </thead> -->
                     <tbody>
                         <form action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
                             <tr style="overflow: scroll;">
@@ -191,34 +187,34 @@
                                 <!-- did this so I can put the formular at the end of the meta list -->
 
                                 @if($meta->name != 'formular')
-                                @if($meta->name == 'quantity/area')
+                                  
 
-                                <td style="min-width: 200px;">
-                                    <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
-                                        value="{{ $meta->name.' (㎡)' }}">
-                                    <input style="background-color: white;" class="form-control"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
-                                        {{ $meta->visibility }}>
+                                        @if($meta->name == 'area')
+                                            <td style="min-width: 200px;">
+                                                <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
+                                                    value="{{ $meta->name }}">
+                                                <input disabled readonly style="background-color: white;" class="form-control"
+                                                    name="{{ $meta->name }}[]" value="{{  evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id ) }}" type="{{ $meta->type }}"
+                                                    {{ $meta->visibility }}>
 
-                                    <input readonly style="background-color: white;" class="form-control" type="hidden"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
-                                </td>
-                                @else
+                                                <input disabled  readonly style="background-color: white;" class="form-control" type="hidden"
+                                                    name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
+                                            </td>
+                                        @else
+                                            <td style="min-width: 200px;">
+                                                    <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
+                                                        value="{{ $meta->name }}">
+                                                    <input style="background-color: white;" class="form-control"
+                                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
+                                                        {{ $meta->visibility }}>
 
-                                <td style="min-width: 200px;">
-                                    <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
-                                        value="{{ $meta->name }}">
-                                    <input style="background-color: white;" class="form-control"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
-                                        {{ $meta->visibility }}>
+                                                    <input readonly style="background-color: white;" class="form-control" type="hidden"
+                                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
+                                            </td>
+                                        @endif
+                                    @endif
 
-                                    <input readonly style="background-color: white;" class="form-control" type="hidden"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
-                                </td>
-                                @endif
-
-
-                                @endif
+                              
 
 
                                 @endforeach
@@ -439,41 +435,41 @@
 
     <!-- Add invocie produtct column modal -->
     <div class=" modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="{{ __('voyager::generic.close') }}"><span
-                                                                    aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title"><i class="voyager-data"></i> Add
-                                                                Invoice Product</h4>
-                                                        </div>
-                                                        <form
-                                                            action="{{ route('voyager.invoices.add-item', $invoice->id) }}"
-                                                            method="post">
-                                                            @csrf()
-                                                            @method('post')
-                                                            <div class="modal-body"
-                                                                style="overflow:scroll; min-height: 300px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="{{ __('voyager::generic.close') }}"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="voyager-data"></i> Add
+                        Invoice Product</h4>
+                </div>
+                <form
+                    action="{{ route('voyager.invoices.add-item', $invoice->id) }}"
+                    method="post">
+                    @csrf()
+                    @method('post')
+                    <div class="modal-body"
+                        style="overflow:scroll; min-height: 300px;">
 
-                                                                <div>
-                                                                    <strong>Select Products:</strong>
-                                                                    <select id="multiple-checkboxes"
-                                                                        name="product_ids[]" multiple="multiple">
-                                                                        @foreach($products as $product)
-                                                                        <option value="{{ $product->id }}">{{
-                                                                            $product->title }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
+                        <div>
+                            <strong>Select Products:</strong>
+                            <select id="multiple-checkboxes"
+                                name="product_ids[]" multiple="multiple">
+                                @foreach($products as $product)
+                                <option value="{{ $product->id }}">{{
+                                    $product->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button"
-                                                                    class="btn btn-outline mx-3 pull-right"
-                                                                    data-dismiss="modal">{{ __('voyager::generic.close')
-                                                                    }}</button>
-                                                                <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                            class="btn btn-outline mx-3 pull-right"
+                            data-dismiss="modal">{{ __('voyager::generic.close')
+                            }}</button>
+                        <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
@@ -498,7 +494,6 @@
                 e.preventDefault();
                 let invoiceid = $(this).data('invoiceid')
 
-                console.log(invoiceid)
                 $('input[name="invoice_id"]').val(invoiceid)
 
                 $('#add_pricing_column_modal').modal('show');
