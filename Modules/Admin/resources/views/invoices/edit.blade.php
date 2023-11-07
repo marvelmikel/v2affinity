@@ -43,12 +43,11 @@
 
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="{{ route('voyager.invoices.store') }}" method="POST">
-
-
+                <form class="form-edit-add" role="form" action="{{ route('voyager.invoices.update', $invoice->id) }}" method="POST">
 
                     <!-- CSRF TOKEN -->
                     {{ csrf_field() }}
+                    @method('PATCH')
 
                     <div class="panel-body">
 
