@@ -34,7 +34,7 @@ class Product extends Model
             $meta = [
                 [ 'name' => 'unit_price(£)', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
                 // [ 'name' => 'quantity/area per m²', 'value' => 1, 'type' => 'number', 'visibility' => '']
-                [ 'name' => 'lenght', 'value' => 0, 'type' => 'number', 'visibility' => ''],
+                [ 'name' => 'length', 'value' => 0, 'type' => 'number', 'visibility' => ''],
                 [ 'name' => 'width', 'value' => 0, 'type' => 'number', 'visibility' => '']
             ];
 
