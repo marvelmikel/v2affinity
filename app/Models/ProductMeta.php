@@ -27,4 +27,8 @@ class ProductMeta extends Model
 	        $model->identifier = 'PM'.$model->product_id. $id;
 	    });	    
 	}
+    
+        public function product(){
+            return $this->belongsTo(Product::class, 'product_id');
+        }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\DataTables\AddUsersDataTable;
 use App\Models\User;
-use Modules\Admin\App\Models\Role;
+use Modules\Admin\Models\Role;
 use App\Models\Store;
 use App\Models\Company;
 use Illuminate\Http\Request;

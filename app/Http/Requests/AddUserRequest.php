@@ -28,9 +28,11 @@ class AddUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'cpassword' => 'required|string|same:password', // Added password confirmation rule
-            'role_id' => 'required|numeric',
+            'role_id' => 'required',
             'store_id' => 'required|numeric',
+            
         ];
+        
        
     }
 }

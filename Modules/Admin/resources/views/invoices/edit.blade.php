@@ -45,6 +45,8 @@
                 <!-- form start -->
                 <form class="form-edit-add" role="form" action="{{ route('voyager.invoices.update', $invoice->id) }}" method="POST">
 
+
+
                     <!-- CSRF TOKEN -->
                     {{ csrf_field() }}
                     @method('PATCH')
@@ -77,8 +79,7 @@
                         <div class="form-group row">
                             <div class="form-group col-md-6">
                                 <label for="name">Store</label>
-                                <select class="form-control select" value="{{ $invoice->store_id }}" name="store_id"
-                                    id="">
+                                <select class="form-control select" value="{{ $invoice->store_id }}" name="store_id" id="store_id">
                                     <option value="1">United Carpet Store</option>
                                 </select>
                             </div>

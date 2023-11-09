@@ -37,4 +37,9 @@ class Company extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function stores()
+   {
+    return $this->hasMany(Store::class);
+   }
 }

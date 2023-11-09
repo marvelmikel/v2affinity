@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use \Modules\Admin\Models\Role; 
 
-class User extends \Modules\Admin\Models\User
+class User extends \Modules\Admin\Models\User 
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -59,6 +60,12 @@ class User extends \Modules\Admin\Models\User
         
         return $this->belongsTo(Store::class);
     }
+
+    public function role()
+{
+    return $this->belongsTo(Role::class);
+}
+
 
     
 }

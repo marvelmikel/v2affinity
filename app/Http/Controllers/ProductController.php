@@ -163,5 +163,14 @@ class ProductController extends Controller
             
     }
 
+    /**
+     * 
+     *
+     * @param  int  $id
+     * @return 
+     */
+    
+
+
 
 }

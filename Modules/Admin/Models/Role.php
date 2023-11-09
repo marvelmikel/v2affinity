@@ -31,4 +31,6 @@ class Role extends Model
     {
         return RoleFactory::new();
     }
+
+    
 }

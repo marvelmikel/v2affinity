@@ -96,24 +96,23 @@ class AddUsersDataTable extends DataTable
      *
      * @return array
      */
-
-     public function getColumns(): array
-     {
-         return [
-             Column::make('id'),
-             Column::make('name'),
-             Column::make('email'),
-             Column::make('created_at'),
-             Column::make('updated_at'),
-             Column::computed('action')
-                 ->exportable(true)
-                 ->printable(true)
-                 ->width(60)
-                 ->addClass('text-center'),
-         ];
-     }
- 
-    
+    public function getColumns(): array
+    {
+        return [
+            Column::make('id'),
+            Column::make('name'),
+            Column::make('email'),
+            Column::make('role_id'),
+            Column::make('store_id'),
+            Column::make('created_at'),
+            Column::make('updated_at'),
+            Column::computed('action')
+                ->exportable(true)
+                ->printable(true)
+                ->width(60)
+                ->addClass('text-center'),
+        ];
+    }
 
     /**
      * Get filename for export.

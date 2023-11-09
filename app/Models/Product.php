@@ -78,4 +78,9 @@ class Product extends Model
 
 	    });	    
 	}
+
+public function productMeta()
+    {
+        return $this->hasMany(ProductMeta::class);
+    }
 }
