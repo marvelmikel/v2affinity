@@ -39,6 +39,30 @@ class InvoiceController extends Controller
         return view('voyager::invoices.create');
     }
 
+    public function generatePdf(Request $request, Invoice $invoice, Store $storeModel)
+    {
+        $store = $storeModel::find($invoice->store_id);
+    
+        if (!$store) {
+            throw new \Exception('Store not found');
+        }
+    
+        // Fetch the company data here
+        $company = Company::find($invoice->company_id);
+    
+        $pdf = PDF::loadView('voyager::invoices.pdf', [
+            'invoice' => $invoice,
+            'customer' => $invoice->customer,
+            'user' => auth()->user(),
+            'count' => $invoice->items->count(),
+            'store' => $store,
+            'company' => $company, // Pass the $company variable to the view
+        ]);
+    
+        return $pdf->stream('invoice.pdf');
+    }
+    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -326,17 +350,9 @@ class InvoiceController extends Controller
 
     }
 
-    public function generatePdf(Request $request, Invoice $invoice)
-    {
-        $pdf = PDF::loadView('voyager::invoices.pdf', [
-            'invoice' => $invoice,
-            'customer' => $invoice->customer,
-            'user' => auth()->user(),
-            'count' => $invoice->items->count(),
-        ]);
+  
+    
 
-        return $pdf->stream('invoice.pdf');
-    }
 
      /**
      *

@@ -16,6 +16,7 @@ class Company extends Model
         'company_email',
         'company_number',
         'vat_number',
+        'terms_conditions',
         'logo',
         'active',
         'created_at',
@@ -35,7 +36,7 @@ class Company extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'company_id');
     }
 
     public function stores()

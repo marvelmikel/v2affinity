@@ -4,31 +4,53 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use App\DataTables\CompanyDataTable;
-use App\Models\User; // Assuming the User model exists and has a relationship with Company
+use App\Http\Requests\UpdateCompanyInfoRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth; // Assuming the User model exists and has a relationship with Company
 
 class CompanyController extends Controller
 {
-    public function show()
+   
+    
+   
+    
+    public function index(Request $request)
     {
+        $dataTable = new CompanyDataTable($request); // Create a new instance of CompanyDataTable
 
-        return view('voyager::company.index');
+    $user = Auth::user(); // Retrieve the authenticated user
+    $company = $user->company; // Assuming there is a relationship between User and Company models
+
+    $companyData = $company ? $company->toArray() : [];
+
+    return $dataTable->render('voyager::company.index', compact('companyData', 'company'));
     }
 
-    // public function updateCompanyDetails(Request $request)
-    // {
-    //     $request->validate([
-    //         'company_name' => 'required',
-    //         'company_email' => 'required|email',
-    //         'company_address' => 'required',
-    //         'company_phone' => 'required',
-    //         'company_number' => 'required',
-    //         'vat_number' => 'required',
-    //     ]);
+    public function update(Request $request, $companyId)
+{
+    $company = Company::findOrFail($companyId);
+    // Check if the authenticated user has role_id = 2
+    if (Auth::user()->role_id != 2) {
+        return redirect()->back()->with('error', 'You do not have permission to edit company details.');
+    }
 
-    //     $user = auth()->user();
-    //     $company = $user->company;
-    //     $company->update($request->all());
+    $company = Company::find($companyId);
+    if (!$company) {
+        return redirect()->back()->with('error', 'Company not found.');
+    }
 
-    //     return redirect()->back()->with('success', 'Company information updated successfully!');
-    // }
+    $company->update($request->all()); // Assuming $request->all() contains only fillable fields
+
+    return redirect()->route('voyager.company.index')->with('success', 'Company details updated successfully.');
+} 
+    
+
+    
+
+
+
+
+    
+
+    
 }

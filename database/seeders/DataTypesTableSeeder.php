@@ -27,6 +27,7 @@ class DataTypesTableSeeder extends Seeder
             ])->save();
         }
 
+
         $dataType = $this->dataType('slug', 'menus');
         if (!$dataType->exists) {
             $dataType->fill([
@@ -96,6 +97,40 @@ class DataTypesTableSeeder extends Seeder
                 'description'           => 'Store Module',
             ])->save();
         }
+
+        $dataType = $this->dataType('slug', 'company');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'company',
+                'display_name_singular' => __('voyager::seeders.data_types.company.singular'),
+                'display_name_plural'   => __('voyager::seeders.data_types.company.plural'),
+                'icon'                  => 'voyager-company',
+                'model_name'            => 'App\Models\Company',
+                'controller'            => 'App\Http\Controllers\CompanyController',
+                'generate_permissions'  => 1,
+                'description'           => 'Company Module',
+            ])->save();
+        }
+
+
+
+        $dataType = $this->dataType('slug', 'Employees');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'Add Employee',
+                'display_name_singular' => __('voyager::seeders.data_types.employee.singular'),
+                'display_name_plural'   => __('voyager::seeders.data_types.employee.plural'),
+                'icon'                  => 'voyager-person',
+                'model_name'            => 'App\Models\Employee',
+                'controller'            => 'App\Http\Controllers\AddEmployeeController',
+                'generate_permissions'  => 1,
+                'description'           => 'Employee Module',
+            ])->save();
+        }
+
+        
+
+        
     }
 
     /**

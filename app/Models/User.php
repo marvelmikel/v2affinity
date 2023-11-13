@@ -66,6 +66,11 @@ class User extends \Modules\Admin\Models\User
     return $this->belongsTo(Role::class);
 }
 
+public function employee()
+{
+    return $this->belongsTo(Employee::class);
+}
+
 
     
 }

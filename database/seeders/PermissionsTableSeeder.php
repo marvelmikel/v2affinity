@@ -40,6 +40,10 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('invoices');
 
         Permission::generateFor('settings');
+
+        Permission::generateFor('companies');
+
+        Permission::generateFor('employees');
         
     }
 }

@@ -1,21 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\DataTables\AddUsersDataTable;
-use App\Models\User;
+use App\DataTables\EmployeeDataTable;
+use App\DataTables\StoreDataTable;
 use Modules\Admin\Models\Role;
+use \Modules\Admin\Models\User;
 use App\Models\Store;
 use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Http\Request;
-use App\Http\Requests\AddUserRequest;
+use App\Http\Requests\EmployeeRequest;
 use Illuminate\Support\Facades\Auth;
 
 
 
-class AddUserController extends Controller
+class EmployeeController extends Controller
 {
     
-    public function index(AddUsersDataTable $dataTable)
+    public function index(EmployeeDataTable $dataTable)
     {
         $user = Auth::user();
         $company_id = $user->company_id;
@@ -32,7 +34,7 @@ class AddUserController extends Controller
                 return $query->where('company_id', $this->company_id);
             }
         });
-        return $dataTable->render('voyager::users.index');
+        return $dataTable->render('voyager::employee.index');
     }
 
     public function create()
@@ -40,12 +42,12 @@ class AddUserController extends Controller
         $user = Auth::user();
         $company_id = $user->company_id ?? null;
         
-        return view('voyager::users.create', compact('company_id'));
+        return view('voyager::employee.create', compact('company_id'));
     }
 
    
 
-    public function store(AddUserRequest $request)
+    public function store(EmployeeRequest $request)
 {
     $validatedData = $request->validated();
 

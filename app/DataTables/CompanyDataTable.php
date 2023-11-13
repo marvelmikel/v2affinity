@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\User;
+use App\Models\Company;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Admin\Models\Role;
 
 
-class AddUsersDataTable extends DataTable
+class CompanyDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -32,10 +32,10 @@ class AddUsersDataTable extends DataTable
 
                 $btn = "<div style='display:flex;'>
                     <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-eye'></i></a>
-                    <form action='$deleteUrl' method='POST' style='display:inline'>
+                    <form action='$deleteUrl' method='POST' style='display:inline; margin-right:2px'>
                         " . csrf_field() . "
                         " . method_field('DELETE') . "
-                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Store?\")'>
+                        <button type='submit'  class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Store?\")'>
                             <i class='voyager-trash'></i>
                         </button>
                     </form> 
@@ -47,21 +47,17 @@ class AddUsersDataTable extends DataTable
             ->setRowId('id');
     }
 
-    public function query(User $model): Builder
-    {
-        // Check if the authenticated user has role_id 1 (admin)
-        if (Auth::user()->role_id === 1) {
-            return $model->newQuery()
-                ->select('users.*');
-        }
-    
-        // Retrieve the company_id of the authenticated user
-        $companyId = Auth::user()->company_id;
-    
-        return $model->newQuery()
-            ->select('users.*')
-            ->where('users.company_id', $companyId);
+    public function query(Company $model): Builder
+{
+    // Check if the authenticated user has role_id 1 (admin)
+    if (Auth::user()->role_id !== 1) {
+        return $model->newQuery()->where('id', '=', null); // Return an empty result set
     }
+
+    return $model->newQuery();
+}
+
+    
     
     
     
@@ -100,16 +96,18 @@ class AddUsersDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name'),
-            Column::make('email'),
-            Column::make('role_id'),
-            Column::make('store_id'),
+            Column::make('company_name'),
+            Column::make('company_email'),
+            Column::make('company_phone'),
+            Column::make('company_address'),
+            Column::make('company_number'),
+            Column::make('vat_number'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')
                 ->exportable(true)
                 ->printable(true)
-                ->width(60)
+                ->width(80)
                 ->addClass('text-center'),
         ];
     }

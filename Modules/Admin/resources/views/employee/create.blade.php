@@ -9,7 +9,7 @@
 @section('page_header')
 <h1 class="page-title">
     <i class="voyager-basket"></i>
-    Create New User for {{ Auth::user()->company->company_name }}
+    Add New Employee for {{ Auth::user()->company->company_name ?? '' }}
 </h1>
 @stop
 
@@ -21,7 +21,7 @@
 
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="{{ route('voyager.users.store')}}" method="POST"
+                <form class="form-edit-add" role="form" action="{{ route('voyager.employee.store')}}" method="POST"
                     enctype="multipart/form-data">
 
                     <!-- CSRF TOKEN -->
@@ -65,14 +65,16 @@
                             <div class="col-md-4 form-group">
                                 <label for="role_id">User Role </label>
                                 <select class="form-control" name="role_id" id="role_id" required>
-    <option value="">Select a User Role</option>
-    @foreach(\Modules\Admin\Models\Role::where('name', '!=', 'admin')->where('id', '>', Auth::user()->role_id)->get() as $role)
-        <option value="{{ $role->id }}" @if(old('role_id') == $role->id) selected @endif>{{ $role->name }}</option>
-    @endforeach
-</select>
+                                    <option value="">Select a User Role</option>
+                                    @foreach(\Modules\Admin\Models\Role::where('name', '!=', 'admin')->where('id', '>',
+                                    Auth::user()->role_id)->get() as $role)
+                                    <option value="{{ $role->id }}" @if(old('role_id')==$role->id) selected
+                                        @endif>{{ $role->name }}</option>
+                                    @endforeach
+                                </select>
 
                             </div>
-                            
+
                             <div class="col-md-4 form-group">
                                 <label for="password">Password</label>
                                 <input class="form-control" type="password" name="password" id="password" required>
@@ -90,7 +92,7 @@
 
 
                     <div class="panel-footer">
-                        <button type="submit" class="btn btn-primary">Save User</button>
+                        <button type="submit" class="btn btn-primary">Save Employee</button>
                     </div>
                 </form>
 

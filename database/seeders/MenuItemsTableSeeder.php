@@ -49,37 +49,23 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
-        // $menuItem = MenuItem::firstOrNew([
-        //     'menu_id' => $menu->id,
-        //     'title'   => __('voyager::seeders.menu_items.users'),
-        //     'url'     => '',
-        //     'route'   => 'voyager.users.index',
-        // ]);
-        // if (!$menuItem->exists) {
-        //     $menuItem->fill([
-        //         'target'     => '_self',
-        //         'icon_class' => 'voyager-person',
-        //         'color'      => null,
-        //         'parent_id'  => null,
-        //         'order'      => 3,
-        //     ])->save();
-        // }
 
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
-            'title'   => __('Users'),
+            'title'   => __('voyager::seeders.menu_items.users'),
             'url'     => '',
             'route'   => 'voyager.users.index',
         ]);
         if (!$menuItem->exists) {
             $menuItem->fill([
                 'target'     => '_self',
-                'icon_class' => 'voyager-people',
+                'icon_class' => 'voyager-person',
                 'color'      => null,
                 'parent_id'  => null,
                 'order'      => 3,
             ])->save();
         }
+
 
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
@@ -158,7 +144,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-tools',
                 'color'      => null,
                 'parent_id'  => null,
-                'order'      => 9,
+                'order'      => 8,
             ])->save();
         }
 
@@ -174,7 +160,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-list',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 10,
+                'order'      => 9,
             ])->save();
         }
 
@@ -190,7 +176,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-data',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 11,
+                'order'      => 10,
             ])->save();
         }
 
@@ -206,7 +192,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-compass',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 12,
+                'order'      => 11,
             ])->save();
         }
 
@@ -222,7 +208,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-bread',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 13,
+                'order'      => 12,
             ])->save();
         }
 
@@ -238,7 +224,40 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-settings',
                 'color'      => null,
                 'parent_id'  => null,
+                'order'      => 13,
+            ])->save();
+        }
+
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('Company'),
+            'url'     => '',
+            'route'   => 'voyager.company.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-company',
+                'color'      => null,
+                'parent_id'  => null,
                 'order'      => 14,
+            ])->save();
+        }
+
+
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('Employees'),
+            'url'     => '',
+            'route'   => 'voyager.employee.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-person',
+                'color'      => null,
+                'parent_id'  => null,
+                'order'      => 15,
             ])->save();
         }
 

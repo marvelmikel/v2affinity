@@ -3,8 +3,9 @@
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AddUserController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\Facades\Voyager;
 
@@ -57,13 +58,6 @@ Route::group(['prefix' => 'admin'], function () {
      Route::group(['middleware' => 'admin.user' ], function ()  {
         Route::post('products/{product}/add-product-column',   [ProductController::class, 'addProductColumn'])->name('voyager.products.add-product-column');
     
-
-
-
-      
-        
-
-
     });
   
 
@@ -75,20 +69,25 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/stores/{id}/delete', [StoreController::class, 'delete'])->name('voyager.stores.delete');
         Route::put('/stores/{storeId}', [StoreController::class, 'update'])->name('stores.update');
        
+    });
+
+    // Add Employee Routes Store Manager & Sales Person 
+    Route::group(['middleware' => 'admin.user' ], function ()  {
+        Route::get('employee',   [EmployeeController::class, 'index'])->name('voyager.employee.index');
+        Route::get('/employee/create', [EmployeeController::class, 'create'])->name('voyager.employee.create');
+        Route::post('employee', [EmployeeController::class, 'store'])->name('voyager.employee.store');
        
     });
 
-
-    // Add Users Routes Store Manager & Sales Person 
+    // company profile
+    
     Route::group(['middleware' => 'admin.user' ], function ()  {
-        Route::get('users',   [AddUserController::class, 'index'])->name('voyager.users.index');
-        Route::get('/users/create', [AddUserController::class, 'create'])->name('voyager.users.create');
-        Route::post('users', [AddUserController::class, 'store'])->name('voyager.users.store');
+        Route::get('/company',   [CompanyController::class, 'index'])->name('voyager.company.index');
+        Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
+
 
         
     });
-
-
 
 
 });

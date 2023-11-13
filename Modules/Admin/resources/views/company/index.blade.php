@@ -1,110 +1,165 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager::generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->getTranslatedAttribute('display_name_singular'))
+@section('page_title', __('Company'))
 
-@section('css')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-@stop
+@section('content')
+<div class="page-content container-fluid">
+    @include('voyager::alerts')
 
- <!-- Company Information -->
-    <h1 class="page-title">
-        <i class="voyager-company"></i>
-      Update Company Information
-    </h1>
-   
-    <div class="page-content container-fluid">
-        <form class="form-edit-add" role="form"
-              action=""
-              method="POST" enctype="multipart/form-data" autocomplete="off">
-           
-                        <!-- CSRF TOKEN -->
-                        {{ csrf_field() }}
-            <!-- PUT Method if we are editing -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="panel panel-bordered">
-                    {{-- <div class="panel"> --}}
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        <div class="panel-body">
-                            
-                        <div class="form-group">
-                        <label for="company_name">{{ __('Company Name') }}</label>
-                        <input type="text" class="form-control" id="company_name" name="company_name" placeholder="{{ __('Company Name') }}"
-                               value="{{ old('company_name', $company->company_name ?? '') }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="company_email">{{ __('Company Email') }}</label>
-                        <input type="email" class="form-control" id="company_email" name="company_email" placeholder="{{ __('Company Email') }}"
-                               value="{{ old('company_email', $dataTypeContent->company_email) }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="company_address">{{ __('Company Address') }}</label>
-                        <input type="text" class="form-control" id="company_address" name="company_address" placeholder="{{ __('Company Address') }}"
-                               value="{{ old('company_address', $dataTypeContent->company_address) }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="company_phone">{{ __('Company Phone') }}</label>
-                        <input type="text" class="form-control" id="company_phone" name="company_phone" placeholder="{{ __('Company Phone') }}"
-                               value="{{ old('company_phone', $dataTypeContent->company_phone) }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="company_number">{{ __('Company Number') }}</label>
-                        <input type="text" class="form-control" id="company_number" name="company_number" placeholder="{{ __('Company Number') }}"
-                               value="{{ old('company_number', $dataTypeContent->company_number) }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="vat_number">{{ __('Vat Number') }}</label>
-                        <input type="text" class="form-control" id="vat_number" name="vat_number" placeholder="{{ __('Vat Number') }}"
-                               value="{{ old('vat_number', $dataTypeContent->vat_number) }}">
-                    </div>
-                            <button type="submit" class="btn btn-success pull-right save">
-                {{ __('Update Conpany Information') }}
-            </button>
-                        </div>
+    @if(Auth::user()->role_id === 1)
+    <!-- Admin view of all companies -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="admin-section-title">
+                <h3><i class="voyager-company"></i> {{ __('Company') }}</h3>
+            </div>
+            <div class="clear"></div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {{ $dataTable->table() }}
                     </div>
                 </div>
+            </div>
+        </div><!-- .row -->
+    </div><!-- .col-md-12 -->
 
-                <!-- <div class="col-md-4">
-                    <div class="panel panel panel-bordered panel-warning">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                @if(isset($dataTypeContent->avatar))
-                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image( $dataTypeContent->avatar ) }}" style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
-                                @endif
-                                <input type="file" data-name="avatar" name="avatar">
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+    <!-- Sales person & Store manager view Company information Only -->
+
+    @elseif(Auth::user()->role_id === 3 || Auth::user()->role_id === 4)
+    <h1 class="page-title">
+        <i class="voyager-company"></i>
+        Company Information
+    </h1>
+  
+        <div class="panel-body">
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" name="company_name" id="company_name" value="{{ $companyData['company_name'] }}"
+                        class="form-control" readonly style="background-color: white; color:black;font-weight:bolder;">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_address">Company Address</label>
+                    <input type="tel" name="company_address" id="company_address"
+                        value="{{ $companyData['company_address'] }}" class="form-control" readonly style="background-color: white;color:black; font-weight:bolder;">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_phone">Company Phone Number</label>
+                    <input type="tel" name="company_phone" id="company_phone"
+                        value="{{ $companyData['company_phone'] }}" class="form-control" readonly style="background-color: white; color:black; font-weight:bolder;">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_email">Company Email</label>
+                    <input type="tel" name="company_email" id="company_email"
+                        value="{{ $companyData['company_email'] }}" class="form-control" readonly style="background-color: white; color:black; font-weight:bolder;">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_number">Company Reg Number</label>
+                    <input type="tel" name="company_number" id="company_number"
+                        value="{{ $companyData['company_number'] }}" class="form-control" readonly style="background-color: white; color:black; font-weight:bolder;">
+                </div>
+
+                
             </div>
 
-           
-        </form>
-        <div style="display:none">
-            <input type="hidden" id="upload_url" value="{{ route('voyager.upload') }}">
-            <input type="hidden" id="upload_type_slug" value="{{ $dataType->slug }}">
+            <div class="form-group row">
+            <div class="col-md-12">
+                    <label for="terms_conditions"  style="font-weight:bolder;"><h1>Terms & Conditions</h1></label>
+                    <br>
+                    <p  style="background-color: white; color:black; font-weight:bolder; font-size:20px; height:100px">
+                    {{ strip_tags ($companyData['terms_conditions']) }}
+                   </p>
+                </div>
+               
+            </div>
         </div>
-    </div>
+          <!-- End Sales person & Store manager view Company information Only -->
+
+@else
+
+    <!-- Company Information Details View -->
+
+    <h1 class="page-title">
+        <i class="voyager-company"></i>
+        Company Information
+    </h1>
+
+    <form action="{{ route('company.update', $company->id) }}" method="POST"  enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        <div class="panel-body">
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" name="company_name" id="company_name" style="color:black; font-weight:bolder;" value="{{ $companyData['company_name'] }}"
+                        class="form-control" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_address">Company Address</label>
+                    <input type="tel" name="company_address" id="company_address"  style="color:black; font-weight:bolder;"
+                        value="{{ $companyData['company_address'] }}" class="form-control" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_phone">Company Phone Number</label>
+                    <input type="tel" name="company_phone" id="company_phone"  style="color:black; font-weight:bolder;"
+                        value="{{ $companyData['company_phone'] }}" class="form-control" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_email">Company Email</label>
+                    <input type="tel" name="company_email" id="company_email"  style="color:black; font-weight:bolder;"
+                        value="{{ $companyData['company_email'] }}" class="form-control" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="company_number">Company Reg Number</label>
+                    <input type="tel" name="company_number" id="company_number"  style="color:black; font-weight:bolder;"
+                        value="{{ $companyData['company_number'] }}" class="form-control" required>
+                </div>
+
+                
+            </div>
+
+            <div class="form-group row">
+            <div class="col-md-12">
+                    <label for="terms_conditions" style="font-weight:bolder;"><h1>Terms & Conditions</h1></label>
+                    <textarea name="terms_conditions" id="terms_conditions" class="form-control richTextBox" style="font-size:20px;"
+                        required>{{ $companyData['terms_conditions'] }}</textarea>
+                </div>
+               
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Information</button>
+
+    </form>
+   <!-- End of  Company Information Details View  -->
+    @endif
+  
+</div>
+<!-- .page-content container-fluid -->
 @stop
+<!-- Include the Froala Editor JS and CSS files -->
+<script src="https://cdn.jsdelivr.net/npm/froala-editor@3.2.6"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@3.2.6/css/froala_editor.pkgd.min.css">
+
+<!-- Initialize the Froala Editor on the textarea -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    new FroalaEditor('#terms_conditions');
+});
+</script>
 
 @section('javascript')
-    <script>
-        $('document').ready(function () {
-            $('.toggleswitch').bootstrapToggle();
-        });
-    </script>
-@stop
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endsection
