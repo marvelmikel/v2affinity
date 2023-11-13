@@ -102,7 +102,6 @@ class EmployeeDataTable extends DataTable
             Column::make('id'),
             Column::make('name'),
             Column::make('email'),
-            Column::make('role_id'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')
