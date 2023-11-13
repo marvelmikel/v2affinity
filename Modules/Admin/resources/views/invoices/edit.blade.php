@@ -189,7 +189,7 @@
                                 @if($meta->name != 'formular')
                                   
 
-                                        @if($meta->name == 'area')
+                                        @if($meta->type == 'formular')
                                             <td style="min-width: 200px;">
                                                 <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
                                                     value="{{ $meta->name }}">

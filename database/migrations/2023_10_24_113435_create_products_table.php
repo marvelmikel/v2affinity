@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('company_id')->nullable();
             $table->foreignId('user_id')->nullable();
             $table->string('title')->nullable();
+            $table->string('type')->nullable(); // tile, carpet
             $table->longText('description')->nullable();
             $table->tinyInteger('in_stock')->default(1);
             $table->timestamps();

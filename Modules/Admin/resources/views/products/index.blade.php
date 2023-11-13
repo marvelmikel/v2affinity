@@ -25,7 +25,7 @@
 
 
 
-            <!-- Add  product column modal -->
+            <!-- Add  product  modal -->
             <div class="modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -52,6 +52,14 @@
 
 
                                 <div style="margin: 10px 0;">
+                                    <label for="">Type </label>
+                                    <select class="form-control" name="type" id="">
+                                        <option value="carpet">Carpet</option>
+                                        <option value="tile">Tile</option>
+                                    </select>
+                                </div>
+
+                                <div style="margin: 10px 0;">
                                     <label for="">Availability </label>
                                     <select class="form-control" name="in_stock" id="">
                                         <option value="1">In Stock</option>
@@ -69,8 +77,8 @@
                     </div>
                 </form>
             </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 
 
         </div><!-- .row -->

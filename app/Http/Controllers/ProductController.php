@@ -66,6 +66,7 @@ class ProductController extends Controller
             'company_id' => auth()->user()->company_id,
             'user_id' => auth()->user()->id,
             'title' => $request->title,
+            'type' => $request->type,
             'description' => $request->description
         ]);
         
