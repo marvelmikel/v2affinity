@@ -53,7 +53,7 @@ input[type=number]::-webkit-outer-spin-button {
                                 <td><input class="form-control" type="text" name="{{ $meta->name }}[]"
                                         value="{{ $meta->value }}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }} | {{ $meta->name }}"></td>
 
                                 <td>
                                     <a href=""
