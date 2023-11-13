@@ -79,7 +79,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 
                             <tr>
-                                <td colspan="3"><a href="#" data-productid="{{ $product->id  }}"
+                                <td colspan="3"><a href="#add_pricing_column_modal" data-toggle="modal"  data-productid="{{ $product->id  }}"
                                         class="btn btn-secondary btn-xs add-product-column-btn"><i
                                             class="voyager-plus"></i>Add Product Attribute </a> </td>
                             </tr>
