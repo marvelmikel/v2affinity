@@ -70,10 +70,11 @@
                                 <input type="hidden" name="product_id" class="form-control"></input>
 
                             </div>
+                            
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{
                                     __('voyager::generic.close') }}</button>
-                                <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
+                                <button type="submit" class="btn btn-primary  pull-left" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

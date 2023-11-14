@@ -5,23 +5,23 @@
 @section('css')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-    .btn-group {
-        width: 100% !important;
-    }
+.btn-group {
+    width: 100% !important;
+}
 
-    .modal-body button {
-        width: 100% !important;
-    }
+.modal-body button {
+    width: 100% !important;
+}
 
-    .multiselect-container {
-        width: 100% !important;
-    }
+.multiselect-container {
+    width: 100% !important;
+}
 </style>
 @stop
 
@@ -43,7 +43,8 @@
 
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="{{ route('voyager.invoices.update', $invoice->id) }}" method="POST">
+                <form class="form-edit-add" role="form" action="{{ route('voyager.invoices.update', $invoice->id) }}"
+                    method="POST">
 
 
 
@@ -79,7 +80,8 @@
                         <div class="form-group row">
                             <div class="form-group col-md-6">
                                 <label for="name">Store</label>
-                                <select class="form-control select" value="{{ $invoice->store_id }}" name="store_id" id="store_id">
+                                <select class="form-control select" value="{{ $invoice->store_id }}" name="store_id"
+                                    id="store_id">
                                     <option value="1">United Carpet Store</option>
                                 </select>
                             </div>
@@ -187,34 +189,51 @@
                                 <!-- did this so I can put the formular at the end of the meta list -->
 
                                 @if($meta->name != 'formular')
-                                  
 
-                                        @if($meta->type == 'formular')
-                                            <td style="min-width: 200px;">
-                                                <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
-                                                    value="{{ $meta->name }}">
-                                                <input disabled readonly style="background-color: white;" class="form-control"
-                                                    name="{{ $meta->name }}[]" value="{{  evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id ) }}" type="{{ $meta->type }}"
-                                                    {{ $meta->visibility }}>
+                                @if($meta->type == 'formular')
+                                <td style="min-width: 200px;">
+                                    <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
+                                        value="{{ $meta->name }}">
+                                    <input disabled readonly style="background-color: white;" class="form-control"
+                                        name="{{ $meta->name }}[]"
+                                        value="{{  evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id ) }}"
+                                        type="{{ $meta->type }}" {{ $meta->visibility }}>
 
-                                                <input disabled  readonly style="background-color: white;" class="form-control" type="hidden"
-                                                    name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
-                                            </td>
-                                        @else
-                                            <td style="min-width: 200px;">
-                                                    <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
-                                                        value="{{ $meta->name }}">
-                                                    <input style="background-color: white;" class="form-control"
-                                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
-                                                        {{ $meta->visibility }}>
+                                    <input disabled readonly style="background-color: white;" class="form-control"
+                                        type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
+                                </td>
+                                @else
 
-                                                    <input readonly style="background-color: white;" class="form-control" type="hidden"
-                                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
-                                            </td>
-                                        @endif
+                                <td style="min-width: 200px;">
+                                    <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
+                                        value="{{ $meta->name }}">
+                                    <!-- Check for unit_pack_tile_area and make field read-only -->
+                                    @if($meta->name == 'unit_pack_tile_area')
+                                    <input readonly style="background-color: white;" class="form-control"
+                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
+                                        {{ $meta->visibility }}>
+                                    @else
+
+                                    <!-- Check for tiles_per_pack and make field read-only -->
+                                    @if($meta->name == 'tiles_per_pack')
+                                    <input readonly style="background-color: white;" class="form-control"
+                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
+                                        {{ $meta->visibility }}>
+                                    @else
+                                    <input style="background-color: white;" class="form-control"
+                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
+                                        {{ $meta->visibility }}>
+
+                                    @endif
                                     @endif
 
-                              
+                                    <input readonly style="background-color: white;" class="form-control" type="hidden"
+                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
+                                </td>
+                                @endif
+                                @endif
+
+
 
 
                                 @endforeach
@@ -280,7 +299,7 @@
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
-                                <td><input  class="form-control" type="number" max="1" min="0" step="any"
+                                <td><input class="form-control" type="number" max="1" min="0" step="any"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
@@ -289,7 +308,7 @@
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
-                                <td><input  readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
+                                <td><input readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
                                         value="{{ number_format($pricing->value,2)}}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
@@ -302,7 +321,7 @@
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text" name="formular[]"
                                         value="formular"></td>
-                                <td><input  class="form-control" type="text" name="formular[]"
+                                <td><input class="form-control" type="text" name="formular[]"
                                         value="{{ $invoice->getPricing('formular')['value'] }}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="formular[]" value="{{ $invoice->getPricing('formular')['identifier'] }}">
@@ -332,10 +351,9 @@
                                     <a style="text-decoration: none;"
                                         href="{{ route('voyager.invoices.show', $invoice->id) }}"
                                         class="btn btn-primary"><i class="voyager"></i>Preview Invoice</a>
-                                    <a style="text-decoration: none;"
-                                       target="_blank"
-                                       href="{{ route('voyager.invoices.pdf', $invoice->id) }}"
-                                       class="btn btn-primary"><i class="voyager"></i>Invoice PDF</a>
+                                    <a style="text-decoration: none;" target="_blank"
+                                        href="{{ route('voyager.invoices.pdf', $invoice->id) }}"
+                                        class="btn btn-primary"><i class="voyager"></i>Invoice PDF</a>
                                 </td>
 
 
@@ -435,41 +453,41 @@
 
     <!-- Add invocie produtct column modal -->
     <div class=" modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="{{ __('voyager::generic.close') }}"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-data"></i> Add
-                        Invoice Product</h4>
-                </div>
-                <form
-                    action="{{ route('voyager.invoices.add-item', $invoice->id) }}"
-                    method="post">
-                    @csrf()
-                    @method('post')
-                    <div class="modal-body"
-                        style="overflow:scroll; min-height: 300px;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="{{ __('voyager::generic.close') }}"><span
+                                                                    aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title"><i class="voyager-data"></i> Add
+                                                                Invoice Product</h4>
+                                                        </div>
+                                                        <form
+                                                            action="{{ route('voyager.invoices.add-item', $invoice->id) }}"
+                                                            method="post">
+                                                            @csrf()
+                                                            @method('post')
+                                                            <div class="modal-body"
+                                                                style="overflow:scroll; min-height: 300px;">
 
-                        <div>
-                            <strong>Select Products:</strong>
-                            <select id="multiple-checkboxes"
-                                name="product_ids[]" multiple="multiple">
-                                @foreach($products as $product)
-                                <option value="{{ $product->id }}">{{
+                                                                <div>
+                                                                    <strong>Select Products:</strong>
+                                                                    <select id="multiple-checkboxes"
+                                                                        name="product_ids[]" multiple="multiple">
+                                                                        @foreach($products as $product)
+                                                                        <option value="{{ $product->id }}">{{
                                     $product->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button"
-                            class="btn btn-outline mx-3 pull-right"
-                            data-dismiss="modal">{{ __('voyager::generic.close')
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button"
+                                                                    class="btn btn-outline mx-3 pull-right"
+                                                                    data-dismiss="modal">{{ __('voyager::generic.close')
                             }}</button>
-                        <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
+                                                                <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
@@ -480,33 +498,38 @@
 @endsection
 
 @section('javascript')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.add-column-btn').click(function (e) {
-                e.preventDefault();
-                let invoiceitemid = $(this).data('invoiceitemid')
-                console.log(invoiceitemid)
+    <script type=" text/javascript">
+                                                                    $(document).ready(function () {
+                                                                    $('.add-column-btn').click(function (e) {
+                                                                    e.preventDefault();
+                                                                    let invoiceitemid = $(this).data('invoiceitemid')
+                                                                    console.log(invoiceitemid)
 
-                $('input[name=" item_id"]').val(invoiceitemid)
-                $('#add_item_column_modal').modal('show');
-            })
-            $('.add-pricing-column-btn').click(function (e) {
-                e.preventDefault();
-                let invoiceid = $(this).data('invoiceid')
+                                                                    $('input[name=" item_id"]').val(invoiceitemid)
+                                                                    $('#add_item_column_modal').modal('show');
+                                                                    })
+                                                                    $('.add-pricing-column-btn').click(function (e) {
+                                                                    e.preventDefault();
+                                                                    let invoiceid = $(this).data('invoiceid')
 
-                $('input[name="invoice_id"]').val(invoiceid)
+                                                                    $('input[name="invoice_id"]').val(invoiceid)
 
-                $('#add_pricing_column_modal').modal('show');
-            })
-        })
-        $(document).ready(function () {
-            $('#multiple-checkboxes').multiselect({
-                includeSelectAllOption: true,
-            });
-        });
-    </script>
+                                                                    $('#add_pricing_column_modal').modal('show');
+                                                                    })
+                                                                    })
+                                                                    $(document).ready(function () {
+                                                                    $('#multiple-checkboxes').multiselect({
+                                                                    includeSelectAllOption: true,
+                                                                    });
+                                                                    });
+                                                                    </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-    @endsection
+                                                                    <script
+                                                                        src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"
+                                                                        defer></script>
+                                                                    <script
+                                                                        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js">
+                                                                    </script>
+                                                                    <link rel="stylesheet"
+                                                                        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+                                                                    @endsection

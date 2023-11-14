@@ -83,8 +83,8 @@ class Product extends Model
             if($model->type == 'tile'){
 
                
-                $model->meta()->updateOrCreate(['name' => 'single_tile_area'], [ 
-                    'name' => 'single_tile_area', 
+                $model->meta()->updateOrCreate(['name' => 'unit_pack_tile_area'], [ 
+                    'name' => 'unit_pack_tile_area', 
                     'value' => 1, 
                     'type' => 'number',
                     'visibility' => ''
@@ -116,7 +116,7 @@ class Product extends Model
                     $price = $model->getMeta('unit_price(£)');
                     $area = $model->getMeta('area');
                     $tiles_per_pack = $model->getMeta('tiles_per_pack');
-                    $single_tile_area = $model->getMeta('single_tile_area');
+                    $single_tile_area = $model->getMeta('unit_pack_tile_area');
 
                     
 
