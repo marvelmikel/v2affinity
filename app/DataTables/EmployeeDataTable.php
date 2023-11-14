@@ -50,7 +50,7 @@ class EmployeeDataTable extends DataTable
     public function query(User $model): Builder
     {
         // Check if the authenticated user has role_id 1 (admin)
-        if (Auth::user()->role_id === 1) {
+        if (Auth::check() && Auth::user()->role_id === 1) {
             return $model->newQuery()
                 ->select('users.*');
         }
@@ -60,8 +60,10 @@ class EmployeeDataTable extends DataTable
     
         return $model->newQuery()
             ->select('users.*')
-            ->where('users.company_id', $companyId);
+            ->where('users.company_id', $companyId)
+            ->where('users.id', '!=', Auth::id());
     }
+    
     
     
     

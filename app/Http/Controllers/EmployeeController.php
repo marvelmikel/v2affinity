@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\DataTables\EmployeeDataTable;
 use App\DataTables\StoreDataTable;
 use Modules\Admin\Models\Role;
-use \Modules\Admin\Models\User;
+use App\Models\User;
 use App\Models\Store;
 use App\Models\Company;
 use App\Models\Employee;
@@ -60,6 +60,7 @@ class EmployeeController extends Controller
     $user = User::create([
         'name' => $validatedData['name'],
         'email' => $validatedData['email'],
+        'role_id' => $validatedData['role_id'],
         'password' => bcrypt($validatedData['password']),
         'company_id' => Auth::user()->company_id,
     ]);
@@ -75,11 +76,18 @@ class EmployeeController extends Controller
     $user->save();
 
     // Redirect with success message
-    return redirect()->route('voyager.users.index')->with([
+    return redirect()->route('voyager.employee.index')->with([
         'message' => 'Successfully created user.',
         'alert-type' => 'success',
     ]);
 }
+
+public function edit($id)
+{
+
+}
+
+
 
 
     

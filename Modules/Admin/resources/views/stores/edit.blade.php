@@ -160,54 +160,36 @@ input[type=number]::-webkit-outer-spin-button {
                             </tr>
                         </thead>
                         <tbody>
-                            <form action=" ">
+                            @foreach ($usersAssignedToStore as $user)
+                            @if ($user->id !== Auth::user()->id)
+                            <tr>
+                                <td><input disabled readonly class="form-control" type="text" name="name"
+                                        value="{{ $user->name }}"></td>
 
-                                <tr>
-                                    <td><input disabled readonly class="form-control" type="text" name=""
-                                            value="Hannah"></td>
+                                <td><input readonly class="form-control" type="text" name="role_name"
+                                        value="{{ $user->role->name ?? 'N/A' }}"></td>
 
-                                    <td><input readonly class="form-control" type="text" name="" value="Store Manager">
-                                    </td>
+                                <td colspan="3">
+                                    <!-- <a href="#" style='margin-right:2px; text-decoration: none;'
+                                        class='btn btn-success btn-xs' data-toggle="modal"
+                                        data-target="#add_item_column_modal">
+                                        <i class="voyager-eye"></i>View</a> -->
 
-                                    <td colspan="3">
-                                        <a href="#" style='margin-right:2px; text-decoration: none;'
-                                            class='btn btn-success btn-xs' data-toggle="modal"
-                                            data-target="#add_item_column_modal"
-                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
-                                            <i class="voyager-eye"></i>View</a>
+                                    <form action="{{ route('delete-store-employee', $user->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-xs"
+                                            onclick="return confirm('Are you sure?')">
+                                            <i class="voyager-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endif
+                            @endforeach
 
-                                        <a href="#" style='margin-right:2px; text-decoration: none;'
-                                            class='btn btn-danger btn-xs' data-toggle="modal" data-target=""
-                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
-                                            <i class="voyager-trash"></i>Delete</a>
-                                    </td>
 
 
-
-                                </tr>
-                                <tr>
-                                    <td><input disabled readonly class="form-control" type="text" name="" value="jyair">
-                                    </td>
-
-                                    <td><input readonly class="form-control" type="text" name="" value="Sales person">
-                                    </td>
-
-                                    <td colspan="3">
-                                        <a href="#" style='margin-right:2px; text-decoration: none;'
-                                            class='btn btn-success btn-xs' data-toggle="modal"
-                                            data-target="#add_item_column_modal"
-                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
-                                            <i class="voyager-eye"></i>View</a>
-
-                                        <a href="#" style='margin-right:2px; text-decoration: none;'
-                                            class='btn btn-danger btn-xs' data-toggle="modal" data-target=""
-                                            class="btn btn-secondary btn-xs add-pricing-column-btn">
-                                            <i class="voyager-trash"></i>Delete</a>
-                                    </td>
-
-                                </tr>
-
-                            </form>
                         </tbody>
                     </table>
                 </div>
@@ -217,7 +199,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 
+
+
         <!-- store Email Settings -->
+       {{-- @if (Auth::check() && Auth::user()->role_id == 1) --}}
         <div class="col-md-6 ">
             <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
                 <h3><i class="voyager-mail"></i> {{ __('Store Email Settings') }}</h3>
@@ -292,73 +277,12 @@ input[type=number]::-webkit-outer-spin-button {
             </div>
         </div><!-- .row -->
     </div>
+  
+    {{-- @endif --}}
 
-
-    <!-- view employee info modal -->
-    <div class="modal modal-info fade" tabindex="-1" id="add_item_column_modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-data"></i>Employee Information</h4>
-                </div>
-                <form action="" method="post">
-                    @csrf()
-                    <div class="modal-body" style="overflow:scroll">
-
-
-                        <div>
-                            <label style="color:black; font-style:bolder;" for="">Name </label>
-                            <input name="name" type="text" class="form-control" value="mike"></input>
-                        </div>
-
-                        <div style="margin: 10px 0;">
-                            <label style="color:black; font-style:bolder;" for=""> Email Address </label>
-                            <input name="" type="text" class="form-control" value="mike"></input>
-                        </div>
-
-                        <!-- <input type="hidden" name="item_id" class="form-control"></input> -->
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline mx-3 pull-right"
-                            data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                        <!-- <button type="submit" class="btn btn-danger pull-left" "><i class="voyager-trash"></i>{{ __('voyager::generic.delete') }}</button> -->
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 </div>
 @stop
 @section('javascript')
-<!-- <script type=" text/javascript">
-                            $(document).ready(function () {
-                            $('.add-column-btn').click(function (e) {
-                            e.preventDefault();
-                            let invoiceitemid = $(this).data('invoiceitemid')
-                            console.log(invoiceitemid)
-
-                            $('input[name=" item_id"]').val(invoiceitemid)
-                            $('#add_item_column_modal').modal('show');
-                            })
-                            $('.add-pricing-column-btn').click(function (e) {
-                            e.preventDefault();
-                            let invoiceid = $(this).data('invoiceid')
-
-                            console.log(invoiceid)
-                            $('input[name="invoice_id"]').val(invoiceid)
-
-                            $('#add_pricing_column_modal').modal('show');
-                            })
-                            })
-                            $(document).ready(function () {
-                            $('#multiple-checkboxes').multiselect({
-                            includeSelectAllOption: true,
-                            });
-                            });
-                            </script> -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer>
 </script>

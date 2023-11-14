@@ -210,7 +210,7 @@ input[type=number]::-webkit-outer-spin-button {
                                     <!-- Check for unit_pack_tile_area and make field read-only -->
                                     @if($meta->name == 'unit_pack_tile_area')
                                     <input readonly style="background-color: white;" class="form-control"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
+                                        name="{{ $meta->name }}[]" value="{{$meta->value }}" type="{{ $meta->type }}"
                                         {{ $meta->visibility }}>
                                     @else
 

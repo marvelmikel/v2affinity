@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Admin\Contracts\User as UserContract;
 use Modules\Admin\Tests\Database\Factories\UserFactory;
 use Modules\Admin\Traits\VoyagerUser;
+use Modules\Admin\Models\Role;
 
 class User extends Authenticatable implements UserContract
 {
@@ -51,4 +52,11 @@ class User extends Authenticatable implements UserContract
     {
         return UserFactory::new();
     }
+
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
 }

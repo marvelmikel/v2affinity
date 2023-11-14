@@ -6,7 +6,10 @@ use App\DataTables\StoresDataTable;
 use App\Http\Requests\StoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
 use App\Models\Store;
+use App\Models\Company;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use \Modules\Admin\Models\Role;
 
 use Illuminate\Http\Request;
 
@@ -115,13 +118,37 @@ class StoreController extends Controller
 
 
 
-    public function edit(Request $request,  $id)
-    {
-        $store = Store::findOrFail($id);
+public function edit(Request $request, $id)
+{
+    $store = Store::findOrFail($id);
+    $company = Company::findOrFail($store->company_id);
 
-        return view('voyager::stores.edit', compact('store'));
+    $usersAssignedToStore = User::where('store_id', $store->id)->get();
+    $usersRegisteredByCompany = User::where('company_id', $store->company_id)->get();
 
-    }
+    $usersAssignedToStore->load('roles');
+
+    return view('voyager::stores.edit', compact('store', 'usersAssignedToStore', 'usersRegisteredByCompany'));
+}
+
+public function deleteStoreEmployee($id)
+{
+    $user = User::findOrFail($id);
+
+    // Delete the user from the database
+    $user = User::findOrFail($id);
+    $user->delete();
+
+    return redirect()->back()->with([
+        'message' => 'Employee deleted successfully .',
+        'alert-type' => 'success',
+    ]);
+}
+
+
+
+
+
 
     public function delete($id)
     {
