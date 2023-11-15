@@ -85,7 +85,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 
                             <tr>
-                                <td><button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save
                                         Product</button></td>
                             </tr>
 

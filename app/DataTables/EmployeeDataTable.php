@@ -65,9 +65,6 @@ class EmployeeDataTable extends DataTable
     }
     
     
-    
-    
-    
      /**
      * Optional method if you want to use html builder.
      *
