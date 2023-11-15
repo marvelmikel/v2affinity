@@ -24,7 +24,7 @@ class ProductMeta extends Model
 	    static::creating(function ($model) {
             $last  =static::latest('id')->first();
             $id = $last ? $last->id+1 : 1;
-	        $model->identifier = 'PM'.$model->product_id. $id;
+	        $model->identifier = $model->name . '_'.$model->product_id. $id;
 	    });	    
 	}
     

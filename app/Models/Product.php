@@ -35,7 +35,7 @@ class Product extends Model
 
            
             $meta = [
-                [ 'name' => 'unit_price(£)', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
+                [ 'name' => 'unit_price', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
                 [ 'name' => 'length', 'value' => 1, 'type' => 'number', 'visibility' => ''],
                 [ 'name' => 'width', 'value' => 1, 'type' => 'number', 'visibility' => ''],
 
@@ -67,8 +67,8 @@ class Product extends Model
                 }
 
                 //add def formular here
-                if( $model->getMeta('unit_price(£)') &&  $model->getMeta('area') ){
-                    $price = $model->getMeta('unit_price(£)');
+                if( $model->getMeta('unit_price') &&  $model->getMeta('area') ){
+                    $price = $model->getMeta('unit_price');
                     $area = $model->getMeta('area');
                     $model->meta()->updateOrCreate(['name' => 'formular'], [ 
                         'name' => 'formular', 
@@ -111,9 +111,9 @@ class Product extends Model
                     
                 }
 
-                if( $model->getMeta('unit_price(£)') &&  $model->getMeta('area') ){
+                if( $model->getMeta('unit_price') &&  $model->getMeta('area') ){
                    
-                    $price = $model->getMeta('unit_price(£)');
+                    $price = $model->getMeta('unit_price');
                     $area = $model->getMeta('area');
                     $tiles_per_pack = $model->getMeta('tiles_per_pack');
                     $single_tile_area = $model->getMeta('single_tile_area');
@@ -154,8 +154,8 @@ class Product extends Model
                 $model->meta()->create([ 'name' => 'quantity', 'value' => 1, 'type' => 'number', 'visibility' => '' ]);
 
                  //add def formular here
-                 if( $model->getMeta('unit_price(£)') &&  $model->getMeta('quantity') ){
-                    $price = $model->getMeta('unit_price(£)');
+                 if( $model->getMeta('unit_price') &&  $model->getMeta('quantity') ){
+                    $price = $model->getMeta('unit_price');
                     $quantity = $model->getMeta('quantity');
                     $model->meta()->updateOrCreate(['name' => 'formular'], [ 
                         'name' => 'formular', 

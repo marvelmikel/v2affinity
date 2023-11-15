@@ -56,11 +56,19 @@ input[type=number]::-webkit-outer-spin-button {
                                         name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
 
                                 <td>
-                                    <a href=""
+                                    <!-- <a href=""
                                         style="text-decoration: none;" class="btn btn-danger btn-xs" data-toggle="modal"
                                         data-target="#confirmation-modal" data-product-id="{{ $product->id }}">
                                         <i class="voyager-trash"></i>
-                                    </a>
+                                    </a> -->
+                                    <form action="{{ route('product-meta.delete', $meta->id)  }}" method='POST' style='display:inline'>
+                                        @csrf()
+                                        @method('DELETE')
+                                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm("Are you sure you want to delete product attribute?")'>
+                                            <i class='voyager-trash'></i>
+                                        </button>
+                                    </form>
+
                                 </td>
 
                             </tr>

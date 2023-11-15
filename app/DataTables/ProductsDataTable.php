@@ -31,7 +31,7 @@ class ProductsDataTable extends DataTable
                     <form action='$deleteUrl' method='POST' style='display:inline'>
                         " . csrf_field() . "
                         " . method_field('DELETE') . "
-                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice?\")'>
+                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Product?\")'>
                             <i class='voyager-trash'></i>
                         </button>
                     </form>
