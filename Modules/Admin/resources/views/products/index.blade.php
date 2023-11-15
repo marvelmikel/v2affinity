@@ -56,7 +56,7 @@
                                     <select class="form-control" name="type" id="">
                                         <option value="carpet">Carpet</option>
                                         <option value="tile">Tile</option>
-                                        <option value="others">Tile</option>
+                                        <option value="others">Others</option>
                                     </select>
                                 </div>
 
