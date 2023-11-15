@@ -170,6 +170,15 @@ class ProductController extends Controller
      * @param  int  $id
      * @return 
      */
+    public function delete($id)
+    {
+        $product = Product::findOrFail($id);
+    
+        $product->delete();
+    
+        // Redirect back to the initial page
+        return redirect()->route('voyager.products.index')->with('success', 'Product deleted successfully');
+    }
     
 
 

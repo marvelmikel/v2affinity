@@ -83,18 +83,18 @@ class Product extends Model
             if($model->type == 'tile'){
 
                
-                $model->meta()->updateOrCreate(['name' => 'unit_pack_tile_area'], [ 
-                    'name' => 'unit_pack_tile_area', 
+                $model->meta()->updateOrCreate(['name' => 'single_tile_area'], [ 
+                    'name' => 'single_tile_area', 
                     'value' => 1, 
                     'type' => 'number',
-                    'visibility' => ''
+                    'visibility' => 'readonly'
                 ]);
 
                 $model->meta()->updateOrCreate(['name' => 'tiles_per_pack'], [ 
                     'name' => 'tiles_per_pack', 
                     'value' => 1, 
                     'type' => 'number',
-                    'visibility' => ''
+                    'visibility' => 'readonly'
                 ]);
 
 
@@ -116,7 +116,7 @@ class Product extends Model
                     $price = $model->getMeta('unit_price(£)');
                     $area = $model->getMeta('area');
                     $tiles_per_pack = $model->getMeta('tiles_per_pack');
-                    $single_tile_area = $model->getMeta('unit_pack_tile_area');
+                    $single_tile_area = $model->getMeta('single_tile_area');
 
                     
 
@@ -130,7 +130,7 @@ class Product extends Model
 
                     $tiles_count = $model->getMeta('tiles_count');
 
-                    $model->meta()->updateOrCreate(['name' => 'packs_count'], [ 
+                    $packs_count = $model->meta()->updateOrCreate(['name' => 'packs_count'], [ 
                         'name' => 'packs_count', 
                         'value' => "$tiles_count->identifier/$tiles_per_pack->identifier", 
                         'type' => 'formular',
@@ -140,7 +140,7 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'formular'], [ 
                         'name' => 'formular', 
-                        'value' => "$price->identifier*$area->identifier", 
+                        'value' => "$price->identifier*$packs_count->identifier", 
                         'type' => 'formular',
                         'visibility' => 'readonly'
                     ]); 
@@ -148,13 +148,35 @@ class Product extends Model
                 }
             }
 
+            if($model->type == 'others'){
+                $model->meta()->where('name', 'length')->delete();
+                $model->meta()->where('name', 'width')->delete();
+                $model->meta()->create([ 'name' => 'quantity', 'value' => 1, 'type' => 'number', 'visibility' => '' ]);
+
+                 //add def formular here
+                 if( $model->getMeta('unit_price(£)') &&  $model->getMeta('quantity') ){
+                    $price = $model->getMeta('unit_price(£)');
+                    $quantity = $model->getMeta('quantity');
+                    $model->meta()->updateOrCreate(['name' => 'formular'], [ 
+                        'name' => 'formular', 
+                        'value' => "$price->identifier*$quantity->identifier", 
+                        'type' => 'formular',
+                        'visibility' => 'readonly'
+                    ]);
+                    
+                }
+            }
 
 
-	    });	    
+
+	    });	 
+        
+        static::deleting(function ($model) {
+            $model->meta()->delete();
+	    });	   
 	}
 
-public function productMeta()
-    {
-        return $this->hasMany(ProductMeta::class);
-    }
+    // public function productMeta(){
+    //     return $this->hasMany(ProductMeta::class);
+    // }
 }

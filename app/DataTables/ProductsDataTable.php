@@ -24,9 +24,17 @@ class ProductsDataTable extends DataTable
             ->eloquent($query)
             ->addColumn('action', function ($row) {
                 $editUrl = route('voyager.products.edit', $row->id);
+                $deleteUrl = route('voyager.products.delete', $row->id);
 
                 $btn = "<div style='display:flex;'>
                     <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
+                    <form action='$deleteUrl' method='POST' style='display:inline'>
+                        " . csrf_field() . "
+                        " . method_field('DELETE') . "
+                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice?\")'>
+                            <i class='voyager-trash'></i>
+                        </button>
+                    </form>
                 </div>";
                 
                 return $btn;
