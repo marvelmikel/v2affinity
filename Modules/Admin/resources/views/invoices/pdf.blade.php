@@ -705,9 +705,12 @@
     <div class="top_section">
     <p align=center style="color: black;  font-size: 20px;">
     Terms and Conditions
-    <br><br>
-    {{ strip_tags($company->terms_conditions) }} 
     </p>
+
+    <br><br>
+    <p style="color: black;  font-size: 18px;line-height: 30px;"> {{ strip_tags($company->terms_conditions) }} </p>
+   
+  
     </div>
 
 </body>

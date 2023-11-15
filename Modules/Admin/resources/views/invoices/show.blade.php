@@ -112,9 +112,9 @@
                     <tr>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Item</th>
                         <th class="whitespace-normal bg-slate-300 p-2">Description</th>
-                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Unit Price</th>
+            
                         <th class="whitespace-normal w-20 bg-slate-300 p-2">Size</th>
-                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Area</th>
+                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Area m²</th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Amount</th>
                     </tr>
                 </thead>
@@ -127,9 +127,7 @@
                         <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ Str::limit($item->getMeta('description')?->value, 50) }}
                         </td>
-                        <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
-                            {{ $item->getMeta('unit_price(£)')?->value}}
-                        </td>
+                        
                         <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ ($item->getMeta('Length')?->value . ' x ' . $item->getMeta('Width')?->value) ?? 'N/A'}}
                         </td>
@@ -158,7 +156,7 @@
             <tbody>
                 <tr>
                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                    {{ ucfirst($price->name) }}
+                    {{ ucfirst($price->name) }} £:
                     </td>
                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
                     {{ number_format($price->value, 2) }}
@@ -200,7 +198,7 @@
         <div class="container w-full bg-white p-3 md:p-6 md:max-w-4xl font-semibold">
             <h2 class="text-center font-bold">Terms and conditions</h2>
 
-            <ol class=" text-xs text-center font-semibold">
+            <ol class=" text-xs font-semibold" style="line-height: 28px;">
 
                 <p>
                     {{ strip_tags($company->terms_conditions) }}

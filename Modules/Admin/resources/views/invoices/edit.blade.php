@@ -183,21 +183,21 @@ input[type=number]::-webkit-outer-spin-button {
                 @foreach($invoice->items as $invoiceItem)
                 <table class="table " style="width:100%; margin: 40px 0;">
                     <tbody>
-                        <form action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
+                        <form  id="invoiceForm" action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
                             <tr style="overflow: scroll;">
                                 @foreach($invoiceItem->meta as $meta)
                                 <!-- did this so I can put the formular at the end of the meta list -->
 
                                 @if($meta->name != 'formular')
 
-                                @if($meta->type == 'formular')
+                               @if($meta->type == 'formular')
                                 <td style="min-width: 200px;">
                                     <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
                                         value="{{ $meta->name }}">
-                                    <input disabled readonly style="background-color: white;" class="form-control"
+                                    <input disabled readonly style="background-color: white;" class="form-control evaluated-input"
                                         name="{{ $meta->name }}[]"
                                         value="{{  evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id ) }}"
-                                        type="{{ $meta->type }}" {{ $meta->visibility }}>
+                                        type="{{ $meta->type }}" {{ $meta->visibility }} >
 
                                     <input disabled readonly style="background-color: white;" class="form-control"
                                         type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
@@ -207,20 +207,20 @@ input[type=number]::-webkit-outer-spin-button {
                                 <td style="min-width: 200px;">
                                     <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
                                         value="{{ $meta->name }}">
-                                    <!-- Check for unit_pack_tile_area and make field read-only -->
-                                    @if($meta->name == 'unit_pack_tile_area')
-                                    <input readonly style="background-color: white;" class="form-control"
+                                    <!-- Check for single_tile_area and make field read-only -->
+                                    @if($meta->name == 'single_tile_area')
+                                    <input readonly style="background-color: white;" class="form-control evaluated-input"
                                         name="{{ $meta->name }}[]" value="{{$meta->value }}" type="{{ $meta->type }}"
                                         {{ $meta->visibility }}>
                                     @else
 
                                     <!-- Check for tiles_per_pack and make field read-only -->
                                     @if($meta->name == 'tiles_per_pack')
-                                    <input readonly style="background-color: white;" class="form-control"
+                                    <input readonly style="background-color: white;" class="form-control evaluated-input"
                                         name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
                                         {{ $meta->visibility }}>
                                     @else
-                                    <input style="background-color: white;" class="form-control"
+                                    <input style="background-color: white;" class="form-control evaluated-input"
                                         name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
                                         {{ $meta->visibility }}>
 
@@ -270,6 +270,23 @@ input[type=number]::-webkit-outer-spin-button {
                 @endforeach
             </div>
         </div><!-- .row -->
+        <script>
+    const form = document.getElementById('invoiceForm');
+    const evaluatedInputs = form.getElementsByClassName('evaluated-input');
+
+    Array.from(evaluatedInputs).forEach(input => {
+        input.addEventListener('input', () => {
+            const formula = input.dataset.formula;
+            const result = eval(formula);
+            input.value = isNaN(result) ? '' : result.toFixed(2);
+        });
+    });
+
+    // Auto-submit the form when any input field is changed
+    form.addEventListener('input', () => {
+        form.submit();
+    });
+</script>
 
 
         <!-- invoice pricing -->
@@ -309,7 +326,7 @@ input[type=number]::-webkit-outer-spin-button {
                                 <td><input disabled readonly class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
                                 <td><input readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
-                                        value="{{ number_format($pricing->value,2)}}"></td>
+                                        value="{{ $pricing->value}}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text"
                                         name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
                             </tr>
