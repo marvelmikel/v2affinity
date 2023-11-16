@@ -1,5 +1,27 @@
 @extends('voyager::master')
 
+@php
+$subtotal = 0;
+
+foreach($invoice->pricings as $pricing) {
+if ($pricing->name == 'subtotal') {
+$subtotal = $pricing->value;
+break;
+}
+}
+
+$value = $pricing->name == 'subtotal' ? round($pricing->value, 0, PHP_ROUND_HALF_UP) : $pricing->value;
+
+
+
+
+$value = $pricing->name == 'tax' && $subtotal > 0 ? round(($pricing->value / $subtotal) * 100, 0, PHP_ROUND_HALF_UP) :
+$pricing->value;
+
+
+
+@endphp
+
 @section('page_title', __('Build Invoice'))
 
 @section('css')
@@ -183,21 +205,22 @@ input[type=number]::-webkit-outer-spin-button {
                 @foreach($invoice->items as $invoiceItem)
                 <table class="table " style="width:100%; margin: 40px 0;">
                     <tbody>
-                        <form  id="invoiceForm" action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
+                        <form id="invoiceForm"
+                            action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
                             <tr style="overflow: scroll;">
                                 @foreach($invoiceItem->meta as $meta)
                                 <!-- did this so I can put the formular at the end of the meta list -->
 
                                 @if($meta->name != 'formular')
 
-                               @if($meta->type == 'formular')
+                                @if($meta->type == 'formular')
                                 <td style="min-width: 200px;">
                                     <input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
                                         value="{{ $meta->name }}">
-                                    <input disabled readonly style="background-color: white;" class="form-control evaluated-input"
-                                        name="{{ $meta->name }}[]"
+                                    <input disabled readonly style="background-color: white;"
+                                        class="form-control evaluated-input" name="{{ $meta->name }}[]"
                                         value="{{  evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id ) }}"
-                                        type="{{ $meta->type }}" {{ $meta->visibility }} >
+                                        type="{{ $meta->type }}" {{ $meta->visibility }}>
 
                                     <input disabled readonly style="background-color: white;" class="form-control"
                                         type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
@@ -209,16 +232,16 @@ input[type=number]::-webkit-outer-spin-button {
                                         value="{{ $meta->name }}">
                                     <!-- Check for single_tile_area and make field read-only -->
                                     @if($meta->name == 'single_tile_area')
-                                    <input readonly style="background-color: white;" class="form-control evaluated-input"
-                                        name="{{ $meta->name }}[]" value="{{$meta->value }}" type="{{ $meta->type }}"
-                                        {{ $meta->visibility }}>
+                                    <input readonly style="background-color: white;"
+                                        class="form-control evaluated-input" name="{{ $meta->name }}[]"
+                                        value="{{$meta->value }}" type="{{ $meta->type }}" {{ $meta->visibility }}>
                                     @else
 
                                     <!-- Check for tiles_per_pack and make field read-only -->
                                     @if($meta->name == 'tiles_per_pack')
-                                    <input readonly style="background-color: white;" class="form-control evaluated-input"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
-                                        {{ $meta->visibility }}>
+                                    <input readonly style="background-color: white;"
+                                        class="form-control evaluated-input" name="{{ $meta->name }}[]"
+                                        value="{{ $meta->value }}" type="{{ $meta->type }}" {{ $meta->visibility }}>
                                     @else
                                     <input style="background-color: white;" class="form-control evaluated-input"
                                         name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}"
@@ -270,23 +293,6 @@ input[type=number]::-webkit-outer-spin-button {
                 @endforeach
             </div>
         </div><!-- .row -->
-        <script>
-    const form = document.getElementById('invoiceForm');
-    const evaluatedInputs = form.getElementsByClassName('evaluated-input');
-
-    Array.from(evaluatedInputs).forEach(input => {
-        input.addEventListener('input', () => {
-            const formula = input.dataset.formula;
-            const result = eval(formula);
-            input.value = isNaN(result) ? '' : result.toFixed(2);
-        });
-    });
-
-    // Auto-submit the form when any input field is changed
-    form.addEventListener('input', () => {
-        form.submit();
-    });
-</script>
 
 
         <!-- invoice pricing -->
@@ -312,27 +318,62 @@ input[type=number]::-webkit-outer-spin-button {
 
                             @foreach($invoice->pricings as $pricing)
                             @if($pricing->name != 'formular')
-                            @if($pricing->name =='tax' || $pricing->name == 'discount')
+                            @if($pricing->name == 'tax' || $pricing->name == 'discount')
                             <tr>
-                                <td><input disabled readonly class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
-                                <td><input class="form-control" type="number" max="1" min="0" step="any"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
+                                <td>
+                                    <input disabled readonly class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]" value="{{ $pricing->name }} %">
+                                </td>
+                                <td>
+                                @php
+                                    if ($pricing->name == 'tax') {
+                                    $value = $pricing->name == 'tax' && $subtotal > 0 ? round(($pricing->value /
+                                    $subtotal) * 100, 0, PHP_ROUND_HALF_UP) : $pricing->value;
+                                    } elseif ($pricing->name == 'discount') {
+                                    // Convert the discount value back to a percentage
+                                    $value = $subtotal > 0 ? round(($pricing->value / $subtotal) * 100, 2) :
+                                    $pricing->value;
+                                    } else {
+                                    $value = $pricing->value;
+                                    }
+                                    @endphp
+
+                                    <input class="form-control" type="number" max="100" min="0" step="any"
+                                        name="{{ $pricing->name }}[]" value="{{ $value }}"
+                                        placeholder="{{ ucfirst($pricing->name) }} %">
+                                </td>
+                                <td>
+                                    <input readonly style="background-color: white;" class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
+                                </td>
                             </tr>
                             @else
                             <tr>
-                                <td><input disabled readonly class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->name }}"></td>
-                                <td><input readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
-                                        value="{{ $pricing->value}}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}"></td>
+                                <td>
+                                    <input disabled readonly class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]"
+                                        value="{{ $pricing->name }}{{ $pricing->name == 'subtotal' ? ' £' : '' }}">
+                                </td>
+                                <td>
+                                    @php
+                                    $value = $pricing->name == 'subtotal' ? round($pricing->value, 0, PHP_ROUND_HALF_UP)
+                                    : $pricing->value;
+                                    @endphp
+                                    <input readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
+                                        value="{{ $value }}">
+                                </td>
+                                <td>
+                                    <input readonly style="background-color: white;" class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
+                                </td>
                             </tr>
                             @endif
                             @endif
                             @endforeach
+
+
+
+
 
                             <!-- formula here -->
                             <tr>
@@ -348,7 +389,7 @@ input[type=number]::-webkit-outer-spin-button {
 
                             <!-- item total here -->
                             <tr>
-                                <td><input readonly class="form-control" type="text" value="Amount"></td>
+                                <td><input readonly class="form-control" type="text" value="Amount  £"></td>
                                 <td colspan="2"><input readonly style="background-color: white;" class="form-control"
                                         type="text" value="{{ number_format($invoice->total, 2) }}"></td>
                             </tr>
@@ -387,6 +428,8 @@ input[type=number]::-webkit-outer-spin-button {
         </div>
 
     </div>
+
+
 
 
     <!-- Add invocie item column modal -->
@@ -493,7 +536,7 @@ input[type=number]::-webkit-outer-spin-button {
                                                                         name="product_ids[]" multiple="multiple">
                                                                         @foreach($products as $product)
                                                                         <option value="{{ $product->id }}">{{
-                                    $product->title }}</option>
+                                                                         $product->title }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -502,8 +545,7 @@ input[type=number]::-webkit-outer-spin-button {
                                                             <div class="modal-footer">
                                                                 <button type="button"
                                                                     class="btn btn-outline mx-3 pull-right"
-                                                                    data-dismiss="modal">{{ __('voyager::generic.close')
-                            }}</button>
+                                                                    data-dismiss="modal">{{ __('voyager::generic.close')}}</button>
                                                                 <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
@@ -515,7 +557,7 @@ input[type=number]::-webkit-outer-spin-button {
 @endsection
 
 @section('javascript')
-    <script type=" text/javascript">
+         <script type=" text/javascript">
                                                                     $(document).ready(function () {
                                                                     $('.add-column-btn').click(function (e) {
                                                                     e.preventDefault();
@@ -530,7 +572,6 @@ input[type=number]::-webkit-outer-spin-button {
                                                                     let invoiceid = $(this).data('invoiceid')
 
                                                                     $('input[name="invoice_id"]').val(invoiceid)
-
                                                                     $('#add_pricing_column_modal').modal('show');
                                                                     })
                                                                     })

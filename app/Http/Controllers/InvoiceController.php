@@ -26,6 +26,7 @@ class InvoiceController extends Controller
      */
     public function index(InvoicesDataTable $dataTable)
     {
+        
         return $dataTable->render('voyager::invoices.index');
     }
 
@@ -333,22 +334,54 @@ class InvoiceController extends Controller
      * @return
      */
     public function savePricing(Request $request, $invoiceId)
-    {
+{
+    $invoice = Invoice::find($invoiceId);
+    $meta = $request->except(['_method', '_token']);
 
-        $invoice = Invoice::find($invoiceId);
-        $meta= $request->all();
+    // Initialize the subtotal value to zero
+    $subtotal = 0;
 
-        $meta= $request->except(['_method', '_token']);
+    foreach ($meta as $key => $me) {
+        $pricingItem = InvoicePricing::where('identifier', $me[1])->first();
 
-        foreach ($meta as $me) {
-            InvoicePricing::where('identifier', $me[1])->first()->update(['value' => $me[0]]);
+        if ($pricingItem) {
+            // Initialize the value to be updated
+            $value = $me[0];
+
+            if ($key == 'subtotal') {
+                // If the key is 'subtotal', update the subtotal value
+                $subtotal = $value;
+            } elseif ($key == 'tax') {
+                // Check if the tax value is empty and set to zero if it is
+                if (empty($value)) {
+                    $value = 0;
+                } else {
+                    // If not empty, calculate the tax value as a percentage of the subtotal
+                    $value = $subtotal * ($value / 100);
+                }
+            } elseif ($key == 'discount') {
+                // Check if the discount value is empty and set to zero if it is
+                if (empty($value)) {
+                    $value = 0;
+                } else {
+                    // If not empty, convert the discount value from percentage to absolute
+                    // by dividing by 100 and then multiply by the subtotal
+                    $value = ($value / 100) * $subtotal;
+                }
+            }
+
+            $pricingItem->update(['value' => $value]);
         }
-
-        return redirect()->back()->with([
-            'message' =>' Invoice pricing saved successfully'
-        ]);
-
     }
+
+    return redirect()->back()->with([
+        'message' => 'Invoice pricing saved successfully'
+    ]);
+}
+
+    
+    
+    
 
   
     
@@ -417,6 +450,7 @@ class InvoiceController extends Controller
             }
 
         }
+        
 
         //add def formular here
         if($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount') ){
@@ -434,6 +468,8 @@ class InvoiceController extends Controller
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
+
+    
    
 
 

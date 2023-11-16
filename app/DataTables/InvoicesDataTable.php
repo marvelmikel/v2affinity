@@ -13,6 +13,7 @@ use Modules\Admin\Facades\Voyager;
 use Illuminate\Support\Facades\Auth;
 
 
+
 class InvoicesDataTable extends DataTable
 {
     /**
@@ -54,13 +55,21 @@ class InvoicesDataTable extends DataTable
      * @param \App\Models\Invoice $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Invoice $model): QueryBuilder
-{
-    $companyId = Auth::user()->company_id;
+   
 
-    return $model->newQuery()
-        ->where('company_id', $companyId);
-}
+    public function query(Invoice $model): QueryBuilder
+    {
+        $user = Auth::user();
+    
+        if ($user->hasRole('admin')) {
+            return $model->newQuery(); // Allow admin to view all invoices
+        }
+    
+        $companyId = $user->company_id;
+        return $model->newQuery()
+            ->where('company_id', $companyId);
+    }
+    
 
     /**
      * Optional method if you want to use html builder.

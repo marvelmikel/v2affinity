@@ -172,5 +172,6 @@ input[type=number]::-webkit-outer-spin-button {
                 $('input[name=" item_id"]').val(invoiceitemid) $('#add_item_column_modal').modal('show'); })
                             $('.add-product-column-btn').click(function(e){ e.preventDefault(); let
                             productid=$(this).data('productid') console.log(productid) $('input[name="product_id"
-                            ]').val(productid) $('#add_pricing_column_modal').modal('show'); }) }) </script>
+                            ]').val(productid) $('#add_pricing_column_modal').modal('show'); }) }) 
+                            </script>
                             @stop

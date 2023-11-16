@@ -59,7 +59,7 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'area'], [ 
                         'name' => 'area', 
-                        'value' => "$length->identifier*$width->identifier", 
+                        'value' => "$length->identifier*$width->identifier",
                         'type' => 'formular',
                         'visibility' => 'readonly'
                     ]);
