@@ -310,65 +310,67 @@ input[type=number]::-webkit-outer-spin-button {
                         <tr>
                             <th>Name</th>
                             <th>Value</th>
-                            @if (Auth::check() && Auth::user()->role_id == 1)
+                            
                             <th>Indentifier</th>
-                            @endif
                         </tr>
                     </thead>
                     <tbody>
                         <form action="{{ route('voyager.invoices.save-pricing', [$invoice->id]) }} ">
 
-                        @foreach($invoice->pricings as $pricing)
-    @if($pricing->name != 'formular')
-        @if($pricing->name == 'tax' || $pricing->name == 'discount')
-            <tr>
-                <td>
-                    <input disabled readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }} %">
-                </td>
-                <td>
-                    @php
-                        if ($pricing->name == 'tax') {
-                            $value = $pricing->name == 'tax' && $subtotal > 0 ? round(($pricing->value / $subtotal) * 100, 0, PHP_ROUND_HALF_UP) : $pricing->value;
-                        } elseif ($pricing->name == 'discount') {
-                            // Convert the discount value back to a percentage
-                            $value = $subtotal > 0 ? round(($pricing->value / $subtotal) * 100, 2) : $pricing->value;
-                        } else {
-                            $value = $pricing->value;
-                        }
-                    @endphp
+                            @foreach($invoice->pricings as $pricing)
+                            @if($pricing->name != 'formular')
+                            @if($pricing->name == 'tax' || $pricing->name == 'discount')
+                            <tr>
+                                <td>
+                                    <input disabled readonly class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]" value="{{ $pricing->name }} %">
+                                </td>
+                                <td>
+                                @php
+                                    if ($pricing->name == 'tax') {
+                                    $value = $pricing->name == 'tax' && $subtotal > 0 ? round(($pricing->value /
+                                    $subtotal) * 100, 0, PHP_ROUND_HALF_UP) : $pricing->value;
+                                    } elseif ($pricing->name == 'discount') {
+                                    // Convert the discount value back to a percentage
+                                    $value = $subtotal > 0 ? round(($pricing->value / $subtotal) * 100, 2) :
+                                    $pricing->value;
+                                    } else {
+                                    $value = $pricing->value;
+                                    }
+                                    @endphp
 
-                    <input class="form-control" type="number" max="100" min="0" step="any" name="{{ $pricing->name }}[]" value="{{ $value }}" placeholder="{{ ucfirst($pricing->name) }} %">
-                </td>
-
-                @if (Auth::check() && Auth::user()->role_id == 1)
-                <td>   
-                        <input readonly style="background-color: white;" class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
-                </td>
-                @endif
-            </tr>
-        @else
-            <tr>
-                <td>
-                    <input disabled readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }}{{ $pricing->name == 'subtotal' ? ' £' : '' }}">
-                </td>
-                <td>
-                    @php
-                        $value = $pricing->name == 'subtotal' ? round($pricing->value, 0, PHP_ROUND_HALF_UP) : $pricing->value;
-                    @endphp
-                    <input readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $value }}">
-                </td>
-
-                @if (Auth::check() && Auth::user()->role_id == 1)
-                <td>
-                        <input readonly style="background-color: white;" class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
-                </td>
-                @endif
-                
-            </tr>
-        @endif
-    @endif
-@endforeach
-
+                                    <input class="form-control" type="number" max="100" min="0" step="any"
+                                        name="{{ $pricing->name }}[]" value="{{ $value }}"
+                                        placeholder="{{ ucfirst($pricing->name) }} %">
+                                </td>
+                                <td>
+                                    <input readonly style="background-color: white;" class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
+                                </td>
+                            </tr>
+                            @else
+                            <tr>
+                                <td>
+                                    <input disabled readonly class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]"
+                                        value="{{ $pricing->name }}{{ $pricing->name == 'subtotal' ? ' £' : '' }}">
+                                </td>
+                                <td>
+                                    @php
+                                    $value = $pricing->name == 'subtotal' ? round($pricing->value, 0, PHP_ROUND_HALF_UP)
+                                    : $pricing->value;
+                                    @endphp
+                                    <input readonly class="form-control" type="text" name="{{ $pricing->name }}[]"
+                                        value="{{ $value }}">
+                                </td>
+                                <td>
+                                    <input readonly style="background-color: white;" class="form-control" type="text"
+                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
+                                </td>
+                            </tr>
+                            @endif
+                            @endif
+                            @endforeach
 
 
 
