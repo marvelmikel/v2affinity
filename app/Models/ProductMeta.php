@@ -25,7 +25,8 @@ class ProductMeta extends Model
             $last  =static::latest('id')->first();
             $id = $last ? $last->id+1 : 1;
 	        $model->identifier = str_replace ('_', '', $model->name) .$model->product_id. $id;
-	    });	    
+	    });	   
+        
 	}
     
         public function product(){

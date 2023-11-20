@@ -35,17 +35,17 @@ class Product extends Model
 
            
             $meta = [
-                [ 'name' => 'unit_price', 'value' => 1, 'type' => 'number', 'visibility' => 'readonly'], //type = text, number, formular
-                [ 'name' => 'length', 'value' => 1, 'type' => 'number', 'visibility' => ''],
-                [ 'name' => 'width', 'value' => 1, 'type' => 'number', 'visibility' => ''],
+                [ 'name' => 'unit_price', 'value' => 1, 'type' => 'number', 'visibility' => 'hidden'], //type = text, number, formular
+                [ 'name' => 'length', 'value' => 1, 'type' => 'number', 'visibility' => 'visible'], //visible, hidden, readonly
+                [ 'name' => 'width', 'value' => 1, 'type' => 'number', 'visibility' => 'visible'],
 
             ];
 
            
 
-            $model->meta()->create([ 'name' => 'title', 'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly' ]);
-            $model->meta()->create([ 'name' => 'description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'readonly' ]);
-            $model->meta()->create([ 'name' => 'type', 'value' => $model->type, 'type' => 'text', 'visibility' => 'readonly' ]);
+            $model->meta()->create([ 'name' => 'title', 'value' => $model->title, 'type' => 'text', 'visibility' => 'visible' ]);
+            $model->meta()->create([ 'name' => 'description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible' ]);
+            $model->meta()->create([ 'name' => 'type', 'value' => $model->type, 'type' => 'text', 'visibility' => 'visible' ]);
 
             foreach($meta as $me){
                 $model->meta()->create($me);
@@ -53,28 +53,53 @@ class Product extends Model
 
            
             if($model->type == 'carpet'){
+
+               
+
+
                 if($model->getMeta('length') &&  $model->getMeta('width') ){
                     $length = $model->getMeta('length');
                     $width = $model->getMeta('width');
+
+                  
+
+                    $model->meta()->updateOrCreate(['name' => 'unit_area'], [ 
+                        'name' => 'unit_area', 
+                        'value' => $length->value*$width->value,
+                        'type' => 'number',
+                        'visibility' => 'hidden'
+                    ]);
+                    
+
 
                     $model->meta()->updateOrCreate(['name' => 'area'], [ 
                         'name' => 'area', 
                         'value' => "$length->identifier*$width->identifier",
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]);
                     
                 }
 
                 //add def formular here
-                if( $model->getMeta('unit_price') &&  $model->getMeta('area') ){
+                if( $model->getMeta('unit_price') && $model->getMeta('unit_area') &&  $model->getMeta('area') ){
                     $price = $model->getMeta('unit_price');
                     $area = $model->getMeta('area');
+                    $unit_area = $model->getMeta('unit_area');
+                    
+                    $carpet_units = $model->meta()->updateOrCreate(['name' => 'carpet_units'], [ 
+                        'name' => 'carpet_units', 
+                        'value' => "$area->identifier/$unit_area->identifier", 
+                        'type' => 'formular',
+                        'visibility' => 'hidden'
+                    ]);
+
+                    
                     $model->meta()->updateOrCreate(['name' => 'formular'], [ 
                         'name' => 'formular', 
-                        'value' => "$price->identifier*$area->identifier", 
+                        'value' => "$price->identifier*$carpet_units->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]);
                     
                 }
@@ -87,14 +112,14 @@ class Product extends Model
                     'name' => 'single_tile_area', 
                     'value' => 1, 
                     'type' => 'number',
-                    'visibility' => 'readonly'
+                    'visibility' => 'hidden'
                 ]);
 
                 $model->meta()->updateOrCreate(['name' => 'tiles_per_pack'], [ 
                     'name' => 'tiles_per_pack', 
                     'value' => 1, 
                     'type' => 'number',
-                    'visibility' => 'readonly'
+                    'visibility' => 'hidden'
                 ]);
 
 
@@ -106,7 +131,7 @@ class Product extends Model
                         'name' => 'area', 
                         'value' => "$length->identifier*$width->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]);
                     
                 }
@@ -124,7 +149,7 @@ class Product extends Model
                         'name' => 'tiles_count', 
                         'value' => "$area->identifier/$single_tile_area->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]);
 
 
@@ -134,7 +159,7 @@ class Product extends Model
                         'name' => 'packs_count', 
                         'value' => "$tiles_count->identifier/$tiles_per_pack->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]);
 
 
@@ -142,7 +167,7 @@ class Product extends Model
                         'name' => 'formular', 
                         'value' => "$price->identifier*$packs_count->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]); 
 
                 }
@@ -151,7 +176,7 @@ class Product extends Model
             if($model->type == 'others'){
                 $model->meta()->where('name', 'length')->delete();
                 $model->meta()->where('name', 'width')->delete();
-                $model->meta()->create([ 'name' => 'quantity', 'value' => 1, 'type' => 'number', 'visibility' => '' ]);
+                $model->meta()->create([ 'name' => 'quantity', 'value' => 1, 'type' => 'number', 'visibility' => 'visible' ]);
 
                  //add def formular here
                  if( $model->getMeta('unit_price') &&  $model->getMeta('quantity') ){
@@ -161,7 +186,7 @@ class Product extends Model
                         'name' => 'formular', 
                         'value' => "$price->identifier*$quantity->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]);
                     
                 }

@@ -5,11 +5,11 @@
 @section('css')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 </style>
 @stop
 
@@ -39,6 +39,8 @@ input[type=number]::-webkit-outer-spin-button {
                             <th>Name</th>
                             <th>Value</th>
                             <th>Indentifier</th>
+                            <th>Display</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,16 +50,24 @@ input[type=number]::-webkit-outer-spin-button {
                             @foreach($product->meta as $meta)
                             @if($meta->name != 'formular')
                             <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]"
-                                        value="{{ $meta->name }}"></td>
-                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]"
-                                        value="{{ $meta->value }}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                <td><input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}"></td>
+                               
+                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
+                                
+                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
 
                                 <td>
-                                    <a href="{{ route('product-meta.delete', $meta->id)  }}"
-                                        style="text-decoration: none;" class="btn btn-danger btn-xs">
+                                    <select class="form-control" name="{{ $meta->name }}[]" id="">
+                                            <!-- <option selected value="{{ $meta->visibility }}">{{ $meta->visibility }}</option> -->
+                                            <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }} >hidden</option>
+                                            <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }} >readonly</option>
+                                            <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }} >visible</option>
+                                    </select>
+                                    <!-- <input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->visibility }}"> -->
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('product-meta.delete', $meta->id)  }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
                                         <i class="voyager-trash"></i>
                                     </a>
                                 </td>
@@ -68,26 +78,24 @@ input[type=number]::-webkit-outer-spin-button {
 
                             <!-- formula here -->
                             <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="formular[]"
-                                        value="formular"></td>
-                                <td><input class="form-control" type="text" name="formular[]"
-                                        value="{{ $product->getMeta('formular')->value }}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"></td>
+                                <td><input disabled readonly class="form-control" type="text" name="formular[]" value="formular"></td>
+                                <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->value }}"></td>
+                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"></td>
+                                <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->visibility }}"></td>
+
                             </tr>
 
 
                             <tr>
-                                <td colspan="3"><a href="#add_pricing_column_modal" data-toggle="modal"  data-productid="{{ $product->id  }}"
-                                        class="btn btn-secondary btn-xs add-product-column-btn"><i
-                                            class="voyager-plus"></i>Add Product Attribute </a> </td>
+                                <td colspan="3"><a href="#add_pricing_column_modal" data-toggle="modal" data-productid="{{ $product->id  }}" class="btn btn-secondary btn-xs add-product-column-btn"><i class="voyager-plus"></i>Add Product Attribute </a> </td>
                             </tr>
 
 
                             <tr>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save
-                                        Product</button></td>
+                                        Product</button>
+                                </td>
                             </tr>
 
                         </form>
@@ -108,8 +116,7 @@ input[type=number]::-webkit-outer-spin-button {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-data"></i> Add Product Attribute</h4>
                 </div>
                 <form action="{{ route('voyager.products.add-product-column', $product->id) }}" method="post">
@@ -149,8 +156,8 @@ input[type=number]::-webkit-outer-spin-button {
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline mx-3 pull-right"
-                            data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+                        <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{
+                            __('voyager::generic.close') }}</button>
                         <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
@@ -162,16 +169,21 @@ input[type=number]::-webkit-outer-spin-button {
 @stop
 
 @section('javascript')
-    <script>
+    <script type="text/javascript">
 
-        $(document).ready(function(){
-            $('.add-column-btn').click(function(e){
+        $(document).ready(function () {
+            $('.add-column-btn').click(function (e) {
                 e.preventDefault();
                 let invoiceitemid = $(this).data('invoiceitemid')
                 console.log(invoiceitemid)
-                $('input[name=" item_id"]').val(invoiceitemid) $('#add_item_column_modal').modal('show'); })
-                            $('.add-product-column-btn').click(function(e){ e.preventDefault(); let
-                            productid=$(this).data('productid') console.log(productid) $('input[name="product_id"
-                            ]').val(productid) $('#add_pricing_column_modal').modal('show'); }) }) 
-                            </script>
-                            @stop
+                $('input[name=" item_id"]').val(invoiceitemid)
+                $('#add_item_column_modal').modal('show'); })
+                $('.add-product-column-btn').click(function (e) { e.preventDefault(); 
+                let productid=$(this).data('productid')
+                console.log(productid) 
+                $('input[name="product_id" ]').val(productid) 
+                $('#add_pricing_column_modal').modal('show');
+             }) 
+        })
+    </script>
+@stop

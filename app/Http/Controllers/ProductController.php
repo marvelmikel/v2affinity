@@ -118,11 +118,26 @@ class ProductController extends Controller
 
         foreach ($meta as $me) {
             if($product_meta = ProductMeta::where('identifier', $me[1])->first()){
-                $product_meta->update(['value' => $me[0]]);
+                $product_meta->update(['value' => $me[0], 'visibility' => $me[2]]);
             }
         } 
+
+
         
         $product = Product::find($id);
+
+        if($product->type == 'carpet'){
+            $length = $product->getMeta('length');
+            $width = $product->getMeta('width');
+            ProductMeta::where('name', 'unit_area')->update([ 
+                'name' => 'unit_area', 
+                'value' => $length->value*$width->value,
+                'type' => 'number',
+                'visibility' => 'hidden'
+            ]);
+       }
+
+
         $product->update([
             'title' => $product->getMeta('title')->value,
             'description' => $product->getMeta('description')->value,
