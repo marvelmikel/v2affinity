@@ -24,6 +24,8 @@ class UsersTableSeeder extends Seeder
                 'name'           => 'Admin',
                 'email'          => 'admin@admin.com',
                 'password'       => bcrypt('password'),
+                'company_id'     => 1,
+                'store_id'       => 1,
                 'remember_token' => Str::random(60), // Token for 'admin'
                 'role_id'        => $adminRole->id,
             ]);
