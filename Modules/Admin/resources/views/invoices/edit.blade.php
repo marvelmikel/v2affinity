@@ -308,10 +308,10 @@ $pricing->value;
                                     <input disabled readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }}{{ $pricing->name == 'subtotal' ? ' £' : '' }}">
                                 </td>
                                 <td>
-                                    @php
+                                    <!-- @php
                                     $value = $pricing->name == 'subtotal' ? round($pricing->value, 0, PHP_ROUND_HALF_UP)
                                     : $pricing->value;
-                                    @endphp
+                                    @endphp -->
                                     <input readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $value }}">
                                 </td>
                                 <td>

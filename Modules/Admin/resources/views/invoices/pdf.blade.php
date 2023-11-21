@@ -707,7 +707,7 @@
     Terms and Conditions
     </p>
     <br>
-    <p style="color: black;  font-size: 18px;line-height: 30px;"> {{ strip_tags($company->terms_conditions) }} </p>
+    <p style="color: black;  font-size: 18px;line-height: 30px;">{!! $company->terms_conditions !!} </p>
    
   
     </div>
