@@ -40,8 +40,12 @@ if (!function_exists('get_file_name')) {
 
 
 if (!function_exists('evaluate_formular')) {
-    function evaluate_formular($formular, $model, $entity_id = null, $modifier = null)
+    
+    function evaluate_formular($formular, $entity, $entity_id = null, $modifier = null)
     {
+
+        // dd(evaluate_formular('area18/unitarea17', ));
+
        
         $modifierArray = [];
         if($modifier){
@@ -50,16 +54,23 @@ if (!function_exists('evaluate_formular')) {
            
         }
 
-        // sanitize imput
-        $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/()%]/","",$formular);
+        // sanitize imput - leave number constants
+        // $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/%]/","",$formular);
+        
+        // also sanitize and keep ()
+        $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/()%]/","",$formular); 
         
 
         // convert alphabet to $variabel 
         $formular = preg_replace("/([a-z])+/i", "\$0", $formular); 
 
 
-        // $pattern = '/(\$[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)/';
-        $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
+        // dd($formular);
+
+        // $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
+        
+        //  also match parenthesis
+        $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_][+\-*\/%()])\b/';
 
 
         preg_match_all($pattern, $formular, $matches); 
@@ -68,18 +79,31 @@ if (!function_exists('evaluate_formular')) {
 
         $evaluation = [];
         
-        if($model == 'InvoicePricing'){
+        if($entity == 'InvoicePricing'){
             foreach ($matches[0] as $val ) {
                 if($pricing = InvoicePricing::where('identifier', $val)->first()) {
+                        // preg_match('/\d+(\.\d+)?/', $pricing->value, $match); // this prevents dangerious eval statements in value expressions
+                        // array_push($evaluation, $match[0]);
+                        // dd($meta);
+                    // pick corresponding value from identifier
+                    // But here we check if type is formual and evalute it lol - hmmm
+
+                    if($pricing->type == 'formular'){
+                        $vall = evaluate_formular($pricing->value, $entity, $entity_id, $modifier );
+                        array_push($evaluation, $vall);
+                    }else{
                         preg_match('/\d+(\.\d+)?/', $pricing->value, $match); // this prevents dangerious eval statements in value expressions
                         array_push($evaluation, $match[0]);
+                    }
+                   
+
                 }else{
                         array_push($evaluation, $val);
                 } 
             }
         }
 
-        if($model == 'InvoiceItemMeta'){
+        if($entity == 'InvoiceItemMeta'){
 
             // dd(InvoiceItemMeta::where('identifier', 'PM16')->where('invoice_item_id', $entity_id)->first());
             foreach ($matches[0] as $val ) {
@@ -92,7 +116,7 @@ if (!function_exists('evaluate_formular')) {
                     // But here we check if type is formual and evalute it lol - hmmm
 
                     if($meta->type == 'formular'){
-                        $vall = evaluate_formular($meta->value, $model, $entity_id, $modifier );
+                        $vall = evaluate_formular($meta->value, $entity, $entity_id, $modifier );
                         array_push($evaluation, $vall);
                     }else{
                         preg_match('/\d+(\.\d+)?/', $meta->value, $match); // this prevents dangerious eval statements in value expressions
@@ -110,8 +134,13 @@ if (!function_exists('evaluate_formular')) {
 
         $stringEval = implode("", $evaluation);
        
-        $result =  @eval("return " . $stringEval . ";" );
-
+        // dd($stringEval);
+        try {
+            $result =  @eval("return " . $stringEval . ";" );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
         // dd($result);
 
         if(in_array('0dp', $modifierArray)){
@@ -129,9 +158,10 @@ if (!function_exists('evaluate_formular')) {
             $result = ceil($result);
         }
 
+       
         return $result;
         // dd(['formular' => $formular, 'evaluation' => $evaluation, 'stringEval' => $stringEval, 'result'=> $result]);
-
+        
 
     }
 }

@@ -191,6 +191,12 @@ class InvoiceController extends Controller
             // $this->addItem($request, $invoice->id);
         }
 
+        // evaluate_formular("P11*(2*P12)", 'InvoicePricing' );
+
+        // dd(evaluate_formular("P11*(2*P12)", 'InvoicePricing' ));
+        // dd(evaluate_formular("unitprice214*packscount221", 'InvoiceItemMeta', 1, '2dp' ));
+
+
         $this->addPricing($invoice->id);
 
         $formular = $invoice->getPricing('formular')->value;
@@ -362,39 +368,16 @@ class InvoiceController extends Controller
     $invoice = Invoice::find($invoiceId);
     $meta = $request->except(['_method', '_token']);
 
+    // dd($meta);
+
     // Initialize the subtotal value to zero
     $subtotal = 0;
 
     foreach ($meta as $key => $me) {
-        $pricingItem = InvoicePricing::where('identifier', $me[1])->first();
+        $pricingItem = InvoicePricing::where('identifier', $me[2])->first();
 
         if ($pricingItem) {
-            // Initialize the value to be updated
-            $value = $me[0];
-
-            if ($key == 'subtotal') {
-                // If the key is 'subtotal', update the subtotal value
-                $subtotal = $value;
-            } elseif ($key == 'tax') {
-                // Check if the tax value is empty and set to zero if it is
-                if (empty($value)) {
-                    $value = 0;
-                } else {
-                    // If not empty, calculate the tax value as a percentage of the subtotal
-                    $value = $subtotal * ($value / 100);
-                }
-            } elseif ($key == 'discount') {
-                // Check if the discount value is empty and set to zero if it is
-                if (empty($value)) {
-                    $value = 0;
-                } else {
-                    // If not empty, convert the discount value from percentage to absolute
-                    // by dividing by 100 and then multiply by the subtotal
-                    $value = ($value / 100) * $subtotal;
-                }
-            }
-
-            $pricingItem->update(['value' => $value]);
+            $pricingItem->update(['value' => $me[0], 'type' => $me[1]]);
         }
     }
 
@@ -465,8 +448,8 @@ class InvoiceController extends Controller
 
         $meta = [
             [ 'name' => 'subtotal', 'value' => 0],
-            [ 'name' => 'tax', 'value' => 0],
-            [ 'name' => 'discount', 'value' => 0],
+            [ 'name' => 'tax', 'value' => 0, 'type' => 'percentage'], // value, percentage, formular
+            [ 'name' => 'discount', 'value' => 0, 'type' => 'percentage'], // value, percentage, formula
         ];
 
         foreach ($meta as $met ) {
@@ -479,17 +462,32 @@ class InvoiceController extends Controller
 
         //add def formular here
         if($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount') ){
-            $subtotal = $invoice->getPricing('subtotal');
-            $tax = $invoice->getPricing('tax');
-            $discount = $invoice->getPricing('discount');
+            $subtotalCol = $invoice->getPricing('subtotal');
+            $taxCol = $invoice->getPricing('tax');
+            $discountCol = $invoice->getPricing('discount');
+
+            $subtotal = $subtotalCol->identifier;
+
+            if($taxCol->type == 'percentage'){
+                $tax = "($subtotal*(0.01*$taxCol->identifier))";
+            }else{
+                $tax = $taxCol->identifier;
+            }
+
+            if($discountCol->type == 'percentage'){
+                $discount = "($subtotal*(0.01*$discountCol->identifier))";
+            }else{
+                $discount = $discountCol->identifier;
+            }
+            $formular = "($subtotal+$tax)-($discount)";
 
             $invoice->pricings()->updateOrCreate([
                 'name' => 'formular',
-                'value' => "$subtotal->identifier-$subtotal->identifier*$tax->identifier-$subtotal->identifier*$discount->identifier"],
+                'value' => "$formular"],
                 [
                     'name' => 'formular',
-                    'value' => "$subtotal->identifier-$subtotal->identifier*$tax->identifier-$subtotal->identifier*$discount->identifier"
-                ]);
+                    'value' => "$formular"
+            ]);
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }

@@ -57,7 +57,7 @@ class Invoice extends Model
     public function getTotalAttribute(){
         $formulaCol = $this->getPricing('formular');
         $formular = $formulaCol->value;
-        return  evaluate_formular($formular, 'InvoicePricing', modifier:$formulaCol->modifier );
+        return evaluate_formular($formular, 'InvoicePricing', modifier:$formulaCol->modifier );
     }
 
     public function customer(){

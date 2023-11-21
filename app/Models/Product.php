@@ -82,7 +82,8 @@ class Product extends Model
                         'title' => 'Carpet Units', 
                         'value' => "$area->identifier/$unit_area->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'hidden'
+                        'visibility' => 'hidden',
+                        'modifier' => 'ceil'
                     ]);
 
                     
@@ -165,7 +166,7 @@ class Product extends Model
                         'value' => "$tiles_count->identifier/$tiles_per_pack->identifier", 
                         'type' => 'formular',
                         'visibility' => 'hidden',
-                        'modifier' => 'ceil,2dp'
+                        'modifier' => 'ceil'
                     ]);
 
 
