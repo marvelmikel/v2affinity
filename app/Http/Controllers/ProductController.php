@@ -129,10 +129,7 @@ class ProductController extends Controller
         if($product->type == 'carpet'){
             $length = $product->getMeta('length');
             $width = $product->getMeta('width');
-            ProductMeta::where('name', 'unit_area')->update([ 
-                'name' => 'unit_area', 
-                'value' => $length->value*$width->value
-            ]);
+           
        }
 
 
