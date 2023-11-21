@@ -78,17 +78,17 @@ return [
         'admin' => [
             'background_image'           => 'Admin Background Image',
             'description'                => 'Admin Description',
-            'description_value'          => 'Welcome to Voyager. The Missing Admin for Laravel',
+            'description_value'          => 'Accelerate your Carpet Stores Invoice Processing with Affinity',
             'google_analytics_client_id' => 'Google Analytics Client ID (used for admin dashboard)',
             'icon_image'                 => 'Admin Icon Image',
             'loader'                     => 'Admin Loader',
             'title'                      => 'Admin Title',
         ],
         'site'  => [
-            'description'                  => 'Site Description',
+            'description'                  => 'Affinity is a quoting and invoicing software that streamlines the billing process for businesses with real-time cost calculation and eliminates human error.',
             'google_analytics_tracking_id' => 'Google Analytics Tracking ID',
             'logo'                         => 'Site Logo',
-            'title'                        => 'Site Title',
+            'title'                        => 'Affinity',
         ],
     ],
 ];
