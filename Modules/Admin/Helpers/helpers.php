@@ -67,10 +67,10 @@ if (!function_exists('evaluate_formular')) {
 
         // dd($formular);
 
-        // $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
+        $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
         
         //  also match parenthesis
-        $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_][+\-*\/%()])\b/';
+        // $pattern = '(?:[a-zA-Z_][a-zA-Z0-9_]*|\d+)(?:[-+*/](?:[a-zA-Z_][a-zA-Z0-9_]*|\d+))*\b/';
 
 
         preg_match_all($pattern, $formular, $matches); 
