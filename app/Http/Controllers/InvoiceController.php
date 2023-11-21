@@ -421,7 +421,8 @@ class InvoiceController extends Controller
     {
         $invoiceItem = InvoiceItem::find($request->item_id);
         $invoiceItem->meta()->create([
-            'name' => $request->name,
+            'name' =>  strtolower(str_replace(' ', '_', $request->title)),
+            'title' => $request->title,
             'value' => $request->value
         ]);
         return redirect()->back();

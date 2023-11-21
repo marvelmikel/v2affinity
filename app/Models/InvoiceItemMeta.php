@@ -12,10 +12,13 @@ class InvoiceItemMeta extends Model
     protected $fillable =[
         'invoice_item_id',
         'name',
+        'title',
         'value',
         'visibility',
         'type',
         'identifier',
+        'symbol',
+        'modifier', // 2dp, 0dp
     ];
 
 

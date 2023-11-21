@@ -117,8 +117,8 @@ class ProductController extends Controller
         // dd($meta);
 
         foreach ($meta as $me) {
-            if($product_meta = ProductMeta::where('identifier', $me[1])->first()){
-                $product_meta->update(['value' => $me[0], 'visibility' => $me[2]]);
+            if($product_meta = ProductMeta::where('identifier', $me[2])->first()){
+                $product_meta->update([ 'title' => $me[0], 'value' => $me[1], 'visibility' => $me[3]]);
             }
         } 
 
@@ -131,9 +131,7 @@ class ProductController extends Controller
             $width = $product->getMeta('width');
             ProductMeta::where('name', 'unit_area')->update([ 
                 'name' => 'unit_area', 
-                'value' => $length->value*$width->value,
-                'type' => 'number',
-                'visibility' => 'hidden'
+                'value' => $length->value*$width->value
             ]);
        }
 
@@ -169,6 +167,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->meta()->create([
             'name' =>  strtolower($request->name),
+            'title' => $request->title,
             'value' => $request->value,
             'visibility' => $request->type == 'formular' ? 'readonly' : $request->visibility,
             'type' => $request->type

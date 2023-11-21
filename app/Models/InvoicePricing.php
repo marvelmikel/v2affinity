@@ -15,8 +15,10 @@ class InvoicePricing extends Model
         'name',
         'value',
         'visibility',
-        'type',
+        'type', // forumlar, number, percentage
         'identifier',
+        'symbol',
+        'modifier', // 2dp, 0dp
     ];
 
 

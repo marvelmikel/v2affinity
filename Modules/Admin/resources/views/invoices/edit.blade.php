@@ -1,21 +1,21 @@
 @extends('voyager::master')
 
-    @php
-        $subtotal = 0;
+@php
+$subtotal = 0;
 
-        foreach($invoice->pricings as $pricing) {
-            if ($pricing->name == 'subtotal') {
-                $subtotal = $pricing->value;
-                break;
-            }
-        }
+foreach($invoice->pricings as $pricing) {
+if ($pricing->name == 'subtotal') {
+$subtotal = $pricing->value;
+break;
+}
+}
 
-        $value = $pricing->name == 'subtotal' ? round($pricing->value, 0, PHP_ROUND_HALF_UP) : $pricing->value;
+$value = $pricing->name == 'subtotal' ? round($pricing->value, 0, PHP_ROUND_HALF_UP) : $pricing->value;
 
-        $value = $pricing->name == 'tax' && $subtotal > 0 ? round(($pricing->value / $subtotal) * 100, 0, PHP_ROUND_HALF_UP) :
-        $pricing->value;
+$value = $pricing->name == 'tax' && $subtotal > 0 ? round(($pricing->value / $subtotal) * 100, 0, PHP_ROUND_HALF_UP) :
+$pricing->value;
 
-    @endphp
+@endphp
 
 @section('page_title', __('Build Invoice'))
 
@@ -39,6 +39,7 @@
     .multiselect-container {
         width: 100% !important;
     }
+
     .hidden {
         display: none !important;
     }
@@ -203,13 +204,13 @@
                                 @if($meta->type == 'formular')
                                 <td style="min-width: 200px;" class="{{ $meta->visibility }}">
                                     <input disabled readonly class="form-control  {{ $meta->visibility }} " type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}">
-                                    <input disabled readonly style="background-color: white;" class="form-control evaluated-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" value="{{  evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id ) }}" type="{{ $meta->type }}" {{ $meta->visibility }}>
+                                    <input disabled readonly style="background-color: white;" class="form-control evaluated-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" value="{{  evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id, $meta->modifier) }}" type="{{ $meta->type }}" {{ $meta->visibility }}>
 
                                     <input disabled readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}">
                                 </td>
                                 @else
                                 <td style="min-width: 200px;" class="{{ $meta->visibility }}">
-                                    <input disabled readonly class="form-control  {{ $meta->visibility }}" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}">
+                                    <input disabled readonly class="form-control  {{ $meta->visibility }}" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}">
 
                                     <input style="background-color: white;" class="form-control evaluated-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}" {{ $meta->visibility }}>
 
@@ -236,7 +237,10 @@
 
                                 <td>
                                     <button type="submit" class="btn btn-success"><i class="voyager-book"></i></button>
-                                <td colspan="3"><a href="{{ route('voyager.invoices.delete-item', [$invoice->id, $invoiceItem->id]) }}" style="text-decoration: none;" data-invoiceid="" class="btn btn-sm btn-danger"><i class="voyager-trash"></i></a> </td>
+                                    <td colspanss="3">
+                                        <a href="{{ route('voyager.invoices.delete-item', [$invoice->id, $invoiceItem->id]) }}" style="text-decoration: none;" data-invoiceid="" class="btn btn-sm btn-danger"><i class="voyager-trash"></i></a>
+                                        <a href="#"   data-invoiceitemid="{{ $invoiceItem->id  }}" class="btn btn-secondary btn-xs add-column-btn"><i class="voyager-plus"></i>Add Column</a>
+                                    </td>
                                 </td>
                                 <td>
                             </tr>
@@ -383,10 +387,9 @@
                     @csrf()
                     <div class="modal-body" style="overflow:scroll">
 
-
                         <div>
-                            <label for=""> Column Name </label>
-                            <input name="name" type="text" class="form-control"></input>
+                            <label for=""> Column Title </label>
+                            <input name="title" type="text" class="form-control"></input>
                         </div>
 
                         <div style="margin: 10px 0;">
@@ -483,33 +486,32 @@
 @endsection
 
 @section('javascript')
-         <script type=" text/javascript">
-                                                                    $(document).ready(function () {
-                                                                    $('.add-column-btn').click(function (e) {
-                                                                    e.preventDefault();
-                                                                    let invoiceitemid = $(this).data('invoiceitemid')
-                                                                    console.log(invoiceitemid)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.add-column-btn').click(function (e) {
+                e.preventDefault();
+                let invoiceitemid = $(this).data('invoiceitemid')
+                console.log(invoiceitemid)
+                $('input[name="item_id"]').val(invoiceitemid)
+                $('#add_item_column_modal').modal('show');
+            })
 
-                                                                    $('input[name=" item_id"]').val(invoiceitemid)
-                                                                    $('#add_item_column_modal').modal('show');
-                                                                    })
-                                                                    $('.add-pricing-column-btn').click(function (e) {
-                                                                    e.preventDefault();
-                                                                    let invoiceid = $(this).data('invoiceid')
+            $('.add-pricing-column-btn').click(function (e) {
+                e.preventDefault();
+                let invoiceid = $(this).data('invoiceid')
+                $('input[name="invoice_id"]').val(invoiceid)
+                $('#add_pricing_column_modal').modal('show');
+            })
+        })
+        $(document).ready(function () {
+            $('#multiple-checkboxes').multiselect({
+                includeSelectAllOption: true,
+             });
+        });
+    </script>
 
-                                                                    $('input[name="invoice_id"]').val(invoiceid)
-                                                                    $('#add_pricing_column_modal').modal('show');
-                                                                    })
-                                                                    })
-                                                                    $(document).ready(function () {
-                                                                    $('#multiple-checkboxes').multiselect({
-                                                                    includeSelectAllOption: true,
-                                                                    });
-                                                                    });
-                                                                    </script>
-
-                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js">
-                                                                    </script>
-                                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-                                                                    @endsection
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+@endsection

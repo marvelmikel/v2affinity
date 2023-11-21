@@ -31,7 +31,7 @@ class InvoiceItem extends Model
         // get meta formula
         if($formulaCol = $this->getMeta('formular')){
             $formular = $formulaCol->value;
-            $total_amount = evaluate_formular($formular, 'InvoiceItemMeta', $this->id );
+            $total_amount = evaluate_formular($formular, 'InvoiceItemMeta', $this->id, $formulaCol->modifier );
             return $total_amount;
         }
     }

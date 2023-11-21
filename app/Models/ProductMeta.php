@@ -12,10 +12,13 @@ class ProductMeta extends Model
     protected $fillable =[
         'product_id',
         'name',
+        'title',
         'value',
         'type', // value, formular
         'visibility', // readonly, hidden, default
         'identifier',
+        'symbol',
+        'modifier', // 2dp, 0dp
     ];
 
     protected static function boot() {

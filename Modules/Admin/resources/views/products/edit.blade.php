@@ -50,7 +50,7 @@
                             @foreach($product->meta as $meta)
                             @if($meta->name != 'formular')
                             <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}"></td>
+                                <td><input  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}"></td>
                                
                                 <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
                                 
@@ -78,7 +78,7 @@
 
                             <!-- formula here -->
                             <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="formular[]" value="formular"></td>
+                                <td><input  readonly class="form-control" type="text" name="formular[]" value="formular"></td>
                                 <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->value }}"></td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"></td>
                                 <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->visibility }}"></td>
@@ -130,6 +130,11 @@
                         </div>
 
                         <div style="margin: 10px 0;">
+                            <label for=""> Column Title </label>
+                            <input name="title" type="text" class="form-control"></input>
+                        </div>
+
+                        <div style="margin: 10px 0;">
                             <label for=""> Default Value </label>
                             <input name="value" type="text" class="form-control"></input>
                         </div>
@@ -137,8 +142,9 @@
                         <div style="margin: 10px 0;">
                             <label for=""> Column Visibility </label>
                             <select class="form-control" name="visibility" id="">
-                                <option value="default">Default</option>
+                                <option value="visible">Visible</option>
                                 <option value="readonly">Readonly</option>
+                                <option value="hidden">Hidden</option>
                             </select>
                         </div>
 
@@ -172,17 +178,15 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('.add-column-btn').click(function (e) {
-                e.preventDefault();
-                let invoiceitemid = $(this).data('invoiceitemid')
-                console.log(invoiceitemid)
-                $('input[name=" item_id"]').val(invoiceitemid)
-                $('#add_item_column_modal').modal('show'); })
-                $('.add-product-column-btn').click(function (e) { e.preventDefault(); 
-                let productid=$(this).data('productid')
+            
+           
+                
+            $('.add-product-column-btn').click(function (e) { 
+                e.preventDefault(); 
+                let productid= $(this).data('productid')
                 console.log(productid) 
                 $('input[name="product_id" ]').val(productid) 
-                $('#add_pricing_column_modal').modal('show');
+                // $('#add_pricing_column_modal').modal('show');
              }) 
         })
     </script>
