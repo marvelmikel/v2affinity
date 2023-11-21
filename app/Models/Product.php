@@ -163,7 +163,7 @@ class Product extends Model
                     $marble_size_length = $model->getMeta('marble_size_length');
                     $marble_size_width = $model->getMeta('marble_size_width');
 
-                    $single_tile_area = "$marble_size_length->identifier*$marble_size_width->identifier";
+                    $single_tile_area = "($marble_size_length->identifier*$marble_size_width->identifier)";
 
 
                     $model->meta()->updateOrCreate(['name' => 'tiles_count'], [ 
