@@ -87,7 +87,7 @@ return [
             'description'                  => 'Site Description',
             'google_analytics_tracking_id' => 'Google Analytics Tracking ID',
             'logo'                         => 'Site Logo',
-            'title'                        => 'Site Title',
+            'title'                        => 'Affinity',
         ],
     ],
 ];
