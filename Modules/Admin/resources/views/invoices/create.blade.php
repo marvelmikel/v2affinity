@@ -41,16 +41,12 @@
                         @endif
 
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="name">Title</label>
                             <input class="form-control" type="text" value="{{ old('title') }}" name="title" id="">
-                        </div>
+                        </div> -->
 
-                        <div class="form-group">
-                            <label for="name">Description</label>
-                            <input class="form-control" type="text" value="{{ old('description') }}" name="description"
-                                id="">
-                        </div>
+
 
                         <div class="form-group row">
                             <div class="col-md-6 form-group">
@@ -63,6 +59,11 @@
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_email') }}"
                                     name="customer_email" id="">
                             </div>
+
+
+
+
+
                         </div>
 
 
@@ -93,12 +94,15 @@
 
                             </div>
 
-
-                            <div class="form-group col-md-6">
-                                <label for="name">Due Date</label>
-                                <input type="date" class="form-control" type="text" value="{{ old('due_at') }}"
-                                    name="due_at" id="">
+                            <div class="col-md-6 form-group">
+                                <label for="name">Invoice Number</label>
+                                <input class="form-control" type="text"
+                                    value="{{ old('invoice_number') ?: $store->name . '-' . $invoice->id }}"
+                                    name="invoice_number" id="">
                             </div>
+
+
+
                         </div>
 
                         <div class="form-group row">

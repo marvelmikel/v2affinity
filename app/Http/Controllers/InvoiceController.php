@@ -36,9 +36,15 @@ class InvoiceController extends Controller
      * @return
      */
     public function create()
-    {
-        return view('voyager::invoices.create');
-    }
+{
+    $store = auth()->user()->store; // Assuming the store relationship is defined on the User model
+    
+    $invoice = new Invoice(); // Create a new instance of the Invoice model
+    
+    return view('voyager::invoices.create', compact('store', 'invoice'));
+}
+    
+    
 
     public function generatePdf(Request $request, Invoice $invoice, Store $storeModel)
     {
@@ -70,63 +76,81 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'note' => 'sometimes',
-            'due_at' => 'required',
-            'store_id' => 'required',
-            'customer_email' => 'required',
-            'customer_name' => 'required',
-            'customer_address_line_1' => 'required',
-            'customer_address_line_2' => 'sometimes',
-            'customer_phone_number' => 'required',
-            'customer_address_city' => 'sometimes',
-            'customer_address_country' => 'sometimes',
-            'customer_address_postcode' => 'sometimes',
+
+     public function store(Request $request)
+{
+    $request->validate([
+        'note' => 'sometimes',
+        'store_id' => 'required',
+        'customer_email' => 'required',
+        'customer_name' => 'required',
+        'customer_address_line_1' => 'required',
+        'customer_address_line_2' => 'sometimes',
+        'customer_phone_number' => 'required',
+        'customer_address_city' => 'sometimes',
+        'customer_address_country' => 'sometimes',
+        'customer_address_postcode' => 'sometimes',
+    ]);
+
+    // Check if the user has a company_id
+    if (!auth()->user()->company_id) {
+        return redirect()->back()->with([
+            'message' => 'You do not have a company, please create a company first.',
+            'alert-type' => 'warning',
         ]);
-    
-        // Check if the user has a company_id
-        if (!auth()->user()->company_id) {
-            return redirect()->back()->with([
-                'message' => 'You do not have a company, please create a company first.',
-                'alert-type' => 'warning',
-            ]);
-        }
-    
-        // Add the user_id and company_id to the request data
-        $requestData = $request->all();
-        $requestData['user_id'] = auth()->user()->id;
-        $requestData['company_id'] = auth()->user()->company_id;
-    
-        // Create the invoice with user_id and company_id
-        $invoice = Invoice::create($requestData);
-    
-        $customer = Customer::updateOrCreate(['email' => $request->customer_email], [
-            'company_id' => auth()->user()->company_id,
-            'user_id' => auth()->user()->id,
-            'name' => $request->customer_name,
-            'email' => $request->customer_email,
-            'address_line_1' => $request->customer_address_line_1,
-            'address_line_2' => $request->customer_address_line_2,
-            'phone' => $request->customer_phone_number,
-            'address_city' => $request->customer_address_city,
-            'address_country' => $request->customer_address_country,
-            'address_postcode' => $request->customer_address_postcode,
-            'store_id' => $request->store_id,
-        ]);
-    
-        $invoice->update(['customer_id' => $customer->id]);
-    
-        // Add first item here
-        // $this->addItem($invoice->id);
-        // $this->addOptions($invoice->id);
-        $this->addPricing($invoice->id);
-    
-        return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
+
+    // Check if the user has a store_id
+    if (!auth()->user()->store_id) {
+        return redirect()->back()->with([
+            'message' => 'Store not assigned. Please contact your administrator.',
+            'alert-type' => 'error',
+        ]);
+    }
+
+    $store = auth()->user()->store;
+    $invoice = new Invoice(); // Create a new instance of the Invoice model
+    
+    // Generate a unique two-digit random number
+    $randomNumber = str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
+    
+    // Generate the invoice number by removing spaces, converting to lowercase, and attaching the random number
+    $invoiceNumber = str_replace(' ', '', strtolower($store->store_name)) . $randomNumber;
+
+
+    // Add the user_id, company_id, and invoice_number to the request data
+    $requestData = $request->all();
+    $requestData['user_id'] = auth()->user()->id;
+    $requestData['company_id'] = auth()->user()->company_id;
+    $requestData['invoice_number'] = $invoiceNumber;
+
+    // Create the invoice with user_id, company_id, and invoice_number
+    $invoice = Invoice::create($requestData);
+
+    $customer = Customer::updateOrCreate(['email' => $request->customer_email], [
+        'company_id' => auth()->user()->company_id,
+        'user_id' => auth()->user()->id,
+        'name' => $request->customer_name,
+        'email' => $request->customer_email,
+        'address_line_1' => $request->customer_address_line_1,
+        'address_line_2' => $request->customer_address_line_2,
+        'phone' => $request->customer_phone_number,
+        'address_city' => $request->customer_address_city,
+        'address_country' => $request->customer_address_country,
+        'address_postcode' => $request->customer_address_postcode,
+        'store_id' => $request->store_id,
+    ]);
+
+    $invoice->update(['customer_id' => $customer->id]);
+
+    // Add first item here
+    // $this->addItem($invoice->id);
+    // $this->addOptions($invoice->id);
+    $this->addPricing($invoice->id);
+
+    return redirect()->route('voyager.invoices.edit', $invoice->id);
+}
+    
     
 
     /**

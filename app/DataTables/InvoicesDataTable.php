@@ -105,9 +105,8 @@ class InvoicesDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('title'),
-            Column::make('description'),
-            Column::make('due_at'),
+            Column::make('invoice_number'),
+            // Column::make('due_at'),
             // Column::make('paid_at'),
             Column::make('created_at'),
             Column::make('updated_at'),

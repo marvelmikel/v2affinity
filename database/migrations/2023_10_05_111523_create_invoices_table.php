@@ -16,13 +16,12 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('user_id')->nullable(); // user
             $table->foreignId('store_id')->nullable(); // store
             $table->foreignId('customer_id')->nullable(); // store
 
-            $table->string('title')->nullable();
-            $table->longText('description')->nullable();
+            
+            $table->longText('invoice_number')->nullable();
 
             $table->string('currency')->nullable();
 

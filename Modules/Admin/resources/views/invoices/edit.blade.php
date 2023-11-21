@@ -83,31 +83,38 @@
                         </div>
                         @endif
 
-
-                        <div class="form-group col-md-6">
-                            <label for="name">Title</label>
-                            <input class="form-control" type="text" value="{{ $invoice->title }}" name="title" id="">
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="name">Description</label>
-                            <input class="form-control" type="text" value="{{ $invoice->description }}" name="description" id="">
-                        </div>
-
-
                         <div class="form-group row">
-                            <div class="form-group col-md-6">
+                        <div class="form-group col-md-6">
                                 <label for="name">Store</label>
-                                <select class="form-control select" value="{{ $invoice->store_id }}" name="store_id" id="store_id">
-                                    <option value="1">United Carpet Store</option>
+                                <select class="form-control select" value="{{ old('store_id') }}" name="store_id" id="">
+                                    @if(Auth::user()->role_id == 2 && Auth::user()->company)
+                                    <!-- For users with role_id = 2 (company role) and a valid company relationship -->
+                                    <option value="">Select a Store</option>
+                                    @foreach(Auth::user()->company->stores ?? [] as $store)
+                                    <option value="{{ $store->id }}" @if(old('store_id')==$store->id) selected
+                                        @endif>{{ $store->store_name }}</option>
+                                    @endforeach
+                                    @else
+                                    <!-- For users with role_id = 3 or 4 -->
+                                    @if(Auth::user()->store)
+                                    <option value="{{ Auth::user()->store->id }}" @if(old('store_id')==Auth::user()->
+                                        store->id) selected @endif>{{ Auth::user()->store->store_name }}</option>
+                                    @else
+                                    @php
+                                    throw new \Exception('No store assigned to you yet');
+                                    @endphp
+                                    @endif
+                                    @endif
                                 </select>
+
+
                             </div>
 
 
                             <div class="form-group col-md-6">
-                                <label for="name">Due Date</label>
-                                <input type="date" class="form-control" type="text" value="{{ $invoice->due_at }}" name="due_at" id="">
-                            </div>
+                            <label for="name">Invoice Number</label>
+                            <input class="form-control" type="text" value="{{ $invoice->invoice_number }}" name="invoice_number" id="">
+                        </div>
                         </div>
 
 
@@ -121,6 +128,7 @@
                                 <label for="name">Customer Email</label>
                                 <input type="text" class="form-control" type="text" value="{{ $invoice->customer->email }}" name="customer_email" id="">
                             </div>
+                             
                         </div>
 
 
@@ -339,8 +347,8 @@
 
                             <tr>
                                 <td>
-                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save
-                                        Invoice</button>
+                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save Invoice</button>
+                                    <a style="text-decoration: none;" target="_blank" href="" class="btn btn-primary"><i class="voyager"></i>Email Invoice</a>
                                     <a style="text-decoration: none;" href="{{ route('voyager.invoices.show', $invoice->id) }}" class="btn btn-primary"><i class="voyager"></i>Preview Invoice</a>
                                     <a style="text-decoration: none;" target="_blank" href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="btn btn-primary"><i class="voyager"></i>Invoice PDF</a>
                                 </td>

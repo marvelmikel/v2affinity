@@ -13,15 +13,13 @@ class Invoice extends Model
 
 
     protected $fillable = [
-        'title',
-        'description',
+        'invoice_number',
         'currency', // add to migration
         'notes',
         'store_id', // belongs to a store
         'user_id', // created by user
         'customer_id', // maintain saparate table for customers, in this way, stores can select existing customers or create  new while creating invoice
         'is_recurring',
-        'due_at',
         'paid_at',
         'sent_at',
         'company_id',
