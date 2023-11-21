@@ -77,7 +77,7 @@ return [
         'admin' => [
             'background_image'           => 'Admin Background Image',
             'description'                => 'Admin Description',
-            'description_value'          => 'Welcome to Voyager. The Missing Admin for Laravel',
+            'description_value'          => 'Accelerate your Carpet Stores Invoice Processing with Affinity',
             'google_analytics_client_id' => 'Google Analytics Client ID (used for admin dashboard)',
             'icon_image'                 => 'Admin Icon Image',
             'loader'                     => 'Admin Loader',

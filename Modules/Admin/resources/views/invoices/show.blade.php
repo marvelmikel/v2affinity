@@ -200,9 +200,8 @@
 
             <ol class=" text-xs font-semibold" style="line-height: 28px;">
 
-                <p>
-                    {{ strip_tags($company->terms_conditions) }}
-                </p>
+            <p>{!! $company->terms_conditions !!}</p>
+
 
             </ol>
             <br>
