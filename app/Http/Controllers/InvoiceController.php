@@ -191,7 +191,7 @@ class InvoiceController extends Controller
             // $this->addItem($request, $invoice->id);
         }
 
-        // evaluate_formular("P11*(2*P12)", 'InvoicePricing' );
+        // dd(evaluate_formular("(P11*(0.01*P12))", 'InvoicePricing' ));
 
         // dd(evaluate_formular("P11*(2*P12)", 'InvoicePricing' ));
         // dd(evaluate_formular("unitprice214*packscount221", 'InvoiceItemMeta', 1, '2dp' ));
@@ -379,7 +379,39 @@ class InvoiceController extends Controller
         if ($pricingItem) {
             $pricingItem->update(['value' => $me[0], 'type' => $me[1]]);
         }
+
     }
+
+    if($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount') ){
+
+       
+        $subtotalCol = $invoice->getPricing('subtotal');
+        $taxCol = $invoice->getPricing('tax');
+        $discountCol = $invoice->getPricing('discount');
+
+        $subtotal = $subtotalCol->identifier;
+
+        if($taxCol->type == 'percentage'){
+            $tax = "($subtotal*(0.01*$taxCol->identifier))";
+        }else{
+            $tax = $taxCol->identifier;
+        }
+
+        if($discountCol->type == 'percentage'){
+            $discount = "($subtotal*(0.01*$discountCol->identifier))";
+        }else{
+            $discount = $discountCol->identifier;
+        }
+        $formular = "($subtotal+$tax)-($discount)";
+
+        $invoice->pricings()->updateOrCreate([
+            'name' => 'formular'],
+            [
+                'name' => 'formular',
+                'value' => "$formular"
+        ]);
+    }
+
 
     return redirect()->back()->with([
         'message' => 'Invoice pricing saved successfully'
@@ -447,7 +479,7 @@ class InvoiceController extends Controller
         }
 
         $meta = [
-            [ 'name' => 'subtotal', 'value' => 0],
+            [ 'name' => 'subtotal', 'value' => 0, 'type' => 'value'],
             [ 'name' => 'tax', 'value' => 0, 'type' => 'percentage'], // value, percentage, formular
             [ 'name' => 'discount', 'value' => 0, 'type' => 'percentage'], // value, percentage, formula
         ];

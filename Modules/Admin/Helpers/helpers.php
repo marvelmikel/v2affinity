@@ -55,10 +55,8 @@ if (!function_exists('evaluate_formular')) {
         }
 
         // sanitize imput - leave number constants
-        // $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/%]/","",$formular);
+        $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/%]/","",$formular);
         
-        // also sanitize and keep ()
-        $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/()%]/","",$formular); 
         
 
         // convert alphabet to $variabel 
@@ -67,15 +65,17 @@ if (!function_exists('evaluate_formular')) {
 
         // dd($formular);
 
-        $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
+        // $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
+        // $pattern = '/\b(?:[a-zA-Z_][a-zA-Z0-9_]*|\+|-|\*|\/|%)\b/';
         
         //  also match parenthesis
-        // $pattern = '(?:[a-zA-Z_][a-zA-Z0-9_]*|\d+)(?:[-+*/](?:[a-zA-Z_][a-zA-Z0-9_]*|\d+))*\b/';
+        // Define the expression pattern with support for parentheses
+        $pattern = '/([A-Za-z0-9]+|\d+(\.\d+)?+|[^\w\s])/';
 
 
         preg_match_all($pattern, $formular, $matches); 
 
-        // dd($formular, $matches[0]);
+        // dd( $matches[0]);
 
         $evaluation = [];
         

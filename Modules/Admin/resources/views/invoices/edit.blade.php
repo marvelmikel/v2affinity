@@ -314,7 +314,7 @@
                                                 </td>
                                                 <td>
 
-                                                    <input class="form-control" type="number" max="100"
+                                                    <input class="form-control" type="number" 
                                                         min="0" step="any" name="{{ $pricing->name }}[]"
                                                         value="{{ $pricing->value }}"
                                                         placeholder="{{ ucfirst($pricing->name) }} %">
@@ -351,7 +351,7 @@
                                                         <option selected  value="{{ $pricing->type }}"">{{ $pricing->type }}</option>
                                                         <option value="percentage">Percentage</option>
                                                         <option value="value">Value</option>
-                                                        <option value="formular">Formular</option>
+                                                        {{-- <option value="formular">Formular</option> --}}
                                                     </select>
                                                 </td>
                                                 <td>
@@ -364,11 +364,7 @@
                                     @endif
                                 @endforeach
 
-
-
-
-
-                                <!-- formula here -->
+                                 <!-- formula here -->
                                 @if (Auth::check() && Auth::user()->role_id == 1)
                                     <tr>
                                         <td><input disabled readonly class="form-control" type="text"
@@ -376,8 +372,8 @@
                                         <td><input class="form-control" type="text" name="formular[]"
                                                 value="{{ $invoice->getPricing('formular')['value'] }}"></td>
                                         <td>
-                                            <select class="form-control"name="{{ $pricing->name }}[]" id="">
-                                                <option selected  value="{{ $pricing->type }}"">{{ $pricing->type }}</option>
+                                            <select class="form-control"name="{{ $invoice->getPricing('formular')['name'] }}[]" id="">
+                                                <option selected  value="{{ $invoice->getPricing('formular')['type'] }}"">{{ $invoice->getPricing('formular')['type'] }}</option>
                                                 <option value="percentage">Percentage</option>
                                                 <option value="value">Value</option>
                                                 <option value="formular">Formular</option>
@@ -390,6 +386,8 @@
                                     </tr>
                                 @endif
 
+
+                                
 
                                 <!-- item total here -->
                                 <tr>
@@ -404,8 +402,6 @@
                                             class="btn btn-secondary btn-xs add-pricing-column-btn"><i
                                                 class="voyager-plus"></i>Add Pricing Item Cost </a> </td>
                                 </tr>
-
-
 
                                 <tr>
                                     <td>
@@ -423,10 +419,6 @@
 
 
                                 </tr>
-
-
-
-
 
                             </form>
                         </tbody>
