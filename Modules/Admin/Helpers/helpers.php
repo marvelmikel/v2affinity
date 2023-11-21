@@ -55,8 +55,7 @@ if (!function_exists('evaluate_formular')) {
         }
 
         // sanitize imput - leave number constants
-        $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/%]/","",$formular);
-        
+        // $formular = preg_replace("/[^a-zA-Z0-9+\-.*\/%]/","",$formular);
         
 
         // convert alphabet to $variabel 
@@ -75,7 +74,7 @@ if (!function_exists('evaluate_formular')) {
 
         preg_match_all($pattern, $formular, $matches); 
 
-        // dd( $matches[0]);
+        // dd($formular, $matches[0]);
 
         $evaluation = [];
         
@@ -116,7 +115,7 @@ if (!function_exists('evaluate_formular')) {
                     // But here we check if type is formual and evalute it lol - hmmm
 
                     if($meta->type == 'formular'){
-                        $vall = evaluate_formular($meta->value, $entity, $entity_id, $modifier );
+                        $vall = evaluate_formular($meta->value, $entity, $entity_id, $meta->modifier );
                         array_push($evaluation, $vall);
                     }else{
                         preg_match('/\d+(\.\d+)?/', $meta->value, $match); // this prevents dangerious eval statements in value expressions

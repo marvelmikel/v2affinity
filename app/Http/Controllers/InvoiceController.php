@@ -191,7 +191,7 @@ class InvoiceController extends Controller
             // $this->addItem($request, $invoice->id);
         }
 
-        // dd(evaluate_formular("(P11*(0.01*P12))", 'InvoicePricing' ));
+        // evaluate_formular("(area21239)/[marblesizelength21234*marblesizewidth21235]", 'InvoicePricing' );
 
         // dd(evaluate_formular("P11*(2*P12)", 'InvoicePricing' ));
         // dd(evaluate_formular("unitprice214*packscount221", 'InvoiceItemMeta', 1, '2dp' ));
