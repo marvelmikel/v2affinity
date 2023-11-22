@@ -278,18 +278,18 @@
                             @if ($pricing->name == 'tax' || $pricing->name == 'discount')
                             <tr>
                                 <td>
-                                    <input disabled readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }} %" required>
+                                    <input disabled readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->name }} " required>
                                 </td>
                                 <td>
 
-                                    <input class="form-control" type="number" min="0" step="any" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}" placeholder="{{ ucfirst($pricing->name) }} %" required>
+                                    <input class="form-control" type="number" min="0" step="any" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}" placeholder="{{ ucfirst($pricing->name) }} % " required>
                                 </td>
                                 <td>
 
                                     <select class="form-control" name="{{ $pricing->name }}[]" id="">
                                         <option selected value="{{ $pricing->type }}"">{{ $pricing->type }}</option>
-                                                        <option value=" percentage">Percentage</option>
-                                        <option value="value">Value</option>
+                                        <option value="percentage">%</option>
+                                        <option value="value">£</option>
                                         <option value="formular">Formular</option>
                                     </select>
 
@@ -309,7 +309,7 @@
                                 <td>
                                     <select class="form-control" name="{{ $pricing->name }}[]" id="">
                                         <option selected value="{{ $pricing->type }}"">{{ $pricing->type }}</option>
-                                                        <option value=" percentage">Percentage</option>
+                                                        <option value="percentage">Percentage</option>
                                         <option value="value">Value</option>
                                         {{-- <option value="formular">Formular</option> --}}
                                     </select>
@@ -345,7 +345,7 @@
 
                             <!-- item total here -->
                             <tr>
-                                <td><input readonly class="form-control" type="text" value="Amount  £"></td>
+                                <td><input readonly class="form-control" type="text" value="Total Amount £"></td>
                                 <td colspan="3"><input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($invoice->total, 2) }}"></td>
                             </tr>
 
