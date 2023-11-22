@@ -45,33 +45,26 @@
                     </thead>
                     <tbody>
                         <form action="{{ route('voyager.products.update', $product->id) }} " method="POST">
-                            @method('patch')
+                        @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                            @if($meta->name != 'formular')
+                            @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->value != 0)
                             <tr>
-                                <td><input  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}"></td>
-                               
+                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
                                 <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
-                                
                                 <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
-
                                 <td>
                                     <select class="form-control" name="{{ $meta->name }}[]" id="">
-                                            <!-- <option selected value="{{ $meta->visibility }}">{{ $meta->visibility }}</option> -->
-                                            <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }} >hidden</option>
-                                            <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }} >readonly</option>
-                                            <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }} >visible</option>
+                                        <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
+                                        <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
+                                        <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>visible</option>
                                     </select>
-                                    <!-- <input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->visibility }}"> -->
                                 </td>
-
                                 <td>
-                                    <a href="{{ route('product-meta.delete', $meta->id)  }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
+                                    <a href="{{ route('product-meta.delete', $meta->id) }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
                                         <i class="voyager-trash"></i>
                                     </a>
                                 </td>
-
                             </tr>
                             @endif
                             @endforeach

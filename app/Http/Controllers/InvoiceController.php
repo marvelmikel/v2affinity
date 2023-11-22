@@ -312,26 +312,27 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return
      */
-    public function saveItem(Request $request, $invoiceId,  $itemId)
+    public function saveItem(Request $request, $invoiceId, $itemId)
     {
         $invoiceItem = InvoiceItem::find($itemId);
         $invoice = Invoice::find($invoiceId);
-        $meta= $request->all();
+        $meta = $request->all();
+        
         foreach ($meta as $me) {
-            InvoiceItemMeta::where('identifier', $me[1])->where('invoice_item_id', $invoiceItem->id )->first()->update(['value' => $me[0]]);
+            if (isset($me[1])) { // Check if array key 1 is set
+                $value = !empty($me[0]) ? $me[0] : 0; // Set default value of 0 if $me[0] is empty
+                InvoiceItemMeta::where('identifier', $me[1])->where('invoice_item_id', $invoiceItem->id)->first()->update(['value' => $me[0]]);
+            }
         }
-
-
-        // recalculate invoice subtotal here whenever an item is saved
+    
+        // Recalculate invoice subtotal here whenever an item is saved
         $invoice->calculateSubtotal();
-
-
+    
         return redirect()->back()->with([
-            'message' =>' Invoice item saved successfully'
+            'message' => 'Invoice item saved successfully'
         ]);
-
-
     }
+    
     /**
      *
      *

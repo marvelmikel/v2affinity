@@ -99,6 +99,7 @@
 
                                 <div class="col-md-6 form-group">
                                     <label for="name">Invoice Number</label>
+                                    <span class="text-danger">* Note: If empty, its generates a unique invoice number.</span>
                                     <input class="form-control" type="text"
                                         value="{{ old('invoice_number') ?: $store->name . '-' . $invoice->id }}"
                                         name="invoice_number" id="">
