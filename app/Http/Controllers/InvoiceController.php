@@ -26,7 +26,7 @@ class InvoiceController extends Controller
      */
     public function index(InvoicesDataTable $dataTable)
     {
-        
+
         return $dataTable->render('voyager::invoices.index');
     }
 
@@ -36,27 +36,27 @@ class InvoiceController extends Controller
      * @return
      */
     public function create()
-{
-    $store = auth()->user()->store; // Assuming the store relationship is defined on the User model
-    
-    $invoice = new Invoice(); // Create a new instance of the Invoice model
-    
-    return view('voyager::invoices.create', compact('store', 'invoice'));
-}
-    
-    
+    {
+        $store = auth()->user()->store; // Assuming the store relationship is defined on the User model
+
+        $invoice = new Invoice(); // Create a new instance of the Invoice model
+
+        return view('voyager::invoices.create', compact('store', 'invoice'));
+    }
+
+
 
     public function generatePdf(Request $request, Invoice $invoice, Store $storeModel)
     {
         $store = $storeModel::find($invoice->store_id);
-    
+
         if (!$store) {
             throw new \Exception('Store not found');
         }
-    
+
         // Fetch the company data here
         $company = Company::find($invoice->company_id);
-    
+
         $pdf = PDF::loadView('voyager::invoices.pdf', [
             'invoice' => $invoice,
             'customer' => $invoice->customer,
@@ -65,10 +65,10 @@ class InvoiceController extends Controller
             'store' => $store,
             'company' => $company, // Pass the $company variable to the view
         ]);
-    
+
         return $pdf->stream('invoice.pdf');
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -77,100 +77,100 @@ class InvoiceController extends Controller
      * @return
      */
 
-     public function store(Request $request)
-{
-    $request->validate([
-        'note' => 'sometimes',
-        'store_id' => 'required',
-        'customer_email' => 'required',
-        'customer_name' => 'required',
-        'customer_address_line_1' => 'required',
-        'customer_address_line_2' => 'sometimes',
-        'customer_phone_number' => 'required',
-        'customer_address_city' => 'sometimes',
-        'customer_address_country' => 'sometimes',
-        'customer_address_postcode' => 'sometimes',
-        'invoice_number' => 'nullable', // Add validation rule for invoice_number field
-    ]);
-
-    // Check if the user has a company_id
-    if (!auth()->user()->company_id) {
-        return redirect()->back()->with([
-            'message' => 'You do not have a company, please create a company first.',
-            'alert-type' => 'warning',
+    public function store(Request $request)
+    {
+        $request->validate([
+            'note' => 'sometimes',
+            'store_id' => 'required',
+            'customer_email' => 'required',
+            'customer_name' => 'required',
+            'customer_address_line_1' => 'required',
+            'customer_address_line_2' => 'sometimes',
+            'customer_phone_number' => 'required',
+            'customer_address_city' => 'sometimes',
+            'customer_address_country' => 'sometimes',
+            'customer_address_postcode' => 'sometimes',
+            'invoice_number' => 'nullable', // Add validation rule for invoice_number field
         ]);
-    }
 
-    // Check if the user has a store_id
-    if (!auth()->user()->store_id) {
-        return redirect()->back()->with([
-            'message' => 'Store not assigned. Please contact your administrator.',
-            'alert-type' => 'error',
+        // Check if the user has a company_id
+        if (!auth()->user()->company_id) {
+            return redirect()->back()->with([
+                'message' => 'You do not have a company, please create a company first.',
+                'alert-type' => 'warning',
+            ]);
+        }
+
+        // Check if the user has a store_id
+        if (!auth()->user()->store_id) {
+            return redirect()->back()->with([
+                'message' => 'Store not assigned. Please contact your administrator.',
+                'alert-type' => 'error',
+            ]);
+        }
+
+        $store = auth()->user()->store;
+        $invoice = new Invoice(); // Create a new instance of the Invoice model
+
+
+
+        // Generate a unique two-digit random number
+        $randomNumber = str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
+
+        // Extract the first character of each word in the store name and convert to uppercase
+        $storeNameParts = explode(' ', $store->store_name);
+        $storeShortCode = '';
+        foreach ($storeNameParts as $part) {
+            $storeShortCode .= strtoupper(substr($part, 0, 1));
+        }
+
+
+        // Generate the invoice number in the format "INV-{store_name}-{random number}"
+        $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
+
+
+
+
+        // Check if invoice_number is set in the request and not empty
+        if ($request->filled('invoice_number')) {
+            $invoiceNumber = $request->invoice_number;
+        }
+
+        // Add the user_id, company_id, and invoice_number to the request data
+        $requestData = $request->all();
+        $requestData['user_id'] = auth()->user()->id;
+        $requestData['company_id'] = auth()->user()->company_id;
+        $requestData['invoice_number'] = $invoiceNumber;
+
+        // Create the invoice with user_id, company_id, and invoice_number
+        $invoice = Invoice::create($requestData);
+
+        $customer = Customer::updateOrCreate(['email' => $request->customer_email], [
+            'company_id' => auth()->user()->company_id,
+            'user_id' => auth()->user()->id,
+            'name' => $request->customer_name,
+            'email' => $request->customer_email,
+            'address_line_1' => $request->customer_address_line_1,
+            'address_line_2' => $request->customer_address_line_2,
+            'phone' => $request->customer_phone_number,
+            'address_city' => $request->customer_address_city,
+            'address_country' => $request->customer_address_country,
+            'address_postcode' => $request->customer_address_postcode,
+            'store_id' => $request->store_id,
         ]);
+
+        $invoice->update(['customer_id' => $customer->id]);
+
+        // Add first item here
+        // $this->addItem($invoice->id);
+        // $this->addOptions($invoice->id);
+        $this->addPricing($invoice->id);
+
+        return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 
-    $store = auth()->user()->store;
-    $invoice = new Invoice(); // Create a new instance of the Invoice model
 
 
-
-  // Generate a unique two-digit random number
-$randomNumber = str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
-
-// Extract the first character of each word in the store name and convert to uppercase
-$storeNameParts = explode(' ', $store->store_name);
-$storeShortCode = '';
-foreach ($storeNameParts as $part) {
-    $storeShortCode .= strtoupper(substr($part, 0, 1));
-}
-
-
-// Generate the invoice number in the format "INV-{store_name}-{random number}"
-$invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
-
-
-
-
-    // Check if invoice_number is set in the request and not empty
-    if ($request->filled('invoice_number')) {
-        $invoiceNumber = $request->invoice_number;
-    }
-
-    // Add the user_id, company_id, and invoice_number to the request data
-    $requestData = $request->all();
-    $requestData['user_id'] = auth()->user()->id;
-    $requestData['company_id'] = auth()->user()->company_id;
-    $requestData['invoice_number'] = $invoiceNumber;
-
-    // Create the invoice with user_id, company_id, and invoice_number
-    $invoice = Invoice::create($requestData);
-
-    $customer = Customer::updateOrCreate(['email' => $request->customer_email], [
-        'company_id' => auth()->user()->company_id,
-        'user_id' => auth()->user()->id,
-        'name' => $request->customer_name,
-        'email' => $request->customer_email,
-        'address_line_1' => $request->customer_address_line_1,
-        'address_line_2' => $request->customer_address_line_2,
-        'phone' => $request->customer_phone_number,
-        'address_city' => $request->customer_address_city,
-        'address_country' => $request->customer_address_country,
-        'address_postcode' => $request->customer_address_postcode,
-        'store_id' => $request->store_id,
-    ]);
-
-    $invoice->update(['customer_id' => $customer->id]);
-
-    // Add first item here
-    // $this->addItem($invoice->id);
-    // $this->addOptions($invoice->id);
-    $this->addPricing($invoice->id);
-
-    return redirect()->route('voyager.invoices.edit', $invoice->id);
-}
-
-    
-    
 
     /**
      * Display the specified resource.
@@ -178,24 +178,24 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
      * @param  int  $id
 
      */
- 
-     public function show($id)
-     {
-         $invoice = Invoice::find($id);
-         
-         // Fetch related data
-         $customer = Customer::find($invoice->customer_id);
-         $items = InvoiceItem::where('invoice_id', $invoice->id)->get();
-         $pricing = InvoicePricing::where('invoice_id', $invoice->id)->first();
-         $store = Store::find($invoice->store_id); 
-         $users_id = $invoice->user_id;
-         $user = User::find($users_id); 
-         $company = Company::find($invoice->company_id);
-     
-         return view('voyager::invoices.show', compact('invoice', 'customer', 'items', 'pricing', 'store', 'user', 'company'));
-     }
-    
-    
+
+    public function show($id)
+    {
+        $invoice = Invoice::find($id);
+
+        // Fetch related data
+        $customer = Customer::find($invoice->customer_id);
+        $items = InvoiceItem::where('invoice_id', $invoice->id)->get();
+        $pricing = InvoicePricing::where('invoice_id', $invoice->id)->first();
+        $store = Store::find($invoice->store_id);
+        $users_id = $invoice->user_id;
+        $user = User::find($users_id);
+        $company = Company::find($invoice->company_id);
+
+        return view('voyager::invoices.show', compact('invoice', 'customer', 'items', 'pricing', 'store', 'user', 'company'));
+    }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -206,7 +206,7 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
     public function edit(Request $request,  $id)
     {
         $invoice = Invoice::find($id)->load('items', 'pricings');
-        if( $invoice->items->count() < 1 ){
+        if ($invoice->items->count() < 1) {
             // $this->addItem($request, $invoice->id);
         }
 
@@ -223,15 +223,12 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
         // cal this method when opening invoice or editing invoice
         $invoice->calculateSubtotal();
 
-        $total_amount = evaluate_formular($formular, 'InvoicePricing' );
+        $total_amount = evaluate_formular($formular, 'InvoicePricing');
 
         $products  = Product::all();
 
         // dd($invoiceSubtotal);
         return view('voyager::invoices.edit', compact('invoice', 'total_amount', 'products'));
-
-
-
     }
 
 
@@ -264,7 +261,7 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
 
         $invoice->update($request->all());
         return redirect()->back()->with([
-            'message' =>' Invoice updated successfully'
+            'message' => ' Invoice updated successfully'
         ]);
     }
 
@@ -282,9 +279,9 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
     public function delete($id)
     {
         $invoice = Invoice::findOrFail($id);
-    
+
         $invoice->delete();
-    
+
         // Redirect back to the initial page
         return redirect()->route('voyager.invoices.index')->with('success', 'Invoice deleted successfully');
     }
@@ -303,20 +300,19 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
         ]);
         $invoice = Invoice::find($id);
 
-        foreach($productids as $productid){
-            if($product = Product::find($productid)->first() ){
+        foreach ($productids as $productid) {
+            if ($product = Product::find($productid)->first()) {
 
-                if(InvoiceItem::where('invoice_id', $invoice->id)->where('product_id', $product->id)->exists() ){
+                if (InvoiceItem::where('invoice_id', $invoice->id)->where('product_id', $product->id)->exists()) {
                     continue;
                 }
 
-                if($meta = $product->meta->toArray() ){
-                    $item = InvoiceItem::create( ['invoice_id' => $invoice->id, 'product_id' => $product->id] );
-                    foreach ($meta as $met ) {
+                if ($meta = $product->meta->toArray()) {
+                    $item = InvoiceItem::create(['invoice_id' => $invoice->id, 'product_id' => $product->id]);
+                    foreach ($meta as $met) {
                         $item->meta()->create($met); // create all meta first
                     }
                 }
-
             }
         }
 
@@ -336,22 +332,22 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
         $invoiceItem = InvoiceItem::find($itemId);
         $invoice = Invoice::find($invoiceId);
         $meta = $request->all();
-        
+
         foreach ($meta as $me) {
             if (isset($me[1])) { // Check if array key 1 is set
                 $value = !empty($me[0]) ? $me[0] : 0; // Set default value of 0 if $me[0] is empty
                 InvoiceItemMeta::where('identifier', $me[1])->where('invoice_item_id', $invoiceItem->id)->first()->update(['value' => $me[0]]);
             }
         }
-    
+
         // Recalculate invoice subtotal here whenever an item is saved
         $invoice->calculateSubtotal();
-    
+
         return redirect()->back()->with([
             'message' => 'Invoice item saved successfully'
         ]);
     }
-    
+
     /**
      *
      *
@@ -370,10 +366,8 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
 
 
         return redirect()->back()->with([
-            'message' =>' Invoice item deleted successfully'
+            'message' => ' Invoice item deleted successfully'
         ]);
-
-
     }
 
 
@@ -384,69 +378,71 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
      * @return
      */
     public function savePricing(Request $request, $invoiceId)
-{
-    $invoice = Invoice::find($invoiceId);
-    $meta = $request->except(['_method', '_token']);
+    {
+        $invoice = Invoice::find($invoiceId);
+        $meta = $request->except(['_method', '_token']);
 
-    // dd($meta);
+        // dd($meta);
 
-    // Initialize the subtotal value to zero
-    $subtotal = 0;
+        // Initialize the subtotal value to zero
+        $subtotal = 0;
 
-    foreach ($meta as $key => $me) {
-        $pricingItem = InvoicePricing::where('identifier', $me[2])->first();
+        foreach ($meta as $key => $me) {
+            $pricingItem = InvoicePricing::where('identifier', $me[2])->first();
 
-        if ($pricingItem) {
-            $pricingItem->update(['value' => $me[0], 'type' => $me[1]]);
+            if ($pricingItem) {
+                $pricingItem->update(['value' => $me[0], 'type' => $me[1]]);
+            }
         }
 
-    }
+        if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
 
-    if($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount') ){
 
-       
-        $subtotalCol = $invoice->getPricing('subtotal');
-        $taxCol = $invoice->getPricing('tax');
-        $discountCol = $invoice->getPricing('discount');
+            $subtotalCol = $invoice->getPricing('subtotal');
+            $taxCol = $invoice->getPricing('tax');
+            $discountCol = $invoice->getPricing('discount');
 
-        $subtotal = $subtotalCol->identifier;
+            $subtotal = $subtotalCol->identifier;
 
-        if($taxCol->type == 'percentage'){
-            $tax = "($subtotal*(0.01*$taxCol->identifier))";
-        }else{
-            $tax = $taxCol->identifier;
+            if ($taxCol->type == 'percentage') {
+                $tax = "($subtotal*(0.01*$taxCol->identifier))";
+            } else {
+                $tax = $taxCol->identifier;
+            }
+
+            if ($discountCol->type == 'percentage') {
+                $discount = "($subtotal*(0.01*$discountCol->identifier))";
+            } else {
+                $discount = $discountCol->identifier;
+            }
+            $formular = "($subtotal+$tax)-($discount)";
+
+            $invoice->pricings()->updateOrCreate(
+                [
+                    'name' => 'formular'
+                ],
+                [
+                    'name' => 'formular',
+                    'value' => "$formular"
+                ]
+            );
         }
 
-        if($discountCol->type == 'percentage'){
-            $discount = "($subtotal*(0.01*$discountCol->identifier))";
-        }else{
-            $discount = $discountCol->identifier;
-        }
-        $formular = "($subtotal+$tax)-($discount)";
 
-        $invoice->pricings()->updateOrCreate([
-            'name' => 'formular'],
-            [
-                'name' => 'formular',
-                'value' => "$formular"
+        return redirect()->back()->with([
+            'message' => 'Invoice pricing saved successfully'
         ]);
     }
 
 
-    return redirect()->back()->with([
-        'message' => 'Invoice pricing saved successfully'
-    ]);
-}
-
-    
-    
-    
-
-  
-    
 
 
-     /**
+
+
+
+
+
+    /**
      *
      *
      * @param  int  $id
@@ -461,10 +457,9 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
             'value' => $request->value
         ]);
         return redirect()->back();
-
     }
 
-     /**
+    /**
      *
      *
      * @param  int  $id
@@ -478,7 +473,6 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
             'value' => $request->value
         ]);
         return redirect()->back();
-
     }
 
 
@@ -494,58 +488,55 @@ $invoiceNumber = 'INV-' . $storeShortCode . '-' . $randomNumber;
      */
     public function addPricing($id)
     {
-        if(!$invoice = Invoice::find($id)){
+        if (!$invoice = Invoice::find($id)) {
             return;
         }
 
         $meta = [
-            [ 'name' => 'subtotal', 'value' => 0, 'type' => 'value'],
-            [ 'name' => 'tax', 'value' => 0, 'type' => 'percentage'], // value, percentage, formular
-            [ 'name' => 'discount', 'value' => 0, 'type' => 'percentage'], // value, percentage, formula
+            ['name' => 'subtotal', 'value' => 0, 'type' => 'value'],
+            ['name' => 'tax', 'value' => 0, 'type' => 'percentage'], // value, percentage, formular
+            ['name' => 'discount', 'value' => 0, 'type' => 'percentage'], // value, percentage, formula
         ];
 
-        foreach ($meta as $met ) {
-            if(!$invoice->getPricing($met['name'])){
+        foreach ($meta as $met) {
+            if (!$invoice->getPricing($met['name'])) {
                 $invoice->pricings()->create($met);
             }
-
         }
-        
+
 
         //add def formular here
-        if($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount') ){
+        if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
             $subtotalCol = $invoice->getPricing('subtotal');
             $taxCol = $invoice->getPricing('tax');
             $discountCol = $invoice->getPricing('discount');
 
             $subtotal = $subtotalCol->identifier;
 
-            if($taxCol->type == 'percentage'){
+            if ($taxCol->type == 'percentage') {
                 $tax = "($subtotal*(0.01*$taxCol->identifier))";
-            }else{
+            } else {
                 $tax = $taxCol->identifier;
             }
 
-            if($discountCol->type == 'percentage'){
+            if ($discountCol->type == 'percentage') {
                 $discount = "($subtotal*(0.01*$discountCol->identifier))";
-            }else{
+            } else {
                 $discount = $discountCol->identifier;
             }
             $formular = "($subtotal+$tax)-($discount)";
 
-            $invoice->pricings()->updateOrCreate([
-                'name' => 'formular',
-                'value' => "$formular"],
+            $invoice->pricings()->updateOrCreate(
                 [
                     'name' => 'formular',
                     'value' => "$formular"
-            ]);
+                ],
+                [
+                    'name' => 'formular',
+                    'value' => "$formular"
+                ]
+            );
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
-
-    
-   
-
-
 }

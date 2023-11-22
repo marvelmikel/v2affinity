@@ -250,10 +250,16 @@
             </div>
         </div><!-- .row -->
 
+<!-- 
+        {{-- <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
+            <div>
+    <livewire:invoices.edit :wire:key="$invoice->id" :invoice="$invoice" />
+       </div> --}} -->
 
-        <!-- invoice pricing -->
+
+        <!-- invoice pricing Section -->
         <div class="col-md-12 ">
-            <!-- invoice pricing -->
+            invoice pricing
             <div class="card">
                 <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
                     <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
@@ -371,7 +377,7 @@
             </div>
         </div>
 
-    </div>
+</div>
 
 
 
