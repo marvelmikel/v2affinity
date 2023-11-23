@@ -547,7 +547,7 @@
             </p>
             <div class="box" style="height: 30px;">
                 <strong>Invoice:</strong><br>
-                <strong style="font-size:18px">{{ rand(10, 100) }}</strong>
+                <strong style="font-size:18px">{{ $invoice->invoice_number }}</strong>
             </div>
             <div class="box">
                 <strong>Date:</strong>

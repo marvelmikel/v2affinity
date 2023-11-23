@@ -77,7 +77,7 @@
                             </td>
                             <td class="p-1 flex-col font-bold">
                                 <span> Invoice:</span> <br />
-                                <span class="text-lg">{{ $store->next_invoice_number }}</span>
+                                <span class="text-lg">{{ $invoice->invoice_number }}</span>
                             </td>
                         </tr>
                         <tr>
