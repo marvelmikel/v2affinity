@@ -143,14 +143,14 @@ if (!function_exists('evaluate_formular')) {
         // dd($result);
 
         if(in_array('0dp', $modifierArray)){
-            $result = round($result, 0);
+            // $result = round($result, 0);
         }
 
         if(in_array('1dp', $modifierArray)){
-            $result = round($result, 1);
+            // $result = round($result, 1);
         }
         if(in_array('2dp', $modifierArray)){
-            $result = round($result, 2);
+            // $result = round($result, 2);
         }
 
         if(in_array('ceil', $modifierArray)){

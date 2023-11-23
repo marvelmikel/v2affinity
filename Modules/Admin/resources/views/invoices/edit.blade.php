@@ -343,7 +343,7 @@
                                 </td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoice->getPricing('formular')['identifier'] }}">
                                 </td>
-                            </tr>
+                            </tr> 
                             @endif
 
 
@@ -352,7 +352,7 @@
                             <!-- item total here -->
                             <tr>
                                 <td><input readonly class="form-control" type="text" value="Total Amount £"></td>
-                                <td colspan="3"><input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($invoice->total, 2) }}"></td>
+                                <td colspan="3"><input readonly style="background-color: white;" class="form-control" type="text" value="{{ $invoice->total }}"></td>
                             </tr>
 
                             <tr>

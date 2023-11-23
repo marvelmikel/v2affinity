@@ -411,7 +411,7 @@ class InvoiceController extends Controller
             }
 
             if ($discountCol->type == 'percentage') {
-                $discount = "($subtotal*(0.01*$discountCol->identifier))";
+                $discount = "($subtotal+$tax)*(0.01*$discountCol->identifier)";
             } else {
                 $discount = $discountCol->identifier;
             }
@@ -520,7 +520,7 @@ class InvoiceController extends Controller
             }
 
             if ($discountCol->type == 'percentage') {
-                $discount = "($subtotal*(0.01*$discountCol->identifier))";
+                $discount = "($subtotal+$tax)*(0.01*$discountCol->identifier)";
             } else {
                 $discount = $discountCol->identifier;
             }
