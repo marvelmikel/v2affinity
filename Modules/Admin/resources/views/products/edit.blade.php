@@ -57,7 +57,7 @@
                                     <select class="form-control" name="{{ $meta->name }}[]" id="">
                                         <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
                                         <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
-                                        <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>visible</option>
+                                        <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>editable</option>
                                     </select>
                                 </td>
                                 <td>

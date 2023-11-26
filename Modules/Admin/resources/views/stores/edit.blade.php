@@ -160,37 +160,32 @@ input[type=number]::-webkit-outer-spin-button {
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($usersAssignedToStore as $user)
-                            @if ($user->id !== Auth::user()->id)
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="name"
-                                        value="{{ $user->name }}"></td>
+    @foreach ($usersAssignedToStore as $user)
+        @if ($user->id !== Auth::user()->id && $user->role_id !== 1 && $user->company_id === Auth::user()->company_id)
+            <tr>
+                <td><input disabled readonly class="form-control" type="text" name="name"
+                    value="{{ $user->name }}"></td>
 
-                                <td><input readonly class="form-control" type="text" name="role_name"
-                                        value="{{ $user->role->name ?? 'N/A' }}"></td>
+                <td><input readonly class="form-control" type="text" name="role_name"
+                    value="{{ $user->role->name ?? 'N/A' }}"></td>
 
-                                <td colspan="3">
-                                    <!-- <a href="#" style='margin-right:2px; text-decoration: none;'
-                                        class='btn btn-success btn-xs' data-toggle="modal"
-                                        data-target="#add_item_column_modal">
-                                        <i class="voyager-eye"></i>View</a> -->
-
-                                    <form action="{{ route('delete-store-employee', $user->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-xs"
-                                            onclick="return confirm('Are you sure?')">
-                                            <i class="voyager-trash"></i> Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endif
-                            @endforeach
+                <td colspan="3">
+                    <!-- Non-admin actions -->
+                    <form action="{{ route('delete-store-employee', $user->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-xs"
+                            onclick="return confirm('Are you sure?')">
+                            <i class="voyager-trash"></i> Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        @endif
+    @endforeach
+</tbody>
 
 
-
-                        </tbody>
                     </table>
                 </div>
             </div>

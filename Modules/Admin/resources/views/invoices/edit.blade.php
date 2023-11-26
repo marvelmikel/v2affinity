@@ -27,6 +27,43 @@
     .hidden {
         display: none !important;
     }
+
+    .disabled-select {
+        pointer-events: none;
+        opacity: 0.3;
+    }
+
+    /* Mobile view */
+    @media (max-width: 767px) {
+        .invoice-item-meta {
+            display: block;
+        }
+
+        .invoice-item-meta td {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .invoice-item-meta .meta-data,
+        .invoice-item-meta .item-total,
+        .invoice-item-meta .actions {
+            display: block;
+            /* Stack vertically on mobile */
+            width: 100%;
+        }
+    }
+
+    /* Optional: Style for larger screens */
+    @media (min-width: 769px) {
+        .invoice-item-meta td {
+            display: inline-block;
+            /* Align in a row for desktop */
+        }
+    }
 </style>
 @stop
 
@@ -182,29 +219,16 @@
                 <table class="table " style="width:100%; margin: 40px 0;">
                     <tbody>
                         <form id="invoiceForm" action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
-                            <tr style="overflow: scroll;">
+                            <tr class="invoice-item-meta" style="overflow: scroll;">
                                 @foreach ($invoiceItem->meta as $meta)
                                 <!-- did this so I can put the formular at the end of the meta list -->
-
-                               <!-- Location loop-->
-                                @if ($meta->name == 'location')
-                                <td style="min-width: 200px;" class="{{ $meta->visibility }}">
-                                    <input disabled readonly class="form-control {{ $meta->visibility }}" type="text" name="{{ $meta->title }}[]" value="{{ $meta->title }}" required>
-                                    <select class="form-control {{ $meta->visibility }}" name="{{ $meta->name }}[]" required>
-                                        @foreach(explode(', ', $meta->value) as $option)
-                                        <option value="{{ $option }}">{{ $option }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                 <!-- Location end loop-->
-
-                                @elseif ($meta->name != 'formular')
+                                @if ($meta->name != 'formular')
                                 @if ($meta->type == 'formular')
                                 <td style="min-width: 200px;" class="{{ $meta->visibility }}">
-                                    <input disabled readonly class="form-control  {{ $meta->visibility }} " type="text" name="{{ $meta->name }}[]" value="{{ $meta->name }}" required>
+                                    <input disabled readonly class="form-control  {{ $meta->visibility }} " type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}" required>
                                     <input disabled readonly style="background-color: white;" class="form-control evaluated-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" value="{{ evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id, $meta->modifier) }}" type="{{ $meta->type }}" {{ $meta->visibility }} required>
 
-                                    <input disabled readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"required>
+                                    <input disabled readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}" required>
                                 </td>
                                 @else
                                 <td style="min-width: 200px;" class="{{ $meta->visibility }}">
@@ -214,10 +238,11 @@
 
                                     <input readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}" required>
                                 </td>
+
+
                                 @endif
                                 @endif
                                 @endforeach
-
 
                                 <!-- formula here -->
                                 <!-- <tr>
@@ -229,7 +254,7 @@
                                 <!-- item total here -->
 
                                 <td style="min-width: 200px;">
-                                    <input disabled readonly class="form-control" type="text" value="Item Total (£)">
+                                    <input disabled readonly class="form-control" type="text" value="Total Price(£)">
                                     <input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($invoiceItem->item_total, 2) }}">
                                 </td>
 
@@ -237,7 +262,7 @@
                                     <button type="submit" class="btn btn-success"><i class="voyager-book"></i></button>
                                 <td colspanss="3">
                                     <a href="{{ route('voyager.invoices.delete-item', [$invoice->id, $invoiceItem->id]) }}" style="text-decoration: none;" data-invoiceid="" class="btn btn-sm btn-danger"><i class="voyager-trash"></i></a>
-                                    <a href="#" data-invoiceitemid="{{ $invoiceItem->id }}" class="btn btn-secondary btn-xs add-column-btn"><i class="voyager-plus"></i>Add Column</a>
+                                    <!-- <a href="#" data-invoiceitemid="{{ $invoiceItem->id }}" class="btn btn-secondary btn-xs add-column-btn"><i class="voyager-plus"></i>Add Column</a> -->
                                 </td>
                                 </td>
                                 <td>
@@ -250,7 +275,7 @@
             </div>
         </div><!-- .row -->
 
-<!-- 
+        <!-- 
         {{-- <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
             <div>
     <livewire:invoices.edit :wire:key="$invoice->id" :invoice="$invoice" />
@@ -279,7 +304,7 @@
                     <tbody>
                         <form action="{{ route('voyager.invoices.save-pricing', [$invoice->id]) }} ">
 
-                            @foreach ($invoice->pricings as $pricing)
+                        @foreach ($invoice->pricings as $pricing)
                             @if ($pricing->name != 'formular')
                             @if ($pricing->name == 'tax' || $pricing->name == 'discount')
                             <tr>
@@ -292,11 +317,11 @@
                                 </td>
                                 <td>
 
-                                    <select class="form-control" name="{{ $pricing->name }}[]" id="">
+                                <select class="form-control {{ ($pricing->name == 'tax') ? 'disabled-select' : '' }}" name="{{ $pricing->name }}[]" id="">
                                         <option selected value="{{ $pricing->type }}"">{{ $pricing->type }}</option>
                                         <option value="percentage">%</option>
-                                        <option value="value">£</option>
-                                        <option value="formular">Formular</option>
+                                        <option value="value">value(£)</option>
+                                        <!-- <option value="formular">Formular</option> -->
                                     </select>
 
                                 </td>
@@ -313,9 +338,9 @@
                                     <input readonly class="form-control" type="text" name="{{ $pricing->name }}[]" value="{{ $pricing->value }}" required>
                                 </td>
                                 <td>
-                                    <select class="form-control" name="{{ $pricing->name }}[]" id="">
+                                <select class="form-control {{ ($pricing->name == 'subtotal') ? 'disabled-select' : '' }}" name="{{ $pricing->name }}[]" id="">
                                         <option selected value="{{ $pricing->type }}"">{{ $pricing->type }}</option>
-                                                        <option value="percentage">Percentage</option>
+                                                        <option value=" percentage">Percentage</option>
                                         <option value="value">Value</option>
                                         {{-- <option value="formular">Formular</option> --}}
                                     </select>
@@ -343,7 +368,7 @@
                                 </td>
                                 <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoice->getPricing('formular')['identifier'] }}">
                                 </td>
-                            </tr> 
+                            </tr>
                             @endif
 
 
@@ -377,7 +402,7 @@
             </div>
         </div>
 
-</div>
+    </div>
 
 
 
@@ -491,31 +516,33 @@
 @endsection
 
 @section('javascript')
-                <script type=" text/javascript">
-                                                                    $(document).ready(function () {
-                                                                    $('.add-column-btn').click(function (e) {
-                                                                    e.preventDefault();
-                                                                    let invoiceitemid = $(this).data('invoiceitemid')
-                                                                    console.log(invoiceitemid)
-                                                                    $('input[name="item_id"]').val(invoiceitemid)
-                                                                    $('#add_item_column_modal').modal('show');
-                                                                    })
 
-                                                                    $('.add-pricing-column-btn').click(function (e) {
-                                                                    e.preventDefault();
-                                                                    let invoiceid = $(this).data('invoiceid')
-                                                                    $('input[name="invoice_id"]').val(invoiceid)
-                                                                    $('#add_pricing_column_modal').modal('show');
-                                                                    })
-                                                                    })
-                                                                    $(document).ready(function () {
-                                                                    $('#multiple-checkboxes').multiselect({
-                                                                    includeSelectAllOption: true,
-                                                                    });
-                                                                    });
-                                                                    </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.add-column-btn').click(function(e) {
+            e.preventDefault();
+            let invoiceitemid = $(this).data('invoiceitemid');
+            console.log(invoiceitemid);
+            $('input[name="item_id"]').val(invoiceitemid);
+            $('#add_item_column_modal').modal('show');
+        });
 
-                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-                                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-                                                                    @endsection
+        $('.add-pricing-column-btn').click(function(e) {
+            e.preventDefault();
+            let invoiceid = $(this).data('invoiceid');
+            $('input[name="invoice_id"]').val(invoiceid);
+            $('#add_pricing_column_modal').modal('show');
+        });
+    });
+
+    $(document).ready(function() {
+        $('#multiple-checkboxes').multiselect({
+            includeSelectAllOption: true,
+        });
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+@endsection

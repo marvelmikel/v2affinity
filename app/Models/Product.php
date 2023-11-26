@@ -28,6 +28,12 @@ class Product extends Model
         return $this->meta()->where('name', $name)->first();
     }
 
+    public function roomlocation()
+{
+    return $this->belongsTo(RoomLocation::class);
+}
+
+
      protected static function boot() {
 	    parent::boot();
 
@@ -48,7 +54,7 @@ class Product extends Model
                 $model->meta()->create([ 'name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create([ 'name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create([ 'name' => 'location', 'value' => 'lounge, bedroom, diner, kitchen, bathroom, others', 'title' => 'Location of Room', 'type' => 'select', 'visibility' => 'visible']);
+                $model->meta()->create([ 'name' => 'location', 'value' => '', 'title' => 'Location of Room', 'type' => 'select', 'visibility' => 'visible']);
 
 
                 if($model->getMeta('unit_length') &&  $model->getMeta('unit_width') ){
@@ -117,10 +123,10 @@ class Product extends Model
                 $model->meta()->create([ 'name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create([ 'name' => 'marble_size_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create([ 'name' => 'marble_size_width', 'value' => 1, 'title' => 'Unit Width (m)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create([ 'name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'readonly']);
+                $model->meta()->create([ 'name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
 
-                $model->meta()->create([ 'name' => 'length', 'value' => 0, 'title' => 'Required Length(m)',  'type' => 'number', 'visibility' => 'visible']);
-                $model->meta()->create([ 'name' => 'width', 'value' => 0, 'title' => 'Required Width(m)', 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create([ 'name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create([ 'name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
                
              
@@ -145,9 +151,9 @@ class Product extends Model
                 $model->meta()->updateOrCreate(['name' => 'location'], [ 
                     'name' => 'location', 
                     'title' => 'Location of Room', 
-                    'value' => 'lounge, bedroom, diner, kitchen, bathroom, others', 
-                    'type' => 'select',
-                    'visibility' => 'visible'
+                    'value' => 'Type of Room', 
+                    'type' => 'Text',
+                    'visibility' => 'hidden'
                 ]);
 
 
@@ -157,7 +163,7 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'area'], [ 
                         'name' => 'area', 
-                        'title' => 'Area to be Covered (m2)', 
+                        'title' => 'Total Area (m2)', 
                         'value' => "$length->identifier*$width->identifier", 
                         'type' => 'formular',
                         'visibility' => 'readonly'
@@ -191,10 +197,10 @@ class Product extends Model
 
                     $packs_count = $model->meta()->updateOrCreate(['name' => 'packs_count'], [ 
                         'name' => 'packs_count', 
-                        'title' => 'Number of Tile Packs', 
+                        'title' => 'Total Quantity of Packs', 
                         'value' => "$tiles_count->identifier/$tiles_per_pack->identifier", 
                         'type' => 'formular',
-                        'visibility' => 'hidden',
+                        'visibility' => 'readonly',
                         'modifier' => 'ceil'
                     ]);
 

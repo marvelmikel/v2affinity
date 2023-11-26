@@ -303,9 +303,10 @@ class InvoiceController extends Controller
         foreach ($productids as $productid) {
             if ($product = Product::find($productid)->first()) {
 
-                if (InvoiceItem::where('invoice_id', $invoice->id)->where('product_id', $product->id)->exists()) {
-                    continue;
-                }
+                    // Remove the condition to skip existing items
+                // if (InvoiceItem::where('invoice_id', $invoice->id)->where('product_id', $product->id)->exists()) {
+                //     continue;
+                // }
 
                 if ($meta = $product->meta->toArray()) {
                     $item = InvoiceItem::create(['invoice_id' => $invoice->id, 'product_id' => $product->id]);
@@ -332,13 +333,14 @@ class InvoiceController extends Controller
         $invoiceItem = InvoiceItem::find($itemId);
         $invoice = Invoice::find($invoiceId);
         $meta = $request->all();
-
+        $invoiceItem->update($request->except(['_method', '_token']));
         foreach ($meta as $me) {
             if (isset($me[1])) { // Check if array key 1 is set
                 $value = !empty($me[0]) ? $me[0] : 0; // Set default value of 0 if $me[0] is empty
                 InvoiceItemMeta::where('identifier', $me[1])->where('invoice_item_id', $invoiceItem->id)->first()->update(['value' => $me[0]]);
             }
         }
+        
 
         // Recalculate invoice subtotal here whenever an item is saved
         $invoice->calculateSubtotal();
@@ -539,4 +541,6 @@ class InvoiceController extends Controller
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
+
+    
 }

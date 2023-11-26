@@ -9,24 +9,31 @@
         <div class="col-md-12">
             <div class="admin-section-title">
                 <h3><i class="voyager-book"></i> {{ __('Invoices') }}</h3>
-                <div style="display:flex;">
-                    <a href="{{ route('voyager.invoices.create') }}" style="margin-right:2px" class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Add New</a></div>
-            </div>
-            <div class="clear"></div>
-            <div class="card">
-                
-                <div class="card-body">
-                    {{ $dataTable->table() }}
+                <div style="display: flex;">
+                    @if(auth()->user()->store)
+                    <a href="{{ route('voyager.invoices.create') }}" style="margin-right:2px" class="btn btn-primary btn-xs">
+                        <i class="voyager-plus"></i> Add New
+                    </a>
+                    @else
+                    <!-- Button is disabled or hidden when user doesn't have a company_id in the store table -->
+                    <button style="margin-right:2px" class="btn btn-primary btn-xs disabled" disabled>
+                        <i class="voyager-plus"></i> Add New
+                    </button>
+                    @endif
                 </div>
-            </div>
+                <div class="clear"></div>
+                <div class="card">
 
-        </div><!-- .row -->
-    </div><!-- .col-md-12 -->
-</div><!-- .page-content container-fluid -->
-@stop
+                    <div class="card-body">
+                        {{ $dataTable->table() }}
+                    </div>
+                </div>
 
-@section('javascript')
-{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
-@endsection
+            </div><!-- .row -->
+        </div><!-- .col-md-12 -->
+    </div><!-- .page-content container-fluid -->
+    @stop
 
-
+    @section('javascript')
+    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+    @endsection

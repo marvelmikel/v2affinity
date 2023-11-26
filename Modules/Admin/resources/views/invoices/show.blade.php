@@ -8,26 +8,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Quicksand:wght@700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Quicksand:wght@700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    primary: "red",
-                },
-                container: {
-                    center: true,
-                },
-                fontFamily: {
-                    Agbalumo: ["Agbalumo", "sans-serif"],
-                    Quicksand: ["Quicksand", "serif"],
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "red",
+                    },
+                    container: {
+                        center: true,
+                    },
+                    fontFamily: {
+                        Agbalumo: ["Agbalumo", "sans-serif"],
+                        Quicksand: ["Quicksand", "serif"],
+                    },
                 },
             },
-        },
-    };
+        };
     </script>
 </head>
 
@@ -42,7 +41,8 @@
                 <div class="address text-xs">
                     <h6 class="font-bold">STORE: {{ $store->store_name}}</h6>
                     <p>{{ $store->address_line_1}}, {{ $store->address_line_2}}, {{ $store->address_city}}
-                        {{ $store->address_postcode}}.</p>
+                        {{ $store->address_postcode}}.
+                    </p>
                     <h6 class="font-bold">TEL NO: {{ $store->store_phone}}</h6>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                     <tr>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Item</th>
                         <th class="whitespace-normal bg-slate-300 p-2">Description</th>
-            
+
                         <th class="whitespace-normal w-20 bg-slate-300 p-2">Size</th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Area m²</th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Amount</th>
@@ -121,21 +121,22 @@
                 @foreach($invoice->items()->get() as $item)
                 <tbody>
                     <tr>
-                        <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                        <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ $item->getMeta('title')?->value }}
                         </td>
-                        <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                        <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ Str::limit($item->getMeta('description')?->value, 50) }}
                         </td>
-                        
-                        <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                        <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ ($item->getMeta('Length')?->value . ' x ' . $item->getMeta('Width')?->value) ?? 'N/A'}}
                         </td>
-                        <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                        <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}
                         </td>
-                        <td class="bg-yellow-100 p-2 text-sm whitespace-normal border-b-2 border-black">
-                            {{ $item->item_total ?? 'N/A' }}</td>
+                        <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                            {{ $item->item_total ?? 'N/A' }}
+                        </td>
+
                     </tr>
 
 
@@ -154,15 +155,15 @@
             @else
             <!-- Other pricing attributes-->
             <tbody>
-                <tr>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                    {{ ucfirst($price->name) }} £:
-                    </td>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
-                    {{ number_format($price->value, 2) }}
-                    </td>
-                </tr>
-               
+            <tr >
+        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+            {{ ucfirst($price->name) }} £:
+        </td>
+        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+            {{ number_format($price->value, 2) }}
+        </td>
+    </tr>
+
 
                 @endif
 
@@ -175,11 +176,11 @@
                         Total £:
                     </td>
                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
-                    {{ number_format($invoice->getTotalAttribute(), 2) }}
+                        {{ number_format($invoice->getTotalAttribute(), 2) }}
                     </td>
                 </tr>
                 @php $totalDisplayed = true; @endphp
-            @endif
+                @endif
             </tbody>
         </table>
 
@@ -200,19 +201,16 @@
 
             <ol class=" text-xs font-semibold" style="line-height: 28px;">
 
-            <p>{!! $company->terms_conditions !!}</p>
+                <p>{!! $company->terms_conditions !!}</p>
 
 
             </ol>
             <br>
 
             <div class="flex justify-center">
-                <a href="{{ route('voyager.invoices.pdf', $invoice->id) }}"
-                    class="flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300 ease-in-out">
-                    <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                <a href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300 ease-in-out">
+                    <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                     </svg>
                     Print Invoice
                 </a>

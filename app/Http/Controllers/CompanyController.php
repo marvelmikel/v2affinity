@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\RoomLocation;
 use App\DataTables\CompanyDataTable;
 use App\Http\Requests\UpdateCompanyInfoRequest;
 use App\Models\User;
@@ -42,7 +43,36 @@ class CompanyController extends Controller
     $company->update($request->all()); // Assuming $request->all() contains only fillable fields
 
     return redirect()->route('voyager.company.index')->with('success', 'Company details updated successfully.');
-} 
+}
+
+    public function addRoomLocation(Request $request)
+    {
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            // Handle the unauthenticated user case
+            return redirect()->back()->withErrors('You must be logged in to add a room location.');
+        }
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'room_name' => 'required|string|max:255', // Validation rule for the room name
+        ]);
+
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Create a new RoomLocation instance
+        $roomLocation = new RoomLocation();
+        $roomLocation->room_name = $validatedData['room_name'];
+        $roomLocation->user_id = $user->id;
+        $roomLocation->company_id = $user->company_id; // Assuming the user model has a company_id attribute
+
+        // Save the new room location
+        $roomLocation->save();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Room location added successfully.');
+    }
     
 
     
