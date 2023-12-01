@@ -501,7 +501,7 @@
     <div class="top_section">
         <div class="logo_section">
             {{-- Link src to Store logo --}}
-            <img class="logo" src="images/united_carpets/logo.png">
+            <img class="logo" src="images/affinity-email-logo.png">
             <p style="text-transform:uppercase;margin:0;color:#415280;font-weight:bold;">Store: {{ $store->store_name }}
             </p>
             <p style="text-transform:uppercase;margin:0;color:#415280;">
@@ -566,6 +566,7 @@
                 <span class="table-cell cell-colour">Description</span>
                 <span class="table-cell cell-size">Size</span>
                 <span class="table-cell cell-quantity">Area (m²)</span>
+                <span class="table-cell cell-quantity">Pack Qty </span>
                 <span class="table-cell cell-selling-price empty">&nbsp; Item Price</span>
             </div>
 
@@ -575,6 +576,7 @@
                 <span class="table-cell cell-colour" style="background-color: #FAE8FF; font-size: xx-small;">{{ Str::limit($item->getMeta('description')?->value, 15) }}</span>
                 <span class="table-cell cell-size" style="background-color: #FAE8FF;">{{ $item->getMeta('Length')?->value . ' x ' . $item->getMeta('Width')?->value }}</span>
                 <span class="table-cell cell-quantity" style="background-color: #FAE8FF;">{{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}</span>
+                <span class="table-cell cell-quantity" style="background-color: #FAE8FF;">{{ $item->packs_count ?? 'N/A' }}</span>
                 <span class="table-cell cell-selling-price empty" style="background-color: #FAE8FF;">{{ $item->item_total ?? 'N/A' }}</span>
 
                 <!-- <span class="table-cell cell-selling-price empty">&nbsp;</span> -->

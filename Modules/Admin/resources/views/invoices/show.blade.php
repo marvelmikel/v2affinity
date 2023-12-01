@@ -36,7 +36,7 @@
             <div class="flex flex-col flex-nowrap justify-around w-full md:basis-1/3">
                 <!-- Store Details -->
                 <div class="logo text-red-500 text-7xl font-Quicksand font-extrabold">
-                    Affinity
+                <img src="{{asset('images/logo-2.svg')}}" alt="Affinity" class="h-9">
                 </div>
                 <div class="address text-xs">
                     <h6 class="font-bold">STORE: {{ $store->store_name}}</h6>
@@ -115,6 +115,7 @@
 
                         <th class="whitespace-normal w-20 bg-slate-300 p-2">Size</th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Area m²</th>
+                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Pack Qty </th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Amount</th>
                     </tr>
                 </thead>
@@ -132,6 +133,9 @@
                         </td>
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}
+                        </td>
+                        <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                        {{ $item->packs_count ?? 'N/A' }}
                         </td>
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ $item->item_total ?? 'N/A' }}

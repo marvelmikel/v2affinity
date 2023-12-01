@@ -354,7 +354,7 @@
                             @endforeach
 
                             <!-- formula here -->
-                            @if (Auth::check() && Auth::user()->role_id == 1)
+                            @if (Auth::check() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 2))
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text" name="formular[]" value="formular"></td>
                                 <td><input class="form-control" type="text" name="formular[]" value="{{ $invoice->getPricing('formular')['value'] }}"></td>

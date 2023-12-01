@@ -49,12 +49,12 @@ class Product extends Model
                 $model->meta()->create([ 'name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create([ 'name' => 'unit_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create([ 'name' => 'unit_width', 'value' => 1, 'title' => 'Unit Width(m)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create([ 'name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'readonly']);
+                $model->meta()->create([ 'name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create([ 'name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create([ 'name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create([ 'name' => 'location', 'value' => '', 'title' => 'Location of Room', 'type' => 'select', 'visibility' => 'visible']);
+                $model->meta()->create([ 'name' => 'location', 'value' => '', 'title' => 'Enter Room Location', 'type' => 'select', 'visibility' => 'hidden']);
 
 
                 if($model->getMeta('unit_length') &&  $model->getMeta('unit_width') ){
@@ -127,6 +127,7 @@ class Product extends Model
 
                 $model->meta()->create([ 'name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create([ 'name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create([ 'name' => 'location', 'value' => '', 'title' => 'Enter Room Location', 'type' => 'select', 'visibility' => 'hidden']);
 
                
              
