@@ -261,6 +261,22 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('Logs'),
+            'url'     => '',
+            'route'   => 'voyager.company.logs',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-logbook',
+                'color'      => null,
+                'parent_id'  => null,
+                'order'      => 16,
+            ])->save();
+        }
+
 
 
         

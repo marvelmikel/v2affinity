@@ -27,7 +27,7 @@
       </thead>
       <tbody>
 
-      @foreach($logs as $key => $log)
+       @foreach($logs as $key => $log)
         <tr data-display="stack{{{$key}}}">
           <td class="text-{{{$log['level_class']}}} level"><span class="glyphicon glyphicon-{{{$log['level_img']}}}-sign"
                                                            aria-hidden="true"></span> &nbsp;{{$log['level']}}</td>

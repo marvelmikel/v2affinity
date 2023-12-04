@@ -3,15 +3,20 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Haruncpi\LaravelUserActivity\Traits\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use \Modules\Admin\Models\Role; 
+use \Haruncpi\LaravelUserActivity\Models\Log as UserActivityLog;
+
+
 
 class User extends \Modules\Admin\Models\User 
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Loggable;
 
     
 
@@ -51,6 +56,11 @@ class User extends \Modules\Admin\Models\User
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id'); // Assuming 'company_id' is the foreign key in the users table referencing the companies table
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(UserActivityLog::class);
     }
     
     

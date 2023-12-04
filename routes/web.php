@@ -82,6 +82,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('employee',   [EmployeeController::class, 'index'])->name('voyager.employee.index');
         Route::get('/employee/create', [EmployeeController::class, 'create'])->name('voyager.employee.create');
         Route::post('employee', [EmployeeController::class, 'store'])->name('voyager.employee.store');
+        
        
     });
 
@@ -90,8 +91,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'admin.user' ], function ()  {
         Route::get('/company',   [CompanyController::class, 'index'])->name('voyager.company.index');
         Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
-        Route::post('/company/add-room-location', [CompanyController::class, 'addRoomLocation'])->name('company.add-room-location');
-
+        Route::get('/company/logs',   [CompanyController::class, 'show'])->name('voyager.company.logs');
 
         
     });

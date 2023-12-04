@@ -7,7 +7,8 @@ use App\Models\RoomLocation;
 use App\DataTables\CompanyDataTable;
 use App\Http\Requests\UpdateCompanyInfoRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth; // Assuming the User model exists and has a relationship with Company
+use Illuminate\Support\Facades\Auth;
+use Haruncpi\LaravelUserActivity\Models\Log;// Assuming the User model exists and has a relationship with Company
 
 class CompanyController extends Controller
 {
@@ -27,6 +28,8 @@ class CompanyController extends Controller
     return $dataTable->render('voyager::company.index', compact('companyData', 'company'));
     }
 
+
+
     public function update(Request $request, $companyId)
 {
     $company = Company::findOrFail($companyId);
@@ -45,14 +48,38 @@ class CompanyController extends Controller
     return redirect()->route('voyager.company.index')->with('success', 'Company details updated successfully.');
 }
 
-   
 
-    
+ // User Logs 
+ public function show(Request $request)
+{
+    $user = auth()->user();
+    if ($user->role_id == 1) {
+        // For users with role_id=1 (admin), display all logs
+        $companyUserLogs = Log::orderBy('id', 'asc')->get();
+    } else {
+        // For other users, display logs related to their company_id
+        $companyUserLogs = Log::where('user_id', $user->id)
+            ->whereIn('user_id', function ($query) use ($user) {
+                $query->select('id')
+                    ->from('users')
+                    ->where('company_id', $user->company_id);
+            })
+            ->orderBy('id', 'asc')
+            ->get();
+    }
+
+    return view('voyager::company.logs', compact('companyUserLogs'));
+}
 
 
 
 
-    
+
+
+
+
+
+
 
     
 }
