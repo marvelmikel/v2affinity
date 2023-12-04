@@ -45,4 +45,8 @@ class Company extends Model
     {
         return $this->hasMany(Store::class);
     }
+    public function roomLocations()
+    {
+        return $this->hasMany(RoomLocation::class);
+    }
 }

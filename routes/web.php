@@ -93,6 +93,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
         Route::get('/company/logs',   [CompanyController::class, 'show'])->name('voyager.company.logs');
         Route::post('/add-room-location', [CompanyController::class, 'addRoomLocation'])->name('addRoomLocation');
+        Route::delete('/room-locations/{roomLocation}', [CompanyController::class, 'deleteRoomLocation'])->name('room-locations.delete');
+
 
 
         

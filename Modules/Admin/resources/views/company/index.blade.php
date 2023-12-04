@@ -151,20 +151,20 @@
             <thead>
                 <tr>
                     <!-- <th>Id</th> -->
-                    <th>Room Location</th>
+                    <th>Room Name</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-
-  
+            @if ($roomLocations)
+    @foreach ($roomLocations as $roomLocation)
 <tr>
-    <td style="width:0.1%;">
-        <input disabled readonly class="form-control" type="text" name="name" value="">
-    </td>
+    <!-- <td style="width:0.1%;">
+        <input disabled readonly class="form-control" type="text" name="name" value="{{ $roomLocation->id}}">
+    </td> -->
 
     <td style="width:10%;">
-        <input readonly class="form-control" type="text" name="role_name" value="">
+        <input readonly class="form-control" type="text" name="room" value="{{ $roomLocation->room_name }}">
     </td>
 
     <td colspan="3" style="width:1%;">
@@ -172,7 +172,7 @@
             <i class="voyager-plus"></i>
         </a>
 
-        <form action="" method="POST">
+        <form action="{{ route('room-locations.delete', ['roomLocation' => $roomLocation]) }}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
@@ -181,14 +181,17 @@
         </form>
     </td>
 </tr>
+@endforeach
+@endif
 
-</tbody>
-            </table>
-        </div>
+
+            </tbody>
+        </table>
     </div>
+</div>
 
 
-    <!-- Add Room Location Name column modal -->
+     <!-- Add Room Location Name column modal -->
 <div class="modal fade" tabindex="-1" id="add_item_column_modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -212,9 +215,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-    <!-- End of  Company Information Details View  -->
-
+   <!-- End of  Company Information Details View  -->
     @endif
 
 </div>

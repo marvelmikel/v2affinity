@@ -19,9 +19,9 @@ class RoomLocation extends Model
 
     ];
 
-    public function products()
-{
-    return $this->hasMany(Product::class);
-}
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 
 }

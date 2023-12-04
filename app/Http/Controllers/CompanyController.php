@@ -23,11 +23,15 @@ class CompanyController extends Controller
     $user = Auth::user(); // Retrieve the authenticated user
     $company = $user->company; // Assuming there is a relationship between User and Company models
 
+    // Assuming the room locations are related to the company through a relationship named "roomLocations"
+    $roomLocations = $company ? $company->roomLocations : collect();
+
     $companyData = $company ? $company->toArray() : [];
 
-    return $dataTable->render('voyager::company.index', compact('companyData', 'company'));
-    }
 
+
+    return $dataTable->render('voyager::company.index', compact('companyData', 'company', 'roomLocations'));
+    }
 
 
     public function update(Request $request, $companyId)
@@ -77,13 +81,50 @@ public function addRoomLocation(Request $request)
     return redirect()->back()->withSuccess('Room location added successfully.');
 }
 
+public function deleteRoomLocation(RoomLocation $roomLocation)
+{
+    // Check if the user is authenticated
+    if (!Auth::check()) {
+        // Handle the unauthenticated user case
+        return redirect()->back()->withErrors('You must be logged in to delete a room location.');
+    }
 
- // User Logs 
+    // Check if the authenticated user is authorized to delete the room location
+    if ($roomLocation->user_id !== Auth::user()->id) {
+        // Handle unauthorized access case
+        return redirect()->back()->withErrors('You are not authorized to delete this room location.');
+    }
+
+    // Delete the room location
+    $roomLocation->delete();
+
+    // Redirect back with a success message
+    return redirect()->back()->withSuccess('Room location deleted successfully.');
+}
+
+
+
+
+
+ // show User Logs 
  public function show(Request $request)
 {
-    $companyUserLogs = Log::orderBy('id', 'asc')->get();
+    // Check if the authenticated user's role_id is 1
+    if (auth()->user()->role_id == 1) {
+        $companyUserLogs = Log::orderBy('id', 'asc')->get();
+    } else {
+        $companyId = auth()->user()->company_id;
+        $companyUserLogs = Log::whereHas('user', function ($query) use ($companyId) {
+            $query->where('company_id', $companyId)->where('role_id', '>', 1);
+        })
+            ->orderBy('id', 'asc')
+            ->get();
+    }
+    
+    
     return view('voyager::company.logs', compact('companyUserLogs'));
 }
+
 
 
 
