@@ -87,18 +87,37 @@
                         4
                     @endif
                 </span>
-                    <strong class="hidden sm:block font-semibold @if($step > 4) text-green-600 @elseif($step === 4) text-slate-400 @else text-slate-400 @endif">Billing<span class="hidden lg:inline"> Details</span></strong>
+                    <strong class="hidden sm:block font-semibold @if($step > 4) text-green-600 @elseif($step === 4) text-slate-400 @else text-slate-400 @endif">Terms<span class="hidden lg:inline"> & Conditions</span></strong>
                 </li>
                 <li class="flex gap-4 items-center">
                 <span
                     class="
-                        @if($step === 5)
+                        @if($step > 5)
+                            bg-green-600 text-white
+                        @elseif($step === 5)
                             bg-gradient-to-b from-main-color to-custom2-purple-color text-white
                         @else
                             bg-slate-700 text-slate-400
                         @endif
-                        flex font-semibold h-10 items-center justify-center rounded-full w-10">5</span>
-                    <strong class="hidden sm:block font-semibold @if($step > 5) text-green-600 @elseif($step === 5) text-slate-400 @else text-slate-400 @endif">Payment</strong>
+                        flex font-semibold h-10 items-center justify-center rounded-full w-10">
+                    @if($step > 5)
+                        <i class="fa-solid fa-check"></i>
+                    @else
+                        5
+                    @endif
+                </span>
+                    <strong class="hidden sm:block font-semibold @if($step > 5) text-green-600 @elseif($step === 5) text-slate-400 @else text-slate-400 @endif">Billing<span class="hidden lg:inline"> Details</span></strong>
+                </li>
+                <li class="flex gap-4 items-center">
+                <span
+                    class="
+                        @if($step === 6)
+                            bg-gradient-to-b from-main-color to-custom2-purple-color text-white
+                        @else
+                            bg-slate-700 text-slate-400
+                        @endif
+                        flex font-semibold h-10 items-center justify-center rounded-full w-10">6</span>
+                    <strong class="hidden sm:block font-semibold @if($step > 6) text-green-600 @elseif($step === 6) text-slate-400 @else text-slate-400 @endif">Payment</strong>
                 </li>
             </ul>
             <div class="hidden lg:block">
@@ -385,10 +404,37 @@
                 </form>
                 @break
             @case(4)
-                <form wire:key="step_4" @submit.prevent="load = true, $wire.company_billing()" class="space-y-6">
+                <form wire:key="step_4" @submit.prevent="load = true, $wire.acceptTerms()" class="space-y-6">
                     <div>
                         @csrf
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step 4</span>
+                        <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Terms & Conditions</h2>
+                        <p class="font-medium lg:text-lg text-slate-500">Please read our terms and conditions outline below.</p>
+                    </div>
+                    <fieldset class="grid grid-cols-2 gap-6">
+                        <p class="col-span-1">
+                            INSERT TERMS & CONDITIONS HERE!
+                        </p>
+                        <div class="col-span-2">
+                            <input required type="checkbox" id="terms_accepted" name="terms_accepted" class="cursor-pointer" />
+                            <label for="terms_accepted" class="cursor-pointer">By proceeding further, I accept the terms and conditions.</label>
+                        </div>
+                    </fieldset>
+                    <div class="flex justify-between">
+                        <x-button wire:click="$set('step', 3)" format="wire" type="button" class="text-lg rounded-full">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Prev
+                        </x-button>
+                        <x-button type="submit" class="text-lg rounded-full">
+                            Next <i class="fa-regular fa-arrow-right ml-1"></i>
+                        </x-button>
+                    </div>
+                </form>
+                @break
+            @case(5)
+                <form wire:key="step_5" @submit.prevent="load = true, $wire.company_billing()" class="space-y-6">
+                    <div>
+                        @csrf
+                        <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step 5</span>
                         <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Billing Details</h2>
                         <p class="font-medium lg:text-lg text-slate-500">Please confirm your billing details below.</p>
                     </div>
@@ -435,7 +481,7 @@
                         </p>--}}
                     </fieldset>
                     <div class="flex justify-between">
-                        <x-button wire:click="$set('step', 3)" format="wire" type="button" class="text-lg rounded-full">
+                        <x-button wire:click="$set('step', 4)" format="wire" type="button" class="text-lg rounded-full">
                             <i class="fa-solid fa-arrow-left mr-1"></i> Prev
                         </x-button>
                         <x-button type="submit" class="text-lg rounded-full">
@@ -444,7 +490,7 @@
                     </div>
                 </form>
                 @break
-            @case(5)
+            @case(6)
                 <div class="space-y-6">
                     <div>
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step 4</span>

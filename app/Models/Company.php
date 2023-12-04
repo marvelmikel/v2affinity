@@ -19,19 +19,21 @@ class Company extends Model
         'terms_conditions',
         'logo',
         'active',
+        'terms_accepted',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
     protected $casts = [
-        'active'
+        'active',
+        'terms_accepted'
     ];
 
-
     // Todo: companies should be able to see all invoices from its stores
-    public function invoices() {
-        return $this->hasManyThrough(Invoice::class, Store::class); 
+    public function invoices()
+    {
+        return $this->hasManyThrough(Invoice::class, Store::class);
     }
 
     public function users()
@@ -40,7 +42,7 @@ class Company extends Model
     }
 
     public function stores()
-   {
-    return $this->hasMany(Store::class);
-   }
+    {
+        return $this->hasMany(Store::class);
+    }
 }

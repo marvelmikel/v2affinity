@@ -24,6 +24,7 @@ class Registration extends Component
     public $step = 1;
     public $discount_code_check = 'RTEUAV';
     public $client, $plans, $total, $show_discount, $discount_code;
+    public $terms_accepted = false;
 
     public $user = [
         'name' => '',
@@ -167,6 +168,18 @@ class Registration extends Component
         $this->step = 4;
     }
 
+    public function acceptTerms()
+    {
+        /* Confirm acceptance of terms */
+        $this->terms_accepted = true;
+
+        /* Turn off loader */
+        $this->load = false;
+
+        /* Move to step 5*/
+        $this->step = 5;
+    }
+
     /* Company billing details */
     public function company_billing()
     {
@@ -176,9 +189,10 @@ class Registration extends Component
         /* Turn off loader */
         $this->load = false;
 
-        /* Move to step 5*/
-        $this->step = 5;
+        /* Move to step 6*/
+        $this->step = 6;
     }
+
 
     public function register_nonce($nonce)
     {
@@ -214,9 +228,12 @@ class Registration extends Component
             /* Link payment details */
             $this->updateBillingAddress($response->subscription->paymentMethodToken, $this->billing);
 
-            /* Make company active and set user to Company Admin */
+            /* Make company active, confirm acceptance of terms and set user to Company Admin */
             $user = auth()->user();
-            $user->company->update(['active' => true]);
+            $user->company->update([
+                'active' => true,
+                'terms_accepted' => now(),
+            ]);
             $user->role_id = 2;
             $user->save();
 
