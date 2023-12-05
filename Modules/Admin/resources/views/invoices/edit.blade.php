@@ -472,15 +472,7 @@
                                                 <input name="value" type="text" class="form-control"></input>
                                             </div>
 
-                                            <div>
-                                            <label for=""> Select Operation</label>
-                                            <select class="form-control"  name="" id="">
-                                        <option selected value="">Subract</option>
-                                        <option value="+">Add</option>
-                                        <option value="-">Subtract</option>
-                                        <!-- <option value="formular">Formular</option> -->
-                                    </select>
-                                            </div>
+                                           
 
                                             <input type="hidden" name="invoice_id" class="form-control"></input>
 
@@ -521,14 +513,16 @@
                     <!-- Rest of the modal body code -->
                 </div>
                 <!-- Rest of the form code -->
-            </form>
-        </div>
-    </div>
-    </div>
-    <div class="modal-footer">
+                <div class="modal-footer">
     <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
     <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
    </div>
+            </form>
+            
+        </div>
+    </div>
+    </div>
+   
  </form>
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->

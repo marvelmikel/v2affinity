@@ -139,7 +139,7 @@
     <br><br>
 
 <!-- Room Locations-->
-<div class="card" style="width:100%;">
+<div class="card" style="width:50%;">
     <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
         <h3><i class="voyager-location"></i> {{ __('Room Locations') }}</h3>
     </div>
@@ -152,39 +152,31 @@
                 <tr>
                     <!-- <th>Id</th> -->
                     <th>Room Name</th>
-                    <th>Actions</th>
+                    <th>Actions  <a href="#" style='margin-right:2px; text-decoration: none;' class='btn btn-success btn-xs' data-toggle="modal" data-target="#add_item_column_modal">
+            <i class="voyager-plus"></i>
+        </a></th>
                 </tr>
             </thead>
             <tbody>
-            @if ($roomLocations)
-    @foreach ($roomLocations as $roomLocation)
-<tr>
-    <!-- <td style="width:0.1%;">
-        <input disabled readonly class="form-control" type="text" name="name" value="{{ $roomLocation->id}}">
-    </td> -->
+          
 
-    <td style="width:10%;">
+    @foreach ($roomLocations as $roomLocation)
+    <tr>
+    <td style="width:100%;">
         <input readonly class="form-control" type="text" name="room" value="{{ $roomLocation->room_name }}">
     </td>
-
     <td colspan="3" style="width:1%;">
-        <a href="#" style='margin-right:2px; text-decoration: none;' class='btn btn-success btn-xs' data-toggle="modal" data-target="#add_item_column_modal">
-            <i class="voyager-plus"></i>
-        </a>
-
-        <form action="{{ route('room-locations.delete', ['roomLocation' => $roomLocation]) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
-                <i class="voyager-trash"></i>
-            </button>
-        </form>
-    </td>
+       
+       <form action="{{ route('room-locations.delete', ['roomLocation' => $roomLocation]) }}" method="POST">
+           @csrf
+           @method('DELETE')
+           <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
+               <i class="voyager-trash"></i>
+           </button>
+       </form>
+   </td>
 </tr>
-@endforeach
-@endif
-
-
+    @endforeach
             </tbody>
         </table>
     </div>
