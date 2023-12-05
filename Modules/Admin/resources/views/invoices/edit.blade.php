@@ -325,7 +325,7 @@
                                 <td>
 
                                 <select class="form-control {{ ($pricing->name == 'tax') ? 'disabled-select' : '' }}" name="{{ $pricing->name }}[]" id="">
-                                        <option selected value="{{ $pricing->type }}"">{{ $pricing->type }}</option>
+                                        <option selected value="{{ $pricing->type }}">{{ $pricing->type }}</option>
                                         <option value="percentage">%</option>
                                         <option value="value">value(£)</option>
                                         <!-- <option value="formular">Formular</option> -->
@@ -472,6 +472,16 @@
                                                 <input name="value" type="text" class="form-control"></input>
                                             </div>
 
+                                            <div>
+                                            <label for=""> Select Operation</label>
+                                            <select class="form-control"  name="" id="">
+                                        <option selected value="">Subract</option>
+                                        <option value="-">Add</option>
+                                        <option value="-">Subtract</option>
+                                        <!-- <option value="formular">Formular</option> -->
+                                    </select>
+                                            </div>
+
                                             <input type="hidden" name="invoice_id" class="form-control"></input>
 
                                         </div>
@@ -514,19 +524,16 @@
             </form>
         </div>
     </div>
-
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                                                                <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
-                                </div>
-                            </form>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-
-                </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+    <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
+   </div>
+ </form>
+</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->
+ </div>
 @endsection
 
 @section('javascript')

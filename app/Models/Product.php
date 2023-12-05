@@ -240,7 +240,7 @@ class Product extends Model
                 // Title | Description | Length | Width | Total Area | Total Price
                 $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
                 $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
