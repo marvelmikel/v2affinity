@@ -476,7 +476,7 @@
                                             <label for=""> Select Operation</label>
                                             <select class="form-control"  name="" id="">
                                         <option selected value="">Subract</option>
-                                        <option value="-">Add</option>
+                                        <option value="+">Add</option>
                                         <option value="-">Subtract</option>
                                         <!-- <option value="formular">Formular</option> -->
                                     </select>
