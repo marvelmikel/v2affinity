@@ -291,7 +291,6 @@
 
         <!-- invoice pricing Section -->
         <div class="col-md-12 ">
-            invoice pricing
             <div class="card">
                 <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
                     <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
@@ -466,11 +465,22 @@
                                                 <label for=""> Column Name </label>
                                                 <input name="name" type="text" class="form-control"></input>
                                             </div>
+                                           
 
                                             <div style="margin: 10px 0;">
                                                 <label for=""> Column Value </label>
                                                 <input name="value" type="text" class="form-control"></input>
                                             </div>
+
+                                            <div>
+                                                <label for=""> Select Operation </label>
+                                                <select name="" class="form-control">
+                                                    <option value="+">Add</option>
+                                                    <option value="-">Subtract</option>
+                                                </select>
+                                            </div>
+
+                                           
 
                                            
 
