@@ -57,7 +57,7 @@
                                         <option value="carpet">Carpet</option>
                                         <option value="tile">Tile</option>
                                         <option value="rollend">Roll End</option>
-                                        <option value="overlay">Overlay</option>
+                                        <option value="underlay">Underlay</option>
                                         <option value="others">Others</option>
 
                                     </select>
