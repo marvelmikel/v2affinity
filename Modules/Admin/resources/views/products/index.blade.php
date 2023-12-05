@@ -56,7 +56,10 @@
                                     <select class="form-control" name="type" id="">
                                         <option value="carpet">Carpet</option>
                                         <option value="tile">Tile</option>
+                                        <option value="rollend">Roll End</option>
+                                        <option value="overlay">Overlay</option>
                                         <option value="others">Others</option>
+
                                     </select>
                                 </div>
 

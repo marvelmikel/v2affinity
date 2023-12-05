@@ -49,4 +49,35 @@ class Company extends Model
     {
         return $this->hasMany(RoomLocation::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            // create defualt products here for the company
+            Product::create([
+                'company_id' => $model->id,
+                'user_id' => auth()->user()->id,
+                'title' => 'Defualt Roll End',
+                'description' => 'Defualt Roll End Product',
+                'type' => 'rollend',
+            ]);
+
+
+            Product::create([
+                'company_id' => $model->id,
+                'user_id' => auth()->user()->id,
+                'title' => 'Defualt Underlay',
+                'description' => 'Defualt Underlay Product',
+                'type' => 'underlay',
+            ]);
+
+        });
+
+        static::deleting(function ($model) {
+            $model->meta()->delete();
+        });
+    }
+
 }
