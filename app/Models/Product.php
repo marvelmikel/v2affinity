@@ -57,7 +57,7 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create(['name' => 'location', 'value' => '', 'title' => 'Enter Room Location', 'type' => 'select', 'visibility' => 'hidden']);
+              
 
 
                 if ($model->getMeta('unit_length') &&  $model->getMeta('unit_width')) {
@@ -128,7 +128,7 @@ class Product extends Model
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'location', 'value' => '', 'title' => 'Enter Room Location', 'type' => 'select', 'visibility' => 'hidden']);
+             
 
 
 

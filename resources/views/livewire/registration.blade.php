@@ -412,12 +412,10 @@
                         <p class="font-medium lg:text-lg text-slate-500">Please read our terms and conditions outline below.</p>
                     </div>
                     <fieldset class="grid grid-cols-2 gap-6">
-                        <p class="col-span-1">
-                            INSERT TERMS & CONDITIONS HERE!
-                        </p>
+                        @include('includes.terms_and_conditions')
                         <div class="col-span-2">
                             <input required type="checkbox" id="terms_accepted" name="terms_accepted" class="cursor-pointer" />
-                            <label for="terms_accepted" class="cursor-pointer">By proceeding further, I accept the terms and conditions.</label>
+                            <label for="terms_accepted" class="cursor-pointer">Please tick this box to confirm you have read and are compliant with the above.</label>
                         </div>
                     </fieldset>
                     <div class="flex justify-between">

@@ -243,6 +243,13 @@
                                 @endif
                                 @endif
                                 @endforeach
+                                <td>
+                                <input disabled readonly class="form-control " type="text" name="location" value="Select Room Location" required>
+                                <select class="form-control" name="" id="">
+                                        <option selected value=""></option>
+                                    </select>
+                                </td>
+                        
 
                                 <!-- formula here -->
                                 <!-- <tr>
@@ -386,8 +393,7 @@
 
                             <tr>
                                 <td>
-                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save
-                                        Invoice</button>
+                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save Invoice</button>
                                     <a style="text-decoration: none;" target="_blank" href="" class="btn btn-primary"><i class="voyager"></i>Email Invoice</a>
                                     <a style="text-decoration: none;" href="{{ route('voyager.invoices.show', $invoice->id) }}" class="btn btn-primary"><i class="voyager"></i>Preview Invoice</a>
                                     <a style="text-decoration: none;" target="_blank" href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="btn btn-primary"><i class="voyager"></i>Invoice PDF</a>
@@ -428,6 +434,7 @@
                             <label for=""> Column Value </label>
                             <input name="value" type="text" class="form-control"></input>
                         </div>
+                       
 
                         <input type="hidden" name="item_id" class="form-control"></input>
 
@@ -479,28 +486,35 @@
 
 
 
-        <!-- Add invocie produtct column modal -->
-        <div class=" modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title"><i class="voyager-data"></i> Add
-                                                                Invoice Product</h4>
-                                                        </div>
-                                                        <form action="{{ route('voyager.invoices.add-item', $invoice->id) }}" method="post">
-                                                            @csrf()
-                                                            @method('post')
-                                                            <div class="modal-body" style="overflow:scroll; min-height: 300px;">
+       <!-- Add invoice product column modal -->
+<div class="modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"><i class="voyager-data"></i> Add Invoice Product</h4>
+            </div>
+            <form action="{{ route('voyager.invoices.add-item', $invoice->id) }}" method="post">
+                @csrf()
+                @method('post')
+                <div class="modal-body" style="overflow: scroll; min-height: 300px;">
+                    <div>
+                        <strong>Select Products:</strong>
+                        <select id="multiple-checkboxes" name="product_ids[]" multiple="multiple">
+                            @foreach ($products->where('company_id', $companyId) as $product)
+                                <option value="{{ $product->id }}">{{ $product->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- Rest of the modal body code -->
+                </div>
+                <!-- Rest of the form code -->
+            </form>
+        </div>
+    </div>
 
-                                                                <div>
-                                                                    <strong>Select Products:</strong>
-                                                                    <select id="multiple-checkboxes" name="product_ids[]" multiple="multiple">
-                                                                        @foreach ($products as $product)
-                                                                        <option value="{{ $product->id }}">{{ $product->title }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
 
                                                             </div>
                                                             <div class="modal-footer">

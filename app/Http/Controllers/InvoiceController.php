@@ -205,6 +205,7 @@ class InvoiceController extends Controller
      */
     public function edit(Request $request,  $id)
     {
+        $companyId = auth()->user()->company_id;
         $invoice = Invoice::find($id)->load('items', 'pricings');
         if ($invoice->items->count() < 1) {
             // $this->addItem($request, $invoice->id);
@@ -225,10 +226,10 @@ class InvoiceController extends Controller
 
         $total_amount = evaluate_formular($formular, 'InvoicePricing');
 
-        $products  = Product::all();
+        $products  = Product::where('company_id', $companyId)->get();
 
         // dd($invoiceSubtotal);
-        return view('voyager::invoices.edit', compact('invoice', 'total_amount', 'products'));
+        return view('voyager::invoices.edit', compact('invoice', 'total_amount', 'products', 'companyId'));
     }
 
 
