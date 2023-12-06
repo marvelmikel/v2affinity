@@ -58,8 +58,8 @@ class Product extends Model
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
                
                
-                $model->meta()->create(['name' => 'has_allowance', 'value' => false, 'title' => 'Allow Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance in Percentage (%)', 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Add Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'visible']);
 
               
 
@@ -145,8 +145,10 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create(['name' => 'has_allowance', 'value' => false, 'title' => 'Allow Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance in Percentage (%)', 'type' => 'number', 'visibility' => 'visible']);
+    
+
+                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Add Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'visible']);
              
 
                 $model->meta()->updateOrCreate(['name' => 'tiles_per_pack'], [
