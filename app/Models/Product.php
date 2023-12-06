@@ -59,7 +59,8 @@ class Product extends Model
                
                
                 $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Add Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'default_allowance', 'value' => 10, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
 
               
 
