@@ -230,6 +230,13 @@
 
                                     <input disabled readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}" required>
                                 </td>
+
+                                @elseif ($meta->type == 'checkbox')
+                                    <td style="min-width: 200px;" class="{{ $meta->visibility }}">
+                                        <input disabled readonly class="form-control  {{ $meta->visibility }}" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}" required>
+                                        <input style="background-color: white;" class="form-check-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" {{ $meta->value == 'true' ? 'checked' : '' }} type="{{ $meta->type }}" {{ $meta->visibility }} >
+                                        <input readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}" required>
+                                    </td>
                                 @else
                                 <td style="min-width: 200px;" class="{{ $meta->visibility }}">
                                     <input disabled readonly class="form-control  {{ $meta->visibility }}" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}" required>
@@ -248,6 +255,7 @@
                                 <select class="form-control" name="" id="">
                                         <option selected value=""></option>
                                     </select>
+                                    
                                 </td>
                         
 

@@ -56,6 +56,10 @@ class Product extends Model
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
+               
+               
+                $model->meta()->create(['name' => 'has_allowance', 'value' => false, 'title' => 'Allow Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance in Percentage (%)', 'type' => 'number', 'visibility' => 'visible']);
 
               
 
@@ -94,13 +98,24 @@ class Product extends Model
                     $unit_area = $model->getMeta('unit_area');
                     // $unit_area = "$unit_width->identifier*$unit_length->identifier";
 
+                    $allowance = $model->getMeta('allowance');
                     $carpet_units = $model->meta()->updateOrCreate(['name' => 'carpet_units'], [
                         'name' => 'carpet_units',
                         'title' => 'Carpet Units',
-                        'value' => "$area->identifier/$unit_area->identifier",
+                        'value' => "ceil($area->identifier/$unit_area->identifier)+($area->identifier/$unit_area->identifier*$allowance->identifier/100)",
                         'type' => 'formular',
                         'visibility' => 'hidden',
                         'modifier' => 'ceil'
+                    ]);
+
+
+                   
+                    $model->meta()->updateOrCreate(['name' => 'formular'], [
+                        'name' => 'formular',
+                        'title' => 'Formular',
+                        'value' => "$unit_price->identifier*$carpet_units->identifier",
+                        'type' => 'formular',
+                        'visibility' => 'hidden'
                     ]);
 
 
@@ -111,6 +126,7 @@ class Product extends Model
                         'type' => 'formular',
                         'visibility' => 'hidden'
                     ]);
+
                 }
             }
 
@@ -128,19 +144,10 @@ class Product extends Model
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
+
+                $model->meta()->create(['name' => 'has_allowance', 'value' => false, 'title' => 'Allow Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance in Percentage (%)', 'type' => 'number', 'visibility' => 'visible']);
              
-
-
-
-
-                // $model->meta()->updateOrCreate(['name' => 'single_tile_area'], [ 
-                //     'name' => 'single_tile_area', 
-                //     'title' => 'Single Tile Area (m2)', 
-                //     'value' => 1, 
-                //     'type' => 'number',
-                //     'visibility' => 'hidden'
-                // ]);
-
 
                 $model->meta()->updateOrCreate(['name' => 'tiles_per_pack'], [
                     'name' => 'tiles_per_pack',
@@ -196,10 +203,14 @@ class Product extends Model
 
                     $tiles_count = $model->getMeta('tiles_count');
 
+
+                    $allowance = $model->getMeta('allowance');
+
+
                     $packs_count = $model->meta()->updateOrCreate(['name' => 'packs_count'], [
                         'name' => 'packs_count',
                         'title' => 'Total Quantity of Packs',
-                        'value' => "$tiles_count->identifier/$tiles_per_pack->identifier",
+                        'value' => "ceil($tiles_count->identifier/$tiles_per_pack->identifier)+($tiles_count->identifier/$tiles_per_pack->identifier*$allowance->identifier/100)",
                         'type' => 'formular',
                         'visibility' => 'readonly',
                         'modifier' => 'ceil'
