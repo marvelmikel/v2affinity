@@ -58,8 +58,9 @@ class Product extends Model
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
                
                
-                $model->meta()->create(['name' => 'has_allowance', 'value' => false, 'title' => 'Allow Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance in Percentage (%)', 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'default_allowance', 'value' => 10, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
 
               
 
@@ -70,9 +71,17 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'unit_area'], [
                         'name' => 'unit_area',
-                        'title' => 'Unit Area (m2)',
+                        'title' => 'Unit Area (㎡)',
                         'value' => "$unit_length->identifier*$unit_width->identifier",
                         'type' => 'formular',
+                        'visibility' => 'hidden'
+                    ]);
+
+                    $model->meta()->updateOrCreate(['name' => 'location'], [
+                        'name' => 'location',
+                        'title' => 'Location of Room',
+                        'value' => 'Type of Room',
+                        'type' => 'Text',
                         'visibility' => 'hidden'
                     ]);
 
@@ -82,7 +91,7 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'area'], [
                         'name' => 'area',
-                        'title' => 'Carpet Area (㎡)',
+                        'title' => 'Toatl Area (㎡)',
                         'value' => "$length->identifier*$width->identifier",
                         'type' => 'formular',
                         'visibility' => 'readonly'
@@ -145,8 +154,11 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create(['name' => 'has_allowance', 'value' => false, 'title' => 'Allow Allowance', 'type' => 'checkbox', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance in Percentage (%)', 'type' => 'number', 'visibility' => 'visible']);
+    
+
+                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'default_allowance', 'value' => 10, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
              
 
                 $model->meta()->updateOrCreate(['name' => 'tiles_per_pack'], [
@@ -172,10 +184,10 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'area'], [
                         'name' => 'area',
-                        'title' => 'Total Area (m2)',
+                        'title' => 'Total Area(㎡)',
                         'value' => "$length->identifier*$width->identifier",
                         'type' => 'formular',
-                        'visibility' => 'readonly'
+                        'visibility' => 'hidden'
                     ]);
                 }
 

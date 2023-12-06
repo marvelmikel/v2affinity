@@ -350,22 +350,21 @@ class InvoiceController extends Controller
 
 
 
-        if($meta = $request->has_allowance){
+        if($meta = $request->add_allowance){
             if($meta[0] == 'on'){
-                 if($invoiceItem->getMeta('allowance') && $invoiceItem->getMeta('has_allowance')){
-                     $meta = $invoiceItem->getMeta('allowance');
-                     $hasAllowance = $invoiceItem->getMeta('has_allowance');
-                    //  $meta->update(['value' => 10]);
-                     $meta->save();
-                     $hasAllowance->update(['value' => 'true']);
+                 if($invoiceItem->getMeta('allowance') && $invoiceItem->getMeta('add_allowance')){
+                    $allowance = $invoiceItem->getMeta('allowance');
+                    $defaultAllowance = $invoiceItem->getMeta('default_allowance');
+                    $addAllowance = $invoiceItem->getMeta('add_allowance');
+                    $allowance->update(['value' => $defaultAllowance->value]);
+                    $addAllowance->update(['value' => 'yes']);
                  }
             }else{
-             if($invoiceItem->getMeta('allowance') && $invoiceItem->getMeta('has_allowance') ){
-                 $meta = $invoiceItem->getMeta('allowance');
-                 $hasAllowance = $invoiceItem->getMeta('has_allowance');
-                 $meta->update(['value' => 0]);
-                 $meta->save();
-                 $hasAllowance->update(['value' => 'false']);
+             if($invoiceItem->getMeta('allowance') && $invoiceItem->getMeta('add_allowance') ){
+                $allowance = $invoiceItem->getMeta('allowance');
+                $addAllowance = $invoiceItem->getMeta('add_allowance');
+                $allowance->update(['value' => 0]);
+                $addAllowance->update(['value' => 'no']);
              }
             }
          }
