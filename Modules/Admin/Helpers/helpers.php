@@ -4,6 +4,7 @@ use App\Models\InvoiceItemMeta;
 use App\Models\InvoicePricing;
 use App\Models\Product;
 use App\Models\ProductMeta;
+use Illuminate\Support\Facades\Log;
 
 if (!function_exists('setting')) {
     function setting($key, $default = null)
@@ -44,7 +45,6 @@ if (!function_exists('evaluate_formular')) {
     function evaluate_formular($formular, $entity, $entity_id = null, $modifier = null)
     {
 
-        // dd(evaluate_formular('area18/unitarea17', ));
 
        
         $modifierArray = [];
@@ -127,12 +127,13 @@ if (!function_exists('evaluate_formular')) {
                     array_push($evaluation, $val);
                 } 
             }
+
         }
 
        
-
         $stringEval = implode("", $evaluation);
        
+        // Log::debug($evaluation);
         // dd($stringEval);
         try {
             $result =  @eval("return " . $stringEval . ";" );

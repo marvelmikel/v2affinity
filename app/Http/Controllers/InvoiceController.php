@@ -211,7 +211,7 @@ class InvoiceController extends Controller
             // $this->addItem($request, $invoice->id);
         }
 
-        // evaluate_formular("(area21239)/[marblesizelength21234*marblesizewidth21235]", 'InvoicePricing' );
+        // evaluate_formular("ceil(area32338/unitarea32337)+(area32338/unitarea32337*allowance32336/100)", 'InvoiceItemMeta', 13 );
 
         // dd(evaluate_formular("P11*(2*P12)", 'InvoicePricing' ));
         // dd(evaluate_formular("unitprice214*packscount221", 'InvoiceItemMeta', 1, '2dp' ));
@@ -333,14 +333,44 @@ class InvoiceController extends Controller
     {
         $invoiceItem = InvoiceItem::find($itemId);
         $invoice = Invoice::find($invoiceId);
-        $meta = $request->all();
+
+
+       
         $invoiceItem->update($request->except(['_method', '_token']));
+
+         $meta = $request->all();
+
+         
         foreach ($meta as $me) {
             if (isset($me[1])) { // Check if array key 1 is set
                 $value = !empty($me[0]) ? $me[0] : 0; // Set default value of 0 if $me[0] is empty
                 InvoiceItemMeta::where('identifier', $me[1])->where('invoice_item_id', $invoiceItem->id)->first()->update(['value' => $me[0]]);
             }
         }
+
+
+
+        if($meta = $request->add_allowance){
+            if($meta[0] == 'on'){
+                 if($invoiceItem->getMeta('allowance') && $invoiceItem->getMeta('add_allowance')){
+                    $allowance = $invoiceItem->getMeta('allowance');
+                    $defaultAllowance = $invoiceItem->getMeta('default_allowance');
+                    $addAllowance = $invoiceItem->getMeta('add_allowance');
+                    $allowance->update(['value' => $defaultAllowance->value]);
+                    $addAllowance->update(['value' => 'yes']);
+                 }
+            }else{
+             if($invoiceItem->getMeta('allowance') && $invoiceItem->getMeta('add_allowance') ){
+                $allowance = $invoiceItem->getMeta('allowance');
+                $addAllowance = $invoiceItem->getMeta('add_allowance');
+                $allowance->update(['value' => 0]);
+                $addAllowance->update(['value' => 'no']);
+             }
+            }
+         }
+
+
+        
         
 
         // Recalculate invoice subtotal here whenever an item is saved

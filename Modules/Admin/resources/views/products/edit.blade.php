@@ -48,7 +48,7 @@
                         @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                            @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->value != 0)
+                            @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' )
                             <tr>
                                 <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
                                 <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
