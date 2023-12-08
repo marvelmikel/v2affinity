@@ -239,7 +239,7 @@ class InvoiceController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * 
+     *
      */
     public function update(Request $request,  $id)
     {
@@ -335,12 +335,12 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($invoiceId);
 
 
-       
+
         $invoiceItem->update($request->except(['_method', '_token']));
 
          $meta = $request->all();
 
-         
+
         foreach ($meta as $me) {
             if (isset($me[1])) { // Check if array key 1 is set
                 $value = !empty($me[0]) ? $me[0] : 0; // Set default value of 0 if $me[0] is empty
@@ -370,8 +370,8 @@ class InvoiceController extends Controller
          }
 
 
-        
-        
+
+
 
         // Recalculate invoice subtotal here whenever an item is saved
         $invoice->calculateSubtotal();
@@ -573,5 +573,5 @@ class InvoiceController extends Controller
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 
-    
+
 }

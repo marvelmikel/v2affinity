@@ -74,7 +74,7 @@ class Invoice extends Model
 
 	    static::deleting(function ($model) {
             $model->items()->delete();
-	    });	    
+	    });
 	}
 }
 

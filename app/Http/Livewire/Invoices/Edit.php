@@ -13,7 +13,7 @@ class Edit extends Component
     public function updatePricing($id, $amount)
     {
         $invoicePricing = InvoicePricing::findOrFail($id);
-    
+
         // Update only if value is not empty
         if ($amount) {
             // Calculate value based on pricing name
@@ -22,14 +22,14 @@ class Edit extends Component
                 'discount' => round($amount / 100, 2), // Divide by 100 to get the percentage value
                 default => number_format($amount, 2),
             };
-    
+
             // Update pricing model
             $invoicePricing->update(['value' => $value]);
         } else {
             $invoicePricing->update(['value' => 0]);
         }
     }
-    
+
 
     public function updateFormula($id)
     {
@@ -51,8 +51,6 @@ class Edit extends Component
                 return $item[0];
             })->toArray()
         );
-
-//        dd($this->pricings);
     }
 
     public function getSubtotal()

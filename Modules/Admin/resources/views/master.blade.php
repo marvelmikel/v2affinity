@@ -17,7 +17,11 @@
         <link rel="shortcut icon" href="{{ Voyager::image($admin_favicon) }}" type="image/png">
     @endif
 
+    @livewireStyles
+    @vite('resources/css/app.css')
 
+    {{-- Lord Icon --}}
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
@@ -146,5 +150,6 @@ if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Ill
     @foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
 @endif
 
+@livewireScripts
 </body>
 </html>

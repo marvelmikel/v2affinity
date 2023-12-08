@@ -88,7 +88,7 @@
         </td>
     </tr>
 
-     
+
 
     <script>
         function updatePricing(id) {

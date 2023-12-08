@@ -36,7 +36,7 @@ class StoresDataTable extends DataTable
                         <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Store?\")'>
                             <i class='voyager-trash'></i>
                         </button>
-                    </form> 
+                    </form>
                 </div>";
 
                 return $btn;
@@ -47,15 +47,22 @@ class StoresDataTable extends DataTable
 
     public function query(Store $model): QueryBuilder
     {
-        $companyId = Auth::user()->company_id;
-    
-        return $model->newQuery()
-            ->select('stores.*', 'companies.company_name as company_name')
-            ->leftJoin('companies', 'stores.company_id', '=', 'companies.id')
-            ->where('stores.company_id', $companyId);
+        /* Show all Stores if user is a super admin */
+        if (\auth()->user()->role_id == 1) {
+            return $model->newQuery()
+                ->select('stores.*', 'companies.company_name as company_name')
+                ->leftJoin('companies', 'stores.company_id', '=', 'companies.id');
+        } else {
+            $companyId = Auth::user()->company_id;
+
+            return $model->newQuery()
+                ->select('stores.*', 'companies.company_name as company_name')
+                ->leftJoin('companies', 'stores.company_id', '=', 'companies.id')
+                ->where('stores.company_id', $companyId);
+        }
     }
 
-     /**
+    /**
      * Optional method if you want to use html builder.
      *
      * @return \Yajra\DataTables\Html\Builder

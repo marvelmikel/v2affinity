@@ -202,95 +202,10 @@
         </div>
 
 
-        <!-- invoice items -->
-        <div class="col-md-12 ">
-            <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
-                <h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>
-                <div>
-                    <!-- <a href="{{ route('voyager.invoices.add-item', $invoice->id) }}"  class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Add New Item</a>   -->
-                    <a data-toggle="modal" data-target="#add_product_modal" class="btn btn-primary"><i class="voyager-plus"></i>Add New Item</a>
-                </div>
-            </div>
-            <div class="clear"></div>
-            <br>
+        <!-- Invoice Items -->
+        <livewire:invoices.items :wire:key="'items_' . $invoice->id" :invoice="$invoice" :products="$products" />
 
-            <div class="card" style="max-height: 540px; overflow: scroll;">
-                @foreach ($invoice->items as $invoiceItem)
-                <table class="table " style="width:100%; margin: 40px 0;">
-                    <tbody>
-                        <form id="invoiceForm" action="{{ route('voyager.invoices.save-item', [$invoice->id, $invoiceItem->id]) }} ">
-                            <tr class="invoice-item-meta" style="overflow: scroll;">
-                                @foreach ($invoiceItem->meta as $meta)
-                                <!-- did this so I can put the formular at the end of the meta list -->
-                                @if ($meta->name != 'formular')
-                                @if ($meta->type == 'formular')
-                                <td style="min-width: 200px;" class="{{ $meta->visibility }}">
-                                    <input disabled readonly class="form-control  {{ $meta->visibility }} " type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}" required>
-                                    <input disabled readonly style="background-color: white;" class="form-control evaluated-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" value="{{ evaluate_formular($meta->value, 'InvoiceItemMeta', $invoiceItem->id, $meta->modifier) }}" type="{{ $meta->type }}" {{ $meta->visibility }} required>
-
-                                    <input disabled readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}" required>
-                                </td>
-
-                                @elseif ($meta->type == 'checkbox')
-                                    <td style="min-width: 200px;" class="{{ $meta->visibility }}">
-                                        <input disabled readonly class="form-control  {{ $meta->visibility }}" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}" required>
-                                        <input style="background-color: white;" class="form-check-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" {{ $meta->value == 'yes' ? 'checked' : '' }} type="{{ $meta->type }}" {{ $meta->visibility }} >
-                                        <input readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}" required>
-                                    </td>
-                                @else
-                                <td style="min-width: 200px;" class="{{ $meta->visibility }}">
-                                    <input disabled readonly class="form-control  {{ $meta->visibility }}" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title }}" required>
-
-                                    <input style="background-color: white;" class="form-control evaluated-input  {{ $meta->visibility }}" name="{{ $meta->name }}[]" value="{{ $meta->value }}" type="{{ $meta->type }}" {{ $meta->visibility }} required>
-
-                                    <input readonly style="background-color: white;" class="form-control  {{ $meta->visibility }}" type="hidden" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}" required>
-                                </td>
-
-
-                                @endif
-                                @endif
-                                @endforeach
-                                <td>
-                                <input disabled readonly class="form-control " type="text" name="location" value="Select Room Location" required>
-                                <select class="form-control" name="" id="">
-                                        <option selected value=""></option>
-                                    </select>
-                                    
-                                </td>
-                        
-
-                                <!-- formula here -->
-                                <!-- <tr>
-                                                    <td><input disabled readonly  class="form-control" type="text" name="formular[]" value="formular" ></td>
-                                                    <td><input readonly style="background-color: white;"  class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['value'] : '' }}"  ></td>
-                                                    <td><input  readonly  style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $invoiceItem->getMeta('formular') ? $invoiceItem->getMeta('formular')['identifier'] : '' }}"  ></td>
-                                                </tr> -->
-
-                                <!-- item total here -->
-
-                                <td style="min-width: 200px;">
-                                    <input disabled readonly class="form-control" type="text" value="Total Price(£)">
-                                    <input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($invoiceItem->item_total, 2) }}">
-                                </td>
-
-                                <td>
-                                    <button type="submit" class="btn btn-success"><i class="voyager-book"></i></button>
-                                <td colspanss="3">
-                                    <a href="{{ route('voyager.invoices.delete-item', [$invoice->id, $invoiceItem->id]) }}" style="text-decoration: none;" data-invoiceid="" class="btn btn-sm btn-danger"><i class="voyager-trash"></i></a>
-                                    <!-- <a href="#" data-invoiceitemid="{{ $invoiceItem->id }}" class="btn btn-secondary btn-xs add-column-btn"><i class="voyager-plus"></i>Add Column</a> -->
-                                </td>
-                                </td>
-                                <td>
-                            </tr>
-
-                        </form>
-                    </tbody>
-                </table>
-                @endforeach
-            </div>
-        </div><!-- .row -->
-
-        <!-- 
+        <!--
         {{-- <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
             <div>
     <livewire:invoices.edit :wire:key="$invoice->id" :invoice="$invoice" />
@@ -385,9 +300,6 @@
                             </tr>
                             @endif
 
-
-
-
                             <!-- item total here -->
                             <tr>
                                 <td><input readonly class="form-control" type="text" value="Total Amount £"></td>
@@ -399,26 +311,19 @@
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="flex gap-4">
                                     <button type="submit" class="btn btn-success"><i class="voyager"></i>Save Invoice</button>
-                                    <a style="text-decoration: none;" target="_blank" href="" class="btn btn-primary"><i class="voyager"></i>Email Invoice</a>
+                                    <livewire:invoices.email-pdf :invoice="$invoice" :store="$invoice->store" />
                                     <a style="text-decoration: none;" href="{{ route('voyager.invoices.show', $invoice->id) }}" class="btn btn-primary"><i class="voyager"></i>Preview Invoice</a>
                                     <a style="text-decoration: none;" target="_blank" href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="btn btn-primary"><i class="voyager"></i>Invoice PDF</a>
                                 </td>
-
-
                             </tr>
-
                         </form>
                     </tbody>
                 </table>
             </div>
         </div>
-
     </div>
-
-
-
 
     <!-- Add invocie item column modal -->
     <div class="modal modal-info fade" tabindex="-1" id="add_item_column_modal" role="dialog">
@@ -441,7 +346,7 @@
                             <label for=""> Column Value </label>
                             <input name="value" type="text" class="form-control"></input>
                         </div>
-                       
+
 
                         <input type="hidden" name="item_id" class="form-control"></input>
 
@@ -473,7 +378,7 @@
                                                 <label for=""> Column Name </label>
                                                 <input name="name" type="text" class="form-control"></input>
                                             </div>
-                                           
+
 
                                             <div style="margin: 10px 0;">
                                                 <label for=""> Column Value </label>
@@ -488,9 +393,9 @@
                                                 </select>
                                             </div>
 
-                                           
 
-                                           
+
+
 
                                             <input type="hidden" name="invoice_id" class="form-control"></input>
 
@@ -536,11 +441,11 @@
     <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
    </div>
             </form>
-            
+
         </div>
     </div>
     </div>
-   
+
  </form>
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
