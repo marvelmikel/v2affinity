@@ -450,6 +450,14 @@ class InvoiceController extends Controller
             }
             $formular = "($subtotal+$tax)-($discount)";
 
+
+            //check pricing that should be added to formular - 
+            foreach ($meta as $met) {
+               if( isset($met[3]) && $met[3]  != null){
+                $formular =  $formular  .$met[3] . '(' . $met[2] . ')';
+                //dd($formular);
+               }
+            }
             $invoice->pricings()->updateOrCreate(
                 [
                     'name' => 'formular'
@@ -503,7 +511,9 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($id);
         $invoice->pricings()->create([
             'name' => $request->name,
-            'value' => $request->value
+            'value' => $request->value,
+            'operation' => $request->operation,
+            'visibility' => $request->visibility
         ]);
         return redirect()->back();
     }
