@@ -35,12 +35,12 @@
                         @endif
                     @endforeach
 
-                    <td>
+                    <!-- <td>
                         <input disabled readonly class="form-control " type="text" name="location" value="Select Room Location" required>
                         <select class="form-control" name="" id="">
                             <option selected value=""></option>
                         </select>
-                    </td>
+                    </td> -->
 
                     <td style="min-width: 200px;">
                         <input disabled readonly class="form-control" type="text" value="Total Price(£)">

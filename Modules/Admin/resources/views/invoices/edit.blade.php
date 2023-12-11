@@ -267,8 +267,8 @@
                                     <select
                                         class="form-control {{ ($pricing->name == 'tax') ? 'disabled-select' : '' }}"
                                         name="{{ $pricing->name }}[]" id="">
-                                        <option value="value"  {{ $pricing->type != 'percentage' ? 'selected' : ''  }}>value(£)</option>
-                                        <option value="percentage">pecentage(%)</option>
+                                        <option value="value">value(£)</option>
+                                        <option  selected value="percentage">pecentage(%)</option>
                                         <!-- <option value="formular">Formular</option> -->
                                     </select>
 
@@ -315,7 +315,7 @@
                             @endforeach
 
                             <!-- formula here -->
-                            @if (Auth::check() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 2))
+                            @if (Auth::check() && (Auth::user()->role_id == 1))
                             <tr>
                                 <td><input disabled readonly class="form-control" type="text" name="formular[]"
                                         value="formular"></td>
@@ -351,8 +351,7 @@
 
                             <tr>
                                 <td class="flex gap-4">
-                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save
-                                        Invoice</button>
+                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save Invoice</button>
                                     <livewire:invoices.email-pdf :invoice="$invoice" :store="$invoice->store" />
                                     <a style="text-decoration: none;"
                                         href="{{ route('voyager.invoices.show', $invoice->id) }}"
