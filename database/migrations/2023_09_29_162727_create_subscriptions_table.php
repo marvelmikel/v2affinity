@@ -21,7 +21,7 @@ return new class extends Migration
             $table->double('balance')->default(0.00);
             $table->unsignedTinyInteger('billingDayOfMonth')->default(1);
             $table->timestamp('firstBillingDate');
-            $table->timestamp('nextBillingDate');
+            $table->timestamp('nextBillingDate')->default(DB::raw('CURRENT_TIMESTAMP')); // Set current timestamp as default value
             $table->timestamp('billingPeriodStartDate')->nullable();
             $table->timestamp('billingPeriodEndDate')->nullable();
             $table->timestamp('paidThroughDate')->nullable();
