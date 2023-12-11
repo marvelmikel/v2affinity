@@ -438,8 +438,8 @@
                                             <select name="operation" class="form-control">
                                                 <option value="+">Add</option>
                                                 <option value="-">Subtract</option>
-                                                <option value="*">Multiply</option>
-                                                <option value="/">Divide</option>
+                                                <!-- <option value="*">Multiply</option>
+                                                <option value="/">Divide</option> -->
                                             </select>
                                         </div>
 
