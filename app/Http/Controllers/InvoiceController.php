@@ -51,11 +51,19 @@ class InvoiceController extends Controller
         $store = $storeModel::find($invoice->store_id);
 
         if (!$store) {
-            throw new \Exception('Store not found');
+            throw new \Exception(404, 'Store not found');
+            // Or use abort(404, 'Store not found') to return a 404 error response
+        
+            // Alternatively, you can display a flash message and redirect back:
+            return redirect()->back()->with('error', 'Store not found');
         }
+        
 
         // Fetch the company data here
         $company = Company::find($invoice->company_id);
+
+        // Fetch the store_logo URL here
+    $storeLogoUrl = $store->store_logo;
 
         $pdf = PDF::loadView('voyager::invoices.pdf', [
             'invoice' => $invoice,
@@ -63,7 +71,8 @@ class InvoiceController extends Controller
             'user' => auth()->user(),
             'count' => $invoice->items->count(),
             'store' => $store,
-            'company' => $company, // Pass the $company variable to the view
+            'company' => $company, 
+            'storeLogoUrl' => $storeLogoUrl,
         ]);
 
         return $pdf->stream('invoice.pdf');
@@ -449,7 +458,6 @@ class InvoiceController extends Controller
                 $discount = $discountCol->identifier;
             }
             $formular = "($subtotal+$tax)-($discount)";
-
 
             //check pricing that should be added to formular - 
             foreach ($meta as $met) {

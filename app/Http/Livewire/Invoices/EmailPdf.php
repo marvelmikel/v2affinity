@@ -14,7 +14,7 @@ class EmailPdf extends Component
 
     public function emailInvoice()
     {
-        /* Overwrite Mail config to user the store settings if env is Prod */
+        /* Overwrite Mail config to use the store settings if env is Prod */
         if (in_array(env('APP_ENV'), ['prod', 'production'])) {
             Config::set('mail.mailers.smtp.port', $this->store->emailSettings()->port);
             Config::set('mail.mailers.smtp.host', $this->store->emailSettings()->host);

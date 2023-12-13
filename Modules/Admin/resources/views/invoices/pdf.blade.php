@@ -501,7 +501,12 @@
     <div class="top_section">
         <div class="logo_section">
             {{-- Link src to Store logo --}}
-            <img class="logo" src="images/affinity-email-logo.png">
+            @if ($store->store_logo)
+            <img src="{{ url($store->store_logo) }}" alt="Store Logo" class="h-9" style="width: 50%; height: 50%;">
+                    @else
+                    <img src="{{ url('images/affinity-email-logo.png') }}" alt="Affinity" class="h-9">
+
+                    @endif
             <p style="text-transform:uppercase;margin:0;color:#415280;font-weight:bold;">Store: {{ $store->store_name }}
             </p>
             <p style="text-transform:uppercase;margin:0;color:#415280;">

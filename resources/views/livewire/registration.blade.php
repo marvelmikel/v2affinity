@@ -275,7 +275,7 @@
                                 }
                             @endphp
                             <li>
-                                <input wire:model="selected_plan.plan_id" wire:click="calculate_total()" type="radio" id="{{ $plan['id'] }}" name="plan" value="{{ $plan['id'] }}" class="hidden peer" required>
+                                <input wire:model="selected_plan.plan_id" wire:click="calculate_total('{{ $period }}')" type="radio" id="{{ $plan['id'] }}" name="plan" value="{{ $plan['id'] }}" class="hidden peer" required>
                                 <label for="{{ $plan['id'] }}" class="group inline-flex flex-col gap-1.5 w-full px-5 py-3 text-slate-500 bg-white border border-slate-200 rounded-lg cursor-pointer peer-checked:border-purple-600 peer-checked:bg-purple-50 peer-checked:text-purple-600 hover:text-slate-600 hover:bg-slate-100">
                                     <span class="font-medium text-slate-400 text-sm tracking-wider uppercase">{{ $period }}ly</span>
                                     <div class="flex items-center justify-between">
@@ -317,9 +317,11 @@
                         <div>
                             @if($show_discount)
                                 <div class="flex">
-                                    <b>Discount Code:</b>
+                                    <div class="my-auto">
+                                        <b>Discount Code:</b>
+                                    </div>
                                     <div>
-                                        <x-input wire:keyup="checkDiscount" wire:model="discount_code" class="ml-2 w-1/4" type="text" />
+                                        <x-input wire:keyup="checkDiscount()" wire:model="discount_code" class="ml-2 w-1/4" type="text" />
                                     </div>
                                 </div>
                             @endif
@@ -359,7 +361,7 @@
                                         </p>
                                         <p class="col-span-8 lg:col-span-2 flex items-center gap-2">
                                             <label for="addons[{{ $addon['id'] }}][quantity]" class="text-slate-600 font-semibold">Qty:</label>
-                                            <input oninput="this.value = Math.abs(this.value)" wire:model="selected_plan.addons.{{ $addon['id'] }}.quantity" wire:change="calculate_total()" type="number" min="0" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"  class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
+                                            <input oninput="this.value = Math.abs(this.value)" wire:model="selected_plan.addons.{{ $addon['id'] }}.quantity" wire:change="calculate_total('{{ $period }}')" type="number" min="0" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"  class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
                                         </p>
                                         <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
                                             @if(!empty($selected_plan['addons'][$addon['id']]) && !empty($selected_plan['addons'][$addon['id']]['quantity']))

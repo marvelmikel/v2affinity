@@ -85,8 +85,7 @@
 
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="{{ route('voyager.invoices.update', $invoice->id) }}"
-                    method="POST">
+                <form class="form-edit-add" role="form" action="{{ route('voyager.invoices.update', $invoice->id) }}" method="POST">
 
 
 
@@ -121,8 +120,7 @@
                                     @else
                                     <!-- For users with role_id = 3 or 4 -->
                                     @if (Auth::user()->store)
-                                    <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->
-                                        store->id) selected @endif>
+                                    <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif>
                                         {{ Auth::user()->store->store_name }}
                                     </option>
                                     @else
@@ -139,8 +137,7 @@
 
                             <div class="form-group col-md-6">
                                 <label for="name">Invoice Number</label>
-                                <input class="form-control" type="text" value="{{ $invoice->invoice_number }}"
-                                    name="invoice_number" id="">
+                                <input class="form-control" type="text" value="{{ $invoice->invoice_number }}" name="invoice_number" id="">
                             </div>
                         </div>
 
@@ -149,13 +146,11 @@
                         <div class="form-group row">
                             <div class="col-md-6 form-group">
                                 <label for="name">Customer Name</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->name }}" name="customer_name" id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->name }}" name="customer_name" id="">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="name">Customer Email</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->email }}" name="customer_email" id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->email }}" name="customer_email" id="">
                             </div>
 
                         </div>
@@ -165,20 +160,15 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="name">Customer Address Line 1</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->address_line_1 }}" name="customer_address_line_1"
-                                    id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_line_1 }}" name="customer_address_line_1" id="">
                             </div>
                             <div class="col-md-4">
                                 <label for="name">Customer Address Line 2</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->address_line_2 }}" name="customer_address_line_2"
-                                    id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_line_2 }}" name="customer_address_line_2" id="">
                             </div>
                             <div class="col-md-4">
                                 <label for="name">Customer Phone Number</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->phone }}" name="customer_phone_number" id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->phone }}" name="customer_phone_number" id="">
                             </div>
                         </div>
 
@@ -186,22 +176,17 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="name">Customer City</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->address_city }}" name="customer_address_city" id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_city }}" name="customer_address_city" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Customer Country</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->address_country }}" name="customer_address_country"
-                                    id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_country }}" name="customer_address_country" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Customer Postcode</label>
-                                <input type="text" class="form-control" type="text"
-                                    value="{{ $invoice->customer->address_postcode }}" name="customer_address_postcode"
-                                    id="">
+                                <input type="text" class="form-control" type="text" value="{{ $invoice->customer->address_postcode }}" name="customer_address_postcode" id="">
                             </div>
                         </div>
 
@@ -215,158 +200,11 @@
             </div>
 
         </div>
+ <h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>
 
-
-        <!-- Invoice Items -->
-        <livewire:invoices.items :wire:key="'items_' . $invoice->id" :invoice="$invoice" :products="$products" />
-
-        <!--
-        {{-- <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
-            <div>
-    <livewire:invoices.edit :wire:key="$invoice->id" :invoice="$invoice" />
-       </div> --}} -->
-
-
-        <!-- invoice pricing Section -->
-        <div class="col-md-12 ">
-            <div class="card">
-                <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
-                    <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
-                </div>
-                <div class="clear"></div>
-                <br>
-
-                <table class="table " style="width:100%; margin: 40px 0;">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Value</th>
-                            <th>Type</th>
-                            <th>Indentifier</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <form action="{{ route('voyager.invoices.save-pricing', [$invoice->id]) }} ">
-
-                            @foreach ($invoice->pricings as $pricing)
-                            @if ($pricing->name != 'formular')
-                            @if ($pricing->name == 'tax' || $pricing->name == 'discount')
-                            <tr>
-                                <td>
-                                    <input disabled readonly class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->name }} " required>
-                                </td>
-                                <td>
-
-                                    <input class="form-control" type="number" min="0" step="any"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->value }}"
-                                        placeholder="{{ ucfirst($pricing->name) }} % " required>
-                                </td>
-                                <td>
-
-                                    <select
-                                        class="form-control {{ ($pricing->name == 'tax') ? 'disabled-select' : '' }}"
-                                        name="{{ $pricing->name }}[]" id="">
-                                        <option value="value">value(£)</option>
-                                        <option  selected value="percentage">pecentage(%)</option>
-                                        <!-- <option value="formular">Formular</option> -->
-                                    </select>
-
-                                </td>
-                                <td>
-                                    <input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
-
-                                         <!-- operation -->
-                                         <input   class="form-control" type="hidden" name="{{ $pricing->name }}[]"
-                                         value="{{ $pricing->operation }}" >
-                                </td>
-                            </tr>
-                            @else
-                            <tr>
-                                <td>
-                                    <input disabled  class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]"
-                                        value="{{ $pricing->name }}{{ $pricing->name == 'subtotal' ? ' £' : '' }}">
-                                </td>
-                                <td>
-                                    <input  class="form-control" type="text" name="{{ $pricing->name }}[]"
-                                        value="{{ $pricing->value }}" required>
-                                </td>
-                                <td>
-                                    <select
-                                        class="form-control {{ ($pricing->name == 'subtotal') ? 'disabled-select' : '' }}"
-                                        name="{{ $pricing->name }}[]" id="">
-                                        <option value="value"  {{ $pricing->type != 'percentage' ? 'selected' : ''  }}>value(£)</option>
-                                        <option value=" percentage">pecentage(%)</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="{{ $pricing->name }}[]" value="{{ $pricing->identifier }}">
-
-                                        <!-- operation -->
-                                        <input   class="form-control" type="hidden" name="{{ $pricing->name }}[]"
-                                        value="{{ $pricing->operation }}" >
-                                </td>
-                            </tr>
-                            @endif
-                            @endif
-                            @endforeach
-
-                            <!-- formula here -->
-                            @if (Auth::check() && (Auth::user()->role_id == 1))
-                            <tr>
-                                <td><input disabled readonly class="form-control" type="text" name="formular[]"
-                                        value="formular"></td>
-                                <td><input class="form-control" type="text" name="formular[]"
-                                        value="{{ $invoice->getPricing('formular')['value'] }}"></td>
-                                <td>
-                                    <select class="form-control" name="{{ $invoice->getPricing('formular')['name'] }}[]"
-                                        id="">
-                                        <option selected value="{{ $invoice->getPricing('formular')['type'] }}"">{{ $invoice->getPricing('formular')['type'] }}</option>
-                                                <option value=" percentage">Percentage</option>
-                                        <option value="value">Value</option>
-                                        <option value="formular">Formular</option>
-                                    </select>
-                                </td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text"
-                                        name="formular[]" value="{{ $invoice->getPricing('formular')['identifier'] }}">
-                                </td>
-                            </tr>
-                            @endif
-
-                            <!-- item total here -->
-                            <tr>
-                                <td><input readonly class="form-control" type="text" value="Total Amount £"></td>
-                                <td colspan="3"><input readonly style="background-color: white;" class="form-control"
-                                        type="text" value="{{ number_format($invoice->total, 2) }}"></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="4"><a href="#" data-invoiceid="{{ $invoice->id }}"
-                                        class="btn btn-secondary btn-xs add-pricing-column-btn"><i
-                                            class="voyager-plus"></i>Add Pricing Item Cost </a> </td>
-                            </tr>
-
-                            <tr>
-                                <td class="flex gap-4">
-                                    <button type="submit" class="btn btn-success"><i class="voyager"></i>Save Invoice</button>
-                                    <livewire:invoices.email-pdf :invoice="$invoice" :store="$invoice->store" />
-                                    <a style="text-decoration: none;"
-                                        href="{{ route('voyager.invoices.show', $invoice->id) }}"
-                                        class="btn btn-primary"><i class="voyager"></i>Preview Invoice</a>
-                                    <a style="text-decoration: none;" target="_blank"
-                                        href="{{ route('voyager.invoices.pdf', $invoice->id) }}"
-                                        class="btn btn-primary"><i class="voyager"></i>Invoice PDF</a>
-                                </td>
-                            </tr>
-                        </form>
-                    </tbody>
-                </table>
-            </div>
+        <div>
+            <livewire:invoices.edit :wire:key="'pricing' . $invoice->id" :invoice="$invoice" :products="$products" />
         </div>
-    </div>
 
     <!-- Add invocie item column modal -->
     <div class="modal modal-info fade" tabindex="-1" id="add_item_column_modal" role="dialog">
@@ -407,6 +245,7 @@
 
 
     <!-- Add invocie pricing column modal -->
+{{--
     <div class=" modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -459,8 +298,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-
+--}}
 
      <!-- Add invoice product column modal -->
     <div class=" modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
@@ -474,33 +312,26 @@
                     <h4 class="modal-title"><i class="voyager-data"></i> Add
                         Invoice Product</h4>
                 </div>
-                <form
-                                                                action="{{ route('voyager.invoices.add-item', $invoice->id) }}"
-                                                                method="post">
+                <form action="{{ route('voyager.invoices.add-item', $invoice->id) }}" method="post">
                                                                 @csrf()
                                                                 @method('post')
-                                                                <div class="modal-body"
-                                                                    style="overflow: scroll; min-height: 300px;">
-                                                                    <div>
-                                                                        <strong>Select Products:</strong>
-                                                                        <select id="multiple-checkboxes"
-                                                                            name="product_ids[]" multiple="multiple">
-                                                                            @foreach ($products->where('company_id',
-                                                                            $companyId) as $product)
-                                                                            <option value="{{ $product->id }}">{{
-                                                                                $product->title }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
+                    <div class="modal-body" style="overflow: scroll; min-height: 300px;"><div>
+                            <strong>Select Products:</strong>
+                            <select id="multiple-checkboxes"
+                                 name="product_ids[]" multiple="multiple">
+                                 @foreach ($products->where('company_id',
+                                     $companyId) as $product)
+                                     <option value="{{ $product->id }}">{{
+                                     $product->title }}</option>
+                                         @endforeach
+                                         </select>
+                                        </div>
                                                                     <!-- Rest of the modal body code -->
-                                                                </div>
+                                         </div>
                                                                 <!-- Rest of the form code -->
-                                                                <div class="modal-footer">
-                                                                    <button type="button"
-                                                                        class="btn btn-outline mx-3 pull-right"
-                                                                        data-dismiss="modal">{{ __('voyager::generic.close')
-                                                                        }}</button>
-                                                                    <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
+                                     <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close')}}</button>
+                                    <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
     </div>
                 </form>
             </div>
@@ -516,36 +347,32 @@
 
 @section('javascript')
 
-    <script type=" text/javascript">
-        $(document).ready(function() {
-            $('.add-column-btn').click(function(e) {
-                e.preventDefault();
-                let invoiceitemid = $(this).data('invoiceitemid');
-                console.log(invoiceitemid);
-                $('input[name="item_id"]').val(invoiceitemid);
-                $('#add_item_column_modal').modal('show');
-            });
-
-            $('.add-pricing-column-btn').click(function(e) {
-                e.preventDefault();
-                let invoiceid = $(this).data('invoiceid');
-                $('input[name="invoice_id"]').val(invoiceid);
-                $('#add_pricing_column_modal').modal('show');
-            });
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.add-column-btn').click(function(e) {
+            e.preventDefault();
+            let invoiceitemid = $(this).data('invoiceitemid');
+            console.log(invoiceitemid);
+            $('input[name="item_id"]').val(invoiceitemid);
+            $('#add_item_column_modal').modal('show');
         });
 
-        $(document).ready(function() {
-            $('#multiple-checkboxes').multiselect({
-                includeSelectAllOption: true,
-            });
+        $('.add-pricing-column-btn').click(function(e) {
+            e.preventDefault();
+            let invoiceid = $(this).data('invoiceid');
+            $('input[name="invoice_id"]').val(invoiceid);
+            $('#add_pricing_column_modal').modal('show');
         });
-    </script>
+    });
 
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"
-        defer></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+    $(document).ready(function() {
+        $('#multiple-checkboxes').multiselect({
+            includeSelectAllOption: true,
+        });
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 @endsection

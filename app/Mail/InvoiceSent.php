@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Invoice;
+use App\Models\Store;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -52,10 +53,19 @@ class InvoiceSent extends Mailable
      */
     public function content()
     {
-        return new Content(
-            markdown: 'emails.invoice.sent',
-        );
+        $store = Store::find($this->invoice->store_id);
+        if (!$store) {
+            throw new \Exception('Store not found');
+        }
+    
+        return (new Content(
+            markdown: 'emails.invoice.sent'
+        ))->with([
+            'store' => $store,
+            'store_logo' => $store->store_logo
+        ]);
     }
+    
 
     /**
      * Get the attachments for the message.

@@ -19,6 +19,7 @@
 
     @livewireStyles
     @vite('resources/css/app.css')
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     {{-- Lord Icon --}}
     <script src="https://cdn.lordicon.com/lordicon.js"></script>

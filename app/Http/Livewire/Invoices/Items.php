@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Invoices;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
+use App\Models\Product;
 use Livewire\Component;
 use function PHPUnit\Framework\isNull;
 
@@ -15,9 +16,10 @@ class Items extends Component
     public function deleteInvoiceItem($id)
     {
         // Find and delete Invoice Item
-        $invoiceItem = InvoiceItem::find($id);
-        $invoiceItem->deleteQuietly();
-        unset($this->invoiceItems[$id]);
+        if ($invoiceItem = InvoiceItem::find($id)) {
+            $invoiceItem->deleteQuietly();
+            unset($this->invoiceItems[$id]);
+        }
 
         // Recalculate invoice subtotal here whenever an item is deleted
         $this->invoice->calculateSubtotal();
@@ -48,12 +50,31 @@ class Items extends Component
         }
 
         $invoiceItemMeta->update(['value' => $value]);
-        $this->invoice->calculateSubtotal();
     }
 
     public function addItem($ids)
     {
-        dd($ids);
+        if (!empty($ids)) {
+            foreach (Product::whereIn('id', $ids)->get() as $product) {
+                if ($meta_array = $product->meta->toArray()) {
+                    $item = InvoiceItem::create(['invoice_id' => $this->invoice->id, 'product_id' => $product->id]);
+
+                    foreach ($meta_array as $meta) {
+                        $item->meta()->create($meta);
+                    }
+                }
+            }
+        }
+
+        $this->getInvoiceItems();
+        $this->dispatchBrowserEvent('closeModal');
+
+        return redirect(request()->header('Referer'))->with('success', 'TEST.');
+    }
+
+    public function refresh()
+    {
+
     }
 
     public function mount()
