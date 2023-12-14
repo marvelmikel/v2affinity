@@ -13,7 +13,7 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public $invoice, $subtotal, $formula, $invoiceItems, $products, $companyId;
+    public $invoice, $subtotal, $formula, $invoiceItems, $products, $companyId, $discountPricing, $discount_id;
     public $pricings = [];
     public $pricing_item = [
         'name' => '',
@@ -22,7 +22,7 @@ class Edit extends Component
         'visibility' => 'visible',
     ];
 
-    public function deleteInvoiceItem($id)
+    public function deleteInvoiceItem($id, $value, $type)
     {
         // Find and delete Invoice Item
         if ($invoiceItem = InvoiceItem::find($id)) {
@@ -31,7 +31,8 @@ class Edit extends Component
         }
 
         // Recalculate invoice subtotal here whenever an item is deleted
-        $this->updateSubtotal();
+        $this->updatePricing($this->discountPricing->id, $value, $type);
+        $this->getSubtotal();
     }
 
     public function calculateAllowance($invoiceItem, $addAllowance)
@@ -44,7 +45,7 @@ class Edit extends Component
         }
     }
 
-    public function updateInvoiceItem($id, $key, $meta, $checkbox = null)
+    public function updateInvoiceItem($id, $key, $meta, $checkbox = null, $value = null)
     {
         $invoiceItem = InvoiceItem::find($id);
         $invoiceItemMeta = InvoiceItemMeta::find($meta);
@@ -52,14 +53,12 @@ class Edit extends Component
         if ($invoiceItemMeta->name == 'add_allowance') {
             $value = $checkbox;
             $this->calculateAllowance($invoiceItem, $checkbox);
-        } else if ($this->invoiceItems[$id]['meta'][$key]['value'] == '') {
+        } else if ($value == '') {
             $value = 0;
-        } else {
-            $value = $this->invoiceItems[$id]['meta'][$key]['value'];
         }
 
         $invoiceItemMeta->update(['value' => $value]);
-        $this->updateSubtotal();
+        $this->getSubtotal();
     }
 
     public function addItem($ids)
@@ -93,20 +92,21 @@ class Edit extends Component
         );
     }
 
-    public function updatePricing($id, $amount)
+    public function updatePricing($id, $amount, $type)
     {
         $invoicePricing = InvoicePricing::findOrFail($id);
+        $this->getSubtotal();
+        $this->getDiscountPricing();
 
         // Update pricing model
-        if ($invoicePricing->name == 'discount' && in_array($amount, ['percentage', 'value'])) {
-            $invoicePricing->update(['type' => $amount]);
-        } else if ($amount) {
-            $invoicePricing->update(['value' => $amount]);
+        if ($amount) {
+            $invoicePricing->update(['value' => $amount, 'type' => $type]);
         } else {
-            $invoicePricing->update(['value' => 0]);
+            $invoicePricing->update(['value' => 0, 'type' => $type]);
         }
 
-        $this->updateSubtotal();
+        $this->getSubtotal();
+        $this->getPricings();
     }
 
     public function updateFormula($id)
@@ -119,61 +119,6 @@ class Edit extends Component
         }
     }
 
-    public function updateSubtotal()
-    {
-        $invoice = $this->invoice;
-        $meta = $invoice->pricings->where('name', '!=', 'formular')->toArray();
-
-        // Calculate tax and discount
-        if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
-            $subtotalCol = $invoice->getPricing('subtotal');
-            $taxCol = $invoice->getPricing('tax');
-            $discountCol = $invoice->getPricing('discount');
-
-            $subtotal = $subtotalCol->identifier;
-
-            if ($taxCol->type == 'percentage') {
-                $tax = "($subtotal*(0.01*$taxCol->identifier))";
-            } else {
-                $tax = $taxCol->identifier;
-            }
-
-            if ($discountCol->type == 'percentage') {
-                $discount = "($subtotal+$tax)*(0.01*$discountCol->identifier)";
-            } else {
-                $discount = $discountCol->identifier;
-            }
-            $formular = "($subtotal+$tax)-($discount)";
-
-             //check pricing that should be added to formular - 
-             foreach ($meta as $met) {
-                if( isset($met[3]) && $met[3]  != null){
-                 $formular =  $formular  .$met[3] . '(' . $met[2] . ')';
-                 //dd($formular);
-                }
-             }
-            
-
-            $invoice->pricings()->updateOrCreate(
-                [
-                    'name' => 'formular'
-                ],
-                [
-                    'name' => 'formular',
-                    'value' => "$formular"
-                ]
-            );
-        }
-
-        $this->invoice->calculateSubtotal();
-
-        $subtotal = $this->pricings->firstWhere('name', 'subtotal');
-
-        $this->pricings = $this->pricings->replaceRecursive([
-            $subtotal['id'] => ['value' => $this->invoice->calculateSubtotal()]
-        ]);
-    }
-
     public function addPricingColumn($name, $value, $operation, $visibility)
     {
         if (!empty($name) && !empty($value) && !empty($operation) && !empty($visibility)) {
@@ -182,6 +127,7 @@ class Edit extends Component
                 'value' => $value,
                 'operation' => $operation,
                 'visibility' => $visibility,
+                'type' => 'value',
             ]);
 
             $formulaPricing = $this->invoice->getPricing('formular');
@@ -196,6 +142,7 @@ class Edit extends Component
     public function getPricings()
     {
         // Create an array of pricings from the invoice model
+        $this->pricings = [];
         $this->pricings = collect($this->invoice->pricings
             ->where('name', '!=', 'formular')
             ->groupBy('id')
@@ -209,7 +156,7 @@ class Edit extends Component
     public function getSubtotal()
     {
         // Set subtotal amount
-        $this->subtotal = $this->pricings->where('name', 'subtotal')->first()['value'];
+        $this->subtotal = $this->invoice->calculateSubtotal();;
     }
 
     public function getFormula()
@@ -224,13 +171,20 @@ class Edit extends Component
         $invoiceController->savePricing($this->pricings, $this->invoice->id);
     }
 
+    public function getDiscountPricing()
+    {
+        $this->discountPricing = $this->invoice->getPricing('discount');
+    }
+
     public function mount()
     {
         $this->getPricings();
         $this->getSubtotal();
         $this->getFormula();
         $this->getInvoiceItems();
+        $this->getDiscountPricing();
         $this->companyId = auth()->user()->company_id;
+        $this->discount_id = $this->invoice->getPricing('discount')->id;
     }
 
     public function render()

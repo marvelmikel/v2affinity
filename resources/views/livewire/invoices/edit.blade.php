@@ -11,13 +11,13 @@
 
         <div class="card" style="max-height: 540px; display: block; overflow-x: auto; overflow-y: scroll; white-space: nowrap">
             @foreach($this->invoiceItems as $invoiceItem)
-                <div wire:key="{{ $loop->index }}_{{ $invoiceItem['id'] }}">
+                <div wire:key="item_{{ $loop->index }}_{{ $invoiceItem['id'] }}">
                     <table class="table" style="width:100%; margin: 40px 0;">
                         <tbody>
                         <tr class="invoice-item-meta" style="overflow: scroll;">
                             @foreach ($invoiceItem['meta'] as $key => $meta)
                                 @if($meta['name'] != 'formular')
-                                    <td wire:key="meta_{{ $key }}" style="min-width: 200px;" class="{{ $meta['visibility'] }}">
+                                    <td wire:key="meta_{{ $key }}_{{ $loop->index }}" style="min-width: 200px;" class="{{ $meta['visibility'] }}">
                                         <input disabled readonly class="form-control  {{ $meta['visibility'] }} " type="text" name="{{ $meta['name'] }}[]" value="{{ $meta['title'] }}" required>
                                         @switch($meta['type'])
                                             @case('formular')
@@ -25,11 +25,11 @@
                                                 <input disabled readonly style="background-color: white;" class="form-control  {{ $meta['visibility'] }}" type="hidden" name="{{ $meta['name'] }}[]" value="{{ $meta['identifier'] }}" required>
                                                 @break
                                             @case('checkbox')
-                                                <input wire:ignore onclick="updateInvoiceItemScript({{ $invoiceItem['id'] }}, {{ $key }}, {{ $meta['id'] }})" id="checkbox_{{ $key }}_{{ $meta['id'] }}" name="checkbox_{{ $key }}" type="checkbox" value="1" @if($meta['value']) checked @endif />
+                                                <input wire:ignore onclick="updateInvoiceItemScript({{ $invoiceItem['id'] }}, {{ $key }}, {{ $meta['id'] }}, true)" id="checkbox_{{ $key }}_{{ $meta['id'] }}" name="checkbox_{{ $key }}" type="checkbox" value="1" @if($meta['value']) checked @endif />
                                                 <input readonly style="background-color: white" class="form-control {{ $meta['visibility'] }}" type="hidden" name="{{ $meta['name'] }}[]" value="{{ $meta['identifier'] }}" required>
                                                 @break
                                             @default()
-                                                <input wire:keyup="updateInvoiceItem('{{ $invoiceItem['id'] }}', '{{ $key }}', '{{ $meta['id'] }}')" wire:model="invoiceItems.{{ $invoiceItem['id'] }}.meta.{{ $key }}.value" value="{{ $meta['value'] }}" name="{{ $meta['name'] }}_{{ $meta['id'] }}" style="background-color: white" class="form-control evaluated-input {{ $meta['visibility'] }}" type="{{ $meta['type'] }}" {{ $meta['visibility'] }} required>
+                                                <input wire:ignore onkeyup="updateInvoiceItemScript({{ $invoiceItem['id'] }}, {{ $key }}, {{ $meta['id'] }}, false)" id="item_{{ $key }}_{{ $meta['id'] }}" value="{{ $meta['value'] }}" name="{{ $meta['name'] }}_{{ $meta['id'] }}" style="background-color: white" class="form-control evaluated-input {{ $meta['visibility'] }}" type="{{ $meta['type'] }}" {{ $meta['visibility'] }} required>
                                                 <input readonly style="background-color: white" class="form-control {{ $meta['visibility'] }}" type="hidden" name="{{ $meta['name'] }}[]" value="{{ $meta['identifier'] }}" required>
                                                 @break
                                         @endswitch
@@ -50,8 +50,10 @@
                             </td>
 
                             <td colspanss="3">
-                                <a class="btn btn-sm btn-danger" wire:click.prevent="deleteInvoiceItem('{{ $invoiceItem['id'] }}')"><i class="voyager-trash"></i></a>
+                                <a class="btn btn-sm btn-danger" onclick="deleteInvoiceItemScript('{{ $invoiceItem['id'] }}')"><i class="voyager-trash"></i></a>
                             </td>
+
+                            
                         </tr>
                         </tbody>
                     </table>
@@ -107,16 +109,16 @@
     </div>
 
     @foreach($pricings as $key => $pricing)
-        <div class="flex">
+        <div wire:key="pricing_{{ $key }}" class="flex">
             @if($pricing['name'] != 'subtotal')
                 <div style="width: 45%; padding: 8px">
                     <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
                 </div>
                 <div style="width: 20%; padding: 8px">
-                    <input wire:ignore onkeyup="updatePricing({{ $key }}, 'pricing_')" id="pricing_{{ $key }}" class="form-control" type="number" max="100" min="0" step="any" value="{{ (in_array($pricing['name'], ['tax', 'discount']) && $this->subtotal && $pricing['type'] == 'percentage' ? round(($pricing['value'] / $this->subtotal) * 100) : $pricing['value']) }}" placeholder="{{ ucfirst($pricing['name']) }} %">
+                    <input @if($pricing['name'] == 'tax') disabled @endif wire:ignore onkeyup="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" type="number" max="100" min="0" step="any" value="{{ $pricing['value'] }}" placeholder="{{ ucfirst($pricing['name']) }} %">
                 </div>
                 <div style="width: 15%; padding: 8px">
-                    <select wire:ignore onchange="updatePricing({{ $key }}, 'select_')" id="select_{{ $key }}" class="form-control" @if(in_array($pricing['name'], ['subtotal', 'tax'])) disabled @endif>
+                    <select @if($pricing['name'] != 'discount') disabled @endif wire:ignore onchange="updatePricingScript({{ $key }})" id="select_{{ $key }}" class="form-control" @if(in_array($pricing['name'], ['subtotal', 'tax'])) disabled @endif>
                         <option selected value="{{ $pricing['type'] }}">{{ $pricing['type'] }}</option>
                         <option value="percentage">%</option>
                         <option value="value">value(£)</option>
@@ -130,10 +132,10 @@
                     <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
                 </div>
                 <div style="width: 20%; padding: 8px">
-                    <input wire:model="pricings.{{ $key }}.value" readonly class="form-control" type="text">
+                    <input wire:model="subtotal" readonly class="form-control" type="text">
                 </div>
                 <div style="width: 15%; padding: 8px">
-                    <select wire:ignore onchange="updatePricing({{ $key }})" id="pricing_{{ $key }}" class="form-control" @if(in_array($pricing['name'], ['subtotal', 'tax'])) disabled @endif>
+                    <select wire:ignore onchange="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" disabled>
                         <option value="{{ $pricing['type'] }}">{{ $pricing['type'] }}</option>
                         <option value="percentage">%</option>
                         <option value="value">value(£)</option>
@@ -175,7 +177,7 @@
                 <input readonly style="background-color: white; color: green; font-weight: bold" class="form-control" type="text" value="Updating...">
             </div>
             <div wire:loading.remove>
-                <input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($invoice->total, 2) }}">
+                <input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format($invoice->getTotalAttribute(), 2) }}">
             </div>
         </div>
     </div>
@@ -246,12 +248,18 @@
     </div>
 
     <script>
-        function updatePricing(id, type) {
-            @this.updatePricing(id, $('#' + type + id).val());
+        function updatePricingScript(id, amount, type) {
+            @this.updatePricing(id, $('#pricing_' + id).val(), $('#select_' + id).val());
         }
 
-        function updateInvoiceItemScript(id, key, meta) {
-            @this.updateInvoiceItem(id, key, meta, $('#checkbox_' + key + '_' + meta).is(':checked'));
+        function updateInvoiceItemScript(id, key, meta, checkbox) {
+            if (checkbox) {
+                @this.updateInvoiceItem(id, key, meta, $('#checkbox_' + key + '_' + meta).is(':checked'), null);
+            } else {
+                @this.updateInvoiceItem(id, key, meta, null, $('#item_' + key + '_' + meta).val());
+            }
+
+            @this.updatePricing({{ $discountPricing->id }}, $('#pricing_' + {{ $discountPricing->id }}).val(), $('#select_' + {{ $discountPricing->id }}).val());
         }
 
         function addItemScript() {
@@ -260,6 +268,10 @@
 
         function addPricingItemScript() {
             @this.addPricingColumn($('#pricing_name').val(), $('#pricing_value').val(), $('#pricing_operation').val(), $('#pricing_visibility').val());
+        }
+
+        function deleteInvoiceItemScript(id) {
+            @this.deleteInvoiceItem(id, $('#pricing_' + {{ $discountPricing->id }}).val(), $('#select_' + {{ $discountPricing->id }}).val());
         }
 
         window.addEventListener('closeProductModal', event => {

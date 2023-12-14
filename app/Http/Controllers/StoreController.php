@@ -52,7 +52,7 @@ class StoreController extends Controller
             // Store the file in the 'public/store_logos' directory which is within 'storage/app/public'
             $path = $file->storeAs('store_logos', $filename);
            // Update the $filename variable to store the entire path, rather than just the filename
-        $filename = $path;
+           $filename = 'store_logos/' . $filename;
         }
     
         // Actually create the store

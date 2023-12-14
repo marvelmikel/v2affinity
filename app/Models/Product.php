@@ -56,13 +56,13 @@ class Product extends Model
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
-               
-               
+
+
                 $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'default_allowance', 'value' => 10, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
 
-              
+
 
 
                 if ($model->getMeta('unit_length') &&  $model->getMeta('unit_width')) {
@@ -118,7 +118,7 @@ class Product extends Model
                     ]);
 
 
-                   
+
                     $model->meta()->updateOrCreate(['name' => 'formular'], [
                         'name' => 'formular',
                         'title' => 'Formular',
@@ -154,12 +154,12 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-    
+
 
                 $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'default_allowance', 'value' => 10, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
-             
+
 
                 $model->meta()->updateOrCreate(['name' => 'tiles_per_pack'], [
                     'name' => 'tiles_per_pack',
