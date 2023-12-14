@@ -36,8 +36,13 @@
             <div class="flex flex-col flex-nowrap justify-around w-full md:basis-1/3">
                 <!-- Store Details -->
                 <div class="logo text-red-500 text-7xl font-Quicksand font-extrabold">
-                <img src="{{asset('images/logo-2.svg')}}" alt="Affinity" class="h-9">
+                    @if ($store->store_logo)
+                    <img src="{{ url($store->store_logo) }}" alt="Store Logo" class="h-9">
+                    @else
+                    <img src="{{ url('images/affinity-email-logo.png') }}" alt="Affinity" class="h-9">
+                    @endif
                 </div>
+
                 <div class="address text-xs">
                     <h6 class="font-bold">STORE: {{ $store->store_name}}</h6>
                     <p>{{ $store->address_line_1}}, {{ $store->address_line_2}}, {{ $store->address_city}}
@@ -135,7 +140,7 @@
                             {{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}
                         </td>
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
-                        {{ $item->packs_count ?? 'N/A' }}
+                            {{ $item->packs_count ?? 'N/A' }}
                         </td>
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ $item->item_total ?? 'N/A' }}
@@ -159,14 +164,14 @@
             @else
             <!-- Other pricing attributes-->
             <tbody>
-            <tr >
-        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-            {{ ucfirst($price->name) }} £:
-        </td>
-        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
-            {{ number_format($price->value, 2) }}
-        </td>
-    </tr>
+                <tr>
+                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                        {{ ucfirst($price->name) }} £:
+                    </td>
+                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                        {{ number_format($price->value, 2) }}
+                    </td>
+                </tr>
 
 
                 @endif

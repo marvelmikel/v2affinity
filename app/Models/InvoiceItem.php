@@ -46,7 +46,7 @@ class InvoiceItem extends Model
 
 	    static::deleting(function ($model) {
             $model->meta()->delete();
-	    });	    
+	    });
 	}
 
 }

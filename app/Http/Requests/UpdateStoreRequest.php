@@ -33,7 +33,6 @@ class UpdateStoreRequest extends FormRequest
         'address_postcode' => 'required',
         'address_line_1' => 'required',
         'address_line_2' => 'nullable',
-        'store_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust maximum file size as needed
         ];
     }
 }

@@ -50,9 +50,9 @@ class StoreController extends Controller
             $file = $request->file('store_logo');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             // Store the file in the 'public/store_logos' directory which is within 'storage/app/public'
-            $path = $file->storeAs('public/store_logos', $filename);
-            // Store only the filename, not the entire path
-            $filename = basename($path); // This will get the filename without any path
+            $path = $file->storeAs('store_logos', $filename);
+           // Update the $filename variable to store the entire path, rather than just the filename
+           $filename = 'store_logos/' . $filename;
         }
     
         // Actually create the store
@@ -79,41 +79,22 @@ class StoreController extends Controller
 
     /// Function to Update Store Information
     public function update(UpdateStoreRequest $request, $storeId)
-{
-    // Validate the input
-    $validatedData = $request->validated();
+    {
+        // Validate the input
+        $validatedData = $request->validated();
+        
+        // Find the store
+        $store = Store::findOrFail($storeId);
+        // Update the rest of the store details
+        $store->fill($validatedData);
+
+        // Save the updated store
+        $store->save();
+
+        // Redirect to the store edit page with a success message
+        return redirect()->route('voyager.stores.edit', ['id' => $store->id])->with('success', 'Store Information Updated successfully');
+    }
     
-    // Find the store
-    $store = Store::findOrFail($storeId);
-
-    // If a new store logo is supplied, update the logo
-    if ($request->hasFile('store_logo')) {
-        // Delete the old logo if it exists
-        $oldLogoPath = str_replace('storage/', '', $store->store_logo); // Assuming store_logo is saved as 'storage/store_logos/filename.ext'
-        if ($store->store_logo && Storage::disk('public')->exists($oldLogoPath)) {
-            Storage::disk('public')->delete($oldLogoPath);
-        }
-
-        // Store the new logo
-        $imageName = time() . '.' . $request->file('store_logo')->getClientOriginalExtension();
-        $request->file('store_logo')->storeAs('store_logos', $imageName, 'public');
-        $store->store_logo = 'store_logos/' . $imageName; // Saving the path relative to the 'storage/app/public' directory
-    }
-
-    // Update the rest of the store details
-    $store->fill($validatedData);
-
-    // Exclude the store_logo from the $validatedData array because it's already been handled
-    if (isset($validatedData['store_logo'])) {
-        unset($validatedData['store_logo']);
-    }
-
-    // Save the updated store
-    $store->save();
-
-    // Redirect to the store edit page with a success message
-    return redirect()->route('voyager.stores.edit', ['id' => $store->id])->with('success', 'Store Information Updated successfully');
-}
 
 
 

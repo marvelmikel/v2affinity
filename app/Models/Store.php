@@ -26,10 +26,20 @@ class Store extends Model
         'store_phone',
         'store_email',
         'store_logo',
+        'email_settings',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
+
+    public function emailSettings()
+    {
+        if ($this->email_settings) {
+            return json_decode($this->email_settings);
+        } else {
+            return false;
+        }
+    }
 
     public function company() {
         return $this->belongsTo(Company::class);

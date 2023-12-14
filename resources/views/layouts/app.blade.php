@@ -19,6 +19,8 @@
     {{-- Livewire Styles --}}
     @livewireStyles
 
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <!-- Google tag (gtag.js) -->
     @if(env('APP_ENV') !== 'local')
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVRF297EFW"></script>

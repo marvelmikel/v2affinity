@@ -51,11 +51,19 @@ class InvoiceController extends Controller
         $store = $storeModel::find($invoice->store_id);
 
         if (!$store) {
-            throw new \Exception('Store not found');
+            throw new \Exception(404, 'Store not found');
+            // Or use abort(404, 'Store not found') to return a 404 error response
+
+            // Alternatively, you can display a flash message and redirect back:
+            return redirect()->back()->with('error', 'Store not found');
         }
+
 
         // Fetch the company data here
         $company = Company::find($invoice->company_id);
+
+        // Fetch the store_logo URL here
+    $storeLogoUrl = $store->store_logo;
 
         $pdf = PDF::loadView('voyager::invoices.pdf', [
             'invoice' => $invoice,
@@ -63,7 +71,8 @@ class InvoiceController extends Controller
             'user' => auth()->user(),
             'count' => $invoice->items->count(),
             'store' => $store,
-            'company' => $company, // Pass the $company variable to the view
+            'company' => $company,
+            'storeLogoUrl' => $storeLogoUrl,
         ]);
 
         return $pdf->stream('invoice.pdf');
@@ -224,7 +233,9 @@ class InvoiceController extends Controller
         // cal this method when opening invoice or editing invoice
         $invoice->calculateSubtotal();
 
-        $total_amount = evaluate_formular($formular, 'InvoicePricing');
+        $total_amount = 0;
+
+//        $total_amount = evaluate_formular($formular, 'InvoicePricing');
 
         $products  = Product::where('company_id', $companyId)->get();
 
@@ -239,7 +250,7 @@ class InvoiceController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * 
+     *
      */
     public function update(Request $request,  $id)
     {
@@ -335,12 +346,12 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($invoiceId);
 
 
-       
+
         $invoiceItem->update($request->except(['_method', '_token']));
 
          $meta = $request->all();
 
-         
+
         foreach ($meta as $me) {
             if (isset($me[1])) { // Check if array key 1 is set
                 $value = !empty($me[0]) ? $me[0] : 0; // Set default value of 0 if $me[0] is empty
@@ -370,8 +381,8 @@ class InvoiceController extends Controller
          }
 
 
-        
-        
+
+
 
         // Recalculate invoice subtotal here whenever an item is saved
         $invoice->calculateSubtotal();
@@ -443,13 +454,16 @@ class InvoiceController extends Controller
                 $tax = $taxCol->identifier;
             }
 
-            if ($discountCol->type == 'percentage') {
-                $discount = "($subtotal+$tax)*(0.01*$discountCol->identifier)";
-            } else {
-                $discount = $discountCol->identifier;
-            }
-            $formular = "($subtotal+$tax)-($discount)";
+            $formular = "($subtotal+$tax)";
 
+            //check pricing that should be added to formular -
+
+            foreach ($meta as $met) {
+               if( isset($met[3]) && $met[3]  != null){
+                $formular =  $formular  .$met[3] . '(' . $met[2] . ')';
+                //dd($formular);
+               }
+            }
             $invoice->pricings()->updateOrCreate(
                 [
                     'name' => 'formular'
@@ -503,7 +517,9 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($id);
         $invoice->pricings()->create([
             'name' => $request->name,
-            'value' => $request->value
+            'value' => $request->value,
+            'operation' => $request->operation,
+            'visibility' => $request->visibility
         ]);
         return redirect()->back();
     }
@@ -527,7 +543,7 @@ class InvoiceController extends Controller
 
         $meta = [
             ['name' => 'subtotal', 'value' => 0, 'type' => 'value'],
-            ['name' => 'tax', 'value' => 0, 'type' => 'percentage'], // value, percentage, formular
+            ['name' => 'tax', 'value' => 20, 'type' => 'percentage'], // value, percentage, formular
             ['name' => 'discount', 'value' => 0, 'type' => 'percentage'], // value, percentage, formula
         ];
 
@@ -557,21 +573,16 @@ class InvoiceController extends Controller
             } else {
                 $discount = $discountCol->identifier;
             }
-            $formular = "($subtotal+$tax)-($discount)";
 
-            $invoice->pricings()->updateOrCreate(
-                [
+            if (!$invoice->getPricing('formular')) {
+                $invoice->pricings()->create([
                     'name' => 'formular',
-                    'value' => "$formular"
-                ],
-                [
-                    'name' => 'formular',
-                    'value' => "$formular"
-                ]
-            );
+                    'value' => "($subtotal+$tax)"
+                ]);
+            }
         }
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 
-    
+
 }

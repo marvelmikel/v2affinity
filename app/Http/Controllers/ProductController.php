@@ -138,7 +138,8 @@ class ProductController extends Controller
             'description' => $product->getMeta('description')->value,
         ]);
 
-        return redirect()->back();   
+        return redirect()->route('voyager.products.index');
+ 
     }
 
     /**

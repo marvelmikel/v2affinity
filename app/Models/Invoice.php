@@ -57,7 +57,19 @@ class Invoice extends Model
     public function getTotalAttribute(){
         $formulaCol = $this->getPricing('formular');
         $formular = $formulaCol->value;
-        return evaluate_formular($formular, 'InvoicePricing', modifier:$formulaCol->modifier );
+        $discount = $this->getPricing('discount');
+        $total = (evaluate_formular($formular, 'InvoicePricing', modifier: $formulaCol->modifier));
+
+        // Calculate discount
+        if ($discount->value > 0) {
+            if ($discount->type == 'percentage') {
+                $total = $total - ($total * ($discount->value / 100));
+            } else if ($discount->type == 'value') {
+                $total = $total - $discount->value;
+            }
+        }
+
+        return $total;
     }
 
     public function customer(){
@@ -74,7 +86,7 @@ class Invoice extends Model
 
 	    static::deleting(function ($model) {
             $model->items()->delete();
-	    });	    
+	    });
 	}
 }
 

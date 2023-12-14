@@ -13,20 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_schedules', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('invoice_pricings', function (Blueprint $table) {
+            $table->string('operation')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
      *
-     *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_schedules');
+        Schema::table('invoice_pricings', function (Blueprint $table) {
+            $table->dropColumn('operation');
+        });
     }
 };

@@ -22,9 +22,14 @@ class Registration extends Component
 
     public $load = false;
     public $step = 1;
-    public $discount_code_check = 'RTEUAV';
     public $client, $plans, $total, $show_discount, $discount_code;
     public $terms_accepted = false;
+
+    public $discount = [
+      'id' => '94m6',
+      'name' => 'RTEUAV',
+      'amount' => 25.00,
+    ];
 
     public $user = [
         'name' => '',
@@ -193,7 +198,6 @@ class Registration extends Component
         $this->step = 6;
     }
 
-
     public function register_nonce($nonce)
     {
         /* Build request array */
@@ -248,7 +252,7 @@ class Registration extends Component
         }
     }
 
-    public function calculate_total()
+    public function calculate_total($period)
     {
         if(!empty($this->selected_plan['plan_id'])){
             /* Set base total */
@@ -264,23 +268,24 @@ class Registration extends Component
                 foreach($addons as $add){
                     /* Add amount x quantity to total */
                     $this->total += $add['amount'] * $this->selected_plan['addons'][$add['id']]['quantity'];
-
                 }
+            }
+
+            /* Check for any discounts */
+            if ($this->discount_code == $this->discount['name'] && $period == 'month') {
+                $this->total -= $this->discount['amount'];
             }
         }
     }
 
     public function checkDiscount()
     {
-        if ($this->discount_code == $this->discount_code_check) {
-            /* Initialize braintree payment connection */
-            $gateway = $this->openGateway();
-
-            /* Find discounts */
-            $discounts = collect($gateway->discount()->all());
-
-            dd($discounts);
+        if ($this->discount_code == $this->discount['name']) {
+            /* Set discount IDs */
+            $this->selected_plan['discounts'][$this->discount['id']] = ['quantity' => 1];
         }
+
+        $this->calculate_total('month');
     }
 
     public function render()

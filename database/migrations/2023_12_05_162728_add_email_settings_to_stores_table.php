@@ -13,20 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_schedules', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('stores', function (Blueprint $table) {
+            $table->json('email_settings')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
      *
-     *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_schedules');
+        Schema::table('stores', function (Blueprint $table) {
+            $table->dropColumn('email_settings');
+        });
     }
 };
