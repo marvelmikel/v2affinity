@@ -50,7 +50,8 @@
                             </td>
 
                             <td colspanss="3">
-                                <a class="btn btn-sm btn-danger" onclick="deleteInvoiceItemScript('{{ $invoiceItem['id'] }}')"><i class="voyager-trash"></i></a>
+                                <button class="btn btn-sm btn-danger" onclick="deleteInvoiceItemScript('{{ $invoiceItem['id'] }}')"><i class="voyager-trash"></i></button>
+                                 <!-- <button class="btn btn-sm btn-success" onclick="" ><i class="voyager-plus"></i></button> -->
                             </td>
 
                             
@@ -61,6 +62,8 @@
             @endforeach
         </div>
 
+        
+
         <div wire:ignore class="modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -68,7 +71,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title"><i class="voyager-data"></i> Add Invoice Product</h4>
+                        <h4 class="modal-title"><i class="voyager-data"></i> Add Invoice </h4>
                     </div>
                     <div>
                         <div class="modal-body" style="overflow: scroll; min-height: 300px;">

@@ -22,6 +22,12 @@ class Edit extends Component
         'visibility' => 'visible',
     ];
 
+    public $invoiceId;
+    public $itemId;
+    public $title;
+    public $value;
+
+
     public function deleteInvoiceItem($id, $value, $type)
     {
         // Find and delete Invoice Item
@@ -151,6 +157,17 @@ class Edit extends Component
             })
             ->toArray()
         );
+    }
+
+    public function addItemMetaColumn(Request $request, $invoiceId)
+    {
+        $invoiceItem = InvoiceItem::find($request->item_id);
+        $invoiceItem->meta()->create([
+            'name' =>  strtolower(str_replace(' ', '_', $request->title)),
+            'title' => $request->title,
+            'value' => $request->value
+        ]);
+        return redirect()->back();
     }
 
     public function getSubtotal()

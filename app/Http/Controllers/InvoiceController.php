@@ -53,11 +53,11 @@ class InvoiceController extends Controller
         if (!$store) {
             throw new \Exception(404, 'Store not found');
             // Or use abort(404, 'Store not found') to return a 404 error response
-        
+
             // Alternatively, you can display a flash message and redirect back:
             return redirect()->back()->with('error', 'Store not found');
         }
-        
+
 
         // Fetch the company data here
         $company = Company::find($invoice->company_id);
@@ -71,7 +71,7 @@ class InvoiceController extends Controller
             'user' => auth()->user(),
             'count' => $invoice->items->count(),
             'store' => $store,
-            'company' => $company, 
+            'company' => $company,
             'storeLogoUrl' => $storeLogoUrl,
         ]);
 
@@ -577,7 +577,7 @@ class InvoiceController extends Controller
             if (!$invoice->getPricing('formular')) {
                 $invoice->pricings()->create([
                     'name' => 'formular',
-                    'value' => "($subtotal+$tax)-($discountCol->identifier)"
+                    'value' => "($subtotal+$tax)"
                 ]);
             }
         }
