@@ -15,6 +15,7 @@ class Edit extends Component
 {
     public $invoice, $subtotal, $formula, $invoiceItems, $products, $companyId, $discountPricing, $discount_id;
     public $pricings = [];
+    public $invoicePricing = [];
     public $pricing_item = [
         'name' => '',
         'value' => '',
@@ -27,6 +28,17 @@ class Edit extends Component
     public $title;
     public $value;
 
+    public function mount()
+    {
+        $this->getPricings();
+        $this->getSubtotal();
+        $this->getFormula();
+        $this->getInvoiceItems();
+        $this->getDiscountPricing();
+        $this->companyId = auth()->user()->company_id;
+        $this->discount_id = $this->invoice->getPricing('discount')->id;
+        
+    }
 
     public function deleteInvoiceItem($id, $value, $type)
     {
@@ -40,6 +52,25 @@ class Edit extends Component
         $this->updatePricing($this->discountPricing->id, $value, $type);
         $this->getSubtotal();
     }
+
+
+   
+    
+    public function deleteInvoicePricing($id, $value, $type)
+{
+    // Delete the InvoicePricing record
+    if ($invoicePricing = InvoicePricing::find($id)) {
+        $invoicePricing->delete();
+        unset($this->invoicePricing[$id]);
+    }
+
+    // Recalculate invoice subtotal here whenever an item is deleted
+    $this->updatePricing($this->discountPricing->id, $value, $type);
+    $this->getSubtotal();
+}
+
+    
+
 
     public function calculateAllowance($invoiceItem, $addAllowance)
     {
@@ -193,16 +224,7 @@ class Edit extends Component
         $this->discountPricing = $this->invoice->getPricing('discount');
     }
 
-    public function mount()
-    {
-        $this->getPricings();
-        $this->getSubtotal();
-        $this->getFormula();
-        $this->getInvoiceItems();
-        $this->getDiscountPricing();
-        $this->companyId = auth()->user()->company_id;
-        $this->discount_id = $this->invoice->getPricing('discount')->id;
-    }
+  
 
     public function render()
     {

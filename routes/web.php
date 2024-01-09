@@ -4,6 +4,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,10 @@ Route::get('/register', \App\Http\Livewire\Registration::class)->name('subscript
 Route::get('/dashboard', function () {
     return redirect('/admin');
 });
+
+// Contact form submissions
+Route::post('contact/form', [\App\Http\Controllers\ContactController::class, 'contactForm'])->name('contact.form');
+Route::post('contact/demo', [\App\Http\Controllers\ContactController::class, 'contactDemo'])->name('contact.demo');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
@@ -93,7 +98,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
         Route::get('/company/logs',   [CompanyController::class, 'show'])->name('voyager.company.logs');
         Route::post('/add-room-location', [CompanyController::class, 'addRoomLocation'])->name('addRoomLocation');
-        Route::delete('/room-locations/{roomLocation}', [CompanyController::class, 'deleteRoomLocation'])->name('room-locations.delete');
+        Route::get('/subscription/{subscription}/edit', [SubscriptionController::class, 'show'])->name('subscription-edit');
 
 
 

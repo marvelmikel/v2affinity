@@ -154,7 +154,7 @@
                     <div>
                         @csrf
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step 1</span>
-                        <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Company Admin Details</h2>
+                        <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Admin Details</h2>
                         <p class="font-medium lg:text-lg text-slate-500">Please enter your account registration details below.</p>
                     </div>
                     <div class="grid grid-cols-2 gap-6">
@@ -246,7 +246,11 @@
                             </fieldset>
                         </li>
                     </ul>
-                    <div class="flex justify-end">
+                   
+                    <div class="flex justify-between">
+                    <x-button @click="$wire.set('step', 1)" format="wire" type="button" class="text-lg rounded-full">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Previous
+                        </x-button>
                         <x-button type="submit" class="text-lg rounded-full">
                             Next <i class="fa-regular fa-arrow-right ml-1"></i>
                         </x-button>
@@ -361,8 +365,11 @@
                                         </p>
                                         <p class="col-span-8 lg:col-span-2 flex items-center gap-2">
                                             <label for="addons[{{ $addon['id'] }}][quantity]" class="text-slate-600 font-semibold">Qty:</label>
-                                            <input oninput="this.value = Math.abs(this.value)" wire:model="selected_plan.addons.{{ $addon['id'] }}.quantity" wire:change="calculate_total('{{ $period }}')" type="number" min="0" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"  class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
+                                            <input  oninput="this.value = Math.abs(this.value); this.dispatchEvent(new Event('change'));" wire:model="selected_plan.addons.{{ $addon['id'] }}.quantity" type="number" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]" class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
+
+                        
                                         </p>
+                                      
                                         <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
                                             @if(!empty($selected_plan['addons'][$addon['id']]) && !empty($selected_plan['addons'][$addon['id']]['quantity']))
                                                 £{{ number_format($addon['amount'] * $selected_plan['addons'][$addon['id']]['quantity'], 2) }}
@@ -571,6 +578,8 @@
                                 });
                             });
                         });
+
+                      
                     </script>
                 </div>
                 @break

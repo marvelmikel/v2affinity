@@ -81,6 +81,9 @@ public function employee()
     return $this->belongsTo(Employee::class);
 }
 
+public function subscriptions() {
+    return $this->hasMany(Subscription::class, 'company_id', 'company_id');
+}
 
     
 }

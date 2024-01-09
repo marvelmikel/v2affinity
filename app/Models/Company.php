@@ -55,12 +55,12 @@ class Company extends Model
         parent::boot();
 
         static::created(function ($model) {
-            // create defualt products here for the company
+            // create default products here for the company
             Product::create([
                 'company_id' => $model->id,
                 'user_id' => auth()->user()->id,
-                'title' => 'Defualt Roll End',
-                'description' => 'Defualt Roll End Product',
+                'title' => 'Default Roll End',
+                'description' => 'default Roll End Product',
                 'type' => 'rollend',
             ]);
 
@@ -68,9 +68,24 @@ class Company extends Model
             Product::create([
                 'company_id' => $model->id,
                 'user_id' => auth()->user()->id,
-                'title' => 'Defualt Underlay',
-                'description' => 'Defualt Underlay Product',
+                'title' => 'Default Underlay',
+                'description' => 'default Underlay Product',
                 'type' => 'underlay',
+            ]);
+
+            Store::create([
+                'company_id' => $model->id,
+                'store_name' => $model->company_name,
+                'next_invoice_number' =>'63752504',
+                'address_line_1' => $model->company_address,
+                'address_line_2' => $model->company_address,
+                'address_city' => $model->company_address,
+                'address_county' => 'United Kingdom',
+                'address_postcode' => 'DE1 1AA',
+                'store_email' => $model->company_email,
+                'store_phone' => $model->company_phone,
+                'store_logo' => $model->logo,
+        
             ]);
 
         });
@@ -79,5 +94,10 @@ class Company extends Model
             $model->meta()->delete();
         });
     }
+
+    public function subscription()
+{
+    return $this->hasOne(Subscription::class);
+}
 
 }

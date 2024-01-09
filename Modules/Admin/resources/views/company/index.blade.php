@@ -80,9 +80,18 @@
 
     @else
 
+
+    <!-- Company Subscription Info -->
+    <div class="card">
+        @livewire('subscriptions')
+    </div>
+    <!-- End Company Subscription Info -->
+
+    <br><br>
+
     <!-- Company Information Details View -->
 
-    <h1 class="page-title">
+    <h1 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">
         <i class="voyager-company"></i>
         Company Information
     </h1>
@@ -125,10 +134,10 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <label for="terms_conditions" style="font-weight:bolder;">
-                        <h1>Terms & Conditions</h1>
+                        <h3>Terms & Conditions</h3>
                     </label>
-                    <textarea name="terms_conditions" id="terms_conditions" class="form-control richTextBox" style="font-size:20px;" required>{{ $companyData['terms_conditions'] }}</textarea>
-                </div>
+                    <input type="hidden" name="terms_conditions" id="terms_conditions" class="form-control richTextBox" style="font-size:20px;" value="{{ $companyData['terms_conditions'] }}">
+                    <trix-editor input="terms_conditions" class="trix-content"></trix-editor>
 
             </div>
         </div>
@@ -136,104 +145,17 @@
         <button type="submit" class="btn btn-primary">Update Information</button>
 
     </form>
-    <br><br>
-
-<!-- Room Locations-->
-<div class="card" style="width:50%;">
-    <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
-        <h3><i class="voyager-location"></i> {{ __('Room Locations') }}</h3>
-    </div>
-    <div class="clear"></div>
-    <br>
-    <div class="" style="max-height: 500px; overflow-y: auto;">
-
-        <table class="table " style="margin: 40px 0;">
-            <thead>
-                <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Room Name</th>
-                    <th>Actions  <a href="#" style='margin-right:2px; text-decoration: none;' class='btn btn-success btn-xs' data-toggle="modal" data-target="#add_item_column_modal">
-            <i class="voyager-plus"></i>
-        </a></th>
-                </tr>
-            </thead>
-            <tbody>
-          
-
-    @foreach ($roomLocations as $roomLocation)
-    <tr>
-    <td style="width:100%;">
-        <input readonly class="form-control" type="text" name="room" value="{{ $roomLocation->room_name }}">
-    </td>
-    <td colspan="3" style="width:1%;">
-       
-       <form action="{{ route('room-locations.delete', ['roomLocation' => $roomLocation]) }}" method="POST">
-           @csrf
-           @method('DELETE')
-           <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
-               <i class="voyager-trash"></i>
-           </button>
-       </form>
-   </td>
-</tr>
-    @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
 
 
-     <!-- Add Room Location Name column modal -->
-<div class="modal fade" tabindex="-1" id="add_item_column_modal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="voyager-location"></i> Add New Room Location</h4>
-            </div>
-            <form action="{{ route('addRoomLocation') }}" method="post">
-                @csrf()
-                <div class="modal-body" style="overflow:scroll">
-                    <div>
-                        <label for=""> Room Location Name </label>
-                        <input name="room_name" type="text" class="form-control"></input>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                    <button type="submit" class="btn btn-primary pull-right">{{ __('voyager::generic.save') }}</button>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-   <!-- End of  Company Information Details View  -->
+    <!-- End of  Company Information Details View  -->
     @endif
 
 </div>
 <!-- .page-content container-fluid -->
 @stop
-<!-- Include the Froala Editor JS and CSS files -->
-<script src="https://cdn.jsdelivr.net/npm/froala-editor@3.2.6"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@3.2.6/css/froala_editor.pkgd.min.css">
-
-<!-- Initialize the Froala Editor on the textarea -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        new FroalaEditor('#terms_conditions');
-    });
-
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const addColumnLink = document.getElementById('add_column_link');
-        const modal = new bootstrap.Modal(document.getElementById('add_item_column_modal'));
-
-        addColumnLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            modal.show();
-        });
-    });
-</script>
+<!-- Trix Editor -->
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+  <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 
 @section('javascript')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}

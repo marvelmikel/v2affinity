@@ -6,6 +6,8 @@ use App\Http\Requests\StoreSubscriptionRequest;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\Company;
+use App\Models\Store;
 use App\Traits\PaymentGateway;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -22,13 +24,14 @@ class Registration extends Component
 
     public $load = false;
     public $step = 1;
-    public $client, $plans, $total, $show_discount, $discount_code;
+    public $store;
+    public $client, $plans, $total, $show_discount, $discount_code; 
     public $terms_accepted = false;
 
     public $discount = [
-      'id' => '94m6',
-      'name' => 'RTEUAV',
-      'amount' => 25.00,
+        'id' => '94m6',
+        'name' => 'RTEUAV',
+        'amount' => 25.00,
     ];
 
     public $user = [
@@ -52,6 +55,7 @@ class Registration extends Component
     public $selected_plan = [
         'plan_id' => '',
         'addons' => [],
+
         'discounts' => [],
     ];
 
@@ -91,11 +95,12 @@ class Registration extends Component
         $this->plans = Plan::orderBy('billingFrequency')->get()->keyBy('id')->toArray();
 
         /* Convert plan JSON to arrays */
-        foreach($this->plans as $key => $item){
-            $this->plans[$key]['addOns'] = json_decode($this->plans[$key]['addOns'],true);
-            $this->plans[$key]['discounts'] = json_decode($this->plans[$key]['discounts'],true);
+        foreach ($this->plans as $key => $item) {
+            $this->plans[$key]['addOns'] = json_decode($this->plans[$key]['addOns'], true);
+            $this->plans[$key]['discounts'] = json_decode($this->plans[$key]['discounts'], true);
         }
     }
+
 
     /* Register new user */
     public function register_user()
@@ -127,7 +132,7 @@ class Registration extends Component
         auth()->login($user);
 
         /* Clear user details */
-        $this->reset('user');
+        // $this->reset('user');
 
         /* Move to step 2 */
         $this->step = 2;
@@ -159,6 +164,13 @@ class Registration extends Component
         ], $this->company);
 
         $user->update(['company_id' => $company->id]);
+
+        $store = Store::where('company_id', $company->id)->firstOrFail(); // Assuming you have a Store model
+
+    /* Save store_id on the users table */
+    $user->store_id = $store->id;
+    $user->save();
+
 
         /* Move to step 3 */
         $this->step = 3;
@@ -194,6 +206,20 @@ class Registration extends Component
         /* Turn off loader */
         $this->load = false;
 
+
+    /* Check for any addons */
+    if (!empty($this->selected_plan['addons'])) {
+        foreach ($this->selected_plan['addons'] as $addonId => $addon) {
+            /* Set default addon quantity to 3 if it's zero or empty */
+            if (empty($addon['quantity'])) {
+                $this->selected_plan['addons'][$addonId]['quantity'] = 1;
+            } else {
+                /* Add the increased quantity to the default 3 value */
+                $this->selected_plan['addons'][$addonId]['quantity'] += 1;
+            }
+        }
+    }
+
         /* Move to step 6*/
         $this->step = 6;
     }
@@ -228,7 +254,7 @@ class Registration extends Component
         $response = $this->createSubscription($request);
 
         /* If status success */
-        if ($response->success){
+        if ($response->success) {
             /* Link payment details */
             $this->updateBillingAddress($response->subscription->paymentMethodToken, $this->billing);
 
@@ -241,31 +267,39 @@ class Registration extends Component
             $user->role_id = 2;
             $user->save();
 
+            // Save company_id on the subscription
+            $subscription = Subscription::find($response->subscription->id);
+            $company = auth()->user()->company;
+            $subscription->company_id = $company->id;
+            $subscription->save();
+
             /* Flash message and redirect to dashboard */
             session()->flash('alert-success', 'Subscription Created.');
             return redirect()->route('voyager.profile');
         } else {
             /* Flash errors */
-            foreach($response->errors->deepAll() AS $error) {
-                session()->flash('alert-warning', $error->code.': '.$error->message);
+            foreach ($response->errors->deepAll() as $error) {
+                session()->flash('alert-warning', $error->code . ': ' . $error->message);
             }
         }
+      
     }
+   
 
     public function calculate_total($period)
     {
-        if(!empty($this->selected_plan['plan_id'])){
+        if (!empty($this->selected_plan['plan_id'])) {
             /* Set base total */
-            $this->total = $this->plans[ $this->selected_plan['plan_id'] ]['price'];
+            $this->total = $this->plans[$this->selected_plan['plan_id']]['price'];
 
             /* Check for any addons */
-            if(!empty($this->selected_plan['addons'])){
+            if (!empty($this->selected_plan['addons'])) {
 
                 /* Filter selected addons */
-                $addons = array_filter( $this->plans[ $this->selected_plan['plan_id'] ]['addOns'], fn($v) => in_array($v['id'], array_keys($this->selected_plan['addons'])) );
+                $addons = array_filter($this->plans[$this->selected_plan['plan_id']]['addOns'], fn ($v) => in_array($v['id'], array_keys($this->selected_plan['addons'])));
 
                 /* Loop selected addons*/
-                foreach($addons as $add){
+                foreach ($addons as $add) {
                     /* Add amount x quantity to total */
                     $this->total += $add['amount'] * $this->selected_plan['addons'][$add['id']]['quantity'];
                 }
@@ -277,6 +311,8 @@ class Registration extends Component
             }
         }
     }
+
+    
 
     public function checkDiscount()
     {

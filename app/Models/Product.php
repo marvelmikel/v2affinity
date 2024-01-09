@@ -79,7 +79,7 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'location'], [
                         'name' => 'location',
-                        'title' => 'Type in Room Location',
+                        'title' => 'Input Room Location',
                         'value' => '',
                         'type' => 'Text',
                         'visibility' => 'visible'
@@ -171,7 +171,7 @@ class Product extends Model
 
                 $model->meta()->updateOrCreate(['name' => 'location'], [
                     'name' => 'location',
-                    'title' => 'Type in Room Location',
+                    'title' => 'Input Room Location',
                     'value' => '',
                     'type' => 'Text',
                     'visibility' => 'visible'

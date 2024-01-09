@@ -49,6 +49,26 @@
                             My Account
                         </a>
                     </li>
+                    <li>
+                    <li>
+                        
+                        <!-- <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                             <a href="" class="block border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5">
+                            Log Out
+                        </a>
+                            </form> -->
+                    </li>
+                    <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link class="block border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5" :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit(); ">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </li>
                 @else
                     <li>
                         <a href="{{ route('voyager.login') }}" class="block border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5">

@@ -200,7 +200,7 @@
             </div>
 
         </div>
- <h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>
+ <h3><i class="voyager-list"></i> Invoice Items</h3>
 
         <div>
             <livewire:invoices.edit :wire:key="'pricing' . $invoice->id" :invoice="$invoice" :products="$products" />

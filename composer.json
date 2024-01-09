@@ -9,7 +9,7 @@
         "ext-json": "*",
         "arrilot/laravel-widgets": "^3.7",
         "barryvdh/laravel-dompdf": "^2.0",
-        "braintree/braintree_php": "^6.13",
+        "braintree/braintree_php": "^6.15",
         "doctrine/dbal": "^2.5|^3.1",
         "guzzlehttp/guzzle": "^7.2",
         "haruncpi/laravel-user-activity": "^1.0",

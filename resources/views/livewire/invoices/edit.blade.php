@@ -25,7 +25,7 @@
                                                 <input disabled readonly style="background-color: white;" class="form-control  {{ $meta['visibility'] }}" type="hidden" name="{{ $meta['name'] }}[]" value="{{ $meta['identifier'] }}" required>
                                                 @break
                                             @case('checkbox')
-                                                <input wire:ignore onclick="updateInvoiceItemScript({{ $invoiceItem['id'] }}, {{ $key }}, {{ $meta['id'] }}, true)" id="checkbox_{{ $key }}_{{ $meta['id'] }}" name="checkbox_{{ $key }}" type="checkbox" value="1" @if($meta['value']) checked @endif />
+                                                <input wire:ignore onclick="updateInvoiceItemScript({{ $invoiceItem['id'] }}, {{ $key }}, {{ $meta['id'] }}, true)" id="checkbox_{{ $key }}_{{ $meta['id'] }}" name="checkbox_{{ $key }}" style="margin-left:50%" type="checkbox" value="1" @if($meta['value']) checked @endif />
                                                 <input readonly style="background-color: white" class="form-control {{ $meta['visibility'] }}" type="hidden" name="{{ $meta['name'] }}[]" value="{{ $meta['identifier'] }}" required>
                                                 @break
                                             @default()
@@ -106,9 +106,9 @@
         <div style="width: 15%; padding: 8px">
             Type
         </div>
-        <div style="width: 20%; padding: 8px">
+        <!-- <div style="width: 20%; padding: 8px">
             Identifier
-        </div>
+        </div> -->
     </div>
 
     @foreach($pricings as $key => $pricing)
@@ -127,9 +127,9 @@
                         <option value="value">value(£)</option>
                     </select>
                 </div>
-                <div style="width: 20%; padding: 8px">
+                <!-- <div style="width: 20%; padding: 8px">
                     <input wire:model="pricings.{{ $key }}.identifier" readonly style="background-color: white;" class="form-control" type="text">
-                </div>
+                </div> -->
             @else
                 <div style="width: 45%; padding: 8px">
                     <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
@@ -144,11 +144,11 @@
                         <option value="value">value(£)</option>
                     </select>
                 </div>
-                <div style="width: 20%; padding: 8px">
+                <!-- <div style="width: 20%; padding: 8px">
                     <input wire:model="pricings.{{ $key }}.identifier" readonly style="background-color: white;" class="form-control" type="text">
-                </div>
+                </div> -->
             @endif
-        </div>
+        </div>         
     @endforeach
 
     <!-- Formula here -->
@@ -165,9 +165,9 @@
                     <input class="form-control" type="text" name="formular[]" value="{{ $invoice->getPricing('formular')['type'] }}" disabled>
                 </td>
             </div>
-            <div style="width: 20%; padding: 8px">
+            <!-- <div style="width: 20%; padding: 8px">
                 <input wire:model="formula.identifier" readonly style="background-color: white;" class="form-control" type="text">
-            </div>
+            </div> -->
         </div>
     @endif
 

@@ -140,8 +140,9 @@
                             {{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}
                         </td>
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
-                            {{ $item->packs_count ?? 'N/A' }}
+                            {{ evaluate_formular($item->getMeta('packs_count')?->value ,'InvoiceItemMeta', $item->id, $item->getMeta('packs_count')?->modifier ) ?? 'N/A'}}
                         </td>
+
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ $item->item_total ?? 'N/A' }}
                         </td>

@@ -108,13 +108,13 @@
                             <div class="col-md-4">
                             <label for="name">Store Logo</label>
                                 @if($store->store_logo)
-                                <img src="{{ url($store->store_logo) }}" alt="Store Logo" style="width: 50%; height: auto;">
+                                <img src="{{ asset($store->store_logo) }}" alt="Store Logo" style="width: 50%; height: auto;">
                                 @else
                                 <img src="{{  url('images/affinity-email-logo.png')  }}" alt="Affinity" class="h-9">
                                 @endif
                             </div>
 
-                            <!-- <input type="file" value="{{ $store->store_logo }}" name="store_logo" id=""> -->
+                            <input type="file" value="{{ $store->store_logo }}" name="store_logo" id="">
                         </div>
 
                     </div><!-- panel-body -->

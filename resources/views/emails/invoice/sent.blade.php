@@ -2,14 +2,13 @@
 <x-mail::layout>
 {{-- Header --}}
 <x-slot:header>
-{{ config('app.name') }}
 <tr>
     <td class="header">
         <a href="{{ route('home') }}" style="display: inline-block;">
             @if (!$store || !$store->store_logo)
-                <img src="{{ route('home') }}/images/affinity-email-logo.png" class="logo" alt="{{ config('app.name') }} Logo" style="width: auto; height: 38px;">
+                <img src="https://affinity-flooring.com/admin/voyager-assets?path=images%2Flogo.png" class="logo" alt="{{ config('app.name') }} Logo">
             @else
-                <img src="{{ route('home') }}/{{ $store->store_logo }}" class="logo" alt="{{ config('app.name') }} Logo" style="width: auto; height: 38px;">
+                <img src="{{ url($store->store_logo) }}" class="logo" alt="{{ config('app.name') }} Logo" style="width: 50%; height: 50%;">
             @endif
         </a>
     </td>
@@ -28,7 +27,7 @@ Please see attached a copy of your invoice.<br>
 Kind regards,<br>
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ $store->store_name}}
 
 {{-- Subcopy --}}
 @isset($subcopy)

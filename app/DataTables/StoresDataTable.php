@@ -95,7 +95,11 @@ class StoresDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
+            Column::make('row_number')
+            ->title('#')
+            ->render('meta.row + meta.settings._iDisplayStart + 1;')
+            ->width(50)
+            ->orderable(false),
             Column::make('store_name'),
             Column::make('store_email'),
             Column::make('store_phone'),
