@@ -46,7 +46,7 @@
                                 <x-input-error :messages="$errors->get('unsubscribe')" class="mt-2" />
                             </p>
                         </fieldset>
-                        <div class="flex justify-between">
+                        <div class="flex justify-between" style="border:1px solid #f3f7f900">
                             <x-button wire:click="$set('edit', false)" format="wire" type="button" class="text-lg rounded-full">
                                 Cancel
                             </x-button>
@@ -333,7 +333,7 @@
                             <div class="col-span-1">
                                 <label class="group inline-flex flex-col gap-1.5 w-full px-5 py-3 border rounded-lg cursor-pointer border-purple-600 bg-purple-50 text-purple-600">
                                     <span class="font-medium text-slate-400 text-sm tracking-wider uppercase">{{ $period }}ly</span>
-                                    <div class="flex items-center justify-between">
+                                    <div class="flex items-center justify-between" style="border:1px solid #f3f7f9">
                                         <p class="leading-none">
                                             <strong class="block text-2xl text-slate-700 font-semibold">
                                                 @php
@@ -408,7 +408,7 @@
                                         <strong class="text-slate-600 font-semibold">£{{ number_format($addon['amount'], 2) }}</strong><br>
                                         <span class="text-slate-400">per {{ $period }}</span>
                                     </p>
-                                    <p class="col-span-8 lg:col-span-2 flex items-center gap-2">
+                                    <p class="col-span-8 lg:col-span-2 flex items-center gap-2" style="border:1px solid #fff">
                                         <label class="lg:hidden text-slate-600 font-semibold">Qty:</label>
                                         <span class="text-slate-600 font-semibold">{{ $addon['quantity'] }}</span>
                                     </p>
