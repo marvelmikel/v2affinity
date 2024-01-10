@@ -190,7 +190,7 @@
                 @case('subscription')
                     <form wire:key="subscription_form" @submit.prevent="load['edit'] = true, $wire.storeSubscription()" class="space-y-6">
                         <div>
-                            <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Subscription Details</h2>
+                            <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Update Subscription</h2>
                             <p class="font-medium lg:text-lg text-slate-500">Edit your subscription details below.</p>
                         </div>
                         <div>
@@ -230,8 +230,8 @@
                                             <strong class="text-slate-600 font-semibold">£{{ number_format($addon['amount'], 2) }}</strong><br>
                                             <span class="text-slate-400">per {{ $period }}</span>
                                         </p>
-                                        <p class="col-span-8 lg:col-span-2 flex items-center gap-2">
-                                            <label for="addons[{{ $addon['id'] }}][quantity]" class="lg:hidden text-slate-600 font-semibold">Qty:</label>
+                                        <p class="lg:hidden text-slate-600 font-semibold" style="border:1px solid #fff">
+                                            <label for="addons[{{ $addon['id'] }}][quantity]" class="lg:hidden text-slate-600 font-semibold" >Qty:</label>
                                             <input wire:model="extras.addons.{{ $addon['id'] }}.quantity" wire:change="calcTotal()" type="number" min="0" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"  class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
                                         </p>
                                         <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
@@ -244,7 +244,7 @@
                                     </li>
                                 @endforeach
                             </ul>
-                            <footer class="flex gap-6 items-center py-2 text-lg">
+                            <footer class="flex gap-6 items-center py-2 text-lg" style="border:1px solid #fff">
                                 <p class="hidden lg:block w-1/2"></p>
                                 <p class="hidden lg:block w-1/6"></p>
                                 <p class="w-1/2 lg:w-1/6 font-semibold text-slate-600 text-sm tracking-wider uppercase">Total</p>
@@ -254,8 +254,114 @@
                                 </p>
                             </footer>
                         </div>
-                        <div class="flex justify-between">
+                        <div class="flex justify-between"  style="border:1px solid #fff">
                             <x-button wire:click="$set('edit', false)" format="wire" type="button" class="text-lg rounded-full">
+                                Cancel
+                            </x-button>
+                            <x-button format="wire" type="button" @click="$wire.set('edit', 'switch')" class="rounded-full">
+                                <i class="fa-solid fa-pencil mr-2"></i>Switch Plan
+                            </x-button>
+                            <x-button type="submit" class="text-lg rounded-full">
+                                Save
+                            </x-button>
+                        </div>
+                    </form>
+
+
+                    <!-- Start Switch Plan Modal -->
+                    @break
+                @case('switch')
+                    @php
+                        $plan = collect($plans)->where('id', '!=', $subscription->plan_id)->first();
+                    @endphp
+                    <form wire:key="subscription_switch" @submit.prevent="load['edit'] = true, $wire.storeSubscription(1)" class="space-y-6">
+                        <div>
+                            <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Switch Plans</h2>
+                            <p class="font-medium lg:text-lg text-slate-500">Edit your subscription details below.</p>
+                        </div>
+
+                        <ul class="grid w-full gap-6 md:grid-cols-2 mb-6">
+                            @php
+                                switch($plan['billingFrequency']){
+                                    case "12":
+                                        $period = 'year';
+                                        break;
+                                    case "1":
+                                    default:
+                                        $period = 'month';
+                                        break;
+                                }
+                            @endphp
+                            <li>
+                                <input wire:model="inputPlan.plan_id" wire:click="calcTotalSwitch" type="radio" id="{{ $plan['id'] }}" name="plan" value="{{ $plan['id'] }}" class="hidden peer" required>
+                                <label for="{{ $plan['id'] }}" class="group inline-flex flex-col gap-1.5 w-full px-5 py-3 text-slate-500 bg-white border border-slate-200 rounded-lg cursor-pointer peer-checked:border-purple-600 peer-checked:bg-purple-50 peer-checked:text-purple-600 hover:text-slate-600 hover:bg-slate-100">
+                                    <span class="font-medium text-slate-400 text-sm tracking-wider uppercase">{{ $period }}ly</span>
+                                    <div class="flex items-center justify-between"  style="border: 1px solid #3330;">
+                                        <p class="leading-none">
+                                            <strong class="block text-2xl text-slate-700 font-semibold">
+                                                £{{ number_format(current($plan['addOns'])['amount'], 2) }}
+                                                <span class="text-base text-slate-500">/ {{ $period }}</span>
+                                            </strong>
+                                            <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
+                                        </p>
+                                        <i class="fa-circle-check fa-solid group-peer-checked:opacity-100 opacity-0 text-2xl text-green-500"></i>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+
+                        @if(!empty($inputPlan['plan_id']))
+                            <div>
+                                <header class="flex gap-6 font-medium text-slate-400 text-sm tracking-wider uppercase py-2" style="border: 1px solid #fff;">
+                                    <p class="w-full lg:w-1/2">Package</p>
+                                    <p class="hidden lg:block w-1/6">Price</p>
+                                    <p class="hidden lg:block w-1/6">Quantity</p>
+                                    <p class="hidden lg:block w-1/6">Line Total</p>
+                                </header>
+                                <ul class="border-y border-slate-200 divide-y divide-slate-200">
+                                    @foreach($plan['addOns'] as $addon)
+                                        @php $this->setQuantity($addon) @endphp
+                                        <li class="grid grid-cols-12 items-center gap-6 py-4">
+                                            <p class="col-span-12 lg:col-span-6 leading-tight">
+                                                <strong class="text-slate-600 font-semibold">{{ $addon['name'] }}</strong><br>
+                                                <span class="text-slate-400">{{ $addon['description'] }}</span>
+                                            </p>
+                                            <p class="col-span-4 lg:col-span-2 leading-tight">
+                                                <strong class="text-slate-600 font-semibold">£{{ number_format($addon['amount'], 2) }}</strong><br>
+                                                <span class="text-slate-400">per {{ $period }}</span>
+                                            </p>
+                                            <p class="col-span-8 lg:col-span-2 flex items-center gap-2">
+                                                <label for="addons[{{ $addon['id'] }}][quantity]" class="text-slate-600 font-semibold">Qty:</label>
+                                                <input wire:model="inputPlan.addons.{{ $addon['id'] }}.quantity" wire:change="calcTotalSwitch" type="number" min="1" step="1" oninput="this.value = Math.abs(this.value)" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"  class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
+                                            </p>
+                                            <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
+                                                @if(!empty($inputPlan['addons'][$addon['id']]) && !empty($inputPlan['addons'][$addon['id']]['quantity']))
+                                                    £{{ number_format($addon['amount'] * $inputPlan['addons'][$addon['id']]['quantity'], 2) }}
+                                                @else
+                                                    £{{ number_format($addon['amount'], 2) }}
+                                                @endif
+                                            </p>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <footer class="flex items-center py-2 text-lg" style="border:1px solid #fff; justify-content: flex-end;">
+                                <p class="hidden lg:block w-1/2"></p>
+                                <p class="hidden lg:block w-1/6"></p>
+                                <p class="w-1/2 lg:w-1/6 font-semibold text-slate-600 text-sm tracking-wider uppercase">Total</p>
+                                <p class="w-1/2 lg:w-1/6 leading-tight">
+                                    <strong class="text-slate-600 font-semibold">£{{ number_format($this->total_switch, 2) }}</strong><br>
+                                    <span class="text-slate-400">per {{ $period }}</span>
+                                </p>
+                            </footer>
+
+                            @error('addons')
+                            <span class="block font-bold mt-2 text-red-400 text-sm">{{ $message }}</span>
+                            @enderror
+                        @endif
+
+                        <div class="flex justify-between"  style="border: 1px solid #3330;">
+                            <x-button wire:click="$set('edit', 'subscription')" format="wire" type="button" class="text-lg rounded-full">
                                 Cancel
                             </x-button>
                             <x-button type="submit" class="text-lg rounded-full">
@@ -263,6 +369,7 @@
                             </x-button>
                         </div>
                     </form>
+                    <!-- End Switch Plan Modal -->
                     @break
             @endswitch
         @else

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Mail\SubscriptionCancelled; // Add this line
 use App\Mail\SubscriptionUpdated;
@@ -40,6 +41,12 @@ class SubscriptionsEdit extends Component
     public $subscription;
     public $token;
     public $total;
+    public $total_switch = 0;
+    public $inputPlan = [
+        'plan_id' => '',
+        'addons' => [],
+        'discounts' => []
+    ];
 
     public function render()
     {
@@ -157,6 +164,31 @@ class SubscriptionsEdit extends Component
         }
     }
 
+    public function calcTotalSwitch()
+    {
+        if(!empty($this->inputPlan['plan_id'])){
+            // Set base total
+            $this->total_switch = $this->plans[ $this->inputPlan['plan_id'] ]['price'];
+
+            // Check for any addons
+            if(!empty($this->inputPlan['addons'])){
+                // Filter selected addons
+                $addons = array_filter( $this->plans[ $this->inputPlan['plan_id'] ]['addOns'], fn($v) => in_array($v['id'], array_keys($this->inputPlan['addons'])) );
+
+                // Loop selected addons
+                foreach($addons as $add){
+                    // Add inheritedFromId to array
+                    $this->inputPlan['addons'][$add['id']]['inheritedFromId'] = $add['id'];
+
+                    // Add amount x quantity to total
+                    if ($this->inputPlan['addons'][$add['id']]['quantity']) {
+                        $this->total_switch += $add['amount'] * $this->inputPlan['addons'][$add['id']]['quantity'];
+                    }
+                }
+            }
+        }
+    }
+
     public function storeCard($nonce)
     {
         // Submit credit card change
@@ -184,15 +216,28 @@ class SubscriptionsEdit extends Component
         }
     }
 
-    public function storeSubscription()
+    
+    public function storeSubscription($switch = false)
     {
-        // Build request array
-        $vals = [
-            'subscription_id' => $this->subscription->id,
-            'plan_id' => $this->subscription->plan_id,
-            'addons' => $this->extras['addons'],
-            'discounts' => $this->extras['discounts']
-        ];
+        // Check if plan is being switched or current plan is updated then build request array
+        if ($switch) {
+            $vals = [
+                'subscription_id' => $this->subscription->id,
+                'plan_id' => $this->inputPlan['plan_id'],
+                'addons' => [
+                    'add' => $this->inputPlan['addons'],
+                    'remove' => current(json_decode($this->subscription->addOns))->id,
+                ],
+                'discounts' => $this->inputPlan['discounts']
+            ];
+        } else {
+            $vals = [
+                'subscription_id' => $this->subscription->id,
+                'plan_id' => $this->subscription->plan_id,
+                'addons' => $this->extras['addons'],
+                'discounts' => $this->extras['discounts']
+            ];
+        }
 
         // Create new StoreSubscriptionRequest
         $request = new UpdateSubscriptionRequest($vals);
@@ -203,29 +248,55 @@ class SubscriptionsEdit extends Component
         // Add validator
         $request->setValidator(Validator::make($vals, $request->rules()));
 
-        // Submit for subscription creation
-        $update = $this->updateSubscription($request);
+        // Update or switch subscription
+        if ($switch) {
+            $update = $this->updateSubscriptionPlan($request);
+        } else {
+            $update = $this->updateSubscription($request);
+        }
 
         // Flash response
         if ($update->success) {
-
             // Flash updated payment details
-            session()->flash('alert-success', 'Successfully updated subscription.');
-
-            // Reload model
-            $this->subscription = Subscription::find($this->subscription->id);
+            session()->flash('alert-success', 'Successfully updated subscription, reloading information...');
 
             // Send update email
             Mail::to(auth()->user())->send(new SubscriptionUpdated($this->subscription));
 
             // Reset views
-            $this->edit = false;
-            $this->reset('load');
-            $this->asyncRender();
+            return redirect(request()->header('Referer'));
         } else {
             session()->flash('alert-error', 'Failed to update subscription details. Please try again.');
         }
     }
+
+    public function updateSubscriptionPlan(UpdateSubscriptionRequest $request)
+{
+    // Your logic for updating the subscription plan goes here
+
+    // Example code to handle the update request
+    $response = ['success' => false]; // Default response
+    if ($request->isValid()) {
+        // Perform the actual update operation
+        // You can access the values from the request using $request->get('subscription_id'), $request->get('plan_id'), etc.
+
+        // Set the success flag to true if the update is successful
+        $response['success'] = true;
+    }
+
+    return $response;
+}
+
+
+    public function setQuantity($addon)
+    {
+        // Set addon quantity to 1 by default
+        if (!$this->inputPlan['addons']) {
+            $this->inputPlan['addons'] = [$addon['id'] => ['quantity' => 1]];
+            $this->calcTotalSwitch();
+        }
+    }
+
 
 
     public function cancelSubscription()
