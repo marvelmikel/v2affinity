@@ -88,6 +88,13 @@ class Registration extends Component
                 $this->company['logo'] = $company->logo;
             }
 
+            $this->user['id'] = $company->id;
+            $this->user['name'] = $user->name;
+            $this->user['email'] = $user->email;
+            // $this->user['password'] = $user->password;
+            // $this->user['password_confirmation'] = $user->password;
+
+
             $this->step = 2;
         }
 
@@ -116,13 +123,15 @@ class Registration extends Component
                 'string',
                 'email',
                 'max:255',
-                'unique:users,email',
+                auth()->user() ? '' : 'unique:users,email',
             ],
             'user.password' => ['required', 'string', 'confirmed'],
         ]);
 
         /* Create user and set as Company Admin */
-        $user = User::create([
+        $user = User::updateOrCreate([
+            'email' => $this->user['email']
+        ],[
             'name' => $this->user['name'],
             'email' => $this->user['email'],
             'password' => Hash::make($this->user['password']),
