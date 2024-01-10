@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Http\Requests\UpdateSubscriptionRequest;
-use App\Mail\SubscriptionCancelled;
+use App\Mail\SubscriptionCancelled; // Add this line
 use App\Mail\SubscriptionUpdated;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use App\Traits\PaymentGateway;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionsEdit extends Component
 {
@@ -51,20 +52,20 @@ class SubscriptionsEdit extends Component
         $this->plans = Plan::orderBy('billingFrequency')->get()->keyBy('id')->toArray();
 
         // Convert plan JSON to arrays
-        foreach($this->plans as $key => $item){
-            $this->plans[$key]['addOns'] = json_decode($this->plans[$key]['addOns'],true);
-            $this->plans[$key]['discounts'] = json_decode($this->plans[$key]['discounts'],true);
+        foreach ($this->plans as $key => $item) {
+            $this->plans[$key]['addOns'] = json_decode($this->plans[$key]['addOns'], true);
+            $this->plans[$key]['discounts'] = json_decode($this->plans[$key]['discounts'], true);
         }
 
         // Calculate total and populate extras
         $this->total  = $this->plans[$this->subscription->plan_id]['price'];
-        foreach(json_decode($this->subscription['addOns'],true) as $addon){
+        foreach (json_decode($this->subscription['addOns'], true) as $addon) {
 
             // Calc total
             $this->total  += $addon['amount'] * $addon['quantity'];
 
             // Populate extras
-            $this->extras['addons'][$addon['id']] = [ 'quantity' => $addon['quantity'] ];
+            $this->extras['addons'][$addon['id']] = ['quantity' => $addon['quantity']];
         }
         $this->calcTotal();
 
@@ -75,7 +76,9 @@ class SubscriptionsEdit extends Component
         $customer = $this->showCustomer(auth()->user());
 
         // Filter subscriptions related card
-        $cc = array_filter($customer->creditCards, function($item) use ($subscriptions){ return $item->token == $subscriptions->paymentMethodToken; } );
+        $cc = array_filter($customer->creditCards, function ($item) use ($subscriptions) {
+            return $item->token == $subscriptions->paymentMethodToken;
+        });
         $cc = reset($cc);
 
         // Store subset of cc info
@@ -90,7 +93,7 @@ class SubscriptionsEdit extends Component
         $this->token = $subscriptions->paymentMethodToken;
 
         // Build billing array
-        if(!empty($cc->billingAddress)){
+        if (!empty($cc->billingAddress)) {
             $this->billing = [
                 'firstName' => $cc->billingAddress->firstName,
                 'lastName' => $cc->billingAddress->lastName,
@@ -119,7 +122,7 @@ class SubscriptionsEdit extends Component
         $update = $this->updateBillingAddress($this->token, $this->billing);
 
         // Flash response
-        if($update->success){
+        if ($update->success) {
             session()->flash('alert-success', 'Successfully updated billing details.');
 
             // Send update email
@@ -137,20 +140,19 @@ class SubscriptionsEdit extends Component
     public function calcTotal()
     {
         // Set base total
-        $this->extras['total'] = $this->plans[ $this->subscription->plan_id ]['price'];
+        $this->extras['total'] = $this->plans[$this->subscription->plan_id]['price'];
 
         // Check for any addons
-        if(!empty($this->extras['addons'])){
+        if (!empty($this->extras['addons'])) {
 
             // Filter selected addons
-            $addons = array_filter( $this->plans[ $this->subscription->plan_id ]['addOns'], fn($v) => in_array($v['id'], array_keys($this->extras['addons'])) );
+            $addons = array_filter($this->plans[$this->subscription->plan_id]['addOns'], fn ($v) => in_array($v['id'], array_keys($this->extras['addons'])));
 
             // Loop selected addons
-            foreach($addons as $add){
+            foreach ($addons as $add) {
 
                 // Add amount x quantity to total
                 $this->extras['total'] += $add['amount'] * $this->extras['addons'][$add['id']]['quantity'];
-
             }
         }
     }
@@ -161,7 +163,7 @@ class SubscriptionsEdit extends Component
         $update = $this->updateCardDetails($this->subscription, $nonce);
 
         // Flash response
-        if($update->success){
+        if ($update->success) {
 
             // Flash updated payment details
             session()->flash('alert-success', 'Successfully updated payment details.');
@@ -205,7 +207,7 @@ class SubscriptionsEdit extends Component
         $update = $this->updateSubscription($request);
 
         // Flash response
-        if($update->success){
+        if ($update->success) {
 
             // Flash updated payment details
             session()->flash('alert-success', 'Successfully updated subscription.');
@@ -225,19 +227,30 @@ class SubscriptionsEdit extends Component
         }
     }
 
+
     public function cancelSubscription()
     {
         // Submit for subscription cancellation
         $cancel = $this->deleteSubscription($this->subscription);
 
-        // Disable store on app
-        $apiResponse = apiCall( 'store/'.auth()->user()->store_id, $type = 'PUT', [ 'active' => false ]);
+        // Get the user's company ID
+        $companyId = auth()->user()->company_id;
+
+        // Update the subscription status to "Cancelled"
+        Subscription::where('company_id', $companyId)->update([
+            'status' => 'Cancelled'
+        ]);
+
+        // // Disable company on app
+        // $apiResponse = apiCall( 'company/'.auth()->user()->company_id, $type = 'PUT', [ 'active' => false ]);
 
         // Send cancellation email
         Mail::to(auth()->user())->send(new SubscriptionCancelled($this->subscription));
 
-        // Redirect to dashboard
-        return redirect()->route('dashboard');
-    }
+        // Log out the user
+        Auth::logout();
 
+        // Redirect to dashboard
+        return redirect()->route('cancel');
+    }
 }

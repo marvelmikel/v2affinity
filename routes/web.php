@@ -26,6 +26,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::view('/about', 'about')->name('about');
+Route::view('/cancel', 'cancel')->name('cancel');
 
 Route::get('/register', \App\Http\Livewire\Registration::class)->name('subscription.create');
 

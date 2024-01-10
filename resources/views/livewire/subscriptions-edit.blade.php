@@ -268,7 +268,7 @@
         @else
             <div class="grid grid-cols-2 w-full gap-8">
                 <article class="bg-slate-50 col-span-2 lg:col-span-1 px-6 py-4 rounded-xl">
-                    <div class="flex justify-between items-center mb-6">
+                    <div class="flex justify-between items-center mb-6" style="border: 1px solid #3330;">
                         <h2 class="font-semibold text-slate-700 text-xl">Billing Address</h2>
                         <x-button format="wire" type="button" @click="$wire.set('edit', 'billing')" class="rounded-full">
                             <i class="fa-solid fa-pencil mr-2"></i>Edit
@@ -293,7 +293,7 @@
                 </article>
 
                 <article class="bg-slate-50 col-span-2 lg:col-span-1 px-6 py-4 rounded-xl">
-                    <div class="flex justify-between items-center mb-6">
+                    <div class="flex justify-between items-center mb-6" style="border: 1px solid #3330;" >
                         <h2 class="font-semibold text-slate-700 text-xl">Card Details</h2>
                         <x-button format="wire" type="button" @click="$wire.set('edit', 'card')" class="rounded-full">
                             <i class="fa-solid fa-pencil mr-2"></i>Edit
@@ -319,7 +319,7 @@
                 </div>
 
                 <article class="col-span-2">
-                    <header class="flex justify-between items-center mb-6">
+                    <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;" >
                         <div>
                             <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Your Subscriptions</h2>
                             <p class="font-medium lg:text-lg text-slate-500">Please find your subscription details below.</p>

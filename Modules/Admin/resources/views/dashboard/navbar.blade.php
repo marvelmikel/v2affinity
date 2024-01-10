@@ -75,7 +75,17 @@
         <div class="analytics-container">
 
             {{-- Get date subscription was created--}}
-            @php $trial = auth()->user()->subscriptions->where('status', 'Active')->first()->created_at @endphp
+            @php 
+    $trial = null;
+    $subscription = auth()->user()->subscriptions->where('status', 'Active')->first();
+    if ($subscription && $subscription->status !== 'Cancelled') {
+        $trial = $subscription->created_at;
+    } else {
+        auth()->logout();
+        return redirect(env('APP_URL') . 'cancel');
+    }
+@endphp
+
 
             {{-- Show warning message for trial period --}}
             @if($trial->addDays(7) > now())
