@@ -27,6 +27,7 @@ class Registration extends Component
     public $store;
     public $client, $plans, $total, $show_discount, $discount_code; 
     public $terms_accepted = false;
+    public $freetrial = false;
 
     public $discount = [
         'id' => '94m6',
@@ -336,5 +337,27 @@ class Registration extends Component
     public function render()
     {
         return view('livewire.registration')->layout('layouts.blank');
+    }
+
+
+
+    public function skipBilling()
+    {
+        $this->billing = [
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'company' => 'John Doe Inc',
+            'streetAddress' => 'Albana',
+            'extendedAddress' => 'United States',
+            'locality' => 'US',
+            'region' => 'US',
+            'postalCode' => '433333',
+            'countryName' => 'United Kingdom',
+        ];
+
+        //  submit form
+        $this->company_billing();
+
+        // $this->register_nonce($nounce);
     }
 }

@@ -5,7 +5,7 @@ namespace Modules\Admin\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class VoyagerAdminMiddleware
+class HasSubscription
 {
     /**
      * Handle an incoming request.
@@ -17,17 +17,15 @@ class VoyagerAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        auth()->setDefaultDriver(app('VoyagerGuard'));
 
         if (!Auth::guest()) {
             $user = Auth::user();
-            app()->setLocale($user->locale ?? app()->getLocale());
-
-            return $user->hasPermission('browse_admin') ? $next($request) : redirect('/register');
+            if($user->subscription){
+                return $next($request);
+            }
         }
-
-        $urlLogin = route('voyager.login');
-
+        
+        $urlLogin = route('voyager.register');
         return redirect()->guest($urlLogin);
     }
 }

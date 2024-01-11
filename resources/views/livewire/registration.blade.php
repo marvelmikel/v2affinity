@@ -444,6 +444,7 @@
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step 5</span>
                         <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Billing Details</h2>
                         <p class="font-medium lg:text-lg text-slate-500">Please confirm your billing details below.</p>
+                        
                     </div>
                     <fieldset class="grid grid-cols-2 gap-6">
                         <p class="col-span-1">
@@ -491,6 +492,12 @@
                         <x-button wire:click="$set('step', 4)" format="wire" type="button" class="text-lg rounded-full">
                             <i class="fa-solid fa-arrow-left mr-1"></i> Prev
                         </x-button>
+                        <x-button wire:click="skipBilling()" type="button" format="wire"  class="text-lg rounded-full">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Skip 
+                        </x-button>
+                        <p>{{ $freetrial }}</p>
+                        <p>{{ $step }}</p>
+
                         <x-button type="submit" class="text-lg rounded-full">
                             Next <i class="fa-regular fa-arrow-right ml-1"></i>
                         </x-button>
