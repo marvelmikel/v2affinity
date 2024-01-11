@@ -495,8 +495,7 @@
                         <x-button wire:click="skipBilling()" type="button" format="wire"  class="text-lg rounded-full">
                             <i class="fa-solid fa-arrow-left mr-1"></i> Skip 
                         </x-button>
-                        <p>{{ $freetrial }}</p>
-                        <p>{{ $step }}</p>
+                      
 
                         <x-button type="submit" class="text-lg rounded-full">
                             Next <i class="fa-regular fa-arrow-right ml-1"></i>
