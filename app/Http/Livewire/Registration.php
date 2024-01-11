@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Http\Requests\StoreSubscriptionRequest;
 use App\Models\Plan;
 use App\Models\Subscription;
+use App\Mail\SubscriptionCreated;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Store;
@@ -268,6 +269,9 @@ class Registration extends Component
             /* Link payment details */
             $this->updateBillingAddress($response->subscription->paymentMethodToken, $this->billing);
 
+            // Send update email
+            Mail::to(auth()->user())->send(new SubscriptionCreated(Subscription::find($response->subscription->id)));
+
             /* Make company active, confirm acceptance of terms and set user to Company Admin */
             $user = auth()->user();
             $user->company->update([
@@ -276,6 +280,8 @@ class Registration extends Component
             ]);
             $user->role_id = 2;
             $user->save();
+
+
 
             // Save company_id on the subscription
             $subscription = Subscription::find($response->subscription->id);
