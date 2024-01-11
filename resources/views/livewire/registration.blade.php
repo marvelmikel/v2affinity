@@ -493,7 +493,7 @@
                             <i class="fa-solid fa-arrow-left mr-1"></i> Prev
                         </x-button>
                         <x-button wire:click="skipBilling()" type="button" format="wire"  class="text-lg rounded-full">
-                            <i class="fa-solid fa-arrow-left mr-1"></i> For demo, please click here to proceed.
+                           For demo, please click here to proceed <i class="fa-solid fa-arrow-down mr-1"></i> 
                         </x-button>
                       
 
