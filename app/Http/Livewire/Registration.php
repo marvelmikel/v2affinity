@@ -6,6 +6,7 @@ use App\Http\Requests\StoreSubscriptionRequest;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Mail\SubscriptionCreated;
+use App\Actions\Fortify\CreateNewUser;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Store;
@@ -342,7 +343,7 @@ class Registration extends Component
 
     public function render()
     {
-        return view('livewire.registration')->layout('layouts.blank');
+        return view('livewire.registration');
     }
 
 

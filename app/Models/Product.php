@@ -91,7 +91,7 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'area'], [
                         'name' => 'area',
-                        'title' => 'Toatl Area (㎡)',
+                        'title' => 'Total Area (㎡)',
                         'value' => "$length->identifier*$width->identifier",
                         'type' => 'formular',
                         'visibility' => 'readonly'

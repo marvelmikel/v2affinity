@@ -53,7 +53,5 @@
 
 {{-- Livewire scripts --}}
 @livewireScripts
-@livewireScriptConfig 
-
 </body>
 </html>
