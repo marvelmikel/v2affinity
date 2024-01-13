@@ -526,6 +526,34 @@
                             Place Order
                         </x-button>
                     </div>
+                    <!-- Test Cart details-->
+                    <div class="container mx-auto">
+                    <h1 class="text-2xl font-bold mb-4 text-center">Hi, please click to copy test card details for trial testing.</h1>
+
+  <div class="section flex items-center justify-center" id="nameSection">
+    <p>Test Card Number</p>
+    <div class="copy-icon ml-2" onclick="handleCopyClick('4111111111111111')">📄</div>
+  </div>
+  <div class="section flex items-center justify-center" id="addressSection">
+    <p>Expiration Date </p>
+    <div class="copy-icon ml-2" onclick="handleCopyClick('12/24')">
+      📄
+    </div>
+  </div>
+  <div class="section flex items-center justify-center" id="phoneSection">
+    <p>CVV</p>
+    <div class="copy-icon ml-2" onclick="handleCopyClick('111')">
+      📄
+    </div>
+  </div>
+  <p id="copySuccess"></p>
+</div>
+
+
+                    
+
+
+
                     <script wire:ignore>
                         // Build 3DS parameters
                         var threeDSecureParameters = {
@@ -587,6 +615,8 @@
 
                       
                     </script>
+
+
                 </div>
                 @break
         @endswitch
@@ -594,5 +624,66 @@
 
     <!-- includes the Braintree JS client SDK -->
     <script wire:ignore src="https://js.braintreegateway.com/web/dropin/1.33.7/js/dropin.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Arial", sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .section {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .section p {
+        margin: 0;
+      }
+
+      .copy-icon {
+        cursor: pointer;
+        color: #3498db; /* Use the color that suits your design */
+        margin-left: 10px;
+      }
+    </style>
+
+<script>
+      function copyToClipboard(text) {
+        if ("clipboard" in navigator) {
+          return navigator.clipboard.writeText(text);
+        } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+          return Promise.resolve();
+        }
+      }
+
+      function handleCopyClick(text) {
+        copyToClipboard(text)
+          .then(() => {
+            document.getElementById("copySuccess").innerText = "Copied!";
+            setTimeout(() => {
+              document.getElementById("copySuccess").innerText = "";
+            }, 2000);
+          })
+          .catch(
+            () =>
+              (document.getElementById("copySuccess").innerText =
+                "Failed to copy text")
+          );
+      }
+    </script>
+    
 
 </div>
