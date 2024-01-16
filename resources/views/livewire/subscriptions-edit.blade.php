@@ -571,22 +571,21 @@
                                             <th>Trial Period</th>
                                             <th>Billing Cycle</th>
                                             <th>Status</th>
-                                            <th>User Browser</th>
-                                            <th>Date</th>
+                                            <th>Date & Time</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="subscriptionTableBody">
+                                    @foreach($subscriptions as $subscription)
                                         <tr role="row">
-                                            <td>1</td>
-                                            <td>test</td>
-                                            <td>xshhs</td>
-                                            <td>sshsh</td>
-                                            <td>shshjs</td>
-                                            <td>xnxjx</td>
-                                            <td>ddjkdjd</td>
-                                            <td>dshdshdsh </td>
-
+                                            <td>{{ $subscription->id }}</td>
+                                            <td>{{ $plans[$subscription->plan_id]['name'] }}</td>
+                                            <td>£{{ number_format($plans[$subscription->plan_id]['price'], 2) }}<br> per {{ $period }}</td>
+                                            <td>{{ $subscription->trial_period }}</td>
+                                            <td>{{ $subscription->billing_cycle }}</td>
+                                            <td>{{ $subscription->status }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($subscription['created_at'])->format('F d, Y H:i:s') }}</td>
                                         </tr>
+                                        @endforeach
 
                                     </tbody>
                                 </table>

@@ -18,6 +18,7 @@ class SubscriptionsEdit extends Component
 {
     use PaymentGateway;
 
+    public $subscriptions;
     public $billing;
     public $client;
     public $creditCard = [
@@ -50,7 +51,12 @@ class SubscriptionsEdit extends Component
 
     public function render()
     {
-        return view('livewire.subscriptions-edit');
+        $companyId = Auth::user()->company_id;
+        $this->subscriptions = Subscription::where('company_id', $companyId)->get();
+        
+        return view('livewire.subscriptions-edit', [
+            'subscriptions' => $this->subscriptions,
+        ]);
     }
 
     public function asyncRender()
