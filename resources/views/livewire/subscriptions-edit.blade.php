@@ -580,8 +580,8 @@
                                             <td>{{ $subscription->id }}</td>
                                             <td>{{ $plans[$subscription->plan_id]['name'] }}</td>
                                             <td>£{{ number_format($plans[$subscription->plan_id]['price'], 2) }}<br> per {{ $period }}</td>
-                                            <td>{{ $subscription->trial_period }}</td>
-                                            <td>{{ $subscription->billing_cycle }}</td>
+                                            <td>{{ number_format($plans[$subscription->plan_id]['trialDuration'],) }} days</td>
+                                            <td>{{ number_format($plans[$subscription->plan_id]['billingFrequency'],) }}</td>
                                             <td>{{ $subscription->status }}</td>
                                             <td>{{ \Carbon\Carbon::parse($subscription['created_at'])->format('F d, Y H:i:s') }}</td>
                                         </tr>
