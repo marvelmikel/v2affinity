@@ -56,22 +56,22 @@ class Company extends Model
 
         static::created(function ($model) {
             // create default products here for the company
-            Product::create([
-                'company_id' => $model->id,
-                'user_id' => auth()->user()->id,
-                'title' => 'Default Roll End',
-                'description' => 'default Roll End Product',
-                'type' => 'rollend',
-            ]);
+            // Product::create([
+            //     'company_id' => $model->id,
+            //     'user_id' => auth()->user()->id,
+            //     'title' => 'Default Roll End',
+            //     'description' => 'default Roll End Product',
+            //     'type' => 'rollend',
+            // ]);
 
 
-            Product::create([
-                'company_id' => $model->id,
-                'user_id' => auth()->user()->id,
-                'title' => 'Default Underlay',
-                'description' => 'default Underlay Product',
-                'type' => 'underlay',
-            ]);
+            // Product::create([
+            //     'company_id' => $model->id,
+            //     'user_id' => auth()->user()->id,
+            //     'title' => 'Default Underlay',
+            //     'description' => 'default Underlay Product',
+            //     'type' => 'underlay',
+            // ]);
 
             Store::create([
                 'company_id' => $model->id,

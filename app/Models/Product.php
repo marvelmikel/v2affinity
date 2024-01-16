@@ -43,10 +43,10 @@ class Product extends Model
         static::created(function ($model) {
 
 
-            if ($model->type == 'carpet') {
+            if ($model->type == 'carpet' || $model->type == 'underlay') {
 
                 $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
-                $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'readonly']);
+                $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
@@ -58,9 +58,9 @@ class Product extends Model
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
 
-                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'default_allowance', 'value' => 10, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'default_allowance', 'value' => 0, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 0, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
 
 
 
@@ -79,7 +79,7 @@ class Product extends Model
 
                     $model->meta()->updateOrCreate(['name' => 'location'], [
                         'name' => 'location',
-                        'title' => 'Input Room Location',
+                        'title' => 'Enter Room Location',
                         'value' => '',
                         'type' => 'Text',
                         'visibility' => 'visible'
@@ -171,7 +171,7 @@ class Product extends Model
 
                 $model->meta()->updateOrCreate(['name' => 'location'], [
                     'name' => 'location',
-                    'title' => 'Input Room Location',
+                    'title' => 'Enter Room Location',
                     'value' => '',
                     'type' => 'Text',
                     'visibility' => 'visible'
@@ -258,7 +258,7 @@ class Product extends Model
             }
 
 
-            if ($model->type == 'rollend' || $model->type == 'underlay') {
+            if ($model->type == 'rollend') {
 
                 // Title | Description | Length | Width | Total Area | Total Price
                 $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);

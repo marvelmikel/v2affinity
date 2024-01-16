@@ -586,7 +586,6 @@
                                             <td>{{ \Carbon\Carbon::parse($subscription['created_at'])->format('F d, Y H:i:s') }}</td>
                                         </tr>
                                         @endforeach
-
                                     </tbody>
                                 </table>
                             </div>
