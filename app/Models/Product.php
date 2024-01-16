@@ -268,13 +268,24 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                // $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'total_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
 
+
+                if ($model->getMeta('length') &&  $model->getMeta('width')) {
+                    $length = $model->getMeta('length');
+                    $width = $model->getMeta('width');
+
+                    $model->meta()->updateOrCreate(['name' => 'total_area'], [
+                        'name' => 'total_area',
+                        'title' => 'Total Area(㎡)',
+                        'value' => "$length->identifier*$width->identifier",
+                        'type' => 'formular',
+                        'visibility' => 'readonly'
+                    ]);
+                }
                 //add def formular here
                 if ($model->getMeta('total_price') ) {
-
-                   
                     $price = $model->getMeta('total_price');
                     $model->meta()->updateOrCreate(['name' => 'formular'], [
                         'name' => 'formular',
@@ -282,19 +293,6 @@ class Product extends Model
                         'type' => 'formular',
                         'visibility' => 'hidden'
                     ]);
-
-                    $length = $model->getMeta('length');
-                    $width = $model->getMeta('width');
-
-                    $model->meta()->updateOrCreate(['name' => 'area'], [
-                        'name' => 'area',
-                        'title' => 'Total Area (㎡)',
-                        'value' => "$length->identifier*$width->identifier",
-                        'type' => 'formular',
-                        'visibility' => 'readonly'
-                    ]);
-
-
                    
                 }
             }
