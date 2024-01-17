@@ -218,11 +218,27 @@ class Product extends Model
 
                     $allowance = $model->getMeta('allowance');
 
+                    /*
+
+                    price per pack = £18, unit Area of the tile = 96(12 X 8)msquare , 
+                    Required Area = 414 L X W (18 X 23),  
+                    Qty packs = 414/96 (Required area/unit Area) = 4.31, 
+                    allowance = 4.31 + 10% of 4.31 = 4.7 or 5packs,  //
+                    total price = 5 x 18( Qty packs after allowance x price per pack) = 90
+
+                    */
+
+                    // "ceil($tiles_count->identifier/$tiles_per_pack->identifier)+($tiles_count->identifier/$tiles_per_pack->identifier*$allowance->identifier/100)"
+
+
+
+                    $packs = "$tiles_count->identifier/$tiles_per_pack->identifier";
+                    $pack_allowance  = "$packs*$allowance->identifier/100";
 
                     $packs_count = $model->meta()->updateOrCreate(['name' => 'packs_count'], [
                         'name' => 'packs_count',
                         'title' => 'Total Quantity of Packs',
-                        'value' => "ceil($tiles_count->identifier/$tiles_per_pack->identifier)+($tiles_count->identifier/$tiles_per_pack->identifier*$allowance->identifier/100)",
+                        'value' => "ceil($packs + $pack_allowance )",
                         'type' => 'formular',
                         'visibility' => 'readonly',
                         'modifier' => 'ceil'

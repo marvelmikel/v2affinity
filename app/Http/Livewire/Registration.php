@@ -173,6 +173,8 @@ class Registration extends Component
 
         $company = $user->company()->updateOrCreate([
             'id' => $this->company['id'],
+            'email' => $this->company['email'],
+            'name' => $this->company['name'],
         ], $this->company);
 
         $user->update(['company_id' => $company->id]);
