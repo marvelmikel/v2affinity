@@ -11,7 +11,7 @@
     </tr>
     <div x-init="const interval = setInterval(() => { $wire.asyncRender(),clearInterval(interval); }, 1000)" class="admin-section-title card" style="display:flex; justify-content: space-between;">
         <h3 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" style="margin-left: 10px;">
-            <i class="voyager-dollar"></i>{{ __('Subscriptions Details') }}
+            <i class="voyager-paypal"></i>{{ __('Subscriptions Details') }}
         </h3>
     </div>
     <div class="clear"></div>

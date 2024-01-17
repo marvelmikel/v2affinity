@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="admin-section-title">
-                <h3><i class="voyager-company"></i> {{ __('Company') }}</h3>
+                <h3><i class="voyager-company"></i> {{ __('Companies') }}</h3>
             </div>
             <div class="clear"></div>
             <div class="card">

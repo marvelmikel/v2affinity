@@ -27,18 +27,11 @@ class CompanyDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('action', function ($row) {
-                $editUrl = route('voyager.stores.edit', $row->id);
-                $deleteUrl = route('voyager.stores.delete', $row->id);
+                $editUrl = route('voyager.company.edit', $row->id);
+                $deleteUrl = route('voyager.company.delete', $row->id);
 
                 $btn = "<div style='display:flex;'>
                     <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-eye'></i></a>
-                    <form action='$deleteUrl' method='POST' style='display:inline; margin-right:2px'>
-                        " . csrf_field() . "
-                        " . method_field('DELETE') . "
-                        <button type='submit'  class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Store?\")'>
-                            <i class='voyager-trash'></i>
-                        </button>
-                    </form> 
                 </div>";
 
                 return $btn;

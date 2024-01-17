@@ -82,16 +82,31 @@ class EmployeeController extends Controller
     ]);
 }
 
-public function edit($id)
-{
 
+public function edit(Request $request, $id)
+{
+    $employee = User::findOrFail($id);
+    $company = Company::findOrFail($employee->company_id);
+
+    $usersAssignedToStore = User::where('store_id', $employee->store_id)->get();
+    $usersRegisteredByCompany = User::where('company_id', $employee->company_id)->get();
+
+    $usersAssignedToStore->load('roles');
+
+    return view('voyager::employee.edit', compact('employee', 'usersAssignedToStore', 'usersRegisteredByCompany'));
+}
+
+public function delete($id)
+{
+    $employee = User::findOrFail($id);
+    $employee->delete();
+    // Redirect back to the initial page
+    return redirect()->route('voyager.employee.index')->with('success', 'Employee deleted successfully');
 }
 
 
 
 
-
-
-    
+  
    
 }
