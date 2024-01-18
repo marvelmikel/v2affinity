@@ -29,58 +29,60 @@
             </thead>
             <tbody>
 
-                <tr class="border-y border-slate-200 divide-y divide-slate-200">
-                    @foreach($subs as $sub)
-                    @php
-                    switch($plans[$sub->plan_id]['billingFrequency']){
-                    case "12":
-                    $period = 'year';
-                    break;
-                    case "1":
-                    default:
-                    $period = 'month';
-                    break;
-                    }
-                    @endphp
-                    <td>
-                        <p class="col-span-9 lg:col-span-3 leading-tight">
-                            <strong class="text-slate-600 font-semibold"> {{ $plans[$sub->plan_id]['name'] }} </strong><br>
-                            <span class="text-slate-400">{{ $plans[$sub->plan_id]['description'] }}</span>
-                        </p>
-                    </td>
-                    <td class="col-span-3 lg:col-span-2 text-slate-600 font-semibold">
-                        <span class="px-4 py-1.5 text-white rounded @if($sub['status'] == 'Active') bg-green-600 @else bg-red-500  @endif">
-                            <i class="voyager-check">{{ $sub['status'] }}</i>
-                            </button>
-                    </td>
-                    <td>
-                        <strong class="text-slate-600 font-semibold"> @php
-                            $total = $plans[$sub->plan_id]['price'];
-                            foreach(json_decode($sub['addOns'],true) as $addon){
-                            $total += $addon['amount'] * $addon['quantity'];
-                            }
-                            @endphp
-                            £{{ number_format($total, 2) }}
-                        </strong><br>
-                        <span class="text-slate-400">per {{ $period }}</span>
-                    </td>
+                @foreach($subs as $sub)
+                    <tr class="border-y border-slate-200 divide-y divide-slate-200">
+                    
+                        @php
+                        switch($plans[$sub->plan_id]['billingFrequency']){
+                        case "12":
+                        $period = 'year';
+                        break;
+                        case "1":
+                        default:
+                        $period = 'month';
+                        break;
+                        }
+                        @endphp
+                        <td>
+                            <p class="col-span-9 lg:col-span-3 leading-tight">
+                                <strong class="text-slate-600 font-semibold"> {{ $plans[$sub->plan_id]['name'] }} </strong><br>
+                                <span class="text-slate-400">{{ $plans[$sub->plan_id]['description'] }}</span>
+                            </p>
+                        </td>
+                        <td class="col-span-3 lg:col-span-2 text-slate-600 font-semibold">
+                            <span class="px-4 py-1.5 text-white rounded @if($sub['status'] == 'Active') bg-green-600 @else bg-red-500  @endif">
+                                <i class="voyager-check">{{ $sub['status'] }}</i>
+                                </button>
+                        </td>
+                        <td>
+                            <strong class="text-slate-600 font-semibold"> @php
+                                $total = $plans[$sub->plan_id]['price'];
+                                foreach(json_decode($sub['addOns'],true) as $addon){
+                                $total += $addon['amount'] * $addon['quantity'];
+                                }
+                                @endphp
+                                £{{ number_format($total, 2) }}
+                            </strong><br>
+                            <span class="text-slate-400">per {{ $period }}</span>
+                        </td>
 
-                    <td>
-                        <p class="col-span-6 lg:col-span-2 text-slate-600 font-semibold">
-                            {{ \Carbon\Carbon::parse($sub['nextBillingDate'])->format('jS F Y') }}
-                        </p>
-                    </td>
+                        <td>
+                            <p class="col-span-6 lg:col-span-2 text-slate-600 font-semibold">
+                                {{ \Carbon\Carbon::parse($sub['nextBillingDate'])->format('jS F Y') }}
+                            </p>
+                        </td>
 
-                    <td>
-                        @if($sub->status !== 'Canceled')
-                        <x-button-link href="{{ route('subscription-edit', [$sub->id]) }}" format="wire" style="text-decoration: none;">
-                            <i class="voyager-edit"></i> Edit
-                        </x-button-link>
+                        <td>
+                            @if($sub->status !== 'Canceled')
+                            <x-button-link href="{{ route('subscription-edit', [$sub->id]) }}" format="wire" style="text-decoration: none;">
+                                <i class="voyager-edit"></i> Edit
+                            </x-button-link>
 
-                        @endif
-                    </td>
-                    @endforeach
-                </tr>
+                            @endif
+                        </td>
+                    
+                    </tr>
+                @endforeach
             </tbody>
         </table>
 

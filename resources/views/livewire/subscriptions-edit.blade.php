@@ -273,7 +273,7 @@
             <x-button wire:click="$set('edit', false)" format="wire" type="button" class="text-lg rounded-full">
                 Cancel
             </x-button>
-            <x-button format="wire" type="button" @click="$wire.set('edit', 'switch')" class="rounded-full">
+            <x-button format="wire" type="button" @click="$wire.cancelSubscription()" class="rounded-full">
                 <i class="fa-solid fa-pencil mr-2"></i>Switch Plan
             </x-button>
             <x-button type="submit" class="text-lg rounded-full">
@@ -309,12 +309,13 @@
             @endphp
             <li>
                 <input wire:model="inputPlan.plan_id" wire:click="calcTotalSwitch" type="radio" id="{{ $plan['id'] }}" name="plan" value="{{ $plan['id'] }}" class="col-span-12 peer" required>
+                
                 <label for="{{ $plan['id'] }}" class="group inline-flex flex-col gap-1.5 w-full px-5 py-3 text-slate-500 bg-white border border-slate-200 rounded-lg cursor-pointer peer-checked:border-purple-600 peer-checked:bg-purple-50 peer-checked:text-purple-600 hover:text-slate-600 hover:bg-slate-100">
                     <span class="font-medium text-slate-400 text-sm tracking-wider uppercase">{{ $period }}ly</span>
                     <div class="flex items-center justify-between" style="border: 1px solid #3330;">
                         <p class="leading-none">
                             <strong class="block text-2xl text-slate-700 font-semibold">
-                                £{{ number_format(current($plan['addOns'])['amount'], 2) }}
+                                 £{{ number_format($plan['price'], 2) }}
                                 <span class="text-base text-slate-500">/ {{ $period }}</span>
                             </strong>
                             <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
@@ -322,6 +323,8 @@
                         <i class="fa-circle-check fa-solid group-peer-checked:opacity-100 opacity-0 text-2xl text-green-500"></i>
                     </div>
                 </label>
+
+
             </li>
         </ul>
 
@@ -380,7 +383,7 @@
                 Cancel
             </x-button>
             <x-button type="submit" class="text-lg rounded-full">
-                Save
+                Continue
             </x-button>
         </div>
     </form>

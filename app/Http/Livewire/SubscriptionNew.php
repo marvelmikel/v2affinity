@@ -73,6 +73,7 @@ class SubscriptionNew extends Component
     /* Mount predefined values into view */
     public function mount()
     {
+        /* Check if user is logged in */
         $user = auth()->user();
 
         /* Load Plans */

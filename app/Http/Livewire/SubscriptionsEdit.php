@@ -257,6 +257,7 @@ class SubscriptionsEdit extends Component
         // Update or switch subscription
         if ($switch) {
             $update = $this->updateSubscriptionPlan($request);
+           return  $this->cancelSubscription();
         } else {
             $update = $this->updateSubscription($request);
         }
@@ -277,21 +278,9 @@ class SubscriptionsEdit extends Component
     }
 
     public function updateSubscriptionPlan(UpdateSubscriptionRequest $request)
-{
-    // Your logic for updating the subscription plan goes here
-
-    // Example code to handle the update request
-    $response = ['success' => false]; // Default response
-    if ($request->isValid()) {
-        // Perform the actual update operation
-        // You can access the values from the request using $request->get('subscription_id'), $request->get('plan_id'), etc.
-
-        // Set the success flag to true if the update is successful
-        $response['success'] = true;
+    {
+        
     }
-
-    return $response;
-}
 
 
     public function setQuantity($addon)
