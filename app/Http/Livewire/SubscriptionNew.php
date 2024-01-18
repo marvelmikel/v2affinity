@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Registration extends Component
+class SubscriptionNew extends Component
 {
     use PaymentGateway;
     use WithFileUploads;
@@ -55,7 +55,6 @@ class Registration extends Component
     public $selected_plan = [
         'plan_id' => '',
         'addons' => [],
-
         'discounts' => [],
     ];
 
@@ -74,29 +73,7 @@ class Registration extends Component
     /* Mount predefined values into view */
     public function mount()
     {
-        /* Check if user is logged in */
-        if ($user = auth()->user()) {
-            /* Check if company exists and populate data */
-            if ($company = $user->company) {
-                $this->company['id'] = $company->id;
-                $this->company['company_name'] = $company->company_name;
-                $this->company['company_address'] = $company->company_address;
-                $this->company['company_phone'] = $company->company_phone;
-                $this->company['company_email'] = $company->company_email;
-                $this->company['company_number'] = $company->company_number;
-                $this->company['vat_number'] = $company->vat_number;
-                $this->company['logo'] = $company->logo;
-            }
-
-            $this->user['id'] = $company->id;
-            $this->user['name'] = $user->name;
-            $this->user['email'] = $user->email;
-            // $this->user['password'] = $user->password;
-            // $this->user['password_confirmation'] = $user->password;
-
-
-            $this->step = 2;
-        }
+        $user = auth()->user();
 
         /* Load Plans */
         $this->plans = Plan::orderBy('billingFrequency')->get()->keyBy('id')->toArray();
@@ -109,91 +86,16 @@ class Registration extends Component
     }
 
 
-    /* Register new user */
-    public function register_user()
-    {
-        /* Turn off loader */
-        $this->load = false;
+   
 
-        /* Validate user details */
-        $this->validate([
-            'user.name' => ['required', 'string', 'max:255'],
-            'user.email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                auth()->user() ? '' : 'unique:users,email',
-            ],
-            'user.password' => ['required', 'string', 'confirmed'],
-        ]);
-
-        /* Create user and set as Company Admin */
-        $user = User::updateOrCreate([
-            'email' => $this->user['email']
-        ],[
-            'name' => $this->user['name'],
-            'email' => $this->user['email'],
-            'password' => Hash::make($this->user['password']),
-        ]);
-
-        /* Log new user in */
-        auth()->login($user);
-
-        /* Clear user details */
-        // $this->reset('user');
-
-        /* Move to step 2 */
-        $this->step = 2;
-    }
-
-    /* Register company details */
-    public function register_company()
-    {
-        /* Turn off loader */
-        $this->load = false;
-
-        /* Validate input */
-        $this->validate([
-            'company.company_name' => 'required|string',
-            'company.company_address' => 'required|string',
-            'company.company_phone' => 'required|string',
-            'company.company_email' => 'required|string',
-            'company.company_number' => 'sometimes|string',
-            'company.vat_number' => 'sometimes|string',
-            'company.phone_no' => 'sometimes|string',
-            'company.logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        /* Create company and assign to user */
-        $user = auth()->user();
-
-        $company = $user->company()->updateOrCreate([
-            'id' => $this->company['id'],
-            'company_email' => $this->company['company_email'],
-            'company_name' => $this->company['company_name'],
-        ], $this->company);
-
-        $user->update(['company_id' => $company->id]);
-
-        $store = Store::where('company_id', $company->id)->firstOrFail(); // Assuming you have a Store model
-
-        /* Save store_id on the users table */
-        $user->store_id = $store->id;
-        $user->save();
-
-
-        /* Move to step 3 */
-        $this->step = 3;
-    }
+   
 
     public function selectSubscription()
     {
         /* Turn off loader */
         $this->load = false;
-
         /* move to next section of the form */
-        $this->step = 4;
+        $this->step = 2;
     }
 
     public function acceptTerms()
@@ -205,25 +107,6 @@ class Registration extends Component
         $this->load = false;
 
 
-        // if free trial skip step 5 and 6
-
-        if($this->freetrial){
-           
-            $user = auth()->user();
-            $user->company->update([
-                'active' => true,
-                'terms_accepted' => now(),
-            ]);
-            $user->role_id = 2;
-            $user->save();
-            
-             /* Flash message and redirect to dashboard */
-            session()->flash('alert-success', 'Free trial activated.');
-            return redirect()->route('voyager.profile');
-        }else{
-            /* Move to step 5*/
-            $this->step = 5;
-        }
        
     }
 
@@ -237,21 +120,21 @@ class Registration extends Component
         $this->load = false;
 
 
-    /* Check for any addons */
-    if (!empty($this->selected_plan['addons'])) {
-        foreach ($this->selected_plan['addons'] as $addonId => $addon) {
-            /* Set default addon quantity to 3 if it's zero or empty */
-            if (empty($addon['quantity'])) {
-                $this->selected_plan['addons'][$addonId]['quantity'] = 1;
-            } else {
-                /* Add the increased quantity to the default 3 value */
-                $this->selected_plan['addons'][$addonId]['quantity'] += 1;
+        /* Check for any addons */
+        if (!empty($this->selected_plan['addons'])) {
+            foreach ($this->selected_plan['addons'] as $addonId => $addon) {
+                /* Set default addon quantity to 3 if it's zero or empty */
+                if (empty($addon['quantity'])) {
+                    $this->selected_plan['addons'][$addonId]['quantity'] = 1;
+                } else {
+                    /* Add the increased quantity to the default 3 value */
+                    $this->selected_plan['addons'][$addonId]['quantity'] += 1;
+                }
             }
         }
-    }
 
         /* Move to step 6*/
-        $this->step = 6;
+        $this->step = 3;
     }
 
     public function register_nonce($nonce)
@@ -361,38 +244,11 @@ class Registration extends Component
 
     public function render()
     {
-        return view('livewire.registration');
+        return view('livewire.subscription-new');
     }
 
 
 
-    public function skipBilling()
-    {
-        $this->billing = [
-            'firstName' => 'John',
-            'lastName' => 'Doe',
-            'company' => 'John Doe Inc',
-            'streetAddress' => 'Albana',
-            'extendedAddress' => 'United States',
-            'locality' => 'US',
-            'region' => 'US',
-            'postalCode' => '433333',
-            'countryName' => 'United Kingdom',
-        ];
-
-        //  submit form
-        $this->company_billing();
-
-    }
-
-    public function activateFreeTrial()
-    {
-        $this->freetrial = true;
-        $user = auth()->user();
-        $user->company->update([
-            'trial_ends_at' => now()->addDays(30),
-        ]);
-        $this->step = 4;
-    }
+    
 
 }

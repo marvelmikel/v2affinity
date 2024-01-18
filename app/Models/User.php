@@ -63,8 +63,6 @@ class User extends \Modules\Admin\Models\User
         return $this->hasMany(UserActivityLog::class);
     }
     
-    
-    
 
     public function store() {
         
@@ -72,18 +70,26 @@ class User extends \Modules\Admin\Models\User
     }
 
     public function role()
-{
-    return $this->belongsTo(Role::class, 'role_id');
-}
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 
-public function employee()
-{
-    return $this->belongsTo(Employee::class);
-}
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 
-public function subscriptions() {
-    return $this->hasMany(Subscription::class, 'company_id', 'company_id');
-}
+    public function subscriptions() {
+        return $this->hasMany(Subscription::class, 'company_id', 'company_id');
+    }
+
+    public function activeSubscription() {
+        return $this->subscriptions()->where('status', 'Active')->exists();
+    }
+
+    public function onTrail() {
+        return $this->company->onTrial();
+    }
 
     
 }

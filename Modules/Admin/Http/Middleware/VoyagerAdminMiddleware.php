@@ -26,6 +26,7 @@ class VoyagerAdminMiddleware
             return $user->hasPermission('browse_admin') ? $next($request) : redirect('/register');
         }
 
+
         $urlLogin = route('voyager.login');
 
         return redirect()->guest($urlLogin);
