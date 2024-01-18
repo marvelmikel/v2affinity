@@ -103,7 +103,7 @@
                                 <label for="name">Company Status</label>
                                 <select class="form-control" name="active" id="">
                                     <option value="">Select Status</option>
-                                    <option  value="1" {{ $companyData['active'] == 1 ? 'selected' : '' }}>Active</option>
+                                    <option value="1" {{ $companyData['active'] == 1 ? 'selected' : '' }}>Active</option>
                                     <option value="0" {{ $companyData['active'] == 0 ? 'selected' : '' }}>Inactive</option>
                                 </select>
                             </div>
@@ -145,15 +145,15 @@
                                     </thead>
                                     <tbody id="subscriptionTableBody">
                                         <tr role="row">
-                                            <td>{{ $subscription->id }}</td>
-                                            <td>hjhddhdh</td>
-                                            <td>dnd</td>
-                                            <td>dndnd</td>
-                                            <td>dsjhdhd</td>
-                                            <td>dbdbd</td>
-                                            <td>dndndndndnd</td>
+                                            <td>{{ $subscription->id ?? 'no sub' }}</td>
+                                            <td>{{ $subscription->plan?->name ?? 'no plan' }}</td>
+                                            <td>{{ $subscription->price  ?? '' }}</td>
+                                            <td>{{ $subscription->trial_period  ?? '' }}</td>
+                                            <td>{{ $subscription->billing_cycle  ?? '' }}</td>
+                                            <td>{{ $subscription->status  ?? '' }}</td>
+                                            <td>{{ $subscription->created_at  ?? '' }}</td>
                                         </tr>
-                                      
+
 
                                     </tbody>
                                 </table>
