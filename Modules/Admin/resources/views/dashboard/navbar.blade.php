@@ -76,26 +76,30 @@
 
             {{-- Get date subscription was created--}}
             @php 
-    $trial = null;
-    $subscription = auth()->user()->subscriptions->where('status', 'Active')->first();
-    if ($subscription && $subscription->status !== 'Cancelled') {
-        $trial = $subscription->created_at;
-    } else {
-        auth()->logout();
-        return redirect(env('APP_URL') . 'cancel');
-    }
-@endphp
-
+                $trial = null;
+                $subscription = auth()->user()->subscriptions->where('status', 'Active')->first();
+                if ($subscription && $subscription->status !== 'Cancelled') {
+                    $trial = $subscription->created_at;
+                } else {
+                    $trial = Auth::user()->company->trial_ends_at;
+                    $trialIsActive = \Illuminate\Support\Carbon::parse($trial)->isFuture();
+                }
+            @endphp
 
             {{-- Show warning message for trial period --}}
-            @if($trial->addDays(7) > now())
-            @if(Auth::user()->role_id !== 1)
-            <p style="border-radius: 4px; padding: 20px; background-color: #FFCCCC; border: 1px solid #EF4444; margin: 0; color: #000; text-align:center;">
-                <code>IMPORTANT</code>: You have {{ $trial->diffInDays(now()) }} day(s) left in your trial. Please: <a href="#" data-toggle="modal" data-target="#add_item_column_modal">click here</a> to read more information about this period.
-            </p>
+            @if( $trial  && $trialIsActive  )
+                @if(Auth::user()->role_id !== 1)
+                    <p style="border-radius: 4px; padding: 20px; background-color: #FFCCCC; border: 1px solid #EF4444; margin: 0; color: #000; text-align:center;">
+                        <code>IMPORTANT</code>: You have {{\Illuminate\Support\Carbon::parse( $trial)->diffInDays(now()) }} day(s) left in your trial. Please: <a href="#" data-toggle="modal" data-target="#add_item_column_modal">click here</a> to read more information about this period.
+                    </p>
+                @endif
+            @elseif(!$subscription && !$trialIsActive)
+                 @if(Auth::user()->role_id !== 1)
+                    <p style="border-radius: 4px; padding: 20px; background-color: #FFCCCC; border: 1px solid #EF4444; margin: 0; color: #000; text-align:center;">
+                        <code>IMPORTANT</code>: You don't have an active subscription. Go to: <a href="{{ route('company.subscriptions') }}">Billing</a> .
+                    </p>
+                @endif
             @endif
-            @endif
-
 
         </div>
     </div>

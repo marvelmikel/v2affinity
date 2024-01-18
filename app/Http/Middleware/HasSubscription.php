@@ -17,17 +17,19 @@ class HasSubscription
      */
     public function handle(Request $request, Closure $next)
     {
-        dd('sd');
         if (!Auth::guest()) {
             $user = Auth::user();
-            if($user->subscription){
-                dd('sd');
+            if($user->activeSubscription() || $user->onTrail() ){
                 return $next($request);
+            }else{
+                // redirect to subscription or billing page
+                session()->flash('alert-info', 'You dont have an active subscription');
+                return redirect()->route('company.subscriptions');
+              
             }
 
         }
-        
-        $urlLogin = route('voyager.register');
+        $urlLogin = route('register');
         return redirect()->guest($urlLogin);
     }
 }

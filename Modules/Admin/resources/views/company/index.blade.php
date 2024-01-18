@@ -82,10 +82,23 @@
 
 
     <!-- Company Subscription Info -->
-    <div class="card">
-        @livewire('subscriptions')
-    </div>
-    <!-- End Company Subscription Info -->
+    @if(auth()->user()->activeSubscription() )
+        <div class="card">
+            @livewire('subscriptions')
+        </div>
+        <!-- End Company Subscription Info -->
+
+    @elseif( auth()->user()->onTrail())
+        <div class="py-12">
+           
+                <div class="bg-white overflow-hidden shadow-sm rounded-lg p-10 text-gray-900">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        @livewire('subscription-new')
+                     </div>
+                </div>
+           
+        </div>
+    @endif
 
     <br><br>
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Company extends Model
 {
@@ -21,6 +22,7 @@ class Company extends Model
         'active',
         'terms_accepted',
         'created_at',
+        'trial_ends_at',
         'updated_at',
         'deleted_at',
     ];
@@ -48,6 +50,19 @@ class Company extends Model
     public function roomLocations()
     {
         return $this->hasMany(RoomLocation::class);
+    }
+
+    /**
+     * Determine if the subscription is within its trial period.
+     *
+     * @return bool
+     */
+    public function onTrial()
+    {
+        if($this->trial_ends_at){
+            return Carbon::parse( $this->trial_ends_at)->isFuture();
+        }
+        return false;
     }
 
     protected static function boot()
@@ -96,8 +111,8 @@ class Company extends Model
     }
 
     public function subscription()
-{
-    return $this->hasOne(Subscription::class);
-}
+    {
+        return $this->hasOne(Subscription::class);
+    }
 
 }

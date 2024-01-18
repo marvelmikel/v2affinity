@@ -325,9 +325,10 @@ class SubscriptionsEdit extends Component
         Mail::to(auth()->user())->send(new SubscriptionCancelled($this->subscription));
 
         // Log out the user
-        Auth::logout();
+        // Auth::logout();
 
         // Redirect to dashboard
-        return redirect()->route('cancel');
+        session()->flash('alert-success', 'Subscription cancelled successfully.');
+        return redirect()->route('company.subscriptions');
     }
 }
