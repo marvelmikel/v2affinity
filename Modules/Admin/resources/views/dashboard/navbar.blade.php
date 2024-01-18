@@ -79,8 +79,8 @@
                 $trial = null;
                 $subscription = auth()->user()->subscriptions->where('status', 'Active')->first();
                 if ($subscription && $subscription->status !== 'Cancelled') {
-                    $trial = $subscription->created_at;
-                    $trialIsActive = true;
+                    $trial = \Illuminate\Support\Carbon::parse( $subscription->created_at )->addDays(7);
+                    $trialIsActive = $trial->isFuture();
                 } else {
                     $trial = Auth::user()->company->trial_ends_at;
                     $trialIsActive = \Illuminate\Support\Carbon::parse($trial)->isFuture();
@@ -91,7 +91,7 @@
             @if( $trial  && $trialIsActive  )
                 @if(Auth::user()->role_id !== 1)
                     <p style="border-radius: 4px; padding: 20px; background-color: #FFCCCC; border: 1px solid #EF4444; margin: 0; color: #000; text-align:center;">
-                        <code>IMPORTANT</code>: You have {{\Illuminate\Support\Carbon::parse( $trial)->diffInDays(now()) }} day(s) left in your trial. Please: <a href="#" data-toggle="modal" data-target="#add_item_column_modal">click here</a> to read more information about this period.
+                        <code>IMPORTANT</code>: You have {{ $trial->diffInDays(now()) }} day(s) left in your trial. Please: <a href="#" data-toggle="modal" data-target="#add_item_column_modal">click here</a> to read more information about this period.
                     </p>
                 @endif
             @elseif(!$subscription && !$trialIsActive)
