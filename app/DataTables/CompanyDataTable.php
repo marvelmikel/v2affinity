@@ -100,7 +100,6 @@ class CompanyDataTable extends DataTable
             Column::make('company_number'),
             Column::make('vat_number'),
             Column::make('created_at'),
-            Column::make('updated_at'),
             Column::computed('action')
                 ->exportable(true)
                 ->printable(true)

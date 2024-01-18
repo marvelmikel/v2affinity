@@ -40,4 +40,10 @@ class Subscription extends Model
     return $this->belongsTo(Company::class);
 }
 
+public function plans()
+{
+    return $this->belongsToMany(Plan::class);
+}
+
+
 }

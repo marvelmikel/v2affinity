@@ -16,7 +16,7 @@
 @section('page_header')
 <h1 class="page-title">
     <i class="voyager-company"></i>
- List of  Companies
+    Company
 </h1>
 @stop
 
@@ -28,7 +28,7 @@
 
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('company.update', $company->id) }}" method="POST" enctype="multipart/form-data">
                     <!-- CSRF TOKEN -->
                     @csrf
                     @method('PUT')
@@ -48,49 +48,68 @@
 
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <label for="name">Company Name</label>
-                                <input class="form-control" type="text" value="" name="name" id="">
+                                <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Company Name</label>
+                                <input class="form-control" type="text" value="{{ $companyData['company_name'] }}" name="company_name" id="">
                             </div>
 
                             <div class="col-md-4">
-                                <label for="name">Company Email</label>
-                                <input class="form-control" type="text" value="" name="email" id="">
+                                <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Company Address</label>
+                                <input class="form-control" type="text" value="{{ $companyData['company_address'] }}" name="company_address" id="">
                             </div>
 
 
+
                             <div class="col-md-4">
-                                <label for="name">Company Contact</label>
-                                <input class="form-control" type="text" value="" name="email" id="">
+                                <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Company Phone</label>
+                                <input class="form-control" type="text" value="{{ $companyData['company_phone'] }}" name="company_phone" id="">
                             </div>
 
                         </div>
 
                         <div class="form-group row">
-                        <div class="col-md-4">
-                                <label for="name">Company Address</label>
-                                <input class="form-control" type="text" value="" name="email" id="">
+                            <div class="col-md-4">
+                                <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Company Email</label>
+                                <input class="form-control" type="text" value="{{ $companyData['company_email'] }}" name="company_email" id="">
                             </div>
 
                             <div class="col-md-4">
-                                <label for="name">Company Number</label>
-                                <input class="form-control" type="text" value="" name="email" id="">
+                                <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Company Reg Number</label>
+                                <input class="form-control" type="text" value="{{ $companyData['company_number'] }}" name="company_number" id="">
                             </div>
 
                             <div class="col-md-4">
-                                <label for="name">Vat Number</label>
-                                <input class="form-control" type="text" value="" name="email" id="">
+                                <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Vat Number</label>
+                                <input class="form-control" type="text" value="{{ $companyData['vat_number'] }}" name="vat_number" id="">
                             </div>
+
+
+
                         </div>
+
+
+
 
                         <div class="form-group row">
                             <div class="col-md-4">
-                            <label for="name">Store Logo</label>
-                              
-                                <img src="" alt="Store Logo" style="width: 50%; height: auto;">
+                                <label for="terms_conditions" style="font-weight:bolder;">
+                                    <h3 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Terms & Conditions</h3>
+                                </label>
+                                <input type="hidden" name="terms_conditions" id="terms_conditions" class="form-control richTextBox" style="font-size:20px;" value="{{ $companyData['terms_conditions'] }}">
+                                <trix-editor input="terms_conditions" class="trix-content"></trix-editor>
                             </div>
 
-                            <input type="file" value="" name="store_logo" id="">
+
+                            <div class="col-md-4">
+                                <label for="name">Company Status</label>
+                                <select class="form-control" name="active" id="">
+                                    <option value="">Select Status</option>
+                                    <option  value="1" {{ $companyData['active'] == 1 ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ $companyData['active'] == 0 ? 'selected' : '' }}>Inactive</option>
+                                </select>
+                            </div>
+
                         </div>
+
                     </div><!-- panel-body -->
                     <div class="panel-footer">
                         <button type="submit" class="btn btn-primary">Update</button>
@@ -99,14 +118,14 @@
 
             </div>
 
-              <!-- Subcription History -->
-          <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;">
+            <!-- Subcription History -->
+            <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;">
                 <div>
-                    <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">  <i class="voyager-paypal"></i> Subscription History</h2>
+                    <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700"> <i class="voyager-paypal"></i> Subscription History</h2>
                     <p class="font-medium lg:text-lg text-slate-500">Please find your subscription history below.</p>
                 </div>
             </header>
-    
+
             <div class="container-fluid" style="padding-left:0px">
                 <div class="row">
                     <div class="col-md-12">
@@ -125,17 +144,17 @@
                                         </tr>
                                     </thead>
                                     <tbody id="subscriptionTableBody">
-                                   
                                         <tr role="row">
-                                            <td>i</td>
-                                            <td>dndjhd</td>
+                                            <td>{{ $subscription->id }}</td>
+                                            <td>hjhddhdh</td>
                                             <td>dnd</td>
                                             <td>dndnd</td>
                                             <td>dsjhdhd</td>
                                             <td>dbdbd</td>
                                             <td>dndndndndnd</td>
                                         </tr>
-                                     
+                                      
+
                                     </tbody>
                                 </table>
                             </div>
@@ -159,4 +178,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js">
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 @endsection
