@@ -80,6 +80,7 @@
                 $subscription = auth()->user()->subscriptions->where('status', 'Active')->first();
                 if ($subscription && $subscription->status !== 'Cancelled') {
                     $trial = $subscription->created_at;
+                    $trialIsActive = true;
                 } else {
                     $trial = Auth::user()->company->trial_ends_at;
                     $trialIsActive = \Illuminate\Support\Carbon::parse($trial)->isFuture();
