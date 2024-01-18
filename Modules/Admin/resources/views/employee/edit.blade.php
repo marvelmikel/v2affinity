@@ -16,7 +16,7 @@
 @section('page_header')
 <h1 class="page-title">
     <i class="voyager-people"></i>
-   Employee Information
+    Employee Information
 </h1>
 @stop
 
@@ -28,7 +28,8 @@
 
             <div class="panel panel-bordered">
                 <!-- form start -->
-                <form class="form-edit-add" role="form" action="" method="POST" enctype="multipart/form-data">
+                <form class="form-edit-add" role="form" action="{{ route('employee.update', ['employeeId' => $employee->id]) }}" method="POST" enctype="multipart/form-data">
+
                     <!-- CSRF TOKEN -->
                     @csrf
                     @method('PUT')
@@ -49,42 +50,38 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="name">Name</label>
-                                <input class="form-control" type="text" value="" name="name" id="">
+                                <input class="form-control" type="text" value="{{ $employee->name }}" name="name" id="">
                             </div>
 
                             <div class="col-md-4">
                                 <label for="name">Email</label>
-                                <input class="form-control" type="text" value="" name="email" id="">
+                                <input class="form-control" type="text" value="{{ $employee->email}}" name="email" id="">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="store_id">Select Store</label>
+                                <select class="form-control" name="store_id" id="store_id" required>
+                                    <option value="">Select a Store</option>
+                                    @foreach ($stores as $store)
+                                    <option value="{{ $store->id }}" {{ $employee->store_id == $store->id ? 'selected' : '' }}>
+                                        {{ $store->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
 
 
                             <div class="col-md-4">
-                                <label for="store_id">Select Store </label>
-                                <select class="form-control" name="store_id" id="store_id" required>
-                                    <option value="">Select a Store</option>
-                                   
-                                    <option value="">testing </option>
-                                    <option value="">testing </option>
-                                  
+                                <label for="role_id">User Role</label>
+                                <select class="form-control" name="role_id" id="role_id" required>
+                                    <option value="">Select a Role</option>
+                                    @foreach ($usersRegisteredByCompany as $user)
+                                    <option value="{{ $user->role_id }}" {{ $employee->role_id == $user->role_id ? 'selected' : '' }}>
+                                        {{ $user->role->name }}
+                                    </option>
+                                    @endforeach
+
                                 </select>
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-                        <div class="col-md-4">
-                                <label for="store_id">User Role</label>
-                                <select class="form-control" name="store_id" id="store_id" required>
-                                    <option value="">Select a Store</option>
-                                    <option value="">testing </option>
-                                    <option value="">testing </option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="name">Password</label>
-                                <input type="text" class="form-control" type="text" value="" name="address_county" id="">
                             </div>
                         </div>
                     </div><!-- panel-body -->

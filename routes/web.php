@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('stores', [StoreController::class, 'store'])->name('voyager.stores.store');
         Route::delete('/stores/{id}/delete', [StoreController::class, 'delete'])->name('voyager.stores.delete');
         Route::put('/stores/{storeId}', [StoreController::class, 'update'])->name('stores.update');
-        // Route::delete('/store-employee/{id}', [StoreController::class, 'deleteStore'])->name('delete-store');
+        Route::delete('/store-employee/{id}', [StoreController::class, 'deleteStore'])->name('delete-store');
 
 
        

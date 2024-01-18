@@ -153,7 +153,7 @@
 
                                 <td colspan="3">
                                     <!-- Non-admin actions -->
-                                    <form action="{{ route('delete-store-employee', $user->id) }}" method="POST">
+                                    <form action="{{ route('delete-store', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
