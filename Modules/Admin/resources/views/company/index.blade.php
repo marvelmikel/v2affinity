@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="admin-section-title">
-                <h3><i class="voyager-company"></i> {{ __('Company') }}</h3>
+                <h3><i class="voyager-company"></i> {{ __('Companies') }}</h3>
             </div>
             <div class="clear"></div>
             <div class="card">
@@ -36,27 +36,27 @@
 
         <div class="form-group row">
             <div class="col-md-4">
-                <label for="company_name">Company Name</label>
+                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_name">Company Name</label>
                 <input type="text" name="company_name" id="company_name" value="{{ $companyData['company_name'] }}" class="form-control" readonly style="background-color: white; color:black;font-weight:bolder;">
             </div>
 
             <div class="col-md-4">
-                <label for="company_address">Company Address</label>
+                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_address">Company Address</label>
                 <input type="tel" name="company_address" id="company_address" value="{{ $companyData['company_address'] }}" class="form-control" readonly style="background-color: white;color:black; font-weight:bolder;">
             </div>
 
             <div class="col-md-4">
-                <label for="company_phone">Company Phone Number</label>
+                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_phone">Company Phone Number</label>
                 <input type="tel" name="company_phone" id="company_phone" value="{{ $companyData['company_phone'] }}" class="form-control" readonly style="background-color: white; color:black; font-weight:bolder;">
             </div>
 
             <div class="col-md-4">
-                <label for="company_email">Company Email</label>
+                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_email">Company Email</label>
                 <input type="tel" name="company_email" id="company_email" value="{{ $companyData['company_email'] }}" class="form-control" readonly style="background-color: white; color:black; font-weight:bolder;">
             </div>
 
             <div class="col-md-4">
-                <label for="company_number">Company Reg Number</label>
+                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_number">Company Reg Number</label>
                 <input type="tel" name="company_number" id="company_number" value="{{ $companyData['company_number'] }}" class="form-control" readonly style="background-color: white; color:black; font-weight:bolder;">
             </div>
 
@@ -65,7 +65,7 @@
 
         <div class="form-group row">
             <div class="col-md-12">
-                <label for="terms_conditions" style="font-weight:bolder;">
+                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="terms_conditions" style="font-weight:bolder;">
                     <h1>Terms & Conditions</h1>
                 </label>
                 <br>
@@ -117,27 +117,27 @@
 
             <div class="form-group row">
                 <div class="col-md-4">
-                    <label for="company_name">Company Name</label>
+                    <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_name">Company Name</label>
                     <input type="text" name="company_name" id="company_name" style="color:black; font-weight:bolder;" value="{{ $companyData['company_name'] }}" class="form-control" required>
                 </div>
 
                 <div class="col-md-4">
-                    <label for="company_address">Company Address</label>
+                    <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_address">Company Address</label>
                     <input type="tel" name="company_address" id="company_address" style="color:black; font-weight:bolder;" value="{{ $companyData['company_address'] }}" class="form-control" required>
                 </div>
 
                 <div class="col-md-4">
-                    <label for="company_phone">Company Phone Number</label>
+                    <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_phone">Company Phone Number</label>
                     <input type="tel" name="company_phone" id="company_phone" style="color:black; font-weight:bolder;" value="{{ $companyData['company_phone'] }}" class="form-control" required>
                 </div>
 
                 <div class="col-md-4">
-                    <label for="company_email">Company Email</label>
+                    <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_email">Company Email</label>
                     <input type="tel" name="company_email" id="company_email" style="color:black; font-weight:bolder;" value="{{ $companyData['company_email'] }}" class="form-control" required>
                 </div>
 
                 <div class="col-md-4">
-                    <label for="company_number">Company Reg Number</label>
+                    <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="company_number">Company Reg Number</label>
                     <input type="tel" name="company_number" id="company_number" style="color:black; font-weight:bolder;" value="{{ $companyData['company_number'] }}" class="form-control" required>
                 </div>
 
@@ -146,7 +146,7 @@
 
             <div class="form-group row">
                 <div class="col-md-12">
-                    <label for="terms_conditions" style="font-weight:bolder;">
+                    <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="terms_conditions" style="font-weight:bolder;">
                         <h3>Terms & Conditions</h3>
                     </label>
                     <input type="hidden" name="terms_conditions" id="terms_conditions" class="form-control richTextBox" style="font-size:20px;" value="{{ $companyData['terms_conditions'] }}">
@@ -155,7 +155,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Update Information</button>
+        <button type="submit" class="btn btn-primary">Update Info</button>
 
     </form>
 

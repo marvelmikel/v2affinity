@@ -82,16 +82,58 @@ class EmployeeController extends Controller
     ]);
 }
 
-public function edit($id)
-{
 
+public function edit(Request $request, $id)
+{
+    $employee = User::findOrFail($id);
+    $company = Company::findOrFail($employee->company_id);
+
+    $stores = Store::where('company_id', $employee->company_id)->get();
+
+    $usersAssignedToStore = User::where('store_id', $employee->store_id)->get();
+    $usersRegisteredByCompany = User::where('company_id', $employee->company_id)->get();
+
+    $usersAssignedToStore->load('roles');
+
+    return view('voyager::employee.edit', compact('employee', 'usersAssignedToStore', 'usersRegisteredByCompany', 'stores', ));
+}
+
+public function delete($id)
+{
+    $employee = User::findOrFail($id);
+    $employee->delete();
+    // Redirect back to the initial page
+    return redirect()->route('voyager.employee.index')->with('success', 'Employee deleted successfully');
+}
+
+public function update()
+{
+    $validatedData = request()->validate([
+        'name' => 'required',
+        'email' => 'required|email',
+        'role_id' => 'required',
+        'store_id' => 'required',
+    ]);
+
+    $employee = User::findOrFail(request()->employeeId);
+
+    $employee->name = $validatedData['name'];
+    $employee->email = $validatedData['email'];
+    $employee->role_id = $validatedData['role_id'];
+    $employee->store_id = $validatedData['store_id'];
+
+    $employee->save();
+
+    // Redirect with success message
+    return redirect()->route('voyager.employee.index')->with([
+        'message' => 'Successfully updated user.',
+        'alert-type' => 'success',
+    ]);
 }
 
 
 
 
-
-
-    
+  
    
 }

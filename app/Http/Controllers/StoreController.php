@@ -143,7 +143,7 @@ class StoreController extends Controller
         return view('voyager::stores.edit', compact('store', 'usersAssignedToStore', 'usersRegisteredByCompany'));
     }
 
-    public function deleteStoreEmployee($id)
+    public function deleteStore($id)
     {
         $user = User::findOrFail($id);
 
@@ -152,7 +152,7 @@ class StoreController extends Controller
         $user->delete();
 
         return redirect()->back()->with([
-            'message' => 'Employee deleted successfully .',
+            'message' => 'Store deleted successfully .',
             'alert-type' => 'success',
         ]);
     }

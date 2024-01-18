@@ -81,13 +81,20 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('employee',   [EmployeeController::class, 'index'])->name('voyager.employee.index');
         Route::get('/employee/create', [EmployeeController::class, 'create'])->name('voyager.employee.create');
         Route::post('employee', [EmployeeController::class, 'store'])->name('voyager.employee.store');
+        Route::delete('/employee/{id}/delete', [EmployeeController::class, 'delete'])->name('voyager.employee.delete');
+        Route::get('/employee/{employeeId}/edit', [EmployeeController::class, 'edit'])->name('voyager.employee.edit');
+        Route::put('/employee/{employeeId}', [EmployeeController::class, 'update'])->name('employee.update');
+        
+       
     });
 
     // company profile
     Route::group(['middleware' => 'admin.user' ], function ()  {
         Route::get('/company',   [CompanyController::class, 'index'])->name('voyager.company.index');
-       
-        Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
+        Route::delete('/company/{id}/delete', [CompanyController::class, 'delete'])->name('voyager.company.delete');
+        Route::get('/company/{companyId}/edit', [CompanyController::class, 'edit'])->name('voyager.company.edit');
+        Route::put('/company/{companyId}', [CompanyController::class, 'update'])->name('company.update');
+    
         Route::get('/company/logs',   [CompanyController::class, 'show'])->name('voyager.company.logs');
         Route::post('/add-room-location', [CompanyController::class, 'addRoomLocation'])->name('addRoomLocation');
         Route::get('subscription/{subscription}/edit', [SubscriptionController::class, 'edit'])->name('subscription-edit');

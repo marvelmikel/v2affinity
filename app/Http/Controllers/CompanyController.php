@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\RoomLocation;
 use App\DataTables\CompanyDataTable;
-use App\Http\Requests\UpdateCompanyInfoRequest;
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Haruncpi\LaravelUserActivity\Models\Log; // Assuming the User model exists and has a relationship with Company
@@ -47,7 +47,6 @@ class CompanyController extends Controller
         if (!$company) {
             return redirect()->back()->with('error', 'Company not found.');
         }
-
         $company->update($request->all()); // Assuming $request->all() contains only fillable fields
 
         return redirect()->route('voyager.company.index')->with('success', 'Company details updated successfully.');
