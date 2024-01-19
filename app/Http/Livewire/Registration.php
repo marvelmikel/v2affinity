@@ -27,6 +27,7 @@ class Registration extends Component
     public $client, $plans, $total, $show_discount, $discount_code; 
     public $terms_accepted = false;
     public $freetrial = false;
+    public $addons = [];
 
     public $discount = [
         'id' => '94m6',
@@ -237,18 +238,19 @@ class Registration extends Component
         $this->load = false;
 
 
-    /* Check for any addons */
-    if (!empty($this->selected_plan['addons'])) {
-        foreach ($this->selected_plan['addons'] as $addonId => $addon) {
+        $selected_plan_id = $this->selected_plan['plan_id'];
+        $this->addons = [
+            'remove' => [],
+            'update' => [],
+        ];
+        foreach ( $this->plans[$selected_plan_id]['addOns'] as $addonId => $addon) {
             /* Set default addon quantity to 3 if it's zero or empty */
-            if (empty($addon['quantity'])) {
-                $this->selected_plan['addons'][$addonId]['quantity'] = 1;
+            if (empty($this->selected_plan['addons'][$addon['id']]) || empty($this->selected_plan['addons'][$addon['id']]['quantity'])) {
+                array_push($this->addons['remove'], $addon['id'] );
             } else {
-                /* Add the increased quantity to the default 3 value */
-                $this->selected_plan['addons'][$addonId]['quantity'] += 1;
+                array_push( $this->addons['update'], [ 'existingId' => $addon['id'], 'quantity' => $this->selected_plan['addons'][$addon['id']]['quantity'] ]) ;
             }
         }
-    }
 
         /* Move to step 6*/
         $this->step = 6;
@@ -261,7 +263,7 @@ class Registration extends Component
             'clientToken' => $this->client,
             'paymentMethodNonce' => $nonce,
             'plan_id' => $this->selected_plan['plan_id'],
-            'addons' => $this->selected_plan['addons'],
+            'addons' => $this->addons,
             'discounts' => $this->selected_plan['discounts']
         ];
 
@@ -270,7 +272,7 @@ class Registration extends Component
             'clientToken' => $this->client,
             'paymentMethodNonce' => $nonce,
             'plan_id' => $this->selected_plan['plan_id'],
-            'addons' => $this->selected_plan['addons'],
+            'addons' => $this->addons,
             'discounts' => $this->selected_plan['discounts']
         ]);
 

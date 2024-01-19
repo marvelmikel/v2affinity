@@ -21,6 +21,7 @@ class SubscriptionsEdit extends Component
     public $subscriptions;
     public $billing;
     public $client;
+    public $addons;
     public $creditCard = [
         'cardType' => '',
         'image' => '',
@@ -79,6 +80,20 @@ class SubscriptionsEdit extends Component
 
             // Populate extras
             $this->extras['addons'][$addon['id']] = ['quantity' => $addon['quantity']];
+
+            $this->addons = [
+                'remove' => [],
+                'update' => [],
+            ];
+            
+            if (empty($this->extras['addons'][$addon['id']]) || empty($this->extras['addons'][$addon['id']]['quantity'])  ) {
+                array_push($this->addons['remove'], $addon['id'] );
+            } else {
+                array_push( $this->addons['update'], [ 'existingId' => $addon['id'], 'quantity' =>  $addon['quantity']] ) ;
+            }
+
+            
+
         }
         $this->calcTotal();
 
@@ -225,6 +240,24 @@ class SubscriptionsEdit extends Component
     
     public function storeSubscription($switch = false)
     {
+
+        // $selected_plan_id = $this->selected_plan['plan_id'];
+        // $this->addons = [
+        //     'remove' => [],
+        //     'update' => [],
+        // ];
+        // foreach ( $this->plans[$selected_plan_id]['addOns'] as $addonId => $addon) {
+        //     /* Set default addon quantity to 3 if it's zero or empty */
+        //     if (empty($this->selected_plan['addons'][$addon['id']]) || empty($this->selected_plan['addons'][$addon['id']]['quantity'])) {
+        //         array_push($this->addons['remove'], $addon['id'] );
+        //     } else {
+        //         array_push( $this->addons['update'], [ 'existingId' => $addon['id'], 'quantity' => $this->selected_plan['addons'][$addon['id']]['quantity'] ]) ;
+        //     }
+        // }
+
+
+        dd($this->addons, $this->extras['addons']);
+
         // Check if plan is being switched or current plan is updated then build request array
         if ($switch) {
             $vals = [
@@ -235,12 +268,13 @@ class SubscriptionsEdit extends Component
                     'remove' => current(json_decode($this->subscription->addOns))->id,
                 ],
                 'discounts' => $this->inputPlan['discounts']
-            ];
+            ]; 
         } else {
             $vals = [
                 'subscription_id' => $this->subscription->id,
                 'plan_id' => $this->subscription->plan_id,
-                'addons' => $this->extras['addons'],
+                // 'addons' => $this->extras['addons'],
+                'addons' => $this->addons,
                 'discounts' => $this->extras['discounts']
             ];
         }
