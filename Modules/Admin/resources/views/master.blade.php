@@ -108,13 +108,13 @@
         @endif
     </div>
 
-    <?php
-if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'https://')) {
-    $user_avatar = Auth::user()->avatar;
-} else {
-    $user_avatar = Voyager::image(Auth::user()->avatar);
-}
-?>
+    @php
+        if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'https://')) {
+            $user_avatar = Auth::user()->avatar;
+        } else {
+            $user_avatar = Voyager::image(Auth::user()->avatar);
+        }
+    @endphp
 
     <div class="app-container">
         <div class="fadetoblack visible-xs"></div>

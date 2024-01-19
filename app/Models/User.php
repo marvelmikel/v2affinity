@@ -84,7 +84,7 @@ class User extends \Modules\Admin\Models\User
     }
 
     public function activeSubscription() {
-        return $this->subscriptions()->where('status', 'Active')->exists();
+        return $this->subscriptions()->where('status', 'Active')->first();
     }
 
     public function onTrail() {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('subscription_id')->nullable();
             $table->string('name')->nullable(); // users
             $table->string('value')->nullable(); // 
+            $table->string('identifier')->nullable(); // 
             $table->timestamps();
         });
     }
