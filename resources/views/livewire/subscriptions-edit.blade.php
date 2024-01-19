@@ -247,7 +247,13 @@
                     </p>
                     <p class="lg:col-span-12 text-slate-600 font-semibold" style="border:1px solid #fff">
                         <label for="addons[{{ $addon['id'] }}][quantity]" class="lg:col-span-12 text-slate-600 font-semibold">Qty:</label>
-                        <input wire:model="extras.addons.{{ $addon['id'] }}.quantity" wire:change="calcTotal()" type="number" min="0" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]" class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
+                        @php
+                            $existingAddons = json_decode($this->subscription['addOns'], true);
+                            $addonIndex =  array_search($addon['id'], array_column($existingAddons, 'id')) ?? 0;
+                        @endphp
+
+                        <input wire:model="extras.addons.{{ $addon['id'] }}.quantity" wire:change="calcTotal()" type="number" min="{{ $existingAddons[$addonIndex]['quantity'] }}" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]" class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
+                      
                     </p>
                     <p class="col-span-12 lg:block col-span-2 text-slate-600 font-semibold">
                         @if(!empty($extras['addons'][$addon['id']]) && !empty($extras['addons'][$addon['id']]['quantity']))

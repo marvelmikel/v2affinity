@@ -14,14 +14,13 @@ use Livewire\Component;
 use App\Traits\PaymentGateway;
 use Illuminate\Support\Facades\Auth;
 
-class SubscriptionsEdit extends Component
+class SubscriptionsDumpEdit extends Component
 {
     use PaymentGateway;
 
     public $subscriptions;
     public $billing;
     public $client;
-    public $addons;
     public $creditCard = [
         'cardType' => '',
         'image' => '',
@@ -80,20 +79,6 @@ class SubscriptionsEdit extends Component
 
             // Populate extras
             $this->extras['addons'][$addon['id']] = ['quantity' => $addon['quantity']];
-
-            $this->addons = [
-                'remove' => [],
-                'update' => [],
-            ];
-            
-            if (empty($this->extras['addons'][$addon['id']]) || empty($this->extras['addons'][$addon['id']]['quantity'])  ) {
-                array_push($this->addons['remove'], $addon['id'] );
-            } else {
-                array_push( $this->addons['update'], [ 'existingId' => $addon['id'], 'quantity' =>  $this->extras['addons'][$addon['id']]['quantity']] ) ;
-            }
-
-            
-
         }
         $this->calcTotal();
 
@@ -240,42 +225,23 @@ class SubscriptionsEdit extends Component
     
     public function storeSubscription($switch = false)
     {
-
-        foreach (json_decode($this->subscription['addOns'], true) as $addon) {
-
-            $this->addons = [
-                'remove' => [],
-                'update' => [],
-            ];
-            
-            if (empty($this->extras['addons'][$addon['id']]) || empty($this->extras['addons'][$addon['id']]['quantity'])  ) {
-                array_push($this->addons['remove'], $addon['id'] );
-            } else {
-                array_push( $this->addons['update'], [ 'existingId' => $addon['id'], 'quantity' =>  $this->extras['addons'][$addon['id']]['quantity']] ) ;
-            }
-
-        }
-
-
-
+        
         // Check if plan is being switched or current plan is updated then build request array
         if ($switch) {
             $vals = [
                 'subscription_id' => $this->subscription->id,
                 'plan_id' => $this->inputPlan['plan_id'],
-                // 'addons' => [
-                //     'add' => $this->inputPlan['addons'],
-                //     'remove' => current(json_decode($this->subscription->addOns))->id,
-                // ],
-                'addons' => $this->addons,
+                'addons' => [
+                    'add' => $this->inputPlan['addons'],
+                    'remove' => current(json_decode($this->subscription->addOns))->id,
+                ],
                 'discounts' => $this->inputPlan['discounts']
             ]; 
         } else {
             $vals = [
                 'subscription_id' => $this->subscription->id,
                 'plan_id' => $this->subscription->plan_id,
-                // 'addons' => $this->extras['addons'],
-                'addons' => $this->addons,
+                'addons' => $this->extras['addons'],
                 'discounts' => $this->extras['discounts']
             ];
         }
