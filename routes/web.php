@@ -59,7 +59,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 
      //  // Product Routes
-    Route::group(['middleware' => 'admin.user' ], function ()  {
+    Route::group(['middleware' => 'admin.user', 'has_subscription' ], function ()  {
         Route::post('products/{product}/add-product-column',   [ProductController::class, 'addProductColumn'])->name('voyager.products.add-product-column');
         Route::delete('/products/{id}/delete', [ProductController::class, 'destroy'])->name('voyager.products.delete');
         Route::get('/products-meta/{id}/delete', [ProductController::class, 'deleteMeta'])->name('product-meta.delete');
@@ -67,7 +67,7 @@ Route::group(['prefix' => 'admin'], function () {
   
 
       //Store  Routes
-    Route::group(['middleware' => 'admin.user' ], function ()  {
+    Route::group(['middleware' => 'admin.user', 'has_subscription' ], function ()  {
         Route::get('stores',   [StoreController::class, 'index'])->name('voyager.stores.index');
         Route::get('/stores/create', [StoreController::class, 'create'])->name('voyager.stores.create');
         Route::post('stores', [StoreController::class, 'store'])->name('voyager.stores.store');
@@ -77,7 +77,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
 
     // Add Employee Routes Store Manager & Sales Person 
-    Route::group(['middleware' => 'admin.user' ], function ()  {
+    Route::group(['middleware' => 'admin.user', 'has_subscription' ], function ()  {
         Route::get('employee',   [EmployeeController::class, 'index'])->name('voyager.employee.index');
         Route::get('/employee/create', [EmployeeController::class, 'create'])->name('voyager.employee.create');
         Route::post('employee', [EmployeeController::class, 'store'])->name('voyager.employee.store');
