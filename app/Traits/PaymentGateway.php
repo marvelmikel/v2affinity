@@ -193,7 +193,7 @@ trait PaymentGateway
             // 'addOns' => [
             //     'update' => $addons
             // ],
-            'addOns' => $validated['addons'],
+            'addOns' => $validated['addons'] ?? [],
             'discounts' => [
                 'update' => $discounts
             ]
