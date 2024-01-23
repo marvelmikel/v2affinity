@@ -32,6 +32,7 @@ class InvoicesDataTable extends DataTable
                 $deleteUrl = route('voyager.invoices.delete', $row->id);
                 
                 $btn = "<div style='display:flex;'>
+                <a href='' style='margin-right:2px' class='btn m- btn-warning btn-xs'><i class='voyager-logbook'></i></a>
                 <a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
                 <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
                 <form action='$deleteUrl' method='POST' style='display:inline'>

@@ -332,7 +332,7 @@
                                      <div class="modal-footer">
                                     <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close')}}</button>
                                     <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
-    </div>
+       </div>
                 </form>
             </div>
         </div>
