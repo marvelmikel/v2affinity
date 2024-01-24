@@ -11,7 +11,9 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+
 
 class ContactController extends Controller
 {
@@ -23,6 +25,15 @@ class ContactController extends Controller
     public function contactForm(ContactFormRequest $request): RedirectResponse
 {
     $fields = $request->all();
+
+    //Validate reCAPTCHA response
+    Validator::make($fields, [
+        'g-recaptcha-response' => 'recaptcha',
+    ])->validate();
+
+    // if ($validator->fails()) {
+    //     return redirect()->back()->withErrors(['recaptcha' => 'reCAPTCHA is required'])->withInput();
+    // }
     
     // Send email to sales team
     Mail::to(['sales@logicbarn.com'])->send(new ContactFormMail($fields));

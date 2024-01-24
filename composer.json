@@ -7,8 +7,10 @@
     "require": {
         "php": "^8.0.2",
         "ext-json": "*",
+        "anhskohbo/no-captcha": "^3.5",
         "arrilot/laravel-widgets": "^3.7",
         "barryvdh/laravel-dompdf": "^2.0",
+        "biscolab/laravel-recaptcha": "^6.0",
         "braintree/braintree_php": "^6.15",
         "doctrine/dbal": "^2.5|^3.1",
         "guzzlehttp/guzzle": "^7.2",

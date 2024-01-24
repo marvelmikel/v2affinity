@@ -8,9 +8,14 @@
     
 
     <title>{{ config('app.name', 'Affinity') }}</title>
+    
 
     <link rel="icon" href="{{asset('images/logo.png')}}">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    {!!htmlScriptTagJsApi()!!}
+    
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Livvic:wght@400;500;600;700&display=swap">

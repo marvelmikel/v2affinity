@@ -3,7 +3,7 @@
     'title' => 'Contact Us',
     'description' => 'Fill in your details and our sales representative will be in touch shortly.'
 ])
-<form method="POST" action="{{ route( $postTo ) }}" class="font-normal livvic-font-regular text-slate-500">
+<form id="myForm"  method="POST" action="{{ route( $postTo ) }}" class="font-normal livvic-font-regular text-slate-500">
     @csrf
     <h2 class="w-full livvic-font-semibold font-semibold text-slate-700 text-2xl mb-3">{{ $title }}</h2>
     <p class="text-lg">{{ $description }}</p>
@@ -57,6 +57,17 @@
                       class="h-24 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
                       placeholder="If you would like a demo of the affinity software or would like a meeting to discuss the product, please include any dates or times that work well for you."></textarea>
         </div>
+
+        <div>
+            {!!htmlFormSnippet()!!}
+
+            @if ($errors->has('g-recaptcha-response'))
+                <span class="text-red-500 text-sm">
+                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                </span>
+            @endif
+        </div>
+       
     </fieldset>
     <p class="text-center">
         <x-home-main-btn type="submit" class="px-6 py-1 mb-3 md:mb-0">Submit Form</x-home-main-btn>

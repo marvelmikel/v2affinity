@@ -27,7 +27,8 @@ class ContactFormRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|string',
             'tel' => 'nullable',
-            'message' => 'nullable'
+            'message' => 'nullable',
+            // 'g-recaptcha-response' => 'required|captcha',
         ];
     }
 }
