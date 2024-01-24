@@ -31,10 +31,6 @@ class ContactController extends Controller
         'g-recaptcha-response' => 'recaptcha',
     ])->validate();
 
-    // if ($validator->fails()) {
-    //     return redirect()->back()->withErrors(['recaptcha' => 'reCAPTCHA is required'])->withInput();
-    // }
-    
     // Send email to sales team
     Mail::to(['sales@logicbarn.com'])->send(new ContactFormMail($fields));
 
