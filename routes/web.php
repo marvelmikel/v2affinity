@@ -92,11 +92,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'admin.user' ], function ()  {
         Route::get('/company',   [CompanyController::class, 'index'])->name('voyager.company.index');
         Route::delete('/company/{id}/delete', [CompanyController::class, 'delete'])->name('voyager.company.delete');
-        Route::get('/company/{companyId}/edit', [CompanyController::class, 'edit'])->name('voyager.company.edit');
+        Route::get('/company/{companyId}/edit', [CompanyController::class, 'edit'])->name('voyager.company.edit-admin');
         Route::put('/company/{companyId}', [CompanyController::class, 'update'])->name('company.update');
     
         Route::get('/company/logs',   [CompanyController::class, 'show'])->name('voyager.company.logs');
-        Route::post('/add-room-location', [CompanyController::class, 'addRoomLocation'])->name('addRoomLocation');
         Route::get('subscription/{subscription}/edit', [SubscriptionController::class, 'edit'])->name('subscription-edit');
         Route::get('subscriptions',   [SubscriptionController::class, 'show'])->name('company.subscriptions');
     });

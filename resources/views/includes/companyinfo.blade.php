@@ -35,7 +35,6 @@
                         <input type="tel" name="company_number" id="company_number" style="color:black; font-weight:bolder;" value="{{ $companyData['company_number'] }}" class="form-control" required>
                     </div>
 
-
                 </div>
 
                 <div class="form-group row">

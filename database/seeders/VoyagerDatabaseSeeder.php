@@ -23,10 +23,12 @@ class VoyagerDatabaseSeeder extends Seeder
             PermissionRoleTableSeeder::class,
             SettingsTableSeeder::class,
             UsersTableSeeder ::class,
-            CompanyTableSeeder ::class,
-            StoresTableSeeder ::class,
             PlansTableSeeder ::class,
+            CompanyTableSeeder ::class,
+            // StoresTableSeeder ::class,
             SubscriptionTableSeeder ::class,
+           
+           
            
         ]);
     }

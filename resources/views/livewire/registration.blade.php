@@ -324,10 +324,10 @@
                             </div>
                             @if($plan['trialPeriod'])
                             <p>
-                                <span
+                                <!-- <span
                                     class="inline-block bg-green-100 capitalize font-semibold px-2 py-1 rounded text-green-500 text-sm">
                                     {{ $plan['trialDuration'] }} {{ $plan['trialDurationUnit'] }} Free Trial
-                                </span>
+                                </span> -->
                             </p>
                             @endif
                         </label>
@@ -335,7 +335,7 @@
                     @endforeach
 
                     <li>
-                        <label wire:click="activateFreeTrial()"
+                        <label wire:click="activateFreeTrial()" style="background-color: #e5e7eb;"
                             class="group inline-flex flex-col gap-1.5 w-full px-5 py-3 text-slate-500 bg-white border border-slate-200 rounded-lg cursor-pointer peer-checked:border-purple-600 peer-checked:bg-purple-50 peer-checked:text-purple-600 hover:text-slate-600 hover:bg-slate-100">
                             <span class="font-medium text-slate-400 text-sm tracking-wider uppercase">FREE TRIAL</span>
                             <div class="flex items-center justify-between">
@@ -350,8 +350,8 @@
                             </div>
                             <p>
                                 <span
-                                    class="inline-block bg-green-100 capitalize font-semibold px-2 py-1 rounded text-green-500 text-sm">
-                                    30 Days Free Trial
+                                    class="inline-block bg-red-100 capitalize font-semibold px-2 py-1 rounded text-red-500 text-sm">
+                                    7 Days Free Trial
                                 </span>
                             </p>
                         </label>
@@ -559,9 +559,9 @@
                         <x-button wire:click="$set('step', 4)" format="wire" type="button" class="text-lg rounded-full">
                             <i class="fa-solid fa-arrow-left mr-1"></i> Prev
                         </x-button>
-                        <x-button wire:click="skipBilling()" type="button" format="wire" class="text-lg rounded-full">
+                        <!-- <x-button wire:click="skipBilling()" type="button" format="wire" class="text-lg rounded-full">
                             For trial period, please click here to continue <i class="fa-solid fa-arrow-down mr-1"></i>
-                        </x-button>
+                        </x-button> -->
 
 
                         <x-button type="submit" class="text-lg rounded-full">
@@ -594,35 +594,6 @@
                             Place Order
                         </x-button>
                     </div>
-                    <!-- Test Cart details-->
-                    <div class="container mx-auto">
-                        <h1 class="text-2xl font-bold mb-4 text-center">Hi, please click to copy test card details for trial
-                            testing.</h1>
-
-                        <div class="section flex items-center justify-center" id="nameSection">
-                            <p>Test Card Number</p>
-                            <div class="copy-icon ml-2" onclick="handleCopyClick('4111111111111111')">📄</div>
-                        </div>
-                        <div class="section flex items-center justify-center" id="addressSection">
-                            <p>Expiration Date </p>
-                            <div class="copy-icon ml-2" onclick="handleCopyClick('12/24')">
-                                📄
-                            </div>
-                        </div>
-                        <div class="section flex items-center justify-center" id="phoneSection">
-                            <p>CVV</p>
-                            <div class="copy-icon ml-2" onclick="handleCopyClick('111')">
-                                📄
-                            </div>
-                        </div>
-                        <p id="copySuccess"></p>
-                    </div>
-
-
-
-
-
-
                     <script wire:ignore>
                         // Build 3DS parameters
                         var threeDSecureParameters = {

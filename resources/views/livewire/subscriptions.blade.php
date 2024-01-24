@@ -20,6 +20,7 @@
         <table class="table " style="margin: 40px 0;">
             <thead>
                 <tr>
+                <th>SUBSCRIPTION ID</th>
                     <th>PACKAGE</th>
                     <th>STATUS</th>
                     <th>PRICE</th>
@@ -43,6 +44,12 @@
                         break;
                         }
                         @endphp
+                        <td>
+                            <p class="col-span-9 lg:col-span-3 leading-tight">
+                                <strong class="text-slate-600 font-semibold"> {{ $sub['id'] }} </strong>
+                                
+                            </p>
+                        </td>
                         <td>
                             <p class="col-span-9 lg:col-span-3 leading-tight">
                                 <strong class="text-slate-600 font-semibold"> {{ $plans[$sub->plan_id]['name'] }} </strong><br>
@@ -73,7 +80,7 @@
                         </td>
 
                         <td>
-                            @if($sub->status !== 'Canceled')
+                            @if($sub->status == 'Active')
                             <x-button-link href="{{ route('subscription-edit', [$sub->id]) }}" format="wire" style="text-decoration: none;">
                                 <i class="voyager-edit"></i> Edit
                             </x-button-link>

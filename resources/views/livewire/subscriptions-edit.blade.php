@@ -248,12 +248,22 @@
                     <p class="lg:col-span-12 text-slate-600 font-semibold" style="border:1px solid #fff">
                         <label for="addons[{{ $addon['id'] }}][quantity]" class="lg:col-span-12 text-slate-600 font-semibold">Qty:</label>
                         @php
-                            $existingAddons = json_decode($this->subscription['addOns'], true);
-                            $addonIndex =  array_search($addon['id'], array_column($existingAddons, 'id'));
+                        $existingAddons = json_decode($this->subscription['addOns'], true);
+                        $addonIndex = array_search($addon['id'], array_column($existingAddons, 'id'));
                         @endphp
 
                         <input wire:model="extras.addons.{{ $addon['id'] }}.quantity" wire:change="calcTotal()" type="number" min="{{ $existingAddons ? $existingAddons[$addonIndex]['quantity'] : 0 }}" step="1" id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]" class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
-                      
+
+                        <a href="/"><span id="error-message-{{ $addon['id'] }}" class="text-red-500 text-sm"></span></a>
+
+                        <script>
+                            const input = document.getElementById('addons[{{ $addon['id']}}][quantity]');
+                            const errorMessage = document.getElementById('error-message-{{ $addon['id']}}');
+                            input.addEventListener('click', function() { errorMessage.innerHTML = 'Please click to contact support.';});
+                        </script>
+
+
+
                     </p>
                     <p class="col-span-12 lg:block col-span-2 text-slate-600 font-semibold">
                         @if(!empty($extras['addons'][$addon['id']]) && !empty($extras['addons'][$addon['id']]['quantity']))
@@ -315,13 +325,13 @@
             @endphp
             <li>
                 <input wire:model="inputPlan.plan_id" wire:click="calcTotalSwitch" type="radio" id="{{ $plan['id'] }}" name="plan" value="{{ $plan['id'] }}" class="col-span-12 peer" required>
-                
+
                 <label for="{{ $plan['id'] }}" class="group inline-flex flex-col gap-1.5 w-full px-5 py-3 text-slate-500 bg-white border border-slate-200 rounded-lg cursor-pointer peer-checked:border-purple-600 peer-checked:bg-purple-50 peer-checked:text-purple-600 hover:text-slate-600 hover:bg-slate-100">
                     <span class="font-medium text-slate-400 text-sm tracking-wider uppercase">{{ $period }}ly</span>
                     <div class="flex items-center justify-between" style="border: 1px solid #3330;">
                         <p class="leading-none">
                             <strong class="block text-2xl text-slate-700 font-semibold">
-                                 £{{ number_format($plan['price'], 2) }}
+                                £{{ number_format($plan['price'], 2) }}
                                 <span class="text-base text-slate-500">/ {{ $period }}</span>
                             </strong>
                             <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
@@ -559,13 +569,13 @@
             </section>
 
             <!-- Subcription History -->
-          <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;">
+            <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;">
                 <div>
                     <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Subscription History</h2>
                     <p class="font-medium lg:text-lg text-slate-500">Please find your subscription history below.</p>
                 </div>
             </header>
-    
+
             <div class="container-fluid" style="padding-left:0px">
                 <div class="row">
                     <div class="col-md-12">
@@ -584,7 +594,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="subscriptionTableBody">
-                                    @foreach($subscriptions as $subscription)
+                                        @foreach($subscriptions as $subscription)
                                         <tr role="row">
                                             <td>{{ $subscription->id }}</td>
                                             <td>{{ $plans[$subscription->plan_id]['name'] }}</td>
@@ -631,4 +641,6 @@
         });
     });
 </script>
+
+
 @stop

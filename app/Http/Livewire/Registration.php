@@ -392,7 +392,7 @@ class Registration extends Component
         $this->freetrial = true;
         $user = auth()->user();
         $user->company->update([
-            'trial_ends_at' => now()->addDays(30),
+            'trial_ends_at' => now()->addDays(7),
         ]);
         $this->step = 4;
     }

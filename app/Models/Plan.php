@@ -62,7 +62,7 @@ class Plan extends Model
         'discounts' => 'array',
     ];
 
-    public function subscriptions()
+    public function subscription()
 {
     return $this->belongsToMany(Subscription::class);
 }
