@@ -11,23 +11,25 @@
             <div class="admin-section-title">
                 <h3><i class="voyager-people"></i>{{ __('Employees') }}</h3>
                 <div style="display:flex;">
-                    <a href="{{ route('voyager.employee.create') }}" style="margin-right:2px" class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Add New Employee</a></div>
+                    <a href="{{ route('voyager.employee.create') }}" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">
+                        <i class="voyager-plus"></i>Add New Employee</a>
+                </div>
             </div>
             <div class="clear"></div>
             <div class="card">
                 <div class="card-body" style="overflow-x: auto;">
-                {{$dataTable->table()}}
+                    {{$dataTable->table()}}
                 </div>
             </div>
 
         </div><!-- .row -->
     </div><!-- .col-md-12 -->
     @else
-<!-- list of emplee for the company-->
+    <!-- list of emplee for the company-->
     <h1 class="page-title">
-    <i class="voyager-company"></i>
-    List of Employees
-</h1>
+        <i class="voyager-company"></i>
+        List of Employees
+    </h1>
     @endif
 </div><!-- .page-content container-fluid -->
 @stop
@@ -35,6 +37,3 @@
 @section('javascript')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endsection
-
-
-

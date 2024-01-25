@@ -102,7 +102,7 @@
                     </p>
                 @endif
             @endif
-          @include('includes.notify')
+          <!-- @include('includes.notify') -->
         </div>
     </div>
 </nav>

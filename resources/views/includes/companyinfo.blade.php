@@ -48,6 +48,6 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update Info</button>
+            <button type="submit" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">Update Info</button>
 
         </form>

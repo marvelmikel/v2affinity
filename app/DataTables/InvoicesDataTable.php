@@ -36,19 +36,24 @@ class InvoicesDataTable extends DataTable
                 <a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
                 <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
                 <form action='$deleteUrl' method='POST' style='display:inline'>
-                    " . csrf_field() . "
-                    " . method_field('DELETE') . "
-                    <button type='submit'  class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice?\")'>
-                        <i class='voyager-trash'></i>
-                    </button>
-                </form>
+                        " . csrf_field() . "
+                        " . method_field('DELETE') . "
+                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice ?\")'>
+                            <i class='voyager-trash'></i>
+                        </button>
+                    </form>
                 </div>";
 
                  return $btn;
             })
          ->rawColumns(['action'])
             ->setRowId('id');
+
+
+            
     }
+
+    
 
     /**
      * Get query source of dataTable.
