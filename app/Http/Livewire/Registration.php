@@ -167,10 +167,10 @@ class Registration extends Component
         ]);
 
         /* Create company and assign to user */
-        $user = auth()->user();
+        // $user = auth()->user();
+        $user = User::find(auth()->user()->id);
 
-        $company = $user->company()->updateOrCreate([
-            'id' => $this->company['id'],
+        $company = Company::updateOrCreate([
             'company_email' => $this->company['company_email'],
             'company_name' => $this->company['company_name'],
         ], $this->company);
