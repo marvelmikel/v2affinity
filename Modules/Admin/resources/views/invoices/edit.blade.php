@@ -246,7 +246,7 @@
 
     <!-- Add invocie pricing column modal -->
 {{--
-    <div class=" modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
+    <div class="modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -300,7 +300,7 @@
     </div><!-- /.modal -->
 --}}
 
-     <!-- Add invoice product column modal -->
+     <!-- Add invoice item column modal -->
     <div class=" modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
