@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use NextApps\VerificationCode\VerificationCode;
 
 class Registration extends Component
 {
@@ -27,6 +28,7 @@ class Registration extends Component
     public $client, $plans, $total, $show_discount, $discount_code; 
     public $terms_accepted = false;
     public $freetrial = false;
+    public $verification_code = [];
     public $addons = [];
 
     public $discount = [
@@ -76,7 +78,7 @@ class Registration extends Component
     public function mount()
     {
         /* Check if user is logged in */
-        if ($user = auth()->user()) {
+        if (auth()->user() &&  $user = User::find(auth()->user()->id)) {
             /* Check if company exists and populate data */
             if ($company = $user->company) {
                 $this->company['id'] = $company->id;
@@ -87,16 +89,23 @@ class Registration extends Component
                 $this->company['company_number'] = $company->company_number;
                 $this->company['vat_number'] = $company->vat_number;
                 $this->company['logo'] = $company->logo;
+
+                $this->user['id'] = $company->id;
+                $this->user['name'] = $user->name;
+                $this->user['email'] = $user->email;
+
+               
             }
 
-            $this->user['id'] = $company->id;
-            $this->user['name'] = $user->name;
-            $this->user['email'] = $user->email;
-            // $this->user['password'] = $user->password;
-            // $this->user['password_confirmation'] = $user->password;
+            if (!$user->hasVerifiedEmail()) {
+                session()->flash('alert-warning', 'You need to verify your email address to continue.');
+                $this->step = 2;
+            }else{
+                $this->step = 3;
+            }
 
+           
 
-            $this->step = 2;
         }
 
         /* Load Plans */
@@ -138,6 +147,8 @@ class Registration extends Component
             'password' => Hash::make($this->user['password']),
         ]);
 
+
+
         /* Log new user in */
         auth()->login($user);
 
@@ -148,11 +159,66 @@ class Registration extends Component
         $this->step = 2;
     }
 
+
+    public function verify_email()
+    {
+        /* Turn off loader */
+        $this->load = false;
+
+        $user = User::find(auth()->user()->id);
+
+
+        $codes = implode('', $this->verification_code);
+
+        $isvalid = VerificationCode::verify($codes, $user->email);
+
+        // $this->load = false;
+        // dd($isvalid, $codes, $user->email);
+        if(!$isvalid){
+            // session()->flash('alert-warning', 'Invalid or expired code.');
+            $this->addError('error','Invalid or expired code.');
+            $this->verification_code = [];
+            // $thxis->step = 2;
+            return;
+        }
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+        /* Move to step 3 */
+        session()->flash('alert-success', 'Email verified successfully');
+
+        $this->resetErrorBag();
+         $this->resetValidation();
+
+        $this->step = 3;
+
+       
+    }
+
+    public function resend_email_code()
+    {
+        /* Turn off loader */
+        $this->load = false;
+
+        $user = User::find(auth()->user()->id);
+        VerificationCode::send($user->email);
+
+        session()->flash('alert-success', 'Code resent successfully, please check your inbox.');
+        $this->verification_code = [];
+    
+        /* Move to step 3 */
+        // $this->step = 3;
+    }
+
     /* Register company details */
     public function register_company()
     {
         /* Turn off loader */
         $this->load = false;
+        // $user = auth()->user();
+        $user = User::find(auth()->user()->id);
+
+        
 
         /* Validate input */
         $this->validate([
@@ -166,9 +232,12 @@ class Registration extends Component
             'company.logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        /* Create company and assign to user */
-        // $user = auth()->user();
-        $user = User::find(auth()->user()->id);
+
+      
+        if (!$user->hasVerifiedEmail()) {
+            session()->flash('alert-warning', 'You need to verify your email address to continue.');
+            $this->step = 2;
+        }
 
         $company = Company::updateOrCreate([
             'company_email' => $this->company['company_email'],
@@ -185,8 +254,9 @@ class Registration extends Component
 
 
         /* Move to step 3 */
-        $this->step = 3;
+        $this->step = 4;
     }
+    
 
     public function selectSubscription()
     {
@@ -194,7 +264,7 @@ class Registration extends Component
         $this->load = false;
 
         /* move to next section of the form */
-        $this->step = 4;
+        $this->step = 5;
     }
 
     public function acceptTerms()
@@ -223,7 +293,7 @@ class Registration extends Component
             return redirect()->route('voyager.profile');
         }else{
             /* Move to step 5*/
-            $this->step = 5;
+            $this->step = 6;
         }
        
     }
@@ -253,7 +323,7 @@ class Registration extends Component
         }
 
         /* Move to step 6*/
-        $this->step = 6;
+        $this->step = 7;
     }
 
     public function register_nonce($nonce)
@@ -394,7 +464,7 @@ class Registration extends Component
         $user->company->update([
             'trial_ends_at' => now()->addDays(7),
         ]);
-        $this->step = 4;
+        $this->step = 5;
     }
 
 }

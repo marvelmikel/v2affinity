@@ -202,8 +202,64 @@
                 </div>
             </form>
             @break
-            @case(2)
-            <form wire:key="step_2" @submit.prevent="load = true, $wire.register_company()" class="flex flex-col gap-6">
+             @case(2)
+            <form wire:key="step_2" @submit.prevent="load = true, $wire.verify_email()" class="flex flex-col gap-6">
+                <div>
+                    @csrf
+                    <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
+                        2</span>
+                    <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Email Verification</h2>
+                    <p class="font-medium lg:text-lg text-slate-500">Please check your mail for verification</p>
+                </div>
+             
+                       
+
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                            <p id="helper-text-explanation" class="mt-0 text-sm text-red-500 dark:text-red-400">{{ $error }}</p>
+                            @endforeach
+                         @endif
+                        
+                        <div class="flex mb-2 space-x-2 rtl:space-x-reverse">
+                            <div>
+                               
+                                <x-label for="code-4"  class="sr-only" >Fourth code</x-label>
+                                <x-input wire:model="verification_code.0" name="company_name" id="company_name" type="text" maxlength="1" onkeyup="focusNextInput(this, 'code-1', 'code-2')" id="code-1" class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required />
+
+                            </div>
+                            <div>
+                               
+                                <x-label for="code-4"  class="sr-only" >Fourth code</x-label>
+                                <x-input wire:model="verification_code.1" name="company_name" id="company_name" type="text" maxlength="1" onkeyup="focusNextInput(this, 'code-1', 'code-3')" id="code-2" class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required />
+
+                            </div>
+                            <div>
+                                <x-label for="code-4"  class="sr-only" >Fourth code</x-label>
+                                <x-input wire:model="verification_code.2" name="company_name" id="company_name" type="text" maxlength="1" onkeyup="focusNextInput(this, 'code-2', 'code-4')" id="code-3" class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required />
+                            </div>
+                            <div>
+                                <x-label for="code-4"  class="sr-only" >Fourth code</x-label>
+                                <x-input wire:model="verification_code.3" name="company_name" id="company_name" type="text" maxlength="1" onkeyup="focusNextInput(this, 'code-3', 'code-4')" id="code-4" class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required />
+                            </div>
+                           
+                           
+                        </div>
+                        <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Didn't receive code ? <span @click="$wire.resend_email_code()" style="color: #c82090;" class="cursor-pointer text-[#c82090]">Resend</span></p>
+
+
+
+                <div class="flex justify-between">
+                    <x-button @click="$wire.set('step', 1)" format="wire" type="button" class="text-lg rounded-full">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Previous
+                    </x-button>
+                    <x-button type="submit" class="text-lg rounded-full">
+                        Next <i class="fa-regular fa-arrow-right ml-1"></i>
+                    </x-button>
+                </div>
+            </form>
+            @break
+            @case(3)
+            <form wire:key="step_3" @submit.prevent="load = true, $wire.register_company()" class="flex flex-col gap-6">
                 <div>
                     @csrf
                     <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
@@ -274,7 +330,7 @@
                 </ul>
 
                 <div class="flex justify-between">
-                    <x-button @click="$wire.set('step', 1)" format="wire" type="button" class="text-lg rounded-full">
+                    <x-button @click="$wire.set('step', 2)" format="wire" type="button" class="text-lg rounded-full">
                         <i class="fa-solid fa-arrow-left mr-1"></i> Previous
                     </x-button>
                     <x-button type="submit" class="text-lg rounded-full">
@@ -283,8 +339,8 @@
                 </div>
             </form>
             @break
-            @case(3)
-            <form wire:key="step_3" @submit.prevent="load = true, $wire.selectSubscription()" class="flex flex-col gap-6">
+            @case(4)
+            <form wire:key="step_4" @submit.prevent="load = true, $wire.selectSubscription()" class="flex flex-col gap-6">
                 <div>
                     @csrf
                     <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
@@ -474,8 +530,8 @@
                 </div>
             </form>
             @break
-            @case(4)
-                <form wire:key="step_4" @submit.prevent="load = true, $wire.acceptTerms()" class="space-y-6">
+            @case(5)
+                <form wire:key="step_5" @submit.prevent="load = true, $wire.acceptTerms()" class="space-y-6">
                     <div>
                         @csrf
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
@@ -501,8 +557,8 @@
                     </div>
                 </form>
             @break
-            @case(5)
-                <form wire:key="step_5" @submit.prevent="load = true, $wire.company_billing()" class="space-y-6">
+            @case(6)
+                <form wire:key="step_6" @submit.prevent="load = true, $wire.company_billing()" class="space-y-6">
                     <div>
                         @csrf
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
@@ -570,7 +626,7 @@
                     </div>
                 </form>
             @break
-            @case(6)
+            @case(7)
                 <div class="space-y-6">
                     <div>
                         <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
@@ -724,6 +780,18 @@
                         "Failed to copy text")
                 );
         }
+
+
+       // use this simple function to automatically focus on the next input
+    function focusNextInput(el, prevId, nextId) {
+        if (el.value.length === 0) {
+            document.getElementById(prevId).focus();
+        } else {
+            document.getElementById(nextId).focus();
+        }
+    }
+
+
     </script>
 
 
