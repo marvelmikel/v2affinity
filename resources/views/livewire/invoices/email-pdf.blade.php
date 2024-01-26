@@ -1,5 +1,5 @@
 <span>
-    @if(isset($store->emailSettings()->is_enabled) && $store->emailSettings()->is_enabled)
+    @if($store && isset($store->emailSettings()->is_enabled ) && $store->emailSettings()->is_enabled)
         <div>
         <a wire:click.prevent="emailInvoice" style="text-decoration: none; display: flex" class="btn @if($sent) btn-success @else btn-primary @endif">
             <i class="voyager"></i>Email Invoice
