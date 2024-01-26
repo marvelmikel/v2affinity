@@ -242,8 +242,8 @@
                         <input type="hidden" name="invoice_id" class="form-control">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                        <button type="submit" class="btn btn-primary pull-right" onclick="addPricingItemScript()">{{ __('voyager::generic.save') }}</button>
+                        <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+                        <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right" onclick="addPricingItemScript()">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </div>
             </div>
