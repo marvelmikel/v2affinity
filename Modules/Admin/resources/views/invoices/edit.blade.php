@@ -111,7 +111,8 @@
                                 <select class="form-control select" value="{{ old('store_id') }}" name="store_id" id="">
                                     @if (Auth::user()->role_id == 2 && Auth::user()->company)
                                     <!-- For users with role_id = 2 (company role) and a valid company relationship -->
-                                    <option value="">Select a Store</option>
+                                    <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif> 
+                                        {{ Auth::user()->store->store_name }}</option>
                                     @foreach (Auth::user()->company->stores ?? [] as $store)
                                     <option value="{{ $store->id }}" @if (old('store_id')==$store->id) selected @endif>
                                         {{ $store->store_name }}
@@ -193,7 +194,7 @@
                     </div><!-- panel-body -->
 
                     <div class="panel-footer">
-                        <button type="submit" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">Update</button>
+                        <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0">Update</button>
                     </div>
                 </form>
 

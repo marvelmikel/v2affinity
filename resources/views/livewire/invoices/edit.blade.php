@@ -3,7 +3,7 @@
         <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
             {{--<h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>--}}
             <div>
-                <a data-toggle="modal" data-target="#add_product_modal" class="btn btn-primary"><i class="voyager-plus"></i>Add New Item</a>
+                <a data-toggle="modal" data-target="#add_product_modal" style="background-color:#C82090" class="btn btn-primary"><i class="voyager-plus"></i>Add New Item</a>
             </div>
         </div>
         <div class="clear"></div>
@@ -187,22 +187,22 @@
 
     <tr>
         <td colspan="3">
-            <a href="#" data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn">
+            <a href="#" data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn " style="color:#C82090">
                 <i class="voyager-plus"></i>
                 Add Pricing Item Cost
             </a>
         </td>
     </tr>
 
-    <tr>
+    <tr >
         <td>
-            <div class="flex gap-4 px-4">
+            <div class="flex gap-2 px-4 pt-4">
                 <livewire:invoices.email-pdf :invoice="$invoice" :store="$invoice->store" />
-                <a style="text-decoration: none;" href="{{ route('voyager.invoices.show', $invoice->id) }}" class="btn btn-primary">
+                <a style="text-decoration: none; background-color:#C82090" href="{{ route('voyager.invoices.show', $invoice->id) }}" class="btn btn-primary">
                     <i class="voyager"></i>
                     Preview Invoice
                 </a>
-                <a style="text-decoration: none;" target="_blank" href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="btn btn-primary">
+                <a style="text-decoration: none; background-color:#C82090" target="_blank" href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="btn btn-primary">
                     <i class="voyager"></i>
                     Invoice PDF
                 </a>
