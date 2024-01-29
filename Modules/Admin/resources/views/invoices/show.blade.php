@@ -165,7 +165,7 @@
                         @if ($price->name == 'subtotal')
                             <tr>
                                 <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                                    {{ ucfirst($price->name) }} £:
+                                    {{ strtoupper($price->name) }} £:  (VAT Excl)
                                 </td>
                                 <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
                                     {{ number_format($invoice->calculateSubtotal() - $invoice->calculateVat() , 2) }}
@@ -176,7 +176,7 @@
                              @if($price->type == 'formular')
                                 <tr>
                                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                                        {{ ucfirst($price->name) }} £:
+                                        {{ strtoupper($price->name) }} £:
                                     </td>
                                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
                                         {{ number_format(  evaluate_formular($price->value, 'InvoicePricing'),     2) }}
@@ -185,7 +185,7 @@
                             @else
                                  <tr>
                                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                                        {{ ucfirst($price->name) }} £:
+                                        {{ strtoupper($price->name) }} £:
                                     </td>
                                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
                                         {{ number_format($price->value, 2) }}
@@ -199,7 +199,7 @@
                     <!-- Total pricing -->
                     <tr>
                         <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                            Total £:
+                            TOTAL £:  (VAT Incl)
                         </td>
                         <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
                             {{ number_format($invoice->getTotalAttribute(), 2) }}
