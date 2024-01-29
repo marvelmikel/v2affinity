@@ -557,7 +557,10 @@ class InvoiceController extends Controller
         if ($invoice->getPricing('subtotal') ) {
             $subtotalCol = $invoice->getPricing('subtotal');
 
-            $companyVat = 0.2;
+            $company = $invoice->company;
+            $vat_percentage = $company->vat_percentage ?? 20;
+
+            $companyVat = ($vat_percentage/100);
             $subtotal = $subtotalCol->identifier;
 
             if (!$invoice->getPricing('formular')) {

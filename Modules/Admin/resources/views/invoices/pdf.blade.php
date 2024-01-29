@@ -632,8 +632,18 @@
                                 <span>{{ number_format($invoice->calculateSubtotal()- $invoice->calculateVat(), 2) }}</span>
                             </div>
                         </div>
-                    @else
+                        
+                    @elseif ($price->name == 'vat')
+                        <div class="price_row">
+                            <div class="price_row_title">
+                                <span>{{ ucfirst($price->name) }} &pound; (VAT Excl):</span>
+                            </div>
+                            <div class="price_row_box">
+                                <span>{{ number_format($invoice->calculateVat(), 2) }}</span>
+                            </div>
+                        </div>
 
+                    @else
                         @if($price->type == 'formular')
                             <div class="price_row">
                                 <div class="price_row_title">

@@ -54,7 +54,9 @@ class Invoice extends Model
 
     }
     public function calculateVat(){
-        return $this->calculateSubtotal() * 0.2;
+        $company = $this->company;
+        $vat_percentage = $company->vat_percentage ?? 20;
+        return $this->calculateSubtotal() * ($vat_percentage/100);
     }
 
     public function getTotalAttribute(){
@@ -77,6 +79,10 @@ class Invoice extends Model
 
     public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
+
+    public function company(){
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
     public function store() {

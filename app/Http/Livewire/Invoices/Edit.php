@@ -205,12 +205,12 @@ class Edit extends Component
     {
         // Set subtotal amount
         // subtract vat here - 
-        $vat = $this->invoice->calculateVat();
-        $subtotal = $this->invoice->calculateSubtotal();
+        $vat = $this->invoice->calculateVat() ?? 0;
+        $subtotal = $this->invoice->calculateSubtotal() ?? 0;
         $this->subtotal = [
-            'vatInclusive' => $subtotal,
-            'vatExclusive' => $subtotal - $vat,
-            'vatTotal' => $vat
+            'vatInclusive' => number_format($subtotal,2),
+            'vatExclusive' => number_format($subtotal - $vat, 2),
+            'vatTotal' => number_format($vat, 2)
         ];
        
     }

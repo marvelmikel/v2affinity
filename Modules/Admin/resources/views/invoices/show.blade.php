@@ -171,6 +171,16 @@
                                     {{ number_format($invoice->calculateSubtotal() - $invoice->calculateVat() , 2) }}
                                 </td>
                             </tr>
+
+                        @elseif($price->name == 'vat')
+                             <tr>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                    {{ strtoupper($price->name) }} £:  (VAT Excl)
+                                </td>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                    {{ number_format($invoice->calculateVat() , 2) }}
+                                </td>
+                            </tr>
                         @else
 
                              @if($price->type == 'formular')
