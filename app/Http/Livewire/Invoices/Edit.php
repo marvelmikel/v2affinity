@@ -13,7 +13,7 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public $invoice, $subtotal, $formula, $invoiceItems, $products, $companyId, $discountPricing, $discount_id;
+    public $invoice, $subtotal, $formula, $vat, $invoiceItems, $products, $companyId, $discountPricing, $vatPricing, $discount_id;
     public $pricings = [];
     public $invoicePricing = [];
     public $pricing_item = [
@@ -71,7 +71,7 @@ class Edit extends Component
 
     
 
-
+ 
     public function calculateAllowance($invoiceItem, $addAllowance)
     {
         // Add or remove allowance value
@@ -204,8 +204,17 @@ class Edit extends Component
     public function getSubtotal()
     {
         // Set subtotal amount
-        $this->subtotal = $this->invoice->calculateSubtotal();;
+        // subtract vat here - 
+        $vat = $this->invoice->calculateVat();
+        $subtotal = $this->invoice->calculateSubtotal();
+        $this->subtotal = [
+            'vatInclusive' => $subtotal,
+            'vatExclusive' => $subtotal - $vat,
+            'vatTotal' => $vat
+        ];
+       
     }
+
 
     public function getFormula()
     {
@@ -224,7 +233,6 @@ class Edit extends Component
         $this->discountPricing = $this->invoice->getPricing('discount');
     }
 
-  
 
     public function render()
     {

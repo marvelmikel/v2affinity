@@ -543,7 +543,7 @@ class InvoiceController extends Controller
 
         $meta = [
             ['name' => 'subtotal', 'value' => 0, 'type' => 'value'],
-            ['name' => 'tax', 'value' => 20, 'type' => 'percentage'], // value, percentage, formular
+            // ['name' => 'tax', 'value' => 20, 'type' => 'percentage'], // value, percentage, formular
             ['name' => 'discount', 'value' => 0, 'type' => 'percentage'], // value, percentage, formula
         ];
 
@@ -553,11 +553,55 @@ class InvoiceController extends Controller
             }
         }
 
-
-        //add def formular here
-        if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
+        // add vat here
+        if ($invoice->getPricing('subtotal') ) {
             $subtotalCol = $invoice->getPricing('subtotal');
-            $taxCol = $invoice->getPricing('tax');
+
+            $companyVat = 0.2;
+            $subtotal = $subtotalCol->identifier;
+
+            if (!$invoice->getPricing('formular')) {
+                $invoice->pricings()->create([
+                    'name' => 'vat',
+                    'type' => 'formular',
+                    'value' => "($subtotal*$companyVat)"
+                ]);
+            }
+        }
+
+        //add def formular here // deprecate
+        // if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
+        //     $subtotalCol = $invoice->getPricing('subtotal');
+        //     $taxCol = $invoice->getPricing('tax');
+        //     $discountCol = $invoice->getPricing('discount');
+
+        //     $subtotal = $subtotalCol->identifier;
+
+        //     if ($taxCol->type == 'percentage') {
+        //         $tax = "($subtotal*(0.01*$taxCol->identifier))";
+        //     } else {
+        //         $tax = $taxCol->identifier;
+        //     }
+
+        //     if ($discountCol->type == 'percentage') {
+        //         $discount = "($subtotal+$tax)*(0.01*$discountCol->identifier)";
+        //     } else {
+        //         $discount = $discountCol->identifier;
+        //     }
+
+        //     if (!$invoice->getPricing('formular')) {
+        //         $invoice->pricings()->create([
+        //             'name' => 'formular',
+        //             'value' => "($subtotal+$tax)"
+        //         ]);
+        //     }
+        // }
+
+
+        //add def formular with vat
+        if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('vat') && $invoice->getPricing('discount')) {
+            $subtotalCol = $invoice->getPricing('subtotal');
+            $taxCol = $invoice->getPricing('vat');
             $discountCol = $invoice->getPricing('discount');
 
             $subtotal = $subtotalCol->identifier;
@@ -577,10 +621,15 @@ class InvoiceController extends Controller
             if (!$invoice->getPricing('formular')) {
                 $invoice->pricings()->create([
                     'name' => 'formular',
-                    'value' => "($subtotal+$tax)"
+                    'value' => "($subtotal)"
                 ]);
             }
         }
+
+
+       
+
+        
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 

@@ -53,6 +53,9 @@ class Invoice extends Model
         return $subtotal;
 
     }
+    public function calculateVat(){
+        return $this->calculateSubtotal() * 0.2;
+    }
 
     public function getTotalAttribute(){
         $formulaCol = $this->getPricing('formular');

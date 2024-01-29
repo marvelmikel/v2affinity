@@ -586,102 +586,89 @@
 
                 <!-- <span class="table-cell cell-selling-price empty">&nbsp;</span> -->
             </div>
+
+          
             @endforeach
 
             {{-- This code is responsable to making sure there are always 8 rows on the invoice --}}
-            @if($count < 8) @for($x=$count; $x < 8; $x++) <!-- <div class="table-row">
-                <span class="table-cell cell-description">&nbsp;</span>
-                <span class="table-cell cell-colour">&nbsp;</span>
-                <span class="table-cell cell-size">&nbsp;</span>
-                <span class="table-cell cell-quantity">&nbsp;</span>
-                <span class="table-cell cell-selling-price empty">&nbsp;</span>
 
-        </div> -->
-        @endfor
-        @endif
+            @php
+                $count = $invoice->items()->count();
+            @endphp
+            @if($count < 8)
+                @for($x= $count; $x < 8; $x++)
+                     <div class="table-row">
+                        <span class="table-cell cell-description">&nbsp;</span>
+                        <span class="table-cell cell-colour">&nbsp;</span>
+                        <span class="table-cell cell-size">&nbsp;</span>
+                        <span class="table-cell cell-size">&nbsp;</span>
+                        <span class="table-cell cell-quantity">&nbsp;</span>
+                        <span class="table-cell cell-selling-price empty">&nbsp;</span>
+                    </div> 
+                @endfor
+            @endif
     </div>
     </div>
 
     <div class="accessories">
-        <!-- <div class="accessory">
-        <div class="accessory-header">
-                <span>
-                    UNDERLAY
-                </span>
-        </div>
-        <div class="accessory-cell">
-            <span>N/A</span>
-        </div>
-    </div> -->
-        <!-- <div class="accessory">
-        <div class="accessory-header">
-            <span>Door Bar (3ft/9ft)</span>
-        </div>
-        <div class="accessory-cell">
-            <span>N/A</span>
-        </div>
-    </div> -->
-        <!-- <div class="accessory">
-        <div class="accessory-header">
-            <span>Spray Adhesive</span>
-        </div>
-        <div class="accessory-cell">
-            <span>N/A</span>
-        </div>
-    </div> -->
-        <!-- <div class="accessory">
-        <div class="accessory-header">
-            <span>Gripper Sticks</span>
-        </div>
-        <div class="accessory-cell">
-            <span>N/A</span>
-        </div>
-    </div> -->
+        
     </div>
 
     <div class="totals">
         <div class="totals_details">
-            <!-- <div class="container">
-            <p style="font-size:11px"><strong>Customers own sizes:</strong> N/A</p>
-        </div> -->
-            <!-- <div class="container">
-            <p><strong>NEXT STEPS</strong></p>
-            <p>A fitter introduced by us will make direct contact with you to agree their engagement with you and subject to that to make necessary arrangements.</p>
-        </div> -->
+        
         </div>
         <div class="totals_price">
             @foreach($invoice->pricings as $price)
-            @if($price->name == 'formular')
-            @php $totalDisplayed = false; @endphp
+            
+                 @if($price->name != 'formular')
+                    
+                     @if ($price->name == 'subtotal')
+                        <div class="price_row">
+                            <div class="price_row_title">
+                                <span>{{ ucfirst($price->name) }} &pound;:</span>
+                            </div>
+                            <div class="price_row_box">
+                                <span>{{ number_format($invoice->calculateSubtotal()- $invoice->calculateVat(), 2) }}</span>
+                            </div>
+                        </div>
+                    @else
 
+                        @if($price->type == 'formular')
+                            <div class="price_row">
+                                <div class="price_row_title">
+                                    <span>{{ ucfirst($price->name) }} &pound;:</span>
+                                </div>
+                                <div class="price_row_box">
+                                    <span>{{ number_format(evaluate_formular($price->value, 'InvoicePricing'),  2) }}</span>
+                                </div>
+                            </div>
+                        @else
+                            <div class="price_row">
+                                <div class="price_row_title">
+                                    <span>{{ ucfirst($price->name) }} &pound;:</span>
+                                </div>
+                                <div class="price_row_box">
+                                    <span>{{ number_format($price->value, 2) }}</span>
+                                </div>
+                            </div>
+                        @endif
 
+                    @endif
 
-            @else
-            <!-- Other pricing attributes-->
-            <div class="price_row">
-                <div class="price_row_title">
-                    <span>{{ ucfirst($price->name) }} &pound;:</span>
-                </div>
-                <div class="price_row_box">
-                    <span>{{ number_format($price->value, 2) }}</span>
-                </div>
-            </div>
-            @endif
+                @else
 
+                    <div class="price_row">
+                        <div class="price_row_title">
+                            <span>Total Amount &pound;:</span>
+                        </div>
+                        <div class="price_row_box">
+                            <span>{{ number_format($invoice->getTotalAttribute(), 2) }}</span>
+                        </div>
+                    </div>
+                @endif
             @endforeach
-
-            <!-- Total price -->
-            @if (!$totalDisplayed)
-            <div class="price_row">
-                <div class="price_row_title">
-                    <span>Total Amount &pound;:</span>
-                </div>
-                <div class="price_row_box">
-                    <span>{{ number_format($invoice->getTotalAttribute(), 2) }}</span>
-                </div>
-            </div>
-            @php $totalDisplayed = true; @endphp
-            @endif
+            
         </div>
 
 

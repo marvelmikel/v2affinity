@@ -114,11 +114,27 @@
     @foreach($pricings as $key => $pricing)
         <div wire:key="pricing_{{ $key }}" class="flex">
             @if($pricing['name'] != 'subtotal')
+
+                @if($pricing['name'] == 'vat')
+                    <div style="width: 45%; padding: 8px">
+                        <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
+                    </div>
+                    <div style="width: 20%; padding: 8px">
+                        <input wire:model="subtotal.vatTotal" readonly class="form-control" type="text">
+                    </div>
+                    <div style="width: 15%; padding: 8px">
+                        <select wire:ignore onchange="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" disabled>
+                            <option value="{{ $pricing['type'] }}">{{ $pricing['type'] }}</option>
+                            <option value="percentage">%</option>
+                            <option value="value">value(£)</option>
+                        </select>
+                    </div>
+                @else
                 <div style="width: 45%; padding: 8px">
                     <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
                 </div>
                 <div style="width: 20%; padding: 8px">
-                    <input @if($pricing['name'] == 'tax') disabled @endif wire:ignore onkeyup="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" type="number" max="100" min="0" step="any" value="{{ $pricing['value'] }}" placeholder="{{ ucfirst($pricing['name']) }} %">
+                    <input @if($pricing['name'] == 'vat') disabled @endif wire:ignore onkeyup="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" type="number" max="100" min="0" step="any" value="{{ $pricing['value'] }}" placeholder="{{ ucfirst($pricing['name']) }} %">
                 </div>
                 <div style="width: 15%; padding: 8px">
                     <select @if($pricing['name'] != 'discount') disabled @endif wire:ignore onchange="updatePricingScript({{ $key }})" id="select_{{ $key }}" class="form-control" @if(in_array($pricing['name'], ['subtotal', 'tax'])) disabled @endif>
@@ -127,15 +143,14 @@
                         <option value="value">value(£)</option>
                     </select>
                 </div>
-                <!-- <div style="width: 20%; padding: 8px">
-                    <input wire:model="pricings.{{ $key }}.identifier" readonly style="background-color: white;" class="form-control" type="text">
-                </div> -->
+                @endif
+               
             @else
                 <div style="width: 45%; padding: 8px">
-                    <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
+                    <input value="{{ $pricings[$key]['name'] }} (VAT exclusive)" disabled readonly class="form-control" type="text">
                 </div>
                 <div style="width: 20%; padding: 8px">
-                    <input wire:model="subtotal" readonly class="form-control" type="text">
+                    <input wire:model="subtotal.vatExclusive" readonly class="form-control" type="text">
                 </div>
                 <div style="width: 15%; padding: 8px">
                     <select wire:ignore onchange="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" disabled>
@@ -173,7 +188,7 @@
 
     <div class="flex">
         <div style="width: 45%; padding: 8px">
-            <input readonly class="form-control" type="text" value="Amount £">
+            <input readonly class="form-control" type="text" value="Amount £ (VAT Inclusive)">
         </div>
         <div style="width: 55%; padding: 8px">
             <div wire:loading.flex>
@@ -262,7 +277,9 @@
                 @this.updateInvoiceItem(id, key, meta, null, $('#item_' + key + '_' + meta).val());
             }
 
+            // refresh discount
             @this.updatePricing({{ $discountPricing->id }}, $('#pricing_' + {{ $discountPricing->id }}).val(), $('#select_' + {{ $discountPricing->id }}).val());
+
         }
 
         function addItemScript() {

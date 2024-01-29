@@ -157,40 +157,57 @@
         </div>
 
         <table class="w-full border-separate border-spacing-x-1 text-center my-10">
-            @foreach($invoice->pricings as $price)
-            @if($price->name == 'formular')
-            @php $totalDisplayed = false; @endphp
-
-
-            @else
-            <!-- Other pricing attributes-->
             <tbody>
-                <tr>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                        {{ ucfirst($price->name) }} £:
-                    </td>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
-                        {{ number_format($price->value, 2) }}
-                    </td>
-                </tr>
+                @foreach($invoice->pricings as $price)
+                    @if($price->name != 'formular')
 
 
-                @endif
+                        @if ($price->name == 'subtotal')
+                            <tr>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                    {{ ucfirst($price->name) }} £:
+                                </td>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                    {{ number_format($invoice->calculateSubtotal() - $invoice->calculateVat() , 2) }}
+                                </td>
+                            </tr>
+                        @else
 
+                             @if($price->type == 'formular')
+                                <tr>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                        {{ ucfirst($price->name) }} £:
+                                    </td>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                        {{ number_format(  evaluate_formular($price->value, 'InvoicePricing'),     2) }}
+                                    </td>
+                                </tr>
+                            @else
+                                 <tr>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                        {{ ucfirst($price->name) }} £:
+                                    </td>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                        {{ number_format($price->value, 2) }}
+                                    </td>
+                                </tr>
+                            @endif
+                        @endif
+
+                    @else
+
+                    <!-- Total pricing -->
+                    <tr>
+                        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                            Total £:
+                        </td>
+                        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                            {{ number_format($invoice->getTotalAttribute(), 2) }}
+                        </td>
+                    </tr>
+                    @endif
                 @endforeach
 
-                <!-- Total pricing -->
-                @if (!$totalDisplayed)
-                <tr>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                        Total £:
-                    </td>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
-                        {{ number_format($invoice->getTotalAttribute(), 2) }}
-                    </td>
-                </tr>
-                @php $totalDisplayed = true; @endphp
-                @endif
             </tbody>
         </table>
 
