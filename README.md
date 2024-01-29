@@ -1,8 +1,6 @@
 
 
 
-# Affinity Invoice  System
-
 ## Installation Guide
 
 Follow these steps to install and run the application on your local machine or deploy online server:
