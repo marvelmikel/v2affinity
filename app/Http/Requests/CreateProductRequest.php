@@ -25,7 +25,6 @@ class CreateProductRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'description' => 'required',
             'type' => 'required',
             'in_stock' => 'required',
         ];
