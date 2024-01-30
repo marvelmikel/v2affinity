@@ -315,7 +315,7 @@ class MenuItemsTableSeeder extends Seeder
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
             'title'   => __('Support Docs'),
-            'url'     => 'http://affinity-dev2.test/admin/employee',
+            'url'     => 'https://affinity-flooring.com/',
             'route'   => '',
         ]);
         if (!$menuItem->exists) {
