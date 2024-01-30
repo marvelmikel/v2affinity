@@ -256,7 +256,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-company',
                 'color'      => null,
                 'parent_id'  => $menuItemCompany->id,
-                'order'      => 14,
+                'order'      => 15,
             ])->save();
         }
 
@@ -273,7 +273,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-dollar',
                 'color'      => null,
                 'parent_id'  => $menuItemCompany->id,
-                'order'      => 15,
+                'order'      => 16,
             ])->save();
         }
 
@@ -289,7 +289,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-logbook',
                 'color'      => null,
                 'parent_id'  => $menuItemCompany->id,
-                'order'      => 16,
+                'order'      => 17,
             ])->save();
         }
 
@@ -307,9 +307,28 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-person',
                 'color'      => null,
                 'parent_id'  => null,
-                'order'      => 15,
+                'order'      => 18,
             ])->save();
         }
+
+
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('Support Docs'),
+            'url'     => 'http://affinity-dev2.test/admin/employee',
+            'route'   => '',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-documentation',
+                'color'      => '',
+                'parent_id'  => null,
+                'order'      => 19,
+            ])->save();
+        }
+
+        
 
         
 
