@@ -105,7 +105,7 @@
 
 
                             <div class="col-md-4">
-                                <label for="name">Company Status</label>
+                                <label  for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Acive Status</label>
                                 <select class="form-control" name="active" id="">
                                     <option value="">Select Status</option>
                                     <option value="1" {{ $companyData['active'] == 1 ? 'selected' : '' }}>Active</option>
