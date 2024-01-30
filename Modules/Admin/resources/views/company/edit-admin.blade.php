@@ -123,6 +123,53 @@
 
             </div>
 
+              <!-- invoice History -->
+              <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;">
+                <div>
+                    <h2 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700"> <i class="voyager-documentation"></i> Invoice History</h2>
+                    <p class="font-medium lg:text-lg text-slate-500">Please find Invoice history below.</p>
+                </div>
+            </header>
+
+            <div class="container-fluid" style="padding-left:0px">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-bordered">
+                            <div class="panel-body">
+                                <table id="dataTable" class="table table-hover dataTable no-footer" role="grid" aria-describedby="dataTable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Invoice Number</th>
+                                            <th>Store Assigned</th>
+                                            <th>Customer Name</th>
+                                            <th> created Date & Time</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="subscriptionTableBody">
+                                 
+                                        <tr role="row">
+                                            <td>1</td>
+                                            <td>hdgfhdhdhdfhdeeed</td>
+                                            <td>hdhdhdhdhdh</td>
+                                            <td>dhdhdhdhd</td>
+                                            <td>
+                                            <a href='' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
+                                            </td>
+                                          
+                                        </tr>
+                                      
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End invoice History -->
+
             <!-- Subcription History -->
             <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;">
                 <div>
@@ -160,9 +207,6 @@
                                             <td>{{ $subscription->created_at  ?? '' }}</td>
                                         </tr>
                                         @endforeach
-
-                                        
-
 
                                     </tbody>
                                 </table>
