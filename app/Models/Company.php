@@ -17,6 +17,7 @@ class Company extends Model
         'company_email',
         'company_number',
         'vat_number',
+        'vat_percentage',
         'terms_conditions',
         'logo',
         'active',

@@ -78,6 +78,11 @@
                             </div>
 
                             <div class="col-md-4">
+                                <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700"> VAT Percentage (%)</label>
+                                <input class="form-control" type="text" value="{{ $companyData['vat_percentage'] }}" name="vat_percentage" id="">
+                            </div>
+
+                            <div class="col-md-4">
                                 <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Vat Number</label>
                                 <input class="form-control" type="text" value="{{ $companyData['vat_number'] }}" name="vat_number" id="">
                             </div>
