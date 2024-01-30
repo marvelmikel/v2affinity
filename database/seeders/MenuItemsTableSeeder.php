@@ -316,7 +316,7 @@ class MenuItemsTableSeeder extends Seeder
             'menu_id' => $menu->id,
             'title'   => __('Support Docs'),
             'url'     => 'https://affinity-flooring.com/',
-            'route'   => '',
+            'route'   => 'https://affinity-flooring.com/',
         ]);
         if (!$menuItem->exists) {
             $menuItem->fill([
