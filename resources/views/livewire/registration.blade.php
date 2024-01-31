@@ -159,13 +159,15 @@
             </div>
             @endif
             @endforeach
-        </div>
-
+        </div> 
+ 
+  
         @switch($step)
             @case(1)
-            <form wire:key="step_1" @submit.prevent="load = true, $wire.register_user()" class="space-y-6">
+            <form   wire:key="step_1" id="step_1" @submit.prevent="load = true, $wire.register_user()" class="space-y-6">
                 <div>
                     @csrf
+                    @method('post')
                     <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
                         1</span>
                     <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Admin Details</h2>
@@ -202,10 +204,11 @@
                 </div>
             </form>
             @break
-             @case(2)
-            <form wire:key="step_2" @submit.prevent="load = true, $wire.verify_email()" class="flex flex-col gap-6">
+            @case(2)
+            <form wire:key="step_2"  id="step_2" @submit.prevent="load = true, $wire.verify_email()" class="flex flex-col gap-6">
                 <div>
                     @csrf
+                    @method('post')
                     <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
                         2</span>
                     <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Email Verification</h2>
@@ -259,9 +262,10 @@
             </form>
             @break
             @case(3)
-            <form wire:key="step_3" @submit.prevent="load = true, $wire.register_company()" class="flex flex-col gap-6">
+            <form wire:key="step_3"  id="step_3" @submit.prevent="load = true, $wire.register_company()" class="flex flex-col gap-6">
                 <div>
                     @csrf
+                    @method('post')
                     <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
                         2</span>
                     <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Company Details</h2>
@@ -340,9 +344,10 @@
             </form>
             @break
             @case(4)
-            <form wire:key="step_4" @submit.prevent="load = true, $wire.selectSubscription()" class="flex flex-col gap-6">
+            <form wire:key="step_4"  id="step_4" @submit.prevent="load = true, $wire.selectSubscription()" class="flex flex-col gap-6">
                 <div>
                     @csrf
+                    @method('post')
                     <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
                         3</span>
                     <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Subscription Details</h2>
@@ -531,100 +536,102 @@
             </form>
             @break
             @case(5)
-                <form wire:key="step_5" @submit.prevent="load = true, $wire.acceptTerms()" class="space-y-6">
-                    <div>
-                        @csrf
-                        <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
-                            4</span>
-                        <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Terms & Conditions</h2>
-                        <p class="font-medium lg:text-lg text-slate-500">Please read our terms and conditions outline below.</p>
+            <form wire:key="step_5"  id="step_5" @submit.prevent="load = true, $wire.acceptTerms()" class="space-y-6">
+                <div>
+                    @csrf
+                    @method('post')
+                    <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
+                        4</span>
+                    <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Terms & Conditions</h2>
+                    <p class="font-medium lg:text-lg text-slate-500">Please read our terms and conditions outline below.</p>
+                </div>
+                <fieldset class="grid grid-cols-2 gap-6">
+                    @include('includes.terms_and_conditions')
+                    <div class="col-span-2">
+                        <input required type="checkbox" id="terms_accepted" name="terms_accepted" class="cursor-pointer" />
+                        <label for="terms_accepted" class="cursor-pointer">Please tick this box to confirm you have read and
+                            are compliant with the above.</label>
                     </div>
-                    <fieldset class="grid grid-cols-2 gap-6">
-                        @include('includes.terms_and_conditions')
-                        <div class="col-span-2">
-                            <input required type="checkbox" id="terms_accepted" name="terms_accepted" class="cursor-pointer" />
-                            <label for="terms_accepted" class="cursor-pointer">Please tick this box to confirm you have read and
-                                are compliant with the above.</label>
-                        </div>
-                    </fieldset>
-                    <div class="flex justify-between">
-                        <x-button wire:click="$set('step', 3)" format="wire" type="button" class="text-lg rounded-full">
-                            <i class="fa-solid fa-arrow-left mr-1"></i> Prev
-                        </x-button>
-                        <x-button type="submit" class="text-lg rounded-full">
-                            Next <i class="fa-regular fa-arrow-right ml-1"></i>
-                        </x-button>
-                    </div>
-                </form>
+                </fieldset>
+                <div class="flex justify-between">
+                    <x-button wire:click="$set('step', 3)" format="wire" type="button" class="text-lg rounded-full">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Prev
+                    </x-button>
+                    <x-button type="submit" class="text-lg rounded-full">
+                        Next <i class="fa-regular fa-arrow-right ml-1"></i>
+                    </x-button>
+                </div>
+            </form>
             @break
             @case(6)
-                <form wire:key="step_6" @submit.prevent="load = true, $wire.company_billing()" class="space-y-6">
-                    <div>
-                        @csrf
-                        <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
-                            5</span>
-                        <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Billing Details</h2>
-                        <p class="font-medium lg:text-lg text-slate-500">Please confirm your billing details below.</p>
+            <form wire:key="step_6"  id="step_6" @submit.prevent="load = true, $wire.company_billing()" class="space-y-6">
+                <div>
+                    @csrf
+                    @method('post')
+                    <span class="font-semibold text-lg text-slate-400 text-sm tracking-wider uppercase">Registration Step
+                        5</span>
+                    <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Billing Details</h2>
+                    <p class="font-medium lg:text-lg text-slate-500">Please confirm your billing details below.</p>
 
-                    </div>
-                    <fieldset class="grid grid-cols-2 gap-6">
-                        <p class="col-span-1">
-                            <x-label for="firstName" required>First Name</x-label>
-                            <x-input wire:model="billing.firstName" name="firstName" id="firstName" type="text" required />
-                            <x-input-error :messages="$errors->get('billing.firstName')" class="mt-2" />
-                        </p>
-                        <p class="col-span-1">
-                            <x-label for="lastName" required>Last Name</x-label>
-                            <x-input wire:model="billing.lastName" name="lastName" id="lastName" type="text" required />
-                            <x-input-error :messages="$errors->get('billing.lastName')" class="mt-2" />
-                        </p>
-                        <p class="col-span-1">
-                            <x-label for="streetAddress" required>Address Line 1</x-label>
-                            <x-input wire:model="billing.streetAddress" name="streetAddress" id="streetAddress" type="text"
-                                required />
-                            <x-input-error :messages="$errors->get('billing.streetAddress')" class="mt-2" />
-                        </p>
-                        <p class="col-span-1">
-                            <x-label for="extendedAddress">Address Line 2</x-label>
-                            <x-input wire:model="billing.extendedAddress" name="extendedAddress" id="extendedAddress"
-                                type="text" />
-                            <x-input-error :messages="$errors->get('billing.extendedAddress')" class="mt-2" />
-                        </p>
-                        <p class="col-span-1">
-                            <x-label for="locality" required>City</x-label>
-                            <x-input wire:model="billing.locality" name="locality" id="locality" type="text" required />
-                            <x-input-error :messages="$errors->get('billing.locality')" class="mt-2" />
-                        </p>
-                        <p class="col-span-1">
-                            <x-label for="region">County</x-label>
-                            <x-input wire:model="billing.region" name="region" id="region" type="text" />
-                            <x-input-error :messages="$errors->get('billing.region')" class="mt-2" />
-                        </p>
-                        <p class="col-span-1">
-                            <x-label for="postalCode" required>Postcode</x-label>
-                            <x-input wire:model="billing.postalCode" name="postalCode" id="postalCode" type="text" required />
-                            <x-input-error :messages="$errors->get('billing.postalCode')" class="mt-2" />
-                        </p>
-                        {{--<p class="col-span-1">
-                            <x-label for="phone">Phone Number</x-label>
-                            <x-input wire:model="billing.address.phone" name="phone" id="phone" type="tel" />
-                            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-                        </p>--}}
-                    </fieldset>
-                    <div class="flex justify-between">
-                        <x-button wire:click="$set('step', 4)" format="wire" type="button" class="text-lg rounded-full">
-                            <i class="fa-solid fa-arrow-left mr-1"></i> Prev
-                        </x-button>
-                        <!-- <x-button wire:click="skipBilling()" type="button" format="wire" class="text-lg rounded-full">
-                            For trial period, please click here to continue <i class="fa-solid fa-arrow-down mr-1"></i>
-                        </x-button> -->
+                </div>
+                <fieldset class="grid grid-cols-2 gap-6">
+                    <p class="col-span-1">
+                        <x-label for="firstName" required>First Name</x-label>
+                        <x-input wire:model="billing.firstName" name="firstName" id="firstName" type="text" required />
+                        <x-input-error :messages="$errors->get('billing.firstName')" class="mt-2" />
+                    </p>
+                    <p class="col-span-1">
+                        <x-label for="lastName" required>Last Name</x-label>
+                        <x-input wire:model="billing.lastName" name="lastName" id="lastName" type="text" required />
+                        <x-input-error :messages="$errors->get('billing.lastName')" class="mt-2" />
+                    </p>
+                    <p class="col-span-1">
+                        <x-label for="streetAddress" required>Address Line 1</x-label>
+                        <x-input wire:model="billing.streetAddress" name="streetAddress" id="streetAddress" type="text"
+                            required />
+                        <x-input-error :messages="$errors->get('billing.streetAddress')" class="mt-2" />
+                    </p>
+                    <p class="col-span-1">
+                        <x-label for="extendedAddress">Address Line 2</x-label>
+                        <x-input wire:model="billing.extendedAddress" name="extendedAddress" id="extendedAddress"
+                            type="text" />
+                        <x-input-error :messages="$errors->get('billing.extendedAddress')" class="mt-2" />
+                    </p>
+                    <p class="col-span-1">
+                        <x-label for="locality" required>City</x-label>
+                        <x-input wire:model="billing.locality" name="locality" id="locality" type="text" required />
+                        <x-input-error :messages="$errors->get('billing.locality')" class="mt-2" />
+                    </p>
+                    <p class="col-span-1">
+                        <x-label for="region">County</x-label>
+                        <x-input wire:model="billing.region" name="region" id="region" type="text" />
+                        <x-input-error :messages="$errors->get('billing.region')" class="mt-2" />
+                    </p>
+                    <p class="col-span-1">
+                        <x-label for="postalCode" required>Postcode</x-label>
+                        <x-input wire:model="billing.postalCode" name="postalCode" id="postalCode" type="text" required />
+                        <x-input-error :messages="$errors->get('billing.postalCode')" class="mt-2" />
+                    </p>
+                    {{--<p class="col-span-1">
+                        <x-label for="phone">Phone Number</x-label>
+                        <x-input wire:model="billing.address.phone" name="phone" id="phone" type="tel" />
+                        <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                    </p>--}}
+                </fieldset>
+                <div class="flex justify-between">
+                    <x-button wire:click="$set('step', 4)" format="wire" type="button" class="text-lg rounded-full">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Prev
+                    </x-button>
+                    <!-- <x-button wire:click="skipBilling()" type="button" format="wire" class="text-lg rounded-full">
+                        For trial period, please click here to continue <i class="fa-solid fa-arrow-down mr-1"></i>
+                    </x-button> -->
 
 
-                        <x-button type="submit" class="text-lg rounded-full">
-                            Next <i class="fa-regular fa-arrow-right ml-1"></i>
-                        </x-button>
-                    </div>
-                </form>
+                    <x-button type="submit" class="text-lg rounded-full">
+                        Next <i class="fa-regular fa-arrow-right ml-1"></i>
+                    </x-button>
+                </div>
+            </form>
             @break
             @case(7)
                 <div class="space-y-6">
@@ -716,7 +723,9 @@
                 </div>
             @break
         @endswitch
+       
     </section>
+</div>
 
     <!-- includes the Braintree JS client SDK -->
     <script wire:ignore src="https://js.braintreegateway.com/web/dropin/1.33.7/js/dropin.min.js"></script>
@@ -794,5 +803,4 @@
 
     </script>
 
-
-</div>
+   

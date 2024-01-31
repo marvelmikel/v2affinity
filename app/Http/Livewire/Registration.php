@@ -90,11 +90,9 @@ class Registration extends Component
                 $this->company['vat_number'] = $company->vat_number;
                 $this->company['logo'] = $company->logo;
 
-                $this->user['id'] = $company->id;
+                $this->user['id'] = $company->user_id;
                 $this->user['name'] = $user->name;
                 $this->user['email'] = $user->email;
-
-               
             }
 
             if (!$user->hasVerifiedEmail()) {
@@ -125,35 +123,40 @@ class Registration extends Component
         /* Turn off loader */
         $this->load = false;
 
-        /* Validate user details */
-        $this->validate([
-            'user.name' => ['required', 'string', 'max:255'],
-            'user.email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                auth()->user() ? '' : 'unique:users,email',
-            ],
-            'user.password' => ['required', 'string', 'confirmed'],
-        ]);
+        if($this->user['email']){
+            /* Validate user details */
+            $this->validate([
+                'user.name' => ['required', 'string', 'max:255'],
+                'user.email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    auth()->user() ? '' : 'unique:users,email',
+                ],
+                'user.password' => ['required', 'string', 'confirmed'],
+            ]);
 
-        /* Create user and set as Company Admin */
-        $user = User::updateOrCreate([
-            'email' => $this->user['email']
-        ],[
-            'name' => $this->user['name'],
-            'email' => $this->user['email'],
-            'password' => Hash::make($this->user['password']),
-        ]);
+            /* Create user and set as Company Admin */
+            $user = User::updateOrCreate([
+                'email' => $this->user['email']
+            ],[
+                'name' => $this->user['name'],
+                'email' => $this->user['email'],
+                'password' => Hash::make($this->user['password']),
+            ]);
 
+            
+            VerificationCode::send($user->email);
 
+            /* Log new user in */
+            auth()->login($user);
 
-        /* Log new user in */
-        auth()->login($user);
+        }
 
         /* Clear user details */
-        // $this->reset('user');
+        $this->reset('user');
+        // $this->user = null;
 
         /* Move to step 2 */
         $this->step = 2;
@@ -176,7 +179,7 @@ class Registration extends Component
         // dd($isvalid, $codes, $user->email);
         if(!$isvalid){
             // session()->flash('alert-warning', 'Invalid or expired code.');
-            $this->addError('error','Invalid or expired code.');
+            $this->addError('verification_code_error','Invalid or expired code.');
             $this->verification_code = [];
             // $thxis->step = 2;
             return;

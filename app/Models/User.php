@@ -96,7 +96,7 @@ class User extends \Modules\Admin\Models\User
         parent::boot();
 
         static::created(function ($model) {
-            VerificationCode::send($model->email);
+            // VerificationCode::send($model->email);
         });
 
     }
