@@ -24,7 +24,7 @@ class VoyagerDatabaseSeeder extends Seeder
             SettingsTableSeeder::class,
             UsersTableSeeder ::class,
             // PlansTableSeeder ::class,
-            // CompanyTableSeeder ::class,
+            CompanyTableSeeder ::class,
             // StoresTableSeeder ::class,
             // SubscriptionTableSeeder ::class,
            
