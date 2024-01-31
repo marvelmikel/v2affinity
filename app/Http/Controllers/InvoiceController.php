@@ -318,9 +318,9 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function logs(InvoiceLogsDataTable $dataTable)
+    public function logs(InvoiceLogsDataTable $dataTable, $invoiceId)
     {
-        return $dataTable->render('voyager::invoices.logs');
+        return $dataTable->with('invoiceId', $invoiceId)->render('voyager::invoices.logs');
     }
 
 

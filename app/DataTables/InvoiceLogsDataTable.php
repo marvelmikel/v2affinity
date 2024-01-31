@@ -24,6 +24,8 @@ class InvoiceLogsDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+       
+        
         return (new EloquentDataTable($query))
             ->addColumn('action', function($row){
                 $showUrl = route('voyager.invoices.show', $row->id);
@@ -65,9 +67,7 @@ class InvoiceLogsDataTable extends DataTable
 
     public function query(InvoiceLog $model): QueryBuilder
     {
-        $user = Auth::user();
-    
-        return $model->newQuery();
+        return $model->where('invoice_id', $this->invoiceId);
     }
     
 
