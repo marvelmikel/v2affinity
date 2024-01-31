@@ -88,6 +88,9 @@ class Invoice extends Model
     public function store() {
         return $this->belongsTo(Store::class);
     }
+    public function logs() {
+        return $this->hasMany(InvoiceLog::class);
+    }
 
 
     protected static function boot() {

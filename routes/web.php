@@ -54,6 +54,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('invoices/{invoice}/save-pricing/',   [InvoiceController::class, 'savePricing'])->name('voyager.invoices.save-pricing');
         Route::post('invoices/{invoice}/add-pricing-column',   [InvoiceController::class, 'addPricingColumn'])->name('voyager.invoices.add-pricing-column');
         Route::delete('/invoices/{id}/delete', [InvoiceController::class, 'delete'])->name('voyager.invoices.delete');
+        Route::get('/invoices/{id}/logs', [InvoiceController::class, 'logs'])->name('voyager.invoices.logs');
 
     });
 

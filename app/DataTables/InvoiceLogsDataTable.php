@@ -3,18 +3,18 @@
 namespace App\DataTables;
 
 use App\Models\Invoice;
+use App\Models\InvoiceLog;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
-use Modules\Admin\Facades\Voyager;
 use Illuminate\Support\Facades\Auth;
 
 
 
-class InvoicesDataTable extends DataTable
+class InvoiceLogsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,22 +25,17 @@ class InvoicesDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            // ->addColumn('action'  )
             ->addColumn('action', function($row){
                 $showUrl = route('voyager.invoices.show', $row->id);
                 $editUrl = route('voyager.invoices.edit', $row->id);
                 $deleteUrl = route('voyager.invoices.delete', $row->id);
-                $logsUrl = route('voyager.invoices.logs', $row->id);
                 
                 $btn = "<div style='display:flex;'>
+                <a data-toggle='modal' data-target='#add_pricing_column_modal'  style='margin-right:2px; display:none' class='btn m- btn-warning btn-xs'><i class='voyager-logbook'></i></a>
                 
-                <a href='$logsUrl' style='margin-right:2px' class='btn m- btn-warning btn-xs'><i class='voyager-logbook'></i></a>
-
-                <a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
+               
                 
-                <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
-                
-                <form action='$deleteUrl' method='POST' style='display:inline'>
+                <form action='$deleteUrl' method='POST' style='display:none'>
                         " . csrf_field() . "
                         " . method_field('DELETE') . "
                         <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice ?\")'>
@@ -68,17 +63,11 @@ class InvoicesDataTable extends DataTable
      */
    
 
-    public function query(Invoice $model): QueryBuilder
+    public function query(InvoiceLog $model): QueryBuilder
     {
         $user = Auth::user();
     
-        if ($user->hasRole('admin')) {
-            return $model->newQuery(); // Allow admin to view all invoices
-        }
-    
-        $companyId = $user->company_id;
-        return $model->newQuery()
-            ->where('company_id', $companyId);
+        return $model->newQuery();
     }
     
 
@@ -120,15 +109,10 @@ class InvoicesDataTable extends DataTable
             ->render('meta.row + meta.settings._iDisplayStart + 1;')
             ->width(50)
             ->orderable(false),
-            Column::make('invoice_number'),
-            // Column::make('due_at'),
-            // Column::make('paid_at'),
+            Column::make('username'),
+            Column::make('activity'),
             Column::make('created_at'),
             Column::make('updated_at'),
-            // Column::callback(['id', 'name'], function ($id, $name) {
-            //     return view('frontend::iadmin.products.actions', ['id' => $id, 'name' => $name]);
-            // })->unsortable(),
-
              Column::computed('action')
                   ->exportable(true)
                   ->printable(true)
