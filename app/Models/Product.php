@@ -50,9 +50,9 @@ class Product extends Model
                 $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'unit_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'unit_width', 'value' => 1, 'title' => 'Unit Width(m)', 'type' => 'number', 'visibility' => 'hidden']);
-                // $model->meta()->create(['name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'unit_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'unit_width', 'value' => 1, 'title' => 'Unit Width(m)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'unit_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'length', 'value' => 1, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 1, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
@@ -65,26 +65,19 @@ class Product extends Model
 
 
 
-                if ($model->getMeta('unit_length') &&  $model->getMeta('unit_width')) {
-                    $unit_length = $model->getMeta('unit_length');
-                    $unit_width = $model->getMeta('unit_width');
+                if ($model->getMeta('length') && $model->getMeta('width')) {
+                    // $unit_length = $model->getMeta('unit_length');
+                    // $unit_width = $model->getMeta('unit_width');
 
-                    $model->meta()->updateOrCreate(['name' => 'unit_area'], [
-                        'name' => 'unit_area',
-                        'title' => 'Unit Area (㎡)',
-                        'value' => "$unit_length->identifier*$unit_width->identifier",
-                        'type' => 'formular',
-                        'visibility' => 'hidden'
-                    ]);
 
-                    $model->meta()->updateOrCreate(['name' => 'location'], [
-                        'name' => 'location',
-                        'title' => 'Enter Room Location',
-                        'value' => '',
-                        'type' => 'Text',
-                        'visibility' => 'visible'
-                    ]);
-
+                    //now being added 
+                    // $model->meta()->updateOrCreate(['name' => 'unit_area'], [
+                    //     'name' => 'unit_area',
+                    //     'title' => 'Unit Area (㎡)',
+                    //     'value' => "$unit_length->identifier*$unit_width->identifier",
+                    //     'type' => 'formular',
+                    //     'visibility' => 'hidden'
+                    // ]);
 
                     $length = $model->getMeta('length');
                     $width = $model->getMeta('width');
@@ -97,6 +90,17 @@ class Product extends Model
                         'visibility' => 'readonly'
                     ]);
                 }
+
+
+                $model->meta()->updateOrCreate(['name' => 'location'], [
+                    'name' => 'location',
+                    'title' => 'Enter Room Location',
+                    'value' => '',
+                    'type' => 'Text',
+                    'visibility' => 'visible'
+                ]);
+
+
 
                 //add def formular here
                 if ($model->getMeta('unit_price') && $model->getMeta('unit_area')) {
@@ -147,9 +151,12 @@ class Product extends Model
 
 
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'marble_size_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'marble_size_width', 'value' => 1, 'title' => 'Unit Width (m)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
+               
+                // $model->meta()->create(['name' => 'marble_size_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'marble_size_width', 'value' => 1, 'title' => 'Unit Width (m)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'unit_area', 'value' => 1, 'title' => 'Unit Area Size(LxW)㎡', 'type' => 'number', 'visibility' => 'hidden']);
+                
+                // $model->meta()->create(['name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
@@ -198,10 +205,12 @@ class Product extends Model
                     $tiles_per_pack = $model->getMeta('tiles_per_pack');
 
 
-                    $marble_size_length = $model->getMeta('marble_size_length');
-                    $marble_size_width = $model->getMeta('marble_size_width');
+                    //  deprecated, since we are now using unit_area
+                    // $marble_size_length = $model->getMeta('marble_size_length');
+                    // $marble_size_width = $model->getMeta('marble_size_width');
 
-                    $single_tile_area = "($marble_size_length->identifier*$marble_size_width->identifier)";
+                    // $single_tile_area = "($marble_size_length->identifier*$marble_size_width->identifier)";
+                    $single_tile_area = $model->getMeta('unit_area');;
 
 
                     $model->meta()->updateOrCreate(['name' => 'tiles_count'], [
