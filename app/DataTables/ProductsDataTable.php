@@ -95,7 +95,7 @@ class ProductsDataTable extends DataTable
             ->orderable(false),
             Column::make('title'),
             Column::make('description'),
-            Column::make('in_stock'),
+            // Column::make('in_stock'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')

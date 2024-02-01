@@ -8,9 +8,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="admin-section-title">
-                <h3><i class="voyager-book"></i> {{ __('Invoices Logs') }}</h3>
+                <h3><i class="voyager-logbook"></i> {{ __('Invoices Logs') }}</h3>
                 <div style="display:flex;">
-                   
                 </div>
                 <div class="clear"></div>
                 <div class="card">

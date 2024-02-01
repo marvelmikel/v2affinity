@@ -266,6 +266,8 @@ class Product extends Model
 
             if ($model->type == 'others') {
 
+                $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
+                $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'quantity', 'title' => 'Quantity of Product', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
 
@@ -320,6 +322,14 @@ class Product extends Model
                     ]);
                    
                 }
+
+                $model->meta()->updateOrCreate(['name' => 'location'], [
+                    'name' => 'location',
+                    'title' => 'Enter Room Location',
+                    'value' => '',
+                    'type' => 'Text',
+                    'visibility' => 'visible'
+                ]);
             }
 
 
