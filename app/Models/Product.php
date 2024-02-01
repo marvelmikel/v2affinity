@@ -293,16 +293,18 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'total_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'unit_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'unit_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
+                // $model->meta()->create(['name' => 'total_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
 
 
-                if ($model->getMeta('length') &&  $model->getMeta('width')) {
+                if ($model->getMeta('length') && $model->getMeta('width')) {
                     $length = $model->getMeta('length');
                     $width = $model->getMeta('width');
 
                     $model->meta()->updateOrCreate(['name' => 'total_area'], [
-                        'name' => 'total_area',
+                        'name' => 'area',
                         'title' => 'Total Area(㎡)',
                         'value' => "$length->identifier*$width->identifier",
                         'type' => 'formular',
@@ -310,11 +312,14 @@ class Product extends Model
                     ]);
                 }
                 //add def formular here
-                if ($model->getMeta('total_price') ) {
-                    $price = $model->getMeta('total_price');
+                if ($model->getMeta('unit_area') &&  $model->getMeta('unit_price') ) {
+                    $unit_area = $model->getMeta('unit_area');
+                    $unit_price = $model->getMeta('unit_price');
+                    $area = $model->getMeta('area');
+                   
                     $model->meta()->updateOrCreate(['name' => 'formular'], [
                         'name' => 'formular',
-                        'value' => "$price->identifier",
+                        'value' => "($area->identifier/$unit_area->identifier)*$unit_price->identifier",
                         'type' => 'formular',
                         'visibility' => 'hidden'
                     ]);
