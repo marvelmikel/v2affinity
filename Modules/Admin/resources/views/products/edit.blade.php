@@ -48,7 +48,8 @@
                         @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                            @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' )
+                            @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->name != 'add_allowance' && $meta->name != 'default_allowance' && $meta->name != 'allowance' && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count' )
+                            
                             <tr>
                                 <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
                                 <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
@@ -72,9 +73,9 @@
                             <!-- formula here -->
                             <tr>
                                 <td><input  readonly class="form-control" type="text" name="formular[]" value="formular"></td>
-                                <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->value }}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"></td>
-                                <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->visibility }}"></td>
+                                <td><input  readonly class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->value }}"></td>
+                                <td><input readonly  class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"></td>
+                                <td><input  readonly class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->visibility }}"></td>
 
                             </tr>
 
