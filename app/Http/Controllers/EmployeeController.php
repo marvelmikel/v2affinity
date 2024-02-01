@@ -11,9 +11,9 @@ use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmployeeRequest;
+use App\Mail\UserInvitationMail;
 use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Facades\Mail;
 
 class EmployeeController extends Controller
 {
@@ -42,16 +42,6 @@ class EmployeeController extends Controller
     public function create()
     {
 
-        // check subscription feature here
-        // if( $subscription = auth()->user()->activeSubscription()  ){
-        //     $userFeature = $subscription->features('users');
-            
-        //     if($userFeature['balance'] == 0){
-        //         return redirect()->back()->with('warning', 'You can not add anymore user');
-        //     }
-        // }
-
-
         $user = Auth::user();
         $company_id = $user->company_id ?? null;
 
@@ -65,8 +55,8 @@ class EmployeeController extends Controller
         // check subscription feature here
         if( $subscription = auth()->user()->activeSubscription()  ){
             $userFeature = $subscription->features('users');
-            if($userFeature['balance'] == 0){
-                return redirect()->back()->with('warning', 'You can not add anymore user');
+            if($userFeature['balance'] < 1){
+                return redirect()->back()->withErrors('warning', 'You can not add anymore user');
             }
         }
 
@@ -96,6 +86,16 @@ class EmployeeController extends Controller
         $user->store()->associate($store);
         $user->save();
 
+        if($company = Company::find($user->company_id)){
+            Mail::to($user)->send(new UserInvitationMail([
+                'name'  => $user->name,
+                'email' => $user->email,
+                'password' => $validatedData['password'],
+                'company_name' => $company->company_name,
+            ]));    
+        }
+
+       
         // Redirect with success message
         return redirect()->route('voyager.employee.index')->with([
             'message' => 'Successfully created user.',

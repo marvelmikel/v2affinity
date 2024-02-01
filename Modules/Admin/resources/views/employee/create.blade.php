@@ -31,7 +31,7 @@
 
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <ul>
+                            <ul> 
                                 @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                                 @endforeach
@@ -76,12 +76,15 @@
                             </div>
 
                             <div class="col-md-4 form-group">
-                                <label for="password">Password</label>
-                                <input class="form-control" type="password" name="password" id="password" required>
+                                <label for="password">Password</label> 
+                                <span style="border: 1px solid whitesmoke; border-radius: 5px; padding: 2px 10px;" class="float-right cursor-pointer" onclick='password = Password.generate(16), document.getElementsByClassName("password").forEach(input =>{
+                                    input.value = password
+                                })' >Generate</span>
+                                <input class="form-control password" type="text" name="password" id="password" required>
                             </div>
                             <div class="col-md-4 form-group">
                                 <label for="cpassword">Confirm Password</label>
-                                <input class="form-control" type="password" name="cpassword" id="cpassword" required>
+                                <input class="form-control password" type="text" name="cpassword" id="password" required>
                             </div>
 
                         </div>
@@ -104,6 +107,53 @@
 
 @section('javascript')
 <script>
+
+var Password = {
+ 
+ _pattern : /[a-zA-Z0-9_\-\+\.]/,
+ 
+ 
+ _getRandomByte : function()
+ {
+   // http://caniuse.com/#feat=getrandomvalues
+   if(window.crypto && window.crypto.getRandomValues) 
+   {
+     var result = new Uint8Array(1);
+     window.crypto.getRandomValues(result);
+     return result[0];
+   }
+   else if(window.msCrypto && window.msCrypto.getRandomValues) 
+   {
+     var result = new Uint8Array(1);
+     window.msCrypto.getRandomValues(result);
+     return result[0];
+   }
+   else
+   {
+     return Math.floor(Math.random() * 256);
+   }
+ },
+ 
+ generate : function(length)
+ {
+   return Array.apply(null, {'length': length})
+     .map(function()
+     {
+       var result;
+       while(true) 
+       {
+         result = String.fromCharCode(this._getRandomByte());
+         if(this._pattern.test(result))
+         {
+           return result;
+         }
+       }        
+     }, this)
+     .join('');  
+ }    
+   
+};
+
 
 </script>
 @stop
