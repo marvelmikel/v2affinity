@@ -571,7 +571,7 @@
                 <span class="table-cell cell-colour">Description</span>
                 <span class="table-cell cell-size">Size</span>
                 <span class="table-cell cell-quantity">Area (m²)</span>
-                <span class="table-cell cell-quantity">Pack Qty </span>
+                <span class="table-cell cell-quantity">Qty </span>
                 <span class="table-cell cell-selling-price empty">&nbsp; Item Price</span>
             </div>
 

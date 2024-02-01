@@ -54,8 +54,8 @@ class Product extends Model
                 // $model->meta()->create(['name' => 'unit_width', 'value' => 1, 'title' => 'Unit Width(m)', 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'unit_area', 'value' => 1, 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'number', 'visibility' => 'hidden']);
 
-                $model->meta()->create(['name' => 'length', 'value' => 1, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'width', 'value' => 1, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
 
                 $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);

@@ -58,7 +58,7 @@
                                         <option value="tile">Pack Items</option>
                                         <option value="rollend">Roll End</option>
                                         <option value="underlay">Underlay</option>
-                                        <option value="others">Others Stocks</option>
+                                        <option value="others">Other Stocks</option>
 
                                     </select>
                                 </div>

@@ -120,7 +120,7 @@
 
                         <th class="whitespace-normal w-20 bg-slate-300 p-2">Size</th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Area m²</th>
-                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Pack Qty </th>
+                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Qty </th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Amount</th>
                     </tr>
                 </thead>
