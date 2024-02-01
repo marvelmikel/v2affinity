@@ -283,6 +283,47 @@ class Product extends Model
             }
 
 
+            // if ($model->type == 'rollend') {
+
+            //     // Title | Description | Length | Width | Total Area | Total Price
+            //     $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
+            //     $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
+            //     $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
+
+            //     $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
+            //     $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
+
+            //     $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
+            //     $model->meta()->create(['name' => 'total_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
+
+
+            //     if ($model->getMeta('length') &&  $model->getMeta('width')) {
+            //         $length = $model->getMeta('length');
+            //         $width = $model->getMeta('width');
+
+            //         $model->meta()->updateOrCreate(['name' => 'total_area'], [
+            //             'name' => 'total_area',
+            //             'title' => 'Total Area(㎡)',
+            //             'value' => "$length->identifier*$width->identifier",
+            //             'type' => 'formular',
+            //             'visibility' => 'readonly'
+            //         ]);
+            //     }
+            //     //add def formular here
+            //     if ($model->getMeta('total_price') ) {
+            //         $price = $model->getMeta('total_price');
+            //         $model->meta()->updateOrCreate(['name' => 'formular'], [
+            //             'name' => 'formular',
+            //             'value' => "$price->identifier",
+            //             'type' => 'formular',
+            //             'visibility' => 'hidden'
+            //         ]);
+                   
+            //     }
+            // }
+
+
+            // new rollend
             if ($model->type == 'rollend') {
 
                 // Title | Description | Length | Width | Total Area | Total Price
@@ -293,8 +334,8 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create(['name' => 'unit_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'unit_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'unit_area', 'title' => 'Unit Area', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
                 // $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
                 // $model->meta()->create(['name' => 'total_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
 
