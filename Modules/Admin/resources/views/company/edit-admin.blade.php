@@ -188,8 +188,6 @@
                                             <th>Subscription ID</th>
                                             <th>Plan Name</th>
                                             <th>Price</th>
-                                            <!-- <th>Trial Period</th>
-                                            <th>Billing Cycle</th> -->
                                             <th>Status</th>
                                             <th>Date & Time</th>
                                             <th>Actions</th>
@@ -201,8 +199,6 @@
                                             <td>{{ $subscription->id}}</td>
                                             <td>{{$plan->name ?? 'no plan' }} <br> {{ $plan->description ?? 'no plan' }} </td>
                                             <td>£ {{$plan->price ?? '' }}</td>
-                                            <!-- <td>{{ $subscription->trial_period  ?? '' }}</td>
-                                            <td>{{ $subscription->billing_cycle  ?? 'no' }}</td> -->
                                             <td>{{ $subscription->status  ?? '' }}</td>
                                             <td>{{ $subscription->created_at  ?? '' }}</td>
                                             <td>

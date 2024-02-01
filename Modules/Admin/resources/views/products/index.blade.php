@@ -54,11 +54,11 @@
                                 <div style="margin: 10px 0;">
                                     <label for="">Type </label>
                                     <select class="form-control" name="type" id="">
-                                        <option value="carpet">Carpet</option>
-                                        <option value="tile">Tile</option>
+                                        <option value="carpet">Carpets & Roll Items</option>
+                                        <option value="tile">Pack Items</option>
                                         <option value="rollend">Roll End</option>
                                         <option value="underlay">Underlay</option>
-                                        <option value="others">Others</option>
+                                        <option value="others">Others Stocks</option>
 
                                     </select>
                                 </div>
