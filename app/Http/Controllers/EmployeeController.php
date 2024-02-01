@@ -56,7 +56,7 @@ class EmployeeController extends Controller
         if( $subscription = auth()->user()->activeSubscription()  ){
             $userFeature = $subscription->features('users');
             if($userFeature['balance'] < 1){
-                return redirect()->back()->withErrors('warning', 'You can not add anymore user');
+                return redirect()->back()->with('warning', 'You can not add anymore user, please update your subscription');
             }
         }
 

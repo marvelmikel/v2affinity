@@ -20,12 +20,20 @@
         <div class="col-md-12">
 
             <div class="panel panel-bordered">
+
+                @if(Session::has('warning'))
+                        <div class="alert alert-warning">
+                        {{Session::get('warning')}}
+                        </div>
+                @endif
+
                 <!-- form start -->
                 <form class="form-edit-add" role="form" action="{{ route('voyager.employee.store')}}" method="POST"
                     enctype="multipart/form-data">
 
                     <!-- CSRF TOKEN -->
                     {{ csrf_field() }}
+
 
                     <div class="panel-body">
 
@@ -38,6 +46,8 @@
                             </ul>
                         </div>
                         @endif
+
+                       
 
                         <div class="form-group row">
                             <div class="col-md-4 form-group">
