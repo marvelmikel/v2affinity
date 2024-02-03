@@ -240,33 +240,33 @@ class SubscriptionsEdit extends Component
     
     public function storeSubscription($switch = false)
     {
+        $existingAdons =  json_decode($this->subscription['addOns'], true);   
 
-        foreach (json_decode($this->subscription['addOns'], true) as $addon) {
+        foreach ($this->extras['addons'] as $key => $addon) {
 
             $this->addons = [
                 'remove' => [],
                 'update' => [],
+                'add' => [],
             ];
             
-            if (empty($this->extras['addons'][$addon['id']]) || empty($this->extras['addons'][$addon['id']]['quantity'])  ) {
-                array_push($this->addons['remove'], $addon['id'] );
+            if (  empty($addon['quantity'])  || $addon['quantity'] <=0    ) {
+                array_push($this->addons['remove'], $key);
             } else {
-                array_push( $this->addons['update'], [ 'existingId' => $addon['id'], 'quantity' =>  $this->extras['addons'][$addon['id']]['quantity']] ) ;
+                if(isset($existingAdons[$key])){
+                    array_push( $this->addons['update'], [ 'existingId' => $key, 'quantity' =>  $addon['quantity']] ) ;
+                }else{
+                    array_push( $this->addons['add'], [ 'inheritedFromId' => $key, 'quantity' =>  $addon['quantity']] ) ;
+                }
+                
             }
 
         }
-
-
-
         // Check if plan is being switched or current plan is updated then build request array
         if ($switch) {
             $vals = [
                 'subscription_id' => $this->subscription->id,
                 'plan_id' => $this->inputPlan['plan_id'],
-                // 'addons' => [
-                //     'add' => $this->inputPlan['addons'],
-                //     'remove' => current(json_decode($this->subscription->addOns))->id,
-                // ],
                 'addons' => $this->addons,
                 'discounts' => $this->inputPlan['discounts']
             ]; 
@@ -274,7 +274,6 @@ class SubscriptionsEdit extends Component
             $vals = [
                 'subscription_id' => $this->subscription->id,
                 'plan_id' => $this->subscription->plan_id,
-                // 'addons' => $this->extras['addons'],
                 'addons' => $this->addons,
                 'discounts' => $this->extras['discounts']
             ];
@@ -282,6 +281,7 @@ class SubscriptionsEdit extends Component
 
         // Create new StoreSubscriptionRequest
         $request = new UpdateSubscriptionRequest($vals);
+
 
         // Set to post
         $request->setMethod('POST');
@@ -342,14 +342,8 @@ class SubscriptionsEdit extends Component
             'status' => 'Cancelled'
         ]);
 
-        // // Disable company on app
-        // $apiResponse = apiCall( 'company/'.auth()->user()->company_id, $type = 'PUT', [ 'active' => false ]);
-
         // Send cancellation email
         Mail::to(auth()->user())->send(new SubscriptionCancelled($this->subscription));
-
-        // Log out the user
-        // Auth::logout();
 
         // Redirect to dashboard
         session()->flash('alert-success', 'Subscription cancelled successfully.');

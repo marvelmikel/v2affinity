@@ -56,12 +56,13 @@ class Subscription extends Model
         $foundMonthlyUser = array_search($monthlyUser, array_column($addons, 'id'));
         $foundYearlyUser = array_search($yealyUser, array_column($addons, 'id'));
 
-        // dd($addons, $foundMonthlyUser, $foundYearlyUser);
+       // dd($addons, $foundMonthlyUser, $foundYearlyUser);
 
         $addonUsers = 0;
 
         if($addons){
-            if($foundMonthlyUser){
+
+            if($foundMonthlyUser !== false){
                 $addonUsers = $addons[$foundMonthlyUser]['quantity'];
             }
 

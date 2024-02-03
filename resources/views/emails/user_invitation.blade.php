@@ -16,6 +16,10 @@ In the meantime, please find the details of your account below:
 | **Company Name** | {{ $company_name }} |
 
 
+@component('components.button-link', ['href' => $url])
+    Login
+@endcomponent
+
 <br>
 Thank you {{ config('app.name') }}.
 </x-mail::message>

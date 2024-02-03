@@ -51,6 +51,7 @@ class UserInvitationMail extends Mailable
                 'email' => $this->fields['email'],
                 'password' => $this->fields['password'],
                 'company_name' => $this->fields['company_name'],
+                'url' => env('APP_URL') . '/admin/login',
             ],
         );
     }
