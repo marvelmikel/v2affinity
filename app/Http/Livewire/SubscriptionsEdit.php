@@ -251,7 +251,9 @@ class SubscriptionsEdit extends Component
             ];
             
             if (  empty($addon['quantity'])  || $addon['quantity'] <=0    ) {
-                array_push($this->addons['remove'], $key);
+                if(isset($existingAdons[$key])){
+                    array_push($this->addons['remove'], $key);
+                }
             } else {
                 if(isset($existingAdons[$key])){
                     array_push( $this->addons['update'], [ 'existingId' => $key, 'quantity' =>  $addon['quantity']] ) ;
@@ -297,6 +299,7 @@ class SubscriptionsEdit extends Component
             $update = $this->updateSubscription($request);
         }
 
+        // dd($update);
         // Flash response
         if ($update->success) {
             // Flash updated payment details
@@ -308,7 +311,7 @@ class SubscriptionsEdit extends Component
             // Reset views
             return redirect(request()->header('Referer'));
         } else {
-            session()->flash('alert-error', 'Failed to update subscription details. Please try again.');
+           $this->addError('warning', 'Failed to update subscription details. Please try again.');
         }
     }
 

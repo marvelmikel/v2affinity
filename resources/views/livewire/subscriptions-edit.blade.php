@@ -10,7 +10,23 @@
         </div>
         @endif
         @endforeach
+
+
+        
     </div>
+
+    <div class="flash-message">
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+            @endforeach
+        @endif
+
+
+        
+    </div>
+
+
 
     @if($load['page'])
     <div class="flex items-center justify-center py-12 text-main-color w-full">
