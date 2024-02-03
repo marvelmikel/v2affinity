@@ -250,7 +250,7 @@ class SubscriptionsEdit extends Component
                 'add' => [],
             ];
             
-            if (  empty($addon['quantity'])  || $addon['quantity'] <=0    ) {
+            if (  empty($addon['quantity'])    ) {
                 if(isset($existingAdons[$key])){
                     array_push($this->addons['remove'], $key);
                 }
