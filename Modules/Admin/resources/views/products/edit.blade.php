@@ -48,9 +48,9 @@
                         @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->name != 'add_allowance'  && $meta->name != 'allowance' && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count' )
+                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->name != 'add_allowance'  && $meta->name != 'default_allowance' && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count' )
                                     
-                                   @if($product->type == 'carpet' && $meta->name != 'default_allowance')
+                                   @if(in_array($product->type,  ['carpet', 'underlay']) && $meta->name != 'allowance')
                                         <tr>
                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
@@ -68,7 +68,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    @elseif(in_array($product->type, ['tile', 'underlay', 'rollend', 'others']))
+                                    @elseif(in_array($product->type, ['tile', 'rollend', 'others']))
                                         <tr>
                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>

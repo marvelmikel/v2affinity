@@ -110,6 +110,10 @@
                         </div>
 
                         <div class="form-group row">
+                        <div class="col-md-4">
+                                <label for="name">Customer Phone Number</label>
+                                <input type="text" class="form-control" type="text" value="{{ old('customer_phone_number') }}" name="customer_phone_number" id="">
+                            </div>
                             <div class="col-md-4">
                                 <label for="name">Customer Address Line 1</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_1') }}" name="customer_address_line_1" id="">
@@ -118,10 +122,7 @@
                                 <label for="name">Customer Address Line 2</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_2') }}" name="customer_address_line_2" id="">
                             </div>
-                            <div class="col-md-4">
-                                <label for="name">Customer Phone Number</label>
-                                <input type="text" class="form-control" type="text" value="{{ old('customer_phone_number') }}" name="customer_phone_number" id="">
-                            </div>
+                           
                         </div>
 
 
