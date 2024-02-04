@@ -48,26 +48,46 @@
                         @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                            @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->name != 'add_allowance' && $meta->name != 'default_allowance' && $meta->name != 'allowance' && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count' )
-                            
-                            <tr>
-                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
-                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
-                                <td>
-                                    <select class="form-control" name="{{ $meta->name }}[]" id="">
-                                        <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
-                                        <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
-                                        <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>editable</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <a href="{{ route('product-meta.delete', $meta->id) }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
-                                        <i class="voyager-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endif
+                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->name != 'add_allowance'  && $meta->name != 'allowance' && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count' )
+                                    
+                                   @if($product->type == 'carpet' && $meta->name != 'default_allowance')
+                                        <tr>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
+                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                            <td>
+                                                <select class="form-control" name="{{ $meta->name }}[]" id="">
+                                                    <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
+                                                    <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
+                                                    <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>editable</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('product-meta.delete', $meta->id) }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
+                                                    <i class="voyager-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @elseif(in_array($product->type, ['tile', 'underlay', 'rollend', 'others']))
+                                        <tr>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
+                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                            <td>
+                                                <select class="form-control" name="{{ $meta->name }}[]" id="">
+                                                    <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
+                                                    <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
+                                                    <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>editable</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('product-meta.delete', $meta->id) }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
+                                                    <i class="voyager-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endif
                             @endforeach
 
                             <!-- formula here -->
