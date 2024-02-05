@@ -140,7 +140,7 @@
                             <tr>
                                 <th>Employee Name</th>
                                 <th>Role</th>
-                                <th>Actions</th>
+                                <!-- <th>Actions</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -151,8 +151,7 @@
 
                                 <td><input readonly class="form-control" type="text" name="role_name" value="{{ $user->role->name ?? 'N/A' }}"></td>
 
-                                <td colspan="3">
-                                    <!-- Non-admin actions -->
+                                <!-- <td colspan="3">
                                     <form action="{{ route('voyager.stores.delete', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -160,7 +159,7 @@
                                             <i class="voyager-trash"></i> Delete
                                         </button>
                                     </form>
-                                </td>
+                                </td> -->
                             </tr>
                             @endif
                             @endforeach
