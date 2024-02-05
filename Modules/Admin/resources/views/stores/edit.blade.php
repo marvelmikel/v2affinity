@@ -129,7 +129,7 @@
             <!-- Store Employees -->
             <div class="card">
                 <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
-                    <h3><i class="voyager-people"></i> {{ __('Store Employees') }}</h3>
+                    <h3><i class="voyager-people"></i> {{ __('Store Assigned Employees') }}</h3>
                 </div>
                 <div class="clear"></div>
                 <br>
