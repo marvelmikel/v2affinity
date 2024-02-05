@@ -34,10 +34,10 @@
         </div>
         <ul class="nav navbar-nav @if (__('voyager::generic.is_rtl') == 'true') navbar-left @else navbar-right @endif">
             <li class="dropdown profile">
-                <a href="#" class="dropdown-toggle text-right" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{{ $user_avatar }}" class="profile-img"> <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle text-right" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{{ asset(Auth::user()->avatar) }}" class="profile-img"> <span class="caret"></span></a>
                 <ul class="dropdown-menu dropdown-menu-animated">
                     <li class="profile-img">
-                        <img src="{{ $user_avatar }}" class="profile-img">
+                        <img src="{{ asset(Auth::user()->avatar) }}" class="profile-img">
                         <div class="profile-body">
                             <h5>{{ Auth::user()->name }}</h5>
                             <h6>{{ Auth::user()->email }}</h6>

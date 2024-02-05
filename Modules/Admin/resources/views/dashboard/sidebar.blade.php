@@ -15,12 +15,23 @@
                 </a>
             </div><!-- .navbar-header -->
 
-            <div class="panel widget center bgimage" style="background-image:url({{ Voyager::image( Voyager::setting('admin.bg_image'), voyager_asset('images/bg.jpg') ) }}); background-size: cover; background-position: 0px;">
+
+            @php
+                $company_logo = Auth::user()->company && Auth::user()->company->logo ?  asset(Auth::user()->company->logo) : asset('assets/img/logo-placeholder-image.png') ;
+            @endphp
+            <div class="panel widget center bgimage" style="background-image:url({{ $company_logo }}); background-size: cover; background-position: 0px;">
                 <div class="dimmer"></div>
                 <div class="panel-content">
-                    <img src="{{ $user_avatar }}" class="avatar" alt="{{ Auth::user()->name }} avatar">
-                    <h4>{{ ucwords(Auth::user()->name) }}</h4>
-                    <p>{{ Auth::user()->email }}</p>
+
+                    @if($company = Auth::user()->company )
+                        <img src="{{ asset($company->logo) }}" class="avatar" alt="{{ $company->name }} avatar">
+                        <h4>{{ ucwords($company->company_name) }}</h4>
+                        <p>{{ $company->company_email }}</p>
+                    @else
+                        <img src="{{ Auth::user()->avatar }}" class="avatar" alt="{{ Auth::user()->name }} avatar">
+                        <h4>{{ ucwords(Auth::user()->name) }}</h4>
+                        <p>{{ Auth::user()->email }}</p>
+                    @endif
 
                     <a href="{{ route('voyager.profile') }}" class="btn btn-primary">{{ __('voyager::generic.profile') }}</a>
                     <div style="clear:both"></div>

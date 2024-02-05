@@ -234,13 +234,23 @@ class Registration extends Component
             'company.phone_no' => 'sometimes|string',
             'company.logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+        
 
       
         if (!$user->hasVerifiedEmail()) {
             session()->flash('alert-warning', 'You need to verify your email address to continue.');
             $this->step = 2;
         }
+
+
+       
+
+        // Save the uploaded logo
+        if ($this->company['logo']) {
+            $logoPath = $this->company['logo']->storeAs('company_logos', 'logo_' .time() . '.' . $this->company['logo']->extension(), 'public_dir');
+            $this->company['logo'] = $logoPath;
+        }
+
 
         $company = Company::updateOrCreate([
             'company_email' => $this->company['company_email'],

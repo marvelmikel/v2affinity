@@ -25,7 +25,6 @@
     @include('voyager::alerts')
     <div class="row">
         <div class="col-md-6">
-
             <div class="panel panel-bordered">
                 <!-- form start -->
                 <form class="form-edit-add" role="form" action="{{ route('stores.update', ['storeId' => $store->id]) }}" method="POST" enctype="multipart/form-data">
@@ -124,7 +123,8 @@
                 </form>
 
             </div>
-
+        </div>
+        <div class="col-md-6">
 
             <!-- Store Employees -->
             <div class="card">
@@ -153,7 +153,7 @@
 
                                 <td colspan="3">
                                     <!-- Non-admin actions -->
-                                    <form action="{{ route('delete-store', $user->id) }}" method="POST">
+                                    <form action="{{ route('voyager.stores.delete', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
@@ -172,6 +172,8 @@
             </div>
 
         </div>
+
+
 
         {{-- Store Email Settings --}}
         @if(Auth::check() && Auth::user()->role_id == 1)

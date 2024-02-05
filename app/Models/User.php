@@ -31,6 +31,7 @@ class User extends \Modules\Admin\Models\User
         'company_id',
         'store_id',
         'role_id',
+        'avatar',
     ];
 
     /**
@@ -95,8 +96,11 @@ class User extends \Modules\Admin\Models\User
     {
         parent::boot();
 
-        static::created(function ($model) {
+        static::creating(function ($model) {
             // VerificationCode::send($model->email);
+            if(!$model->avatar){
+                $model->avatar = '/assets/img/default_user.png';
+            }
         });
 
     }

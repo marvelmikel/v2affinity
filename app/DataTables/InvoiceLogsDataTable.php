@@ -67,7 +67,7 @@ class InvoiceLogsDataTable extends DataTable
 
     public function query(InvoiceLog $model): QueryBuilder
     {
-        return $model->where('invoice_id', $this->invoiceId);
+        return $model->where('invoice_id', $this->invoice->id);
     }
     
 

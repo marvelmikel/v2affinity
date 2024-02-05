@@ -49,18 +49,10 @@ class StoreController extends Controller
         $path = null; // Default to null if no file is uploaded
         if ($request->hasFile('store_logo')) {
             $file = $request->file('store_logo');
-            // $filename = time() . '.' . $file->getClientOriginalExtension();
-            // Store the file in the 'public/store_logos' directory which is within 'storage/app/public'
-            // $path = $file->storeAs('store_logos', $filename);
             $fileName = time() . '_' . $file->getClientOriginalName();
             $path = 'store_logos/' . $fileName;
             // Move the uploaded file to the public directory
             $file->move(public_path('store_logos'), $fileName);
-            // $path = Storage::disk('public')->putFileAs('store_logos', $file, $filename);
-            // Update the $filename variable to store the entire path, rather than just the filename
-            //    $filename = 'store_logos/' . $filename;
-
-
         }
 
         // Actually create the store
