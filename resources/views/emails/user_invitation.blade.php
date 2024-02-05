@@ -3,10 +3,11 @@
 Dear {{ $name }},
 
 You have been added by your Company as an employee on the Affinity software. <br>
-To discuss further and receive your login details, please see your Company Super Admin.
+To discuss further on your user level, please see your Company Super Admin.
 
 
-In the meantime, please find the details of your account below:
+In the meantime, please find the details of your account below;<br>
+(it is always recommended to change your password as soon as you have logged in):
 
 |  |  |
 | ----------- | ----------- |
