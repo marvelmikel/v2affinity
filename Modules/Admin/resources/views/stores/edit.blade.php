@@ -72,10 +72,10 @@
                           
 
                         
-                            <!-- <div class="col-md-4">
+                            <div class="col-md-4">
                                 <label for="name">Next Invoice Number</label>
-                                <input type="number" class="form-control" value="{{ $store->next_invoice_number}}" name="next_invoice_number" id="">
-                            </div> -->
+                                <input type="number" hidden class="form-control" value="{{ $store->next_invoice_number}}" name="next_invoice_number" id="">
+                            </div>
                             <div class="col-md-4">
                                 <label for="name">Store Address Line 1</label>
                                 <input type="text" class="form-control" type="text" value="{{ $store->address_line_1}}" name="address_line_1" id="">
@@ -91,16 +91,18 @@
                                 <input class="form-control" type="text" value="{{ $store->address_city}}" name="address_city" id="">
                             </div>
 
+                            <div class="col-md-4">
+                                <label for="name">Address Country</label>
+                                <input type="text" class="form-control" type="text" value="{{ $store->address_county}}" name="address_county" id="">
+                            </div>
+
                         </div>
 
                         <div class="form-group row">
 
                        
 
-                            <div class="col-md-4">
-                                <label for="name">Address Country</label>
-                                <input type="text" class="form-control" type="text" value="{{ $store->address_county}}" name="address_county" id="">
-                            </div>
+                          
                        
                            
                             <div class="col-md-4">
