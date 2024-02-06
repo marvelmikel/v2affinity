@@ -136,12 +136,25 @@
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ ($item->getMeta('Length')?->value . ' x ' . $item->getMeta('Width')?->value) ?? 'N/A'}}
                         </td>
+                        
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
-                            {{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}
+                            {{ ($area = $item->getMeta('length')?->value * $item->getMeta('width')?->value) ? $area  : 'N/A' }}
                         </td>
-                        <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
-                            {{ evaluate_formular($item->getMeta('packs_count')?->value ,'InvoiceItemMeta', $item->id, $item->getMeta('packs_count')?->modifier ) ?? 'N/A'}}
-                        </td>
+
+                      
+
+                     
+                        @if( $item->getMeta('type')?->value == 'tile' )
+                            <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                                {{ evaluate_formular($item->getMeta('packs_count')?->value ,'InvoiceItemMeta', $item->id, $item->getMeta('packs_count')?->modifier ) ?? 'N/A'}}
+                            </td>
+                        @else
+                             <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
+                                {{ evaluate_formular($item->getMeta('quantity')?->value ,'InvoiceItemMeta', $item->id, $item->getMeta('quantity')?->modifier ) ?? 'N/A'}}
+                            </td>
+                        @endif
+
+
 
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ $item->item_total ?? 'N/A' }}

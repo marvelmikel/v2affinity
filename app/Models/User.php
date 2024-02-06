@@ -11,11 +11,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use \Modules\Admin\Models\Role; 
 use \Haruncpi\LaravelUserActivity\Models\Log as UserActivityLog;
+use Hydrat\Laravel2FA\Contracts\TwoFactorAuthenticatableContract;
+use Hydrat\Laravel2FA\TwoFactorAuthenticatable;
 use NextApps\VerificationCode\VerificationCode;
 
-class User extends \Modules\Admin\Models\User 
+class User extends \Modules\Admin\Models\User implements TwoFactorAuthenticatableContract
 {
-    use HasApiTokens, HasFactory, Notifiable, Loggable;
+    use HasApiTokens, HasFactory, Notifiable, Loggable, TwoFactorAuthenticatable ;
 
     
 

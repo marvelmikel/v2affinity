@@ -2,6 +2,8 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Models\User;
+use Hydrat\Laravel2FA\TwoFactorAuth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +38,14 @@ class VoyagerAuthController extends Controller
         $credentials = $this->credentials($request);
 
         if ($this->guard()->attempt($credentials, $request->has('remember'))) {
-            return $this->sendLoginResponse($request);
+            // return $this->sendLoginResponse($request);
+
+            $user = User::find(auth()->user()->id);
+            
+            return TwoFactorAuth::getDriver()->maybeTrigger($request, $user) 
+                ?: redirect()->intended($this->redirectPath());
+
+
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
