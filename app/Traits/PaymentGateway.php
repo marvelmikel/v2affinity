@@ -80,18 +80,20 @@ trait PaymentGateway
         /* Validate input */
         $validated = $request->validated();
 
+        // dd($validated);
+
         /* Check if addons are provided */
-        $addons = [];
-        if($validated['addons']){
-            /* Loop and generate addons */
-            foreach($validated['addons'] as $key => $item){
-                $addons[] = [
-                     // 'inheritedFromId' => $key,
-                    'existingId' => $key,
-                    'quantity' => $item['quantity']
-                ];
-            }
-        }
+        // $addons = [];
+        // if($validated['addons']){
+        //     /* Loop and generate addons */
+        //     foreach($validated['addons'] as $key => $item){
+        //         $addons[] = [
+        //              // 'inheritedFromId' => $key,
+        //             'existingId' => $key,
+        //             'quantity' => $item['quantity']
+        //         ];
+        //     }
+        // }
 
         /* Check if discounts are provided */
         $discounts = [];
@@ -112,9 +114,10 @@ trait PaymentGateway
         $result = $gateway->subscription()->create([
             'paymentMethodNonce' => $validated['paymentMethodNonce'],
             'planId' => $validated['plan_id'],
-            'addOns' => [
-                'update' => $addons
-            ],
+            'addOns' => $validated['addons'],
+            // 'addOns' => [
+            //     'update' => $addons
+            // ],
             'discounts' => [
                 'update' => $discounts
             ]
@@ -146,6 +149,7 @@ trait PaymentGateway
             $subscription->save();
         }
 
+
         return $result;
     }
 
@@ -155,17 +159,17 @@ trait PaymentGateway
         $validated = $request->validated();
 
         /* Check if addons are provided */
-        $addons = [];
-        if($validated['addons']){
-            /* Loop and generate addons */
-            foreach($validated['addons'] as $key => $item){
-                $addons[] = [
-                    // 'inheritedFromId' => $key,
-                    'existingId' => $key,
-                    'quantity' => $item['quantity']
-                ];
-            }
-        }
+        // $addons = [];
+        // if($validated['addons']){
+        //     /* Loop and generate addons */
+        //     foreach($validated['addons'] as $key => $item){
+        //         $addons[] = [
+        //             // 'inheritedFromId' => $key,
+        //             'existingId' => $key,
+        //             'quantity' => $item['quantity']
+        //         ];
+        //     }
+        // }
 
         /* Check if discounts are provided */
         $discounts = [];
@@ -186,9 +190,10 @@ trait PaymentGateway
         /* Update subscription on braintree*/
         $result = $gateway->subscription()->update($validated['subscription_id'], [
             'planId' => $validated['plan_id'],
-            'addOns' => [
-                'update' => $addons
-            ],
+            // 'addOns' => [
+            //     'update' => $addons
+            // ],
+            'addOns' => $validated['addons'] ?? [],
             'discounts' => [
                 'update' => $discounts
             ]

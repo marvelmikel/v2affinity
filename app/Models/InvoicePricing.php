@@ -36,6 +36,6 @@ class InvoicePricing extends Model
             $last  =static::latest('id')->first();
             $id = $last ? $last->id+1 : 1;
 	        $model->identifier = 'P'.$model->invoice_id. $id;
-	    });	    
-	}
+	    });     
+	}// Additional method to d
 }

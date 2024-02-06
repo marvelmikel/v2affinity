@@ -48,33 +48,54 @@
                         @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                            @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' )
-                            <tr>
-                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
-                                <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
-                                <td>
-                                    <select class="form-control" name="{{ $meta->name }}[]" id="">
-                                        <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
-                                        <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
-                                        <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>editable</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <a href="{{ route('product-meta.delete', $meta->id) }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
-                                        <i class="voyager-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endif
+                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->name != 'add_allowance'  && $meta->name != 'default_allowance' && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count' )
+                                    
+                                   @if(in_array($product->type,  ['carpet', 'underlay']) && $meta->name != 'allowance')
+                                        <tr>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
+                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                            <td>
+                                                <select class="form-control" name="{{ $meta->name }}[]" id="">
+                                                    <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
+                                                    <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
+                                                    <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>editable</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('product-meta.delete', $meta->id) }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
+                                                    <i class="voyager-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @elseif(in_array($product->type, ['tile', 'rollend', 'others']))
+                                        <tr>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
+                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                            <td>
+                                                <select class="form-control" name="{{ $meta->name }}[]" id="">
+                                                    <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
+                                                    <option value="readonly" {{ $meta->visibility === 'readonly' ? 'selected' : '' }}>readonly</option>
+                                                    <option value="visible" {{ $meta->visibility === 'visible' ? 'selected' : '' }}>editable</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('product-meta.delete', $meta->id) }}" style="text-decoration: none;" class="btn btn-danger btn-xs">
+                                                    <i class="voyager-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endif
                             @endforeach
 
                             <!-- formula here -->
                             <tr>
                                 <td><input  readonly class="form-control" type="text" name="formular[]" value="formular"></td>
-                                <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->value }}"></td>
-                                <td><input readonly style="background-color: white;" class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"></td>
-                                <td><input class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->visibility }}"></td>
+                                <td><input  readonly class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->value }}"></td>
+                                <td><input readonly  class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->identifier }}"></td>
+                                <td><input  readonly class="form-control" type="text" name="formular[]" value="{{ $product->getMeta('formular')->visibility }}"></td>
 
                             </tr>
 
@@ -86,7 +107,8 @@
 
                             <tr>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-xs"><i class="voyager"></i>Save
+                                    <button type="submit" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">
+                                        <i class="voyager"></i>Save
                                         Product</button>
                                 </td>
                             </tr>

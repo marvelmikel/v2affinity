@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('company_phone');
             $table->string('company_email');
             $table->string('company_number');
-            $table->string('vat_number');
+            $table->string('vat_number')->nullable();
             $table->string('logo');
             $table->boolean('active')->default(0);
             $table->timestamps();

@@ -2,8 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateSubscriptionRequest;
-use App\Mail\SubscriptionCancelled;
+use App\Mail\SubscriptionCancelled; // Add this line
 use App\Mail\SubscriptionUpdated;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -11,13 +12,16 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use App\Traits\PaymentGateway;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionsEdit extends Component
 {
     use PaymentGateway;
 
+    public $subscriptions;
     public $billing;
     public $client;
+    public $addons;
     public $creditCard = [
         'cardType' => '',
         'image' => '',
@@ -39,10 +43,21 @@ class SubscriptionsEdit extends Component
     public $subscription;
     public $token;
     public $total;
+    public $total_switch = 0;
+    public $inputPlan = [
+        'plan_id' => '',
+        'addons' => [],
+        'discounts' => []
+    ];
 
     public function render()
     {
-        return view('livewire.subscriptions-edit');
+        $companyId = Auth::user()->company_id;
+        $this->subscriptions = Subscription::where('company_id', $companyId)->get();
+        
+        return view('livewire.subscriptions-edit', [
+            'subscriptions' => $this->subscriptions,
+        ]);
     }
 
     public function asyncRender()
@@ -51,20 +66,34 @@ class SubscriptionsEdit extends Component
         $this->plans = Plan::orderBy('billingFrequency')->get()->keyBy('id')->toArray();
 
         // Convert plan JSON to arrays
-        foreach($this->plans as $key => $item){
-            $this->plans[$key]['addOns'] = json_decode($this->plans[$key]['addOns'],true);
-            $this->plans[$key]['discounts'] = json_decode($this->plans[$key]['discounts'],true);
+        foreach ($this->plans as $key => $item) {
+            $this->plans[$key]['addOns'] = json_decode($this->plans[$key]['addOns'], true);
+            $this->plans[$key]['discounts'] = json_decode($this->plans[$key]['discounts'], true);
         }
 
         // Calculate total and populate extras
         $this->total  = $this->plans[$this->subscription->plan_id]['price'];
-        foreach(json_decode($this->subscription['addOns'],true) as $addon){
+        foreach (json_decode($this->subscription['addOns'], true) as $addon) {
 
             // Calc total
             $this->total  += $addon['amount'] * $addon['quantity'];
 
             // Populate extras
-            $this->extras['addons'][$addon['id']] = [ 'quantity' => $addon['quantity'] ];
+            $this->extras['addons'][$addon['id']] = ['quantity' => $addon['quantity']];
+
+            $this->addons = [
+                'remove' => [],
+                'update' => [],
+            ];
+            
+            if (empty($this->extras['addons'][$addon['id']]) || empty($this->extras['addons'][$addon['id']]['quantity'])  ) {
+                array_push($this->addons['remove'], $addon['id'] );
+            } else {
+                array_push( $this->addons['update'], [ 'existingId' => $addon['id'], 'quantity' =>  $this->extras['addons'][$addon['id']]['quantity']] ) ;
+            }
+
+            
+
         }
         $this->calcTotal();
 
@@ -75,7 +104,9 @@ class SubscriptionsEdit extends Component
         $customer = $this->showCustomer(auth()->user());
 
         // Filter subscriptions related card
-        $cc = array_filter($customer->creditCards, function($item) use ($subscriptions){ return $item->token == $subscriptions->paymentMethodToken; } );
+        $cc = array_filter($customer->creditCards, function ($item) use ($subscriptions) {
+            return $item->token == $subscriptions->paymentMethodToken;
+        });
         $cc = reset($cc);
 
         // Store subset of cc info
@@ -90,7 +121,7 @@ class SubscriptionsEdit extends Component
         $this->token = $subscriptions->paymentMethodToken;
 
         // Build billing array
-        if(!empty($cc->billingAddress)){
+        if (!empty($cc->billingAddress)) {
             $this->billing = [
                 'firstName' => $cc->billingAddress->firstName,
                 'lastName' => $cc->billingAddress->lastName,
@@ -119,7 +150,7 @@ class SubscriptionsEdit extends Component
         $update = $this->updateBillingAddress($this->token, $this->billing);
 
         // Flash response
-        if($update->success){
+        if ($update->success) {
             session()->flash('alert-success', 'Successfully updated billing details.');
 
             // Send update email
@@ -137,20 +168,44 @@ class SubscriptionsEdit extends Component
     public function calcTotal()
     {
         // Set base total
-        $this->extras['total'] = $this->plans[ $this->subscription->plan_id ]['price'];
+        $this->extras['total'] = $this->plans[$this->subscription->plan_id]['price'];
 
         // Check for any addons
-        if(!empty($this->extras['addons'])){
+        if (!empty($this->extras['addons'])) {
 
             // Filter selected addons
-            $addons = array_filter( $this->plans[ $this->subscription->plan_id ]['addOns'], fn($v) => in_array($v['id'], array_keys($this->extras['addons'])) );
+            $addons = array_filter($this->plans[$this->subscription->plan_id]['addOns'], fn ($v) => in_array($v['id'], array_keys($this->extras['addons'])));
 
             // Loop selected addons
-            foreach($addons as $add){
+            foreach ($addons as $add) {
 
                 // Add amount x quantity to total
                 $this->extras['total'] += $add['amount'] * $this->extras['addons'][$add['id']]['quantity'];
+            }
+        }
+    }
 
+    public function calcTotalSwitch()
+    {
+        if(!empty($this->inputPlan['plan_id'])){
+            // Set base total
+            $this->total_switch = $this->plans[ $this->inputPlan['plan_id'] ]['price'];
+
+            // Check for any addons
+            if(!empty($this->inputPlan['addons'])){
+                // Filter selected addons
+                $addons = array_filter( $this->plans[ $this->inputPlan['plan_id'] ]['addOns'], fn($v) => in_array($v['id'], array_keys($this->inputPlan['addons'])) );
+
+                // Loop selected addons
+                foreach($addons as $add){
+                    // Add inheritedFromId to array
+                    $this->inputPlan['addons'][$add['id']]['inheritedFromId'] = $add['id'];
+
+                    // Add amount x quantity to total
+                    if ($this->inputPlan['addons'][$add['id']]['quantity']) {
+                        $this->total_switch += $add['amount'] * $this->inputPlan['addons'][$add['id']]['quantity'];
+                    }
+                }
             }
         }
     }
@@ -161,7 +216,7 @@ class SubscriptionsEdit extends Component
         $update = $this->updateCardDetails($this->subscription, $nonce);
 
         // Flash response
-        if($update->success){
+        if ($update->success) {
 
             // Flash updated payment details
             session()->flash('alert-success', 'Successfully updated payment details.');
@@ -182,18 +237,53 @@ class SubscriptionsEdit extends Component
         }
     }
 
-    public function storeSubscription()
+    
+    public function storeSubscription($switch = false)
     {
-        // Build request array
-        $vals = [
-            'subscription_id' => $this->subscription->id,
-            'plan_id' => $this->subscription->plan_id,
-            'addons' => $this->extras['addons'],
-            'discounts' => $this->extras['discounts']
-        ];
+        $existingAdons =  json_decode($this->subscription['addOns'], true);   
+
+        foreach ($this->extras['addons'] as $key => $addon) {
+
+            $this->addons = [
+                'remove' => [],
+                'update' => [],
+                'add' => [],
+            ];
+            
+            if (  empty($addon['quantity'])    ) {
+                if(isset($existingAdons[$key])){
+                    array_push($this->addons['remove'], $key);
+                }
+            } else {
+                if(isset($existingAdons[$key])){
+                    array_push( $this->addons['update'], [ 'existingId' => $key, 'quantity' =>  $addon['quantity']] ) ;
+                }else{
+                    array_push( $this->addons['add'], [ 'inheritedFromId' => $key, 'quantity' =>  $addon['quantity']] ) ;
+                }
+                
+            }
+
+        }
+        // Check if plan is being switched or current plan is updated then build request array
+        if ($switch) {
+            $vals = [
+                'subscription_id' => $this->subscription->id,
+                'plan_id' => $this->inputPlan['plan_id'],
+                'addons' => $this->addons,
+                'discounts' => $this->inputPlan['discounts']
+            ]; 
+        } else {
+            $vals = [
+                'subscription_id' => $this->subscription->id,
+                'plan_id' => $this->subscription->plan_id,
+                'addons' => $this->addons,
+                'discounts' => $this->extras['discounts']
+            ];
+        }
 
         // Create new StoreSubscriptionRequest
         $request = new UpdateSubscriptionRequest($vals);
+
 
         // Set to post
         $request->setMethod('POST');
@@ -201,43 +291,65 @@ class SubscriptionsEdit extends Component
         // Add validator
         $request->setValidator(Validator::make($vals, $request->rules()));
 
-        // Submit for subscription creation
-        $update = $this->updateSubscription($request);
+        // Update or switch subscription
+        if ($switch) {
+            $update = $this->updateSubscriptionPlan($request);
+           return  $this->cancelSubscription();
+        } else {
+            $update = $this->updateSubscription($request);
+        }
 
+        // dd($update);
         // Flash response
-        if($update->success){
-
+        if ($update->success) {
             // Flash updated payment details
-            session()->flash('alert-success', 'Successfully updated subscription.');
-
-            // Reload model
-            $this->subscription = Subscription::find($this->subscription->id);
+            session()->flash('alert-success', 'Successfully updated subscription, reloading information...');
 
             // Send update email
             Mail::to(auth()->user())->send(new SubscriptionUpdated($this->subscription));
 
             // Reset views
-            $this->edit = false;
-            $this->reset('load');
-            $this->asyncRender();
+            return redirect(request()->header('Referer'));
         } else {
-            session()->flash('alert-error', 'Failed to update subscription details. Please try again.');
+           $this->addError('warning', 'Failed to update subscription details. Please try again.');
         }
     }
+
+    public function updateSubscriptionPlan(UpdateSubscriptionRequest $request)
+    {
+        
+    }
+
+
+    public function setQuantity($addon)
+    {
+        // Set addon quantity to 1 by default
+        if (!$this->inputPlan['addons']) {
+            $this->inputPlan['addons'] = [$addon['id'] => ['quantity' => 1]];
+            $this->calcTotalSwitch();
+        }
+    }
+
+
 
     public function cancelSubscription()
     {
         // Submit for subscription cancellation
         $cancel = $this->deleteSubscription($this->subscription);
 
-        // Disable store on app
-        $apiResponse = apiCall( 'store/'.auth()->user()->store_id, $type = 'PUT', [ 'active' => false ]);
+        // Get the user's company ID
+        $companyId = auth()->user()->company_id;
+
+        // Update the subscription status to "Cancelled"
+        Subscription::where('company_id', $companyId)->update([
+            'status' => 'Cancelled'
+        ]);
 
         // Send cancellation email
         Mail::to(auth()->user())->send(new SubscriptionCancelled($this->subscription));
 
         // Redirect to dashboard
-        return redirect()->route('dashboard');
+        session()->flash('alert-success', 'Subscription cancelled successfully.');
+        return redirect()->route('company.subscriptions');
     }
-
 }

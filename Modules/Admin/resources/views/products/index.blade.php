@@ -11,7 +11,7 @@
                 <h3><i class="voyager-book"></i> {{ __('Products') }}</h3>
                 <div style="display:flex;">
                     <a href="#" style="margin-right:2px"
-                        class="btn btn-primary btn-xs add-product-btn"><i class="voyager-plus"></i>Add New</a>
+                        class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn"><i class="voyager-plus"></i>Add New</a>
                         
                 </div>
             </div>
@@ -54,11 +54,11 @@
                                 <div style="margin: 10px 0;">
                                     <label for="">Type </label>
                                     <select class="form-control" name="type" id="">
-                                        <option value="carpet">Carpet</option>
-                                        <option value="tile">Tile</option>
+                                        <option value="carpet">Carpets & Roll Items</option>
+                                        <option value="tile">Pack Items</option>
                                         <option value="rollend">Roll End</option>
                                         <option value="underlay">Underlay</option>
-                                        <option value="others">Others</option>
+                                        <option value="others">Other Stocks</option>
 
                                     </select>
                                 </div>

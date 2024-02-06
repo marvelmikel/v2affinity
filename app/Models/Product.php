@@ -46,57 +46,161 @@ class Product extends Model
             if ($model->type == 'carpet') {
 
                 $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
-                $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'readonly']);
+                $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'unit_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'unit_width', 'value' => 1, 'title' => 'Unit Width(m)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'unit_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'unit_width', 'value' => 1, 'title' => 'Unit Width(m)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'unit_area', 'value' => 1, 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'number', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
 
-                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'visible']);
-                $model->meta()->create(['name' => 'default_allowance', 'value' => 10, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 10, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'default_allowance', 'value' => 0, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 0, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
 
 
 
 
-                if ($model->getMeta('unit_length') &&  $model->getMeta('unit_width')) {
-                    $unit_length = $model->getMeta('unit_length');
-                    $unit_width = $model->getMeta('unit_width');
+                if ($model->getMeta('length') && $model->getMeta('width')) {
+                    // $unit_length = $model->getMeta('unit_length');
+                    // $unit_width = $model->getMeta('unit_width');
 
-                    $model->meta()->updateOrCreate(['name' => 'unit_area'], [
-                        'name' => 'unit_area',
-                        'title' => 'Unit Area (㎡)',
-                        'value' => "$unit_length->identifier*$unit_width->identifier",
-                        'type' => 'formular',
-                        'visibility' => 'hidden'
-                    ]);
 
-                    $model->meta()->updateOrCreate(['name' => 'location'], [
-                        'name' => 'location',
-                        'title' => 'Type in Room Location',
-                        'value' => '',
-                        'type' => 'Text',
-                        'visibility' => 'visible'
-                    ]);
-
+                    //now being added 
+                    // $model->meta()->updateOrCreate(['name' => 'unit_area'], [
+                    //     'name' => 'unit_area',
+                    //     'title' => 'Unit Area (㎡)',
+                    //     'value' => "$unit_length->identifier*$unit_width->identifier",
+                    //     'type' => 'formular',
+                    //     'visibility' => 'hidden'
+                    // ]);
 
                     $length = $model->getMeta('length');
                     $width = $model->getMeta('width');
 
                     $model->meta()->updateOrCreate(['name' => 'area'], [
                         'name' => 'area',
-                        'title' => 'Toatl Area (㎡)',
+                        'title' => 'Total Area (㎡)',
                         'value' => "$length->identifier*$width->identifier",
                         'type' => 'formular',
                         'visibility' => 'readonly'
                     ]);
                 }
+
+
+                $model->meta()->updateOrCreate(['name' => 'location'], [
+                    'name' => 'location',
+                    'title' => 'Enter Room Location',
+                    'value' => '',
+                    'type' => 'Text',
+                    'visibility' => 'visible'
+                ]);
+
+
+
+                //add def formular here
+                if ($model->getMeta('unit_price') && $model->getMeta('unit_area')) {
+                    $unit_price = $model->getMeta('unit_price');
+                    $area = $model->getMeta('area');
+
+                    // $unit_length = $model->getMeta('unit_length');
+                    $unit_area = $model->getMeta('unit_area');
+                    // $unit_area = "$unit_width->identifier*$unit_length->identifier";
+
+                    $allowance = $model->getMeta('allowance');
+                    $carpet_units = $model->meta()->updateOrCreate(['name' => 'carpet_units'], [
+                        'name' => 'carpet_units',
+                        'title' => 'Carpet Units',
+                        'value' => "ceil($area->identifier/$unit_area->identifier)+($area->identifier/$unit_area->identifier*$allowance->identifier/100)",
+                        'type' => 'formular',
+                        'visibility' => 'hidden',
+                        'modifier' => 'ceil'
+                    ]);
+
+
+
+                    $model->meta()->updateOrCreate(['name' => 'formular'], [
+                        'name' => 'formular',
+                        'title' => 'Formular',
+                        'value' => "$unit_price->identifier*$carpet_units->identifier",
+                        'type' => 'formular',
+                        'visibility' => 'hidden'
+                    ]);
+
+
+                    $model->meta()->updateOrCreate(['name' => 'formular'], [
+                        'name' => 'formular',
+                        'title' => 'Formular',
+                        'value' => "$unit_price->identifier*$carpet_units->identifier",
+                        'type' => 'formular',
+                        'visibility' => 'hidden'
+                    ]);
+
+                }
+            }
+
+            if ($model->type == 'underlay') {
+
+                $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
+                $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
+
+                $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+                // $model->meta()->create(['name' => 'unit_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'unit_width', 'value' => 1, 'title' => 'Unit Width(m)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'unit_area', 'value' => 1, 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'number', 'visibility' => 'hidden']);
+
+                $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
+
+
+                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'default_allowance', 'value' => 0, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'allowance', 'value' => 0, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+
+
+
+
+                if ($model->getMeta('length') && $model->getMeta('width')) {
+                    // $unit_length = $model->getMeta('unit_length');
+                    // $unit_width = $model->getMeta('unit_width');
+
+
+                    //now being added 
+                    // $model->meta()->updateOrCreate(['name' => 'unit_area'], [
+                    //     'name' => 'unit_area',
+                    //     'title' => 'Unit Area (㎡)',
+                    //     'value' => "$unit_length->identifier*$unit_width->identifier",
+                    //     'type' => 'formular',
+                    //     'visibility' => 'hidden'
+                    // ]);
+
+                    $length = $model->getMeta('length');
+                    $width = $model->getMeta('width');
+
+                    $model->meta()->updateOrCreate(['name' => 'area'], [
+                        'name' => 'area',
+                        'title' => 'Total Area (㎡)',
+                        'value' => "$length->identifier*$width->identifier",
+                        'type' => 'formular',
+                        'visibility' => 'readonly'
+                    ]);
+                }
+
+
+                $model->meta()->updateOrCreate(['name' => 'location'], [
+                    'name' => 'location',
+                    'title' => 'Enter Room Location',
+                    'value' => '',
+                    'type' => 'Text',
+                    'visibility' => 'visible'
+                ]);
+
+
 
                 //add def formular here
                 if ($model->getMeta('unit_price') && $model->getMeta('unit_area')) {
@@ -147,9 +251,12 @@ class Product extends Model
 
 
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'marble_size_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'marble_size_width', 'value' => 1, 'title' => 'Unit Width (m)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
+               
+                // $model->meta()->create(['name' => 'marble_size_length', 'value' => 1, 'title' => 'Unit Length(m)',  'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'marble_size_width', 'value' => 1, 'title' => 'Unit Width (m)', 'type' => 'number', 'visibility' => 'hidden']);
+                $model->meta()->create(['name' => 'unit_area', 'value' => 1, 'title' => 'Unit Area Size(LxW)㎡', 'type' => 'number', 'visibility' => 'hidden']);
+                
+                // $model->meta()->create(['name' => 'initial_area', 'value' => 'L x W', 'title' => 'Unit Area Size(LxW)㎡ ', 'type' => 'text', 'visibility' => 'hidden']);
 
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Required Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Required Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
@@ -171,7 +278,7 @@ class Product extends Model
 
                 $model->meta()->updateOrCreate(['name' => 'location'], [
                     'name' => 'location',
-                    'title' => 'Type in Room Location',
+                    'title' => 'Enter Room Location',
                     'value' => '',
                     'type' => 'Text',
                     'visibility' => 'visible'
@@ -198,16 +305,18 @@ class Product extends Model
                     $tiles_per_pack = $model->getMeta('tiles_per_pack');
 
 
-                    $marble_size_length = $model->getMeta('marble_size_length');
-                    $marble_size_width = $model->getMeta('marble_size_width');
+                    //  deprecated, since we are now using unit_area
+                    // $marble_size_length = $model->getMeta('marble_size_length');
+                    // $marble_size_width = $model->getMeta('marble_size_width');
 
-                    $single_tile_area = "($marble_size_length->identifier*$marble_size_width->identifier)";
+                    // $single_tile_area = "($marble_size_length->identifier*$marble_size_width->identifier)";
+                    $single_tile_area = $model->getMeta('unit_area');
 
 
                     $model->meta()->updateOrCreate(['name' => 'tiles_count'], [
                         'name' => 'tiles_count',
                         'title' => 'Number of Tiles Required',
-                        'value' => "$area->identifier/$single_tile_area",
+                        'value' => "$area->identifier/$single_tile_area->identifier",
                         'type' => 'formular',
                         'visibility' => 'hidden'
                     ]);
@@ -218,11 +327,27 @@ class Product extends Model
 
                     $allowance = $model->getMeta('allowance');
 
+                    /*
+
+                    price per pack = £18, unit Area of the tile = 96(12 X 8)msquare , 
+                    Required Area = 414 L X W (18 X 23),  
+                    Qty packs = 414/96 (Required area/unit Area) = 4.31, 
+                    allowance = 4.31 + 10% of 4.31 = 4.7 or 5packs,  //
+                    total price = 5 x 18( Qty packs after allowance x price per pack) = 90
+
+                    */
+
+                    // "ceil($tiles_count->identifier/$tiles_per_pack->identifier)+($tiles_count->identifier/$tiles_per_pack->identifier*$allowance->identifier/100)"
+
+
+
+                    $packs = "$tiles_count->identifier/$tiles_per_pack->identifier";
+                    $pack_allowance  = "$packs*$allowance->identifier/100";
 
                     $packs_count = $model->meta()->updateOrCreate(['name' => 'packs_count'], [
                         'name' => 'packs_count',
                         'title' => 'Total Quantity of Packs',
-                        'value' => "ceil($tiles_count->identifier/$tiles_per_pack->identifier)+($tiles_count->identifier/$tiles_per_pack->identifier*$allowance->identifier/100)",
+                        'value' => "ceil($packs + $pack_allowance )",
                         'type' => 'formular',
                         'visibility' => 'readonly',
                         'modifier' => 'ceil'
@@ -241,6 +366,8 @@ class Product extends Model
 
             if ($model->type == 'others') {
 
+                $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
+                $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'quantity', 'title' => 'Quantity of Product', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
 
@@ -258,7 +385,7 @@ class Product extends Model
             }
 
 
-            if ($model->type == 'rollend' || $model->type == 'underlay') {
+            if ($model->type == 'rollend') {
 
                 // Title | Description | Length | Width | Total Area | Total Price
                 $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
@@ -268,9 +395,22 @@ class Product extends Model
                 $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
-                $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
                 $model->meta()->create(['name' => 'total_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
 
+
+                if ($model->getMeta('length') &&  $model->getMeta('width')) {
+                    $length = $model->getMeta('length');
+                    $width = $model->getMeta('width');
+
+                    $model->meta()->updateOrCreate(['name' => 'total_area'], [
+                        'name' => 'total_area',
+                        'title' => 'Total Area(㎡)',
+                        'value' => "$length->identifier*$width->identifier",
+                        'type' => 'formular',
+                        'visibility' => 'readonly'
+                    ]);
+                }
                 //add def formular here
                 if ($model->getMeta('total_price') ) {
                     $price = $model->getMeta('total_price');
@@ -280,8 +420,63 @@ class Product extends Model
                         'type' => 'formular',
                         'visibility' => 'hidden'
                     ]);
+                   
                 }
+
+                $model->meta()->updateOrCreate(['name' => 'location'], [
+                    'name' => 'location',
+                    'title' => 'Enter Room Location',
+                    'value' => '',
+                    'type' => 'Text',
+                    'visibility' => 'visible'
+                ]);
             }
+
+
+            // new rollend
+            // if ($model->type == 'rollend') {
+
+            //     // Title | Description | Length | Width | Total Area | Total Price
+            //     $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
+            //     $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
+            //     $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
+
+            //     $model->meta()->create(['name' => 'length', 'value' => 0, 'title' => 'Length of Room(m)',  'type' => 'number', 'visibility' => 'visible']);
+            //     $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
+
+            //     $model->meta()->create(['name' => 'unit_area', 'title' => 'Unit Area', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+            //     $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+            //     // $model->meta()->create(['name' => 'total_area', 'title' => 'Total Area', 'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
+            //     // $model->meta()->create(['name' => 'total_price', 'title' => 'Total Price(£)',  'value' => 0, 'type' => 'number', 'visibility' => 'visible']);
+
+
+            //     if ($model->getMeta('length') && $model->getMeta('width')) {
+            //         $length = $model->getMeta('length');
+            //         $width = $model->getMeta('width');
+
+            //         $model->meta()->updateOrCreate(['name' => 'total_area'], [
+            //             'name' => 'area',
+            //             'title' => 'Total Area(㎡)',
+            //             'value' => "$length->identifier*$width->identifier",
+            //             'type' => 'formular',
+            //             'visibility' => 'readonly'
+            //         ]);
+            //     }
+            //     //add def formular here
+            //     if ($model->getMeta('unit_area') &&  $model->getMeta('unit_price') ) {
+            //         $unit_area = $model->getMeta('unit_area');
+            //         $unit_price = $model->getMeta('unit_price');
+            //         $area = $model->getMeta('area');
+                   
+            //         $model->meta()->updateOrCreate(['name' => 'formular'], [
+            //             'name' => 'formular',
+            //             'value' => "($area->identifier/$unit_area->identifier)*$unit_price->identifier",
+            //             'type' => 'formular',
+            //             'visibility' => 'hidden'
+            //         ]);
+                   
+            //     }
+            // }
 
 
 

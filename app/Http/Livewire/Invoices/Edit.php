@@ -13,8 +13,9 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public $invoice, $subtotal, $formula, $invoiceItems, $products, $companyId, $discountPricing, $discount_id;
+    public $invoice, $subtotal, $formula, $vat, $invoiceItems, $products, $companyId, $discountPricing, $vatPricing, $discount_id;
     public $pricings = [];
+    public $invoicePricing = [];
     public $pricing_item = [
         'name' => '',
         'value' => '',
@@ -27,6 +28,17 @@ class Edit extends Component
     public $title;
     public $value;
 
+    public function mount()
+    {
+        $this->getPricings();
+        $this->getSubtotal();
+        $this->getFormula();
+        $this->getInvoiceItems();
+        $this->getDiscountPricing();
+        $this->companyId = auth()->user()->company_id;
+        $this->discount_id = $this->invoice->getPricing('discount')->id;
+        
+    }
 
     public function deleteInvoiceItem($id, $value, $type)
     {
@@ -39,8 +51,41 @@ class Edit extends Component
         // Recalculate invoice subtotal here whenever an item is deleted
         $this->updatePricing($this->discountPricing->id, $value, $type);
         $this->getSubtotal();
+
+        $this->invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice Item deleted',
+            'payload' => json_encode($invoiceItem),
+        ]);
     }
 
+
+   
+    
+    public function deleteInvoicePricing($id, $value, $type)
+    {
+        // Delete the InvoicePricing record
+        if ($invoicePricing = InvoicePricing::find($id)) {
+            $invoicePricing->delete();
+            unset($this->invoicePricing[$id]);
+        }
+
+        // Recalculate invoice subtotal here whenever an item is deleted
+        $this->updatePricing($this->discountPricing->id, $value, $type);
+        $this->getSubtotal();
+
+        $this->invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice Pricing deleted',
+            'payload' => json_encode($invoicePricing),
+        ]);
+    }
+
+    
+
+ 
     public function calculateAllowance($invoiceItem, $addAllowance)
     {
         // Add or remove allowance value
@@ -63,14 +108,28 @@ class Edit extends Component
             $value = 0;
         }
 
+
+        $this->invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice Item Meta updated',
+            'payload' => json_encode($invoiceItemMeta),
+        ]);
+
         $invoiceItemMeta->update(['value' => $value]);
         $this->getSubtotal();
+
+
+        
+
+        
     }
 
     public function addItem($ids)
     {
         if (!empty($ids)) {
-            foreach (Product::whereIn('id', $ids)->get() as $product) {
+            $products  = Product::whereIn('id', $ids)->get();
+            foreach ( $products as $product) {
                 if ($meta_array = $product->meta->toArray()) {
                     $item = InvoiceItem::create(['invoice_id' => $this->invoice->id, 'product_id' => $product->id]);
 
@@ -80,6 +139,14 @@ class Edit extends Component
                 }
             }
         }
+
+        $this->invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice Item(s) added',
+            'payload' => json_encode($products),
+        ]);
+        
 
         $this->getInvoiceItems();
         $this->dispatchBrowserEvent('closeProductModal');
@@ -103,6 +170,13 @@ class Edit extends Component
         $invoicePricing = InvoicePricing::findOrFail($id);
         $this->getSubtotal();
         $this->getDiscountPricing();
+
+        $this->invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice Pricing updated',
+            'payload' => json_encode($invoicePricing),
+        ]);
 
         // Update pricing model
         if ($amount) {
@@ -128,6 +202,8 @@ class Edit extends Component
     public function addPricingColumn($name, $value, $operation, $visibility)
     {
         if (!empty($name) && !empty($value) && !empty($operation) && !empty($visibility)) {
+
+            
             $pricing = $this->invoice->pricings()->create([
                 'name' => $name,
                 'value' => $value,
@@ -140,6 +216,14 @@ class Edit extends Component
             $formula = $formulaPricing->value . $pricing->operation . '(' . $pricing->identifier . ')';
             $formulaPricing->update(['value' => $formula]);
             $this->dispatchBrowserEvent('closePricingModal');
+
+
+            $this->invoice->logs()->create([
+                'user_id' => auth()->user()->id,
+                'username' => auth()->user()->name,
+                'activity' => 'Invoice Pricing added',
+                'payload' => json_encode($pricing),
+            ]);
 
             return redirect()->route('voyager.invoices.edit', $this->invoice->id);
         }
@@ -173,8 +257,17 @@ class Edit extends Component
     public function getSubtotal()
     {
         // Set subtotal amount
-        $this->subtotal = $this->invoice->calculateSubtotal();;
+        // subtract vat here - 
+        $vat = $this->invoice->calculateVat() ?? 0;
+        $subtotal = $this->invoice->calculateSubtotal() ?? 0;
+        $this->subtotal = [
+            'vatInclusive' => number_format($subtotal,2),
+            'vatExclusive' => number_format($subtotal - $vat, 2),
+            'vatTotal' => number_format($vat, 2)
+        ];
+       
     }
+
 
     public function getFormula()
     {
@@ -193,16 +286,6 @@ class Edit extends Component
         $this->discountPricing = $this->invoice->getPricing('discount');
     }
 
-    public function mount()
-    {
-        $this->getPricings();
-        $this->getSubtotal();
-        $this->getFormula();
-        $this->getInvoiceItems();
-        $this->getDiscountPricing();
-        $this->companyId = auth()->user()->company_id;
-        $this->discount_id = $this->invoice->getPricing('discount')->id;
-    }
 
     public function render()
     {

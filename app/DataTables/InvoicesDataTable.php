@@ -30,24 +30,35 @@ class InvoicesDataTable extends DataTable
                 $showUrl = route('voyager.invoices.show', $row->id);
                 $editUrl = route('voyager.invoices.edit', $row->id);
                 $deleteUrl = route('voyager.invoices.delete', $row->id);
+                $logsUrl = route('voyager.invoices.logs', $row->id);
                 
                 $btn = "<div style='display:flex;'>
+                
+                <a href='$logsUrl' style='margin-right:2px' class='btn m- btn-warning btn-xs'><i class='voyager-logbook'></i></a>
+
                 <a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
+                
                 <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
+                
                 <form action='$deleteUrl' method='POST' style='display:inline'>
-                    " . csrf_field() . "
-                    " . method_field('DELETE') . "
-                    <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice?\")'>
-                        <i class='voyager-trash'></i>
-                    </button>
-                </form>
+                        " . csrf_field() . "
+                        " . method_field('DELETE') . "
+                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice ?\")'>
+                            <i class='voyager-trash'></i>
+                        </button>
+                    </form>
                 </div>";
 
                  return $btn;
             })
          ->rawColumns(['action'])
             ->setRowId('id');
+
+
+            
     }
+
+    
 
     /**
      * Get query source of dataTable.
@@ -104,7 +115,11 @@ class InvoicesDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
+            Column::make('id')
+            ->title('#')
+            ->render('meta.row + meta.settings._iDisplayStart + 1;')
+            ->width(50)
+            ->orderable(false),
             Column::make('invoice_number'),
             // Column::make('due_at'),
             // Column::make('paid_at'),

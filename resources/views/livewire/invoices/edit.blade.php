@@ -3,7 +3,7 @@
         <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
             {{--<h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>--}}
             <div>
-                <a data-toggle="modal" data-target="#add_product_modal" class="btn btn-primary"><i class="voyager-plus"></i>Add New Item</a>
+                <a data-toggle="modal" data-target="#add_product_modal" style="background-color:#C82090" class="btn btn-primary"><i class="voyager-plus"></i>Add New Item</a>
             </div>
         </div>
         <div class="clear"></div>
@@ -25,7 +25,7 @@
                                                 <input disabled readonly style="background-color: white;" class="form-control  {{ $meta['visibility'] }}" type="hidden" name="{{ $meta['name'] }}[]" value="{{ $meta['identifier'] }}" required>
                                                 @break
                                             @case('checkbox')
-                                                <input wire:ignore onclick="updateInvoiceItemScript({{ $invoiceItem['id'] }}, {{ $key }}, {{ $meta['id'] }}, true)" id="checkbox_{{ $key }}_{{ $meta['id'] }}" name="checkbox_{{ $key }}" type="checkbox" value="1" @if($meta['value']) checked @endif />
+                                                <input wire:ignore onclick="updateInvoiceItemScript({{ $invoiceItem['id'] }}, {{ $key }}, {{ $meta['id'] }}, true)" id="checkbox_{{ $key }}_{{ $meta['id'] }}" name="checkbox_{{ $key }}" style="margin-left:50%" type="checkbox" value="1" @if($meta['value']) checked @endif />
                                                 <input readonly style="background-color: white" class="form-control {{ $meta['visibility'] }}" type="hidden" name="{{ $meta['name'] }}[]" value="{{ $meta['identifier'] }}" required>
                                                 @break
                                             @default()
@@ -85,8 +85,8 @@
                             </div>
                         </div>
                         <div class="modal-footer gap-4">
-                            <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                            <button type="submit" class="btn btn-primary pull-right" onclick="addItemScript()">{{ __('voyager::generic.add') }}</button>
+                            <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+                            <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right" onclick="addItemScript()">{{ __('voyager::generic.add') }}</button>
                         </div>
                     </div>
                 </div>
@@ -106,19 +106,35 @@
         <div style="width: 15%; padding: 8px">
             Type
         </div>
-        <div style="width: 20%; padding: 8px">
+        <!-- <div style="width: 20%; padding: 8px">
             Identifier
-        </div>
+        </div> -->
     </div>
 
     @foreach($pricings as $key => $pricing)
         <div wire:key="pricing_{{ $key }}" class="flex">
             @if($pricing['name'] != 'subtotal')
+
+                @if($pricing['name'] == 'vat')
+                    <div style="width: 45%; padding: 8px">
+                        <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
+                    </div>
+                    <div style="width: 20%; padding: 8px">
+                        <input wire:model="subtotal.vatTotal" readonly class="form-control" type="text">
+                    </div>
+                    <div style="width: 15%; padding: 8px">
+                        <select wire:ignore onchange="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" disabled>
+                            <option value="{{ $pricing['type'] }}">{{ $pricing['type'] }}</option>
+                            <option value="percentage">%</option>
+                            <option value="value">value(£)</option>
+                        </select>
+                    </div>
+                @else
                 <div style="width: 45%; padding: 8px">
                     <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
                 </div>
                 <div style="width: 20%; padding: 8px">
-                    <input @if($pricing['name'] == 'tax') disabled @endif wire:ignore onkeyup="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" type="number" max="100" min="0" step="any" value="{{ $pricing['value'] }}" placeholder="{{ ucfirst($pricing['name']) }} %">
+                    <input @if($pricing['name'] == 'vat') disabled @endif wire:ignore onkeyup="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" type="number" max="100" min="0" step="any" value="{{ $pricing['value'] }}" placeholder="{{ ucfirst($pricing['name']) }} %">
                 </div>
                 <div style="width: 15%; padding: 8px">
                     <select @if($pricing['name'] != 'discount') disabled @endif wire:ignore onchange="updatePricingScript({{ $key }})" id="select_{{ $key }}" class="form-control" @if(in_array($pricing['name'], ['subtotal', 'tax'])) disabled @endif>
@@ -127,15 +143,14 @@
                         <option value="value">value(£)</option>
                     </select>
                 </div>
-                <div style="width: 20%; padding: 8px">
-                    <input wire:model="pricings.{{ $key }}.identifier" readonly style="background-color: white;" class="form-control" type="text">
-                </div>
+                @endif
+               
             @else
                 <div style="width: 45%; padding: 8px">
-                    <input wire:model="pricings.{{ $key }}.name" disabled readonly class="form-control" type="text">
+                    <input value="{{ $pricings[$key]['name'] }} (VAT exclusive)" disabled readonly class="form-control" type="text">
                 </div>
                 <div style="width: 20%; padding: 8px">
-                    <input wire:model="subtotal" readonly class="form-control" type="text">
+                    <input wire:model="subtotal.vatExclusive" readonly class="form-control" type="text">
                 </div>
                 <div style="width: 15%; padding: 8px">
                     <select wire:ignore onchange="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" disabled>
@@ -144,11 +159,11 @@
                         <option value="value">value(£)</option>
                     </select>
                 </div>
-                <div style="width: 20%; padding: 8px">
+                <!-- <div style="width: 20%; padding: 8px">
                     <input wire:model="pricings.{{ $key }}.identifier" readonly style="background-color: white;" class="form-control" type="text">
-                </div>
+                </div> -->
             @endif
-        </div>
+        </div>         
     @endforeach
 
     <!-- Formula here -->
@@ -165,15 +180,15 @@
                     <input class="form-control" type="text" name="formular[]" value="{{ $invoice->getPricing('formular')['type'] }}" disabled>
                 </td>
             </div>
-            <div style="width: 20%; padding: 8px">
+            <!-- <div style="width: 20%; padding: 8px">
                 <input wire:model="formula.identifier" readonly style="background-color: white;" class="form-control" type="text">
-            </div>
+            </div> -->
         </div>
     @endif
 
     <div class="flex">
         <div style="width: 45%; padding: 8px">
-            <input readonly class="form-control" type="text" value="Amount £">
+            <input readonly class="form-control" type="text" value="Amount £ (VAT Inclusive)">
         </div>
         <div style="width: 55%; padding: 8px">
             <div wire:loading.flex>
@@ -187,22 +202,22 @@
 
     <tr>
         <td colspan="3">
-            <a href="#" data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn">
+            <a href="#" data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn " style="color:#C82090">
                 <i class="voyager-plus"></i>
                 Add Pricing Item Cost
             </a>
         </td>
     </tr>
 
-    <tr>
+    <tr >
         <td>
-            <div class="flex gap-4 px-4">
+            <div class="flex gap-2 px-4 pt-4">
                 <livewire:invoices.email-pdf :invoice="$invoice" :store="$invoice->store" />
-                <a style="text-decoration: none;" href="{{ route('voyager.invoices.show', $invoice->id) }}" class="btn btn-primary">
+                <a style="text-decoration: none; background-color:#C82090" href="{{ route('voyager.invoices.show', $invoice->id) }}" class="btn btn-primary">
                     <i class="voyager"></i>
                     Preview Invoice
                 </a>
-                <a style="text-decoration: none;" target="_blank" href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="btn btn-primary">
+                <a style="text-decoration: none; background-color:#C82090" target="_blank" href="{{ route('voyager.invoices.pdf', $invoice->id) }}" class="btn btn-primary">
                     <i class="voyager"></i>
                     Invoice PDF
                 </a>
@@ -242,8 +257,8 @@
                         <input type="hidden" name="invoice_id" class="form-control">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                        <button type="submit" class="btn btn-primary pull-right" onclick="addPricingItemScript()">{{ __('voyager::generic.save') }}</button>
+                        <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+                        <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right" onclick="addPricingItemScript()">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </div>
             </div>
@@ -262,7 +277,9 @@
                 @this.updateInvoiceItem(id, key, meta, null, $('#item_' + key + '_' + meta).val());
             }
 
+            // refresh discount
             @this.updatePricing({{ $discountPricing->id }}, $('#pricing_' + {{ $discountPricing->id }}).val(), $('#select_' + {{ $discountPricing->id }}).val());
+
         }
 
         function addItemScript() {

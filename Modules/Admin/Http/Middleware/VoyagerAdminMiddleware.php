@@ -23,8 +23,9 @@ class VoyagerAdminMiddleware
             $user = Auth::user();
             app()->setLocale($user->locale ?? app()->getLocale());
 
-            return $user->hasPermission('browse_admin') ? $next($request) : redirect('/');
+            return $user->hasPermission('browse_admin') ? $next($request) : redirect('/register');
         }
+
 
         $urlLogin = route('voyager.login');
 

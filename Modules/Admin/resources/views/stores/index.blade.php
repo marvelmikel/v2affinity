@@ -10,7 +10,9 @@
             <div class="admin-section-title">
                 <h3><i class="icon voyager-shop"></i>{{ __('Stores') }}</h3>
                 <div style="display:flex;">
-                    <a href="{{ route('voyager.stores.create') }}" style="margin-right:2px" class="btn btn-primary btn-xs"><i class="voyager-plus"></i>Create New Store</a></div>
+                    <a href="{{ route('voyager.stores.create') }}" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">
+                        <i class="voyager-plus"></i>Create New Store</a>
+                </div>
             </div>
             <div class="clear"></div>
             <div class="card">
@@ -27,5 +29,3 @@
 @section('javascript')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endsection
-
-

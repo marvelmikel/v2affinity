@@ -25,7 +25,6 @@
     @include('voyager::alerts')
     <div class="row">
         <div class="col-md-6">
-
             <div class="panel panel-bordered">
                 <!-- form start -->
                 <form class="form-edit-add" role="form" action="{{ route('stores.update', ['storeId' => $store->id]) }}" method="POST" enctype="multipart/form-data">
@@ -108,13 +107,13 @@
                             <div class="col-md-4">
                             <label for="name">Store Logo</label>
                                 @if($store->store_logo)
-                                <img src="{{ url($store->store_logo) }}" alt="Store Logo" style="width: 50%; height: auto;">
+                                <img src="{{ asset($store->store_logo) }}" alt="Store Logo" style="width: 50%; height: auto;">
                                 @else
                                 <img src="{{  url('images/affinity-email-logo.png')  }}" alt="Affinity" class="h-9">
                                 @endif
                             </div>
 
-                            <!-- <input type="file" value="{{ $store->store_logo }}" name="store_logo" id=""> -->
+                            <input type="file" value="{{ $store->store_logo }}" name="store_logo" id="">
                         </div>
 
                     </div><!-- panel-body -->
@@ -124,12 +123,13 @@
                 </form>
 
             </div>
-
+        </div>
+        <div class="col-md-6">
 
             <!-- Store Employees -->
             <div class="card">
                 <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
-                    <h3><i class="voyager-people"></i> {{ __('Store Employees') }}</h3>
+                    <h3><i class="voyager-people"></i> {{ __('Store Assigned Employees') }}</h3>
                 </div>
                 <div class="clear"></div>
                 <br>
@@ -140,7 +140,7 @@
                             <tr>
                                 <th>Employee Name</th>
                                 <th>Role</th>
-                                <th>Actions</th>
+                                <!-- <th>Actions</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -151,16 +151,15 @@
 
                                 <td><input readonly class="form-control" type="text" name="role_name" value="{{ $user->role->name ?? 'N/A' }}"></td>
 
-                                <td colspan="3">
-                                    <!-- Non-admin actions -->
-                                    <form action="{{ route('delete-store-employee', $user->id) }}" method="POST">
+                                <!-- <td colspan="3">
+                                    <form action="{{ route('voyager.stores.delete', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
                                             <i class="voyager-trash"></i> Delete
                                         </button>
                                     </form>
-                                </td>
+                                </td> -->
                             </tr>
                             @endif
                             @endforeach
@@ -172,6 +171,8 @@
             </div>
 
         </div>
+
+
 
         {{-- Store Email Settings --}}
         @if(Auth::check() && Auth::user()->role_id == 1)

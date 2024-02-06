@@ -120,7 +120,7 @@
 
                         <th class="whitespace-normal w-20 bg-slate-300 p-2">Size</th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Area m²</th>
-                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Pack Qty </th>
+                        <th class="whitespace-normal w-30 bg-slate-300 p-2">Qty </th>
                         <th class="whitespace-normal w-30 bg-slate-300 p-2">Amount</th>
                     </tr>
                 </thead>
@@ -140,8 +140,9 @@
                             {{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}
                         </td>
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
-                            {{ $item->packs_count ?? 'N/A' }}
+                            {{ evaluate_formular($item->getMeta('packs_count')?->value ,'InvoiceItemMeta', $item->id, $item->getMeta('packs_count')?->modifier ) ?? 'N/A'}}
                         </td>
+
                         <td class="bg-purple-100 p-2 text-sm whitespace-normal border-b-2 border-black">
                             {{ $item->item_total ?? 'N/A' }}
                         </td>
@@ -156,40 +157,67 @@
         </div>
 
         <table class="w-full border-separate border-spacing-x-1 text-center my-10">
-            @foreach($invoice->pricings as $price)
-            @if($price->name == 'formular')
-            @php $totalDisplayed = false; @endphp
-
-
-            @else
-            <!-- Other pricing attributes-->
             <tbody>
-                <tr>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                        {{ ucfirst($price->name) }} £:
-                    </td>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
-                        {{ number_format($price->value, 2) }}
-                    </td>
-                </tr>
+                @foreach($invoice->pricings as $price)
+                    @if($price->name != 'formular')
 
 
-                @endif
+                        @if ($price->name == 'subtotal')
+                            <tr>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                    {{ strtoupper($price->name) }} £:  (VAT Excl)
+                                </td>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                    {{ number_format($invoice->calculateSubtotal() - $invoice->calculateVat() , 2) }}
+                                </td>
+                            </tr>
 
+                        @elseif($price->name == 'vat')
+                             <tr>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                    {{ strtoupper($price->name) }} £:  (VAT Excl)
+                                </td>
+                                <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                    {{ number_format($invoice->calculateVat() , 2) }}
+                                </td>
+                            </tr>
+                        @else
+
+                             @if($price->type == 'formular')
+                                <tr>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                        {{ strtoupper($price->name) }} £:
+                                    </td>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                        {{ number_format(  evaluate_formular($price->value, 'InvoicePricing'),     2) }}
+                                    </td>
+                                </tr>
+                            @else
+                                 <tr>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                        {{ strtoupper($price->name) }} £:
+                                    </td>
+                                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                        {{ number_format($price->value, 2) }}
+                                    </td>
+                                </tr>
+                            @endif
+                        @endif
+
+                    @else
+
+                    <!-- Total pricing -->
+                    <tr>
+                        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                            TOTAL £:  (VAT Incl)
+                        </td>
+                        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                            {{ number_format($invoice->getTotalAttribute(), 2) }}
+                        </td>
+                    </tr>
+                    @endif
                 @endforeach
 
-                <!-- Total pricing -->
-                @if (!$totalDisplayed)
-                <tr>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
-                        Total £:
-                    </td>
-                    <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
-                        {{ number_format($invoice->getTotalAttribute(), 2) }}
-                    </td>
-                </tr>
-                @php $totalDisplayed = true; @endphp
-                @endif
             </tbody>
         </table>
 

@@ -9,30 +9,26 @@
         <div class="col-md-12">
             <div class="admin-section-title">
                 <h3><i class="voyager-book"></i> {{ __('Invoices') }}</h3>
-                <div style="display: flex;">
-                    @if(auth()->user()->store)
-                    <a href="{{ route('voyager.invoices.create') }}" style="margin-right:2px" class="btn btn-primary btn-xs">
+                <div style="display:flex;">
+                    <a href="{{ route('voyager.invoices.create') }}" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">
                         <i class="voyager-plus"></i> Add New
                     </a>
-                    @else
-                    <!-- Button is disabled or hidden when user doesn't have a company_id in the store table -->
-                    <button style="margin-right:2px" class="btn btn-primary btn-xs disabled" disabled>
-                        <i class="voyager-plus"></i> Add New
-                    </button>
-                    @endif
                 </div>
                 <div class="clear"></div>
                 <div class="card">
-
-                    <div class="card-body">
+                    <div class="card-body" style="overflow-x: auto;">
                         {{ $dataTable->table() }}
                     </div>
                 </div>
-
-            </div><!-- .row -->
-        </div><!-- .col-md-12 -->
+                <!-- .row -->
+            </div><!-- .col-md-12 -->
+        </div><!-- .page-content container-fluid -->
     </div><!-- .page-content container-fluid -->
     @stop
+
+    <!-- invoice logs modal -->
+    @include('includes.invoice-modal-logs')
+    <!-- End invoice logs modal -->
 
     @section('javascript')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}

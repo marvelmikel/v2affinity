@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class HasSubscription
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
+    public function handle(Request $request, Closure $next)
+    {
+        if (!Auth::guest()) {
+            $user = Auth::user();
+            if($user->activeSubscription() || $user->onTrail() ){
+                return $next($request);
+            }else{
+                // redirect to subscription or billing page
+                session()->flash('alert-info', 'You dont have an active subscription');
+                return redirect()->route('company.subscriptions');
+              
+            }
+
+        }
+        $urlLogin = route('register');
+        return redirect()->guest($urlLogin);
+    }
+}

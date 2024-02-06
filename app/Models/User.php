@@ -11,8 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use \Modules\Admin\Models\Role; 
 use \Haruncpi\LaravelUserActivity\Models\Log as UserActivityLog;
-
-
+use NextApps\VerificationCode\VerificationCode;
 
 class User extends \Modules\Admin\Models\User 
 {
@@ -32,6 +31,7 @@ class User extends \Modules\Admin\Models\User
         'company_id',
         'store_id',
         'role_id',
+        'avatar',
     ];
 
     /**
@@ -63,8 +63,6 @@ class User extends \Modules\Admin\Models\User
         return $this->hasMany(UserActivityLog::class);
     }
     
-    
-    
 
     public function store() {
         
@@ -72,15 +70,40 @@ class User extends \Modules\Admin\Models\User
     }
 
     public function role()
-{
-    return $this->belongsTo(Role::class, 'role_id');
-}
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 
-public function employee()
-{
-    return $this->belongsTo(Employee::class);
-}
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 
+    public function subscriptions() {
+        return $this->hasMany(Subscription::class, 'company_id', 'company_id');
+    }
+
+    public function activeSubscription() {
+        return $this->subscriptions()->where('status', 'Active')->first();
+    }
+
+    public function onTrail() {
+        return $this->company->onTrial();
+    }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            // VerificationCode::send($model->email);
+            if(!$model->avatar){
+                $model->avatar = '/assets/img/default_user.png';
+            }
+        });
+
+    }
 
     
 }

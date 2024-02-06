@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
-    // use SoftDeletes;
+    use SoftDeletes;
     use HasFactory;
 
 
@@ -53,6 +53,11 @@ class Invoice extends Model
         return $subtotal;
 
     }
+    public function calculateVat(){
+        $company = $this->company;
+        $vat_percentage = $company->vat_percentage ?? 20;
+        return $this->calculateSubtotal() * ($vat_percentage/100);
+    }
 
     public function getTotalAttribute(){
         $formulaCol = $this->getPricing('formular');
@@ -76,8 +81,15 @@ class Invoice extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
+    public function company(){
+        return $this->belongsTo(Company::class, 'company_id', 'id');
+    }
+
     public function store() {
         return $this->belongsTo(Store::class);
+    }
+    public function logs() {
+        return $this->hasMany(InvoiceLog::class);
     }
 
 

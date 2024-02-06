@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\InvoiceLogsDataTable;
 use App\DataTables\InvoicesDataTable;
 use App\Models\Customer;
 use App\Models\Company;
@@ -9,6 +10,7 @@ use App\Models\User;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
+use App\Models\InvoiceLog;
 use App\Models\InvoicePricing;
 use App\Models\Product;
 use App\Models\Store;
@@ -26,7 +28,6 @@ class InvoiceController extends Controller
      */
     public function index(InvoicesDataTable $dataTable)
     {
-
         return $dataTable->render('voyager::invoices.index');
     }
 
@@ -63,7 +64,7 @@ class InvoiceController extends Controller
         $company = Company::find($invoice->company_id);
 
         // Fetch the store_logo URL here
-    $storeLogoUrl = $store->store_logo;
+        $storeLogoUrl = $store->store_logo;
 
         $pdf = PDF::loadView('voyager::invoices.pdf', [
             'invoice' => $invoice,
@@ -73,6 +74,12 @@ class InvoiceController extends Controller
             'store' => $store,
             'company' => $company,
             'storeLogoUrl' => $storeLogoUrl,
+        ]);
+
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice PDF generated',
         ]);
 
         return $pdf->stream('invoice.pdf');
@@ -175,6 +182,12 @@ class InvoiceController extends Controller
         // $this->addOptions($invoice->id);
         $this->addPricing($invoice->id);
 
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice created',
+        ]);
+
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 
@@ -201,6 +214,13 @@ class InvoiceController extends Controller
         $user = User::find($users_id);
         $company = Company::find($invoice->company_id);
 
+
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice retrieved',
+        ]);
+
         return view('voyager::invoices.show', compact('invoice', 'customer', 'items', 'pricing', 'store', 'user', 'company'));
     }
 
@@ -220,23 +240,13 @@ class InvoiceController extends Controller
             // $this->addItem($request, $invoice->id);
         }
 
-        // evaluate_formular("ceil(area32338/unitarea32337)+(area32338/unitarea32337*allowance32336/100)", 'InvoiceItemMeta', 13 );
-
-        // dd(evaluate_formular("P11*(2*P12)", 'InvoicePricing' ));
-        // dd(evaluate_formular("unitprice214*packscount221", 'InvoiceItemMeta', 1, '2dp' ));
-
-
         $this->addPricing($invoice->id);
-
         $formular = $invoice->getPricing('formular')->value;
 
         // cal this method when opening invoice or editing invoice
         $invoice->calculateSubtotal();
 
         $total_amount = 0;
-
-//        $total_amount = evaluate_formular($formular, 'InvoicePricing');
-
         $products  = Product::where('company_id', $companyId)->get();
 
         // dd($invoiceSubtotal);
@@ -257,7 +267,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($id);
         $customer = $invoice->customer;
 
-        $customer->updateOrCreate(['email' => $request->customer_email], [
+        if($customer->updateOrCreate(['email' => $request->customer_email], [
             'company_id' => auth()->user()->company_id,
             'user_id' => auth()->user()->id,
             'name' => $request->customer_name,
@@ -269,9 +279,23 @@ class InvoiceController extends Controller
             'address_country' => $request->customer_address_country,
             'address_postcode' => $request->customer_address_postcode,
             'store_id' => $request->store_id,
-        ]);
+        ])){
+            $invoice->logs()->create([
+                'user_id' => auth()->user()->id,
+                'username' => auth()->user()->name,
+                'activity' => 'Invoice customer updated',
+            ]);
+        }
 
         $invoice->update($request->all());
+
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice updated',
+        ]);
+
+
         return redirect()->back()->with([
             'message' => ' Invoice updated successfully'
         ]);
@@ -288,12 +312,29 @@ class InvoiceController extends Controller
         //
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function logs(InvoiceLogsDataTable $dataTable, Invoice $invoice)
+    {
+        return $dataTable->with('invoice', $invoice)->render('voyager::invoices.logs', compact('invoice'));
+    }
+
+
     public function delete($id)
     {
         $invoice = Invoice::findOrFail($id);
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice delete',
+            'payload' => json_encode($invoice)
+        ]);
 
         $invoice->delete();
-
         // Redirect back to the initial page
         return redirect()->route('voyager.invoices.index')->with('success', 'Invoice deleted successfully');
     }
@@ -314,12 +355,6 @@ class InvoiceController extends Controller
 
         foreach ($productids as $productid) {
             if ($product = Product::find($productid)->first()) {
-
-                    // Remove the condition to skip existing items
-                // if (InvoiceItem::where('invoice_id', $invoice->id)->where('product_id', $product->id)->exists()) {
-                //     continue;
-                // }
-
                 if ($meta = $product->meta->toArray()) {
                     $item = InvoiceItem::create(['invoice_id' => $invoice->id, 'product_id' => $product->id]);
                     foreach ($meta as $met) {
@@ -329,6 +364,11 @@ class InvoiceController extends Controller
             }
         }
 
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice Item added',
+        ]);
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 
@@ -344,13 +384,8 @@ class InvoiceController extends Controller
     {
         $invoiceItem = InvoiceItem::find($itemId);
         $invoice = Invoice::find($invoiceId);
-
-
-
         $invoiceItem->update($request->except(['_method', '_token']));
-
-         $meta = $request->all();
-
+        $meta = $request->all();
 
         foreach ($meta as $me) {
             if (isset($me[1])) { // Check if array key 1 is set
@@ -358,8 +393,6 @@ class InvoiceController extends Controller
                 InvoiceItemMeta::where('identifier', $me[1])->where('invoice_item_id', $invoiceItem->id)->first()->update(['value' => $me[0]]);
             }
         }
-
-
 
         if($meta = $request->add_allowance){
             if($meta[0] == 'on'){
@@ -387,6 +420,14 @@ class InvoiceController extends Controller
         // Recalculate invoice subtotal here whenever an item is saved
         $invoice->calculateSubtotal();
 
+
+
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice item saved',
+        ]);
+
         return redirect()->back()->with([
             'message' => 'Invoice item saved successfully'
         ]);
@@ -402,6 +443,13 @@ class InvoiceController extends Controller
     {
         $invoiceItem = InvoiceItem::find($itemId);
         $invoice = Invoice::find($invoiceId);
+
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice item deleted',
+            'payload' => json_decode($invoiceItem),
+        ]);
 
         $invoiceItem->delete();
 
@@ -426,8 +474,6 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($invoiceId);
         $meta = $request->except(['_method', '_token']);
 
-        // dd($meta);
-
         // Initialize the subtotal value to zero
         $subtotal = 0;
 
@@ -441,11 +487,9 @@ class InvoiceController extends Controller
 
         if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
 
-
             $subtotalCol = $invoice->getPricing('subtotal');
             $taxCol = $invoice->getPricing('tax');
             $discountCol = $invoice->getPricing('discount');
-
             $subtotal = $subtotalCol->identifier;
 
             if ($taxCol->type == 'percentage') {
@@ -457,7 +501,6 @@ class InvoiceController extends Controller
             $formular = "($subtotal+$tax)";
 
             //check pricing that should be added to formular -
-
             foreach ($meta as $met) {
                if( isset($met[3]) && $met[3]  != null){
                 $formular =  $formular  .$met[3] . '(' . $met[2] . ')';
@@ -476,15 +519,17 @@ class InvoiceController extends Controller
         }
 
 
+        $invoice->logs()->create([
+            'user_id' => auth()->user()->id,
+            'username' => auth()->user()->name,
+            'activity' => 'Invoice pricing saved',
+            'payload' => json_encode($meta),
+        ]);
+
         return redirect()->back()->with([
             'message' => 'Invoice pricing saved successfully'
         ]);
     }
-
-
-
-
-
 
 
 
@@ -524,11 +569,6 @@ class InvoiceController extends Controller
         return redirect()->back();
     }
 
-
-
-
-
-
     /**
      *
      *
@@ -543,7 +583,7 @@ class InvoiceController extends Controller
 
         $meta = [
             ['name' => 'subtotal', 'value' => 0, 'type' => 'value'],
-            ['name' => 'tax', 'value' => 20, 'type' => 'percentage'], // value, percentage, formular
+            // ['name' => 'tax', 'value' => 20, 'type' => 'percentage'], // value, percentage, formular
             ['name' => 'discount', 'value' => 0, 'type' => 'percentage'], // value, percentage, formula
         ];
 
@@ -553,11 +593,58 @@ class InvoiceController extends Controller
             }
         }
 
-
-        //add def formular here
-        if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
+        // add vat here
+        if ($invoice->getPricing('subtotal') ) {
             $subtotalCol = $invoice->getPricing('subtotal');
-            $taxCol = $invoice->getPricing('tax');
+
+            $company = $invoice->company;
+            $vat_percentage = $company->vat_percentage ?? 20;
+
+            $companyVat = ($vat_percentage/100);
+            $subtotal = $subtotalCol->identifier;
+
+            if (!$invoice->getPricing('formular')) {
+                $invoice->pricings()->create([
+                    'name' => 'vat',
+                    'type' => 'formular',
+                    'value' => "($subtotal*$companyVat)"
+                ]);
+            }
+        }
+
+        //add def formular here // deprecate
+        // if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('tax') && $invoice->getPricing('discount')) {
+        //     $subtotalCol = $invoice->getPricing('subtotal');
+        //     $taxCol = $invoice->getPricing('tax');
+        //     $discountCol = $invoice->getPricing('discount');
+
+        //     $subtotal = $subtotalCol->identifier;
+
+        //     if ($taxCol->type == 'percentage') {
+        //         $tax = "($subtotal*(0.01*$taxCol->identifier))";
+        //     } else {
+        //         $tax = $taxCol->identifier;
+        //     }
+
+        //     if ($discountCol->type == 'percentage') {
+        //         $discount = "($subtotal+$tax)*(0.01*$discountCol->identifier)";
+        //     } else {
+        //         $discount = $discountCol->identifier;
+        //     }
+
+        //     if (!$invoice->getPricing('formular')) {
+        //         $invoice->pricings()->create([
+        //             'name' => 'formular',
+        //             'value' => "($subtotal+$tax)"
+        //         ]);
+        //     }
+        // }
+
+
+        //add def formular with vat
+        if ($invoice->getPricing('subtotal') &&  $invoice->getPricing('vat') && $invoice->getPricing('discount')) {
+            $subtotalCol = $invoice->getPricing('subtotal');
+            $taxCol = $invoice->getPricing('vat');
             $discountCol = $invoice->getPricing('discount');
 
             $subtotal = $subtotalCol->identifier;
@@ -577,10 +664,12 @@ class InvoiceController extends Controller
             if (!$invoice->getPricing('formular')) {
                 $invoice->pricings()->create([
                     'name' => 'formular',
-                    'value' => "($subtotal+$tax)"
+                    'value' => "($subtotal)"
                 ]);
             }
         }
+
+
         return redirect()->route('voyager.invoices.edit', $invoice->id);
     }
 

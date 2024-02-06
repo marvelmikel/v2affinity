@@ -3,10 +3,29 @@
     'title' => 'Contact Us',
     'description' => 'Fill in your details and our sales representative will be in touch shortly.'
 ])
-<form method="POST" action="/" class="font-normal livvic-font-regular text-slate-500">
+<form id="myForm"  method="POST" action="{{ route( $postTo ) }}" class="font-normal livvic-font-regular text-slate-500">
     @csrf
     <h2 class="w-full livvic-font-semibold font-semibold text-slate-700 text-2xl mb-3">{{ $title }}</h2>
     <p class="text-lg">{{ $description }}</p>
+
+  
+    @if(session('success'))
+    <div id="flash-message" class="hidden fixed w-64 bg-green-200 text-green-800 p-4 rounded mt-4">
+        {{ session('success') }}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var flashMessage = document.getElementById('flash-message');
+            flashMessage.classList.remove('hidden');
+            setTimeout(function () {
+                flashMessage.classList.add('hidden');
+            }, 3000); // Hide the flash message after 3 seconds
+        });
+    </script>
+@endif
+
+   
+
     <fieldset class="my-4 space-y-4">
         <div>
             <x-input-label for="name" :value="__('Name')" required="true" />
@@ -38,8 +57,20 @@
                       class="h-24 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
                       placeholder="If you would like a demo of the affinity software or would like a meeting to discuss the product, please include any dates or times that work well for you."></textarea>
         </div>
+
+        <div>
+            {!!htmlFormSnippet()!!}
+
+            @if ($errors->has('g-recaptcha-response'))
+                <span class="text-red-500 text-sm">
+                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                </span>
+            @endif
+        </div>
+       
     </fieldset>
     <p class="text-center">
         <x-home-main-btn type="submit" class="px-6 py-1 mb-3 md:mb-0">Submit Form</x-home-main-btn>
     </p>
+   
 </form>
