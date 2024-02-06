@@ -69,29 +69,13 @@
 
 
                         <div class="form-group row">
-                            <div class="col-md-4">
-                                <label for="name">Address City</label>
-                                <input class="form-control" type="text" value="{{ $store->address_city}}" name="address_city" id="">
-                            </div>
+                          
 
-                            <div class="col-md-4">
-                                <label for="name">Address Country</label>
-                                <input type="text" class="form-control" type="text" value="{{ $store->address_county}}" name="address_county" id="">
-                            </div>
-
+                        
                             <div class="col-md-4">
                                 <label for="name">Next Invoice Number</label>
                                 <input type="number" class="form-control" value="{{ $store->next_invoice_number}}" name="next_invoice_number" id="">
                             </div>
-
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label for="name">Store Address Postcode</label>
-                                <input type="text" class="form-control" type="text" value="{{ $store->address_postcode}}" name="address_postcode" id="">
-                            </div>
-
                             <div class="col-md-4">
                                 <label for="name">Store Address Line 1</label>
                                 <input type="text" class="form-control" type="text" value="{{ $store->address_line_1}}" name="address_line_1" id="">
@@ -101,6 +85,30 @@
                                 <label for="name">Store Address Line 2</label>
                                 <input type="text" class="form-control" value="{{ $store->address_line_2}}" name="address_line_2" id="">
                             </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                        <div class="col-md-4">
+                                <label for="name">Address City</label>
+                                <input class="form-control" type="text" value="{{ $store->address_city}}" name="address_city" id="">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="name">Address Country</label>
+                                <input type="text" class="form-control" type="text" value="{{ $store->address_county}}" name="address_county" id="">
+                            </div>
+                       
+                           
+                            <div class="col-md-4">
+                                <label for="name">Store Address Postcode</label>
+                                <input type="text" class="form-control" type="text" value="{{ $store->address_postcode}}" name="address_postcode" id="">
+                            </div>
+                           
+
+                          
+
                         </div>
 
                         <div class="form-group row">
@@ -118,7 +126,7 @@
 
                     </div><!-- panel-body -->
                     <div class="panel-footer">
-                        <button type="submit" class="btn btn-primary">Update Store</button>
+                        <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0">Update Store</button>
                     </div>
                 </form>
 
