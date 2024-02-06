@@ -72,10 +72,10 @@
                           
 
                         
-                            <div class="col-md-4">
+                            <!-- <div class="col-md-4">
                                 <label for="name">Next Invoice Number</label>
-                                <input type="number" hidden class="form-control" value="{{ $store->next_invoice_number}}" name="next_invoice_number" id="">
-                            </div>
+                                <input type="number"  class="form-control" value="{{ $store->next_invoice_number}}" name="next_invoice_number" id="" hidden>
+                            </div> -->
                             <div class="col-md-4">
                                 <label for="name">Store Address Line 1</label>
                                 <input type="text" class="form-control" type="text" value="{{ $store->address_line_1}}" name="address_line_1" id="">
