@@ -36,7 +36,7 @@ class PermissionRoleTableSeeder extends Seeder
 
 
         // storemanger
-        $role = Role::where('name', 'store-manager')->firstOrFail();
+        $role = Role::where('name', 'storemanager')->firstOrFail();
         $permissions = Permission::whereIn('key', ['browse_admin', 'browse_products', 'read_products', 'edit_products', 'add_products', 'delete_products',
             'browse_invoices', 'read_invoices', 'edit_invoices', 'add_invoices', 'delete_invoices']
         );
@@ -46,7 +46,7 @@ class PermissionRoleTableSeeder extends Seeder
 
 
         // salesperson
-        $role = Role::where('name', 'sales-person')->firstOrFail();
+        $role = Role::where('name', 'salesperson')->firstOrFail();
         $permissions = Permission::whereIn('key', ['browse_admin',
             'browse_invoices', 'read_invoices', 'edit_invoices', 'add_invoices', 'delete_invoices']
         );
