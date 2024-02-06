@@ -103,8 +103,8 @@
                                     @endforeach
                                 </select>
                             </div> -->
-                            <button type="submit" class="btn btn-primary pull-right save">
-                {{ __('Update User Information') }}
+                            <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right save">
+                {{ __('Update Info') }}
             </button>
                         </div>
                         
