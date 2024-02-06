@@ -3,8 +3,8 @@
 !/public/build
 /public/hot
 /public/storage
-/public/store_logos
-/public/company_logos
+/public/store_logos/*
+/public/company_logos/*
 /storage/*.key
 /vendor
 .env
