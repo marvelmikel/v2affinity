@@ -24,7 +24,7 @@ return [
 
     'policy' => [
         // 'always',
-        'ip',
+        // 'ip',
         'browser',
         'geoip',
     ],
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'driver' => \Hydrat\Laravel2FA\Drivers\BaseDriver::class,
+    'driver' => \Airondev\Laravel2FA\Drivers\BaseDriver::class,
 
 
     /*
@@ -75,7 +75,7 @@ return [
     |
     */
 
-    'notification' => \Hydrat\Laravel2FA\Notifications\TwoFactorToken::class,
+    'notification' => \Airondev\Laravel2FA\Notifications\TwoFactorToken::class,
 
 
     /*
@@ -89,10 +89,10 @@ return [
     */
 
     'mapping' => [
-        'always'  => \Hydrat\Laravel2FA\Policies\AlwaysPolicy::class,
-        'browser' => \Hydrat\Laravel2FA\Policies\BrowserPolicy::class,
-        'geoip'   => \Hydrat\Laravel2FA\Policies\GeoipPolicy::class,
-        'ip'      => \Hydrat\Laravel2FA\Policies\IpPolicy::class,
+        'always'  => \Airondev\Laravel2FA\Policies\AlwaysPolicy::class,
+        'browser' => \Airondev\Laravel2FA\Policies\BrowserPolicy::class,
+        'geoip'   => \Airondev\Laravel2FA\Policies\GeoipPolicy::class,
+        'ip'      => \Airondev\Laravel2FA\Policies\IpPolicy::class,
     ],
 
 ];

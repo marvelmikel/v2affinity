@@ -2,8 +2,9 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use Airondev\Laravel2FA\TwoFactorAuth as Laravel2FATwoFactorAuth;
 use App\Models\User;
-use Hydrat\Laravel2FA\TwoFactorAuth;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,8 +43,8 @@ class VoyagerAuthController extends Controller
 
             $user = User::find(auth()->user()->id);
             
-            return TwoFactorAuth::getDriver()->maybeTrigger($request, $user) 
-                ?: redirect()->intended($this->redirectPath());
+            return Laravel2FATwoFactorAuth::getDriver()->maybeTrigger($request, $user) 
+                ?: redirect()->intended(RouteServiceProvider::HOME);
 
 
         }
