@@ -96,22 +96,10 @@
                                 <input type="text" class="form-control" type="text" value="{{ $store->address_county}}" name="address_county" id="">
                             </div>
 
-                        </div>
-
-                        <div class="form-group row">
-
-                       
-
-                          
-                       
-                           
                             <div class="col-md-4">
                                 <label for="name">Store Address Postcode</label>
                                 <input type="text" class="form-control" type="text" value="{{ $store->address_postcode}}" name="address_postcode" id="">
                             </div>
-                           
-
-                          
 
                         </div>
 
