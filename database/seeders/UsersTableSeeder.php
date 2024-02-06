@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
 
             User::create([
                 'name'           => 'Admin',
-                'email'          => 'admin@admin.com',
+                'email'          => 'dev@logicbarn.com',
                 'password'       => bcrypt('password'),
                 'company_id'     => 1,
                 'store_id'       => 1,
