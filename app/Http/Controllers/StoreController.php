@@ -115,7 +115,7 @@ class StoreController extends Controller
         $store->save();
 
         // Redirect to the store edit page with a success message
-        return redirect()->route('voyager.stores.edit', ['id' => $store->id])->with('success', 'Store Information Updated successfully');
+        return redirect()->route('voyager.stores.index', ['id' => $store->id])->with('success', 'Store Information Updated successfully');
     }
 
 

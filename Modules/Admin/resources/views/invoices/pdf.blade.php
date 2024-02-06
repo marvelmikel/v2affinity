@@ -580,9 +580,22 @@
                 <span class="table-cell cell-description" style="background-color: #FAE8FF;">{{ $item->getMeta('title')?->value }}</span>
                 <span class="table-cell cell-colour" style="background-color: #FAE8FF; font-size: xx-small;">{{ Str::limit($item->getMeta('description')?->value, 15) }}</span>
                 <span class="table-cell cell-size" style="background-color: #FAE8FF;">{{ $item->getMeta('Length')?->value . ' x ' . $item->getMeta('Width')?->value }}</span>
-                <span class="table-cell cell-quantity" style="background-color: #FAE8FF;">{{ ($item->getMeta('Length')?->value * $item->getMeta('Width')?->value) ?? 'N/A' }}</span>
-                <span class="table-cell cell-quantity" style="background-color: #FAE8FF;">{{ $item->packs_count ?? 'N/A' }}</span>
+                
+                <span class="table-cell cell-quantity" style="background-color: #FAE8FF;">
+                    {{ ($area = $item->getMeta('length')?->value * $item->getMeta('width')?->value) ? $area  : 'N/A' }}
+                </span>
+                
+                @if( $item->getMeta('type')?->value == 'tile' )
+                    <span class="table-cell cell-quantity" style="background-color: #FAE8FF;">
+                     {{ evaluate_formular($item->getMeta('packs_count')?->value ,'InvoiceItemMeta', $item->id, $item->getMeta('packs_count')?->modifier ) ?? 'N/A'}}
+                    </span>
+                @else
+                    <span class="table-cell cell-quantity" style="background-color: #FAE8FF;">
+                     {{ evaluate_formular($item->getMeta('quantity')?->value ,'InvoiceItemMeta', $item->id, $item->getMeta('quantity')?->modifier ) ?? 'N/A'}}
+                    </span>
+                @endif
                 <span class="table-cell cell-selling-price empty" style="background-color: #FAE8FF;">{{ $item->item_total ?? 'N/A' }}</span>
+               
 
                 <!-- <span class="table-cell cell-selling-price empty">&nbsp;</span> -->
             </div>

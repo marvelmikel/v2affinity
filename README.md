@@ -104,33 +104,10 @@ php artisan serve
 Admin
 
 ```
-email => admin@admin.com
+email => dev@logicbarn.com
 password => password
 
 ```
 
-## Company Admin
-
-```
-email => logicbarn@gmail.com
-password => password
-
-```
-
-## Store Manager
-
-```
-email => storemanager@gmail.com
-password => password
-
-```
-
-## Sales Person
-
-```
-email => salesperson@gmail.com
-password => password
-
-```
 
 ## NOTE: Before pushing to Dev, run 'npm run build' to push any new assets.

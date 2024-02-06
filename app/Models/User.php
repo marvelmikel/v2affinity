@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Airondev\Laravel2FA\Contracts\TwoFactorAuthenticatableContract;
+use Airondev\Laravel2FA\TwoFactorAuthenticatable;
 use Haruncpi\LaravelUserActivity\Traits\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,9 +15,9 @@ use \Modules\Admin\Models\Role;
 use \Haruncpi\LaravelUserActivity\Models\Log as UserActivityLog;
 use NextApps\VerificationCode\VerificationCode;
 
-class User extends \Modules\Admin\Models\User 
+class User extends \Modules\Admin\Models\User implements TwoFactorAuthenticatableContract
 {
-    use HasApiTokens, HasFactory, Notifiable, Loggable;
+    use HasApiTokens, HasFactory, Notifiable, Loggable, TwoFactorAuthenticatable ;
 
     
 

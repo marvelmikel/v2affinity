@@ -110,25 +110,25 @@
                                 <label for="name">Store</label>
                                 <select class="form-control select" value="{{ old('store_id') }}" name="store_id" id="">
                                     @if (Auth::user()->role_id == 2 && Auth::user()->company)
-                                    <!-- For users with role_id = 2 (company role) and a valid company relationship -->
-                                    <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif> 
-                                        {{ Auth::user()->store->store_name }}</option>
-                                    @foreach (Auth::user()->company->stores ?? [] as $store)
-                                    <option value="{{ $store->id }}" @if (old('store_id')==$store->id) selected @endif>
-                                        {{ $store->store_name }}
-                                    </option>
-                                    @endforeach
+                                        <!-- For users with role_id = 2 (company role) and a valid company relationship -->
+                                        <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif> 
+                                            {{ Auth::user()->store->store_name }}</option>
+                                        @foreach (Auth::user()->company->stores ?? [] as $store)
+                                            <option value="{{ $store->id }}" @if (old('store_id')==$store->id) selected @endif>
+                                                {{ $store->store_name }}
+                                            </option>
+                                        @endforeach
                                     @else
-                                    <!-- For users with role_id = 3 or 4 -->
-                                    @if (Auth::user()->store)
-                                    <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif>
-                                        {{ Auth::user()->store->store_name }}
-                                    </option>
-                                    @else
-                                    @php
-                                    throw new \Exception('No store assigned to you yet');
-                                    @endphp
-                                    @endif
+                                        <!-- For users with role_id = 3 or 4 -->
+                                        @if (Auth::user()->store)
+                                            <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif>
+                                                {{ Auth::user()->store->store_name }}
+                                            </option>
+                                        @else
+                                            @php
+                                             throw new \Exception('No store assigned to you yet');
+                                            @endphp
+                                        @endif
                                     @endif
                                 </select>
 

@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "ext-json": "*",
         "anhskohbo/no-captcha": "^3.5",
+        "airondev/laravel-2fa": "dev-main",
         "arrilot/laravel-widgets": "^3.7",
         "barryvdh/laravel-dompdf": "^2.0",
         "biscolab/laravel-recaptcha": "^6.0",
