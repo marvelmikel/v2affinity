@@ -51,7 +51,7 @@
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="terms_conditions" style="font-weight:bolder;">
-                            <h3>Terms & Conditions</h3>
+                            <h3 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Terms & Conditions</h3>
                         </label>
                         <input type="hidden" name="terms_conditions" id="terms_conditions" class="form-control richTextBox" style="font-size:20px;" value="{{ $companyData['terms_conditions'] }}">
                         <trix-editor input="terms_conditions" class="trix-content"></trix-editor>

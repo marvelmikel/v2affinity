@@ -75,8 +75,15 @@
                     </div>
                     <div>
                         <div class="modal-body" style="overflow: scroll; min-height: 300px;">
+
+                        <!-- You can use this design to work on the search input feild if its okay
+                            <div id="stores-table_filter" class="dataTables_filter">
+                            <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="stores-table"></label>
+                        </div> -->
                             <div>
+                                
                                 <label for="multiple-checkboxes"><strong>Select Products:</strong></label>
+                                <input type="search" id="product-search" class="form-control input-sm" placeholder="Search for products">
                                 <select id="multiple-checkboxes" multiple="multiple">
                                     @foreach($products->where('company_id', $companyId) as $product)
                                         <option value="{{ $product->id }}">{{ $product->title }}</option>
