@@ -163,6 +163,7 @@
 
 
     <script type="text/javascript" src="{{ voyager_asset('js/app.js') }}"></script>
+    
 
     <script>
         @if (Session:: has('alerts'))

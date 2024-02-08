@@ -94,17 +94,12 @@
 
                             </div>
 
-                            <div class="col-md-6 form-group">
-                                <label for="name">Invoice Number <input type="checkbox" id="invoiceNumberCheckbox"> Use custom invoice number <span class="text-danger">* Note: If empty, it generates a unique invoice number.</span></label>
-                              
-                                <!-- <div class="checkbox">
-                                    <label>
-                                     
-                                </label> 
-
-                                </div> -->
-                                <input class="form-control" type="text" value="{{ old('invoice_number') ?: $store->name . '-' . $invoice->id }}" name="invoice_number" id="invoiceNumberField" disabled>
+                            <div class="form-group col-md-6">
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="invoice_number">Invoice Number</label>
+                                <span style="border: 1px solid whitesmoke; border-radius: 5px; padding: 2px 10px; background-color:#D95EAD; color:aliceblue" class="float-center cursor-pointer" onclick='generateInvoiceNumber()'>Generate</span>
+                                <input class="form-control invoice_number" type="text" value="{{ $invoice->invoice_number }}" name="invoice_number" id="invoice_number" placeholder="Type in 'quote' if customer demand if not you can generate invoice number to proceed.">
                             </div>
+
 
 
                         </div>
@@ -161,17 +156,71 @@
 
 @section('javascript')
 <script>
-    var checkbox = document.getElementById("invoiceNumberCheckbox");
-    var invoiceNumberField = document.getElementById("invoiceNumberField");
+    // var checkbox = document.getElementById("invoiceNumberCheckbox");
+    // var invoiceNumberField = document.getElementById("invoiceNumberField");
 
-    checkbox.addEventListener("change", function() {
-        invoiceNumberField.disabled = !this.checked;
-        if (this.checked) {
-            invoiceNumberField.value = "";
+    // checkbox.addEventListener("change", function() {
+    //     invoiceNumberField.disabled = !this.checked;
+    //     if (this.checked) {
+    //         invoiceNumberField.value = "";
+    //     } else {
+    //         invoiceNumberField.value = "{{ old('invoice_number') ?: $store->name . '-' . $invoice->id }}";
+    //     }
+    // });
+
+    // invoice number generator 
+
+
+function generateInvoiceNumber() {
+    var pattern = /[a-zA-Z0-9_\-\+\.]/;
+
+    function getRandomByte() {
+        if (window.crypto && window.crypto.getRandomValues) {
+            var result = new Uint8Array(1);
+            window.crypto.getRandomValues(result);
+            return result[0];
+        } else if (window.msCrypto && window.msCrypto.getRandomValues) {
+            var result = new Uint8Array(1);
+            window.msCrypto.getRandomValues(result);
+            return result[0];
         } else {
-            invoiceNumberField.value = "{{ old('invoice_number') ?: $store->name . '-' . $invoice->id }}";
+            return Math.floor(Math.random() * 256);
         }
-    });
+    }
+
+    function generate(length) {
+        return Array.apply(null, { 'length': length })
+            .map(function () {
+                var result;
+                while (true) {
+                    result = String.fromCharCode(getRandomByte());
+                    if (pattern.test(result)) {
+                        return result;
+                    }
+                }
+            })
+            .join('');
+    }
+
+    // Generate a unique two-digit random number
+    var randomNumber = ('0' + Math.floor(Math.random() * 100)).slice(-2);
+
+    // Extract the first character of each word in the store name and convert to uppercase
+    var storeNameParts = '<?php echo $store->store_name; ?>'.split(' ');
+    var storeShortCode = '';
+    for (var i = 0; i < storeNameParts.length; i++) {
+        storeShortCode += storeNameParts[i].charAt(0).toUpperCase();
+    }
+
+    // Generate the invoice number in the format "INV-{store_name}-{random number}"
+    var generatedNumber = 'INV-' + storeShortCode + '-' + randomNumber;
+
+    var inputElements = document.getElementsByClassName("invoice_number");
+    for (var i = 0; i < inputElements.length; i++) {
+        inputElements[i].value = generatedNumber;
+    }
+}
+
 </script>
 
 @stop
