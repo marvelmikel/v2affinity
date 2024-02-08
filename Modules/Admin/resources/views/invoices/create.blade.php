@@ -45,9 +45,6 @@
                                 <label for="name">Title</label>
                                 <input class="form-control" type="text" value="{{ old('title') }}" name="title" id="">
                             </div> -->
-
-
-
                         <div class="form-group row">
                             <div class="col-md-6 form-group">
                                 <label for="name">Customer Name</label>
@@ -55,7 +52,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="name">Customer Email</label>
-                                <input type="text" class="form-control" type="text" value="{{ old('customer_email') }}" name="customer_email" id="">
+                                <input type="email" class="form-control" type="text" value="{{ old('customer_email') }}" name="customer_email" id="">
                             </div>
 
 

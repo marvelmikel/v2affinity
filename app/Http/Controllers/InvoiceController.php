@@ -98,7 +98,7 @@ class InvoiceController extends Controller
         $request->validate([
             'note' => 'sometimes',
             'store_id' => 'required',
-            'customer_email' => 'required',
+            // 'customer_email' => 'required',
             'customer_name' => 'required',
             'customer_address_line_1' => 'required',
             'customer_address_line_2' => 'sometimes',
@@ -267,11 +267,10 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($id);
         $customer = $invoice->customer;
 
-        if($customer->updateOrCreate(['email' => $request->customer_email], [
+        $customer->fill([
             'company_id' => auth()->user()->company_id,
             'user_id' => auth()->user()->id,
             'name' => $request->customer_name,
-            'email' => $request->customer_email,
             'address_line_1' => $request->customer_address_line_1,
             'address_line_2' => $request->customer_address_line_2,
             'phone' => $request->customer_phone_number,
@@ -279,7 +278,12 @@ class InvoiceController extends Controller
             'address_country' => $request->customer_address_country,
             'address_postcode' => $request->customer_address_postcode,
             'store_id' => $request->store_id,
-        ])){
+        ]);
+        if ($customer->email !== $request->customer_email) {
+            $customer->email = $request->customer_email;
+        }
+
+        if ($customer->save())  {
             $invoice->logs()->create([
                 'user_id' => auth()->user()->id,
                 'username' => auth()->user()->name,
