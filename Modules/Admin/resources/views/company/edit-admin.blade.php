@@ -32,7 +32,7 @@
                     <!-- CSRF TOKEN -->
                     @csrf
                     @method('PUT')
-
+ 
                     <div class="panel-body">
 
                         @if (count($errors) > 0)
@@ -119,6 +119,11 @@
                     <div class="panel-footer">
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
+
+
+                   
+
+
                 </form>
 
             </div>

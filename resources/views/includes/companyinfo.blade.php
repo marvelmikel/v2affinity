@@ -44,8 +44,12 @@
                         <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Vat Number</label>
                         <input class="form-control" type="text" value="{{ $companyData['vat_number'] }}" name="vat_number" id="">
                     </div>
+                </div>
 
-
+                <div class="col-md-4">
+                    <label for="name" class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">Company Logo</label>
+                    <img src="{{ asset($company->logo) }}"  style="width: 50%; height: auto;">
+                    <input type="file" value="{{ $company->logo }}" name="company_logo" id="">
                 </div>
 
                 <div class="form-group row">
@@ -57,6 +61,8 @@
                         <trix-editor input="terms_conditions" class="trix-content"></trix-editor>
 
                 </div>
+
+                
             </div>
 
             <button type="submit" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">Update Info</button>

@@ -33,17 +33,25 @@ class CompanyController extends Controller
 
     public function update(Request $request, $companyId)
     {
+        $payload = $request->all();
         $company = Company::findOrFail($companyId);
-        // // Check if the authenticated user has role_id = 2
-        // if (Auth::user()->role_id != 2) {
-        //     return redirect()->back()->with('error', 'You do not have permission to edit company details.');
-        // }
-
         $company = Company::find($companyId);
         if (!$company) {
             return redirect()->back()->with('error', 'Company not found.');
         }
-        $company->update($request->all()); // Assuming $request->all() contains only fillable fields
+
+        if ($request->hasFile('company_logo')) {
+            $file = $request->file('company_logo');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = 'company_logos/' . $fileName;
+            // Move the uploaded file to the public directory
+            $file->move(public_path('company_logos'), $fileName);
+            $payload['logo'] = $path;
+        }
+
+
+        
+        $company->update($payload); // Assuming $request->all() contains only fillable fields
 
         return redirect()->route('voyager.company.index')->with('success', 'Company details updated successfully.');
     }
