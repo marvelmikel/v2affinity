@@ -47,11 +47,11 @@
                             </div> -->
                         <div class="form-group row">
                             <div class="col-md-6 form-group">
-                                <label for="name">Customer Name</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer Name</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_name') }}" name="customer_name" id="">
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="name">Customer Email</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer Email</label>
                                 <input type="email" class="form-control" type="text" value="{{ old('customer_email') }}" name="customer_email" id="">
                             </div>
 
@@ -64,7 +64,7 @@
 
                         <div class="form-group row">
                             <div class="form-group col-md-6">
-                                <label for="name">Store</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700"  for="name"> Store Name</label>
                                 <select class="form-control select" value="{{ old('store_id') }}" name="store_id" id="">
                                     @if (Auth::user()->role_id == 2 && Auth::user()->company)
                                     <!-- For users with role_id = 2 (company role) and a valid company relationship -->
@@ -103,15 +103,15 @@
 
                         <div class="form-group row">
                         <div class="col-md-4">
-                                <label for="name">Customer Phone Number</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer Phone Number</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_phone_number') }}" name="customer_phone_number" id="">
                             </div>
                             <div class="col-md-4">
-                                <label for="name">Customer Address Line 1</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer Address Line 1</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_1') }}" name="customer_address_line_1" id="">
                             </div>
                             <div class="col-md-4">
-                                <label for="name">Customer Address Line 2</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer Address Line 2</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_address_line_2') }}" name="customer_address_line_2" id="">
                             </div>
                            
@@ -120,17 +120,17 @@
 
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <label for="name">Customer City</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer City</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_address_city') }}" name="customer_address_city" id="">
                             </div>
 
                             <div class="col-md-4">
-                                <label for="name">Customer Country</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer Country</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_address_country') }}" name="customer_address_country" id="">
                             </div>
 
                             <div class="col-md-4">
-                                <label for="name">Customer Postcode</label>
+                                <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Customer Postcode</label>
                                 <input type="text" class="form-control" type="text" value="{{ old('customer_address_postcode') }}" name="customer_address_postcode" id="">
                             </div>
                         </div>
