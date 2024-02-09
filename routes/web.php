@@ -85,8 +85,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/employee/{id}/delete', [EmployeeController::class, 'delete'])->name('voyager.employee.delete');
         Route::get('/employee/{employeeId}/edit', [EmployeeController::class, 'edit'])->name('voyager.employee.edit');
         Route::put('/employee/{employeeId}', [EmployeeController::class, 'update'])->name('employee.update');
-        
-       
+
     });
 
     // company profile
@@ -97,6 +96,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/company/{companyId}', [CompanyController::class, 'update'])->name('company.update');
     
         Route::get('/company/logs',   [CompanyController::class, 'show'])->name('voyager.company.logs');
+
+        Route::get('/company/{company}/invoices',   [CompanyController::class, 'invoiceHistory'])->name('admin.company.invoice-history');
+
         Route::get('subscription/{subscription}/edit', [SubscriptionController::class, 'edit'])->name('subscription-edit');
         Route::get('subscriptions',   [SubscriptionController::class, 'show'])->name('company.subscriptions');
     });

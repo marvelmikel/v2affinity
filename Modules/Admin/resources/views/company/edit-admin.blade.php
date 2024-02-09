@@ -136,44 +136,24 @@
                 </div>
             </header>
 
-
-           
-
             <div class="container-fluid" style="padding-left:0px">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-bordered">
                             <div class="panel-body">
-                                <table id="dataTable" class="table table-hover dataTable no-footer" role="grid" aria-describedby="dataTable_info">
+                               <table id="invoicehistory" class="table table-striped first" style="width:100%">
                                     <thead>
-                                        <tr role="row">
+                                        <tr>
+                                            <th>ID</th>
                                             <th>Invoice Number</th>
                                             <th>Store Assigned</th>
                                             <th>Customer Name</th>
                                             <th>Created At</th>
                                             <th>Deleted At</th>
-                                            <th>Actions</th>
+                                            <th class="col-md-2">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="subscriptionTableBody">
-
-                                    
-                                    @foreach ($invoices as $invoice )
-                                        
-                                        <tr role="row">
-                                            <td>{{ $invoice->invoice_number }}</td>
-                                            <td>{{ $invoice->store->store_name }}</td>
-                                            <td>{{ $invoice->customer->name }}</td>
-                                            <td>{{ $invoice->created_at }}</td>
-                                            <td>{{ $invoice->deleted_at }}</td>
-                                            <td>
-                                                <a href='' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
-                                            </td>
-                                        </tr>
-
-                                    @endforeach
-
-
+                                    <tbody>
                                     </tbody>
                                 </table>
                             </div>
@@ -183,6 +163,13 @@
             </div>
 
             <!-- End invoice History -->
+
+            
+
+          
+
+
+
 
             <!-- Subcription History -->
             <header class="flex justify-between items-center mb-6 " style="border: 1px solid #3330;">
@@ -239,6 +226,59 @@
 </div>
 @stop
 @section('javascript')
+
+
+ <script type="text/javascript">
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var table = $('#invoicehistory').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('admin.company.invoice-history', $company->id) }}",
+                columns: [
+                    {
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'invoice_number',
+                        name: 'invoice_number'
+                    },
+                    {
+                        data: 'store.store_name',
+                        name: 'store.store_name'
+                    },
+                    {
+                        data: 'customer.name',
+                        name: 'customer.name'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
+
+
+
+        });
+    </script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer>
 </script>
