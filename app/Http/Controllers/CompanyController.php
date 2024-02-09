@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\DataTables\CompanyDataTable;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\Invoice;
 use App\Models\User;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -63,9 +64,18 @@ class CompanyController extends Controller
             return redirect()->back()->with('error', 'Company not found.');
         }
         $companyData = $company ? $company->toArray() : [];
+        $plan = '';
         $subscriptionHistory = Subscription::where('company_id', $companyId)->get();
-        $plan = Plan::where('id', $subscriptionHistory[0]->plan_id)->first();
-        return view('voyager::company.edit-admin', compact('company', 'companyData', 'subscriptionHistory', 'plan'));
+        
+        if( isset($subscriptionHistory[0])){
+            $plan = Plan::where('id', $subscriptionHistory[0]->plan_id)->first();
+        }
+
+        $invoices  = Invoice::where('company_id', $companyId)->withTrashed()->get();
+
+
+      
+        return view('voyager::company.edit-admin', compact('company', 'companyData', 'subscriptionHistory', 'plan', 'invoices'));
     }
     
 

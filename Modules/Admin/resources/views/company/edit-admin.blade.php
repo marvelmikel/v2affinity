@@ -136,6 +136,9 @@
                 </div>
             </header>
 
+
+           
+
             <div class="container-fluid" style="padding-left:0px">
                 <div class="row">
                     <div class="col-md-12">
@@ -147,21 +150,28 @@
                                             <th>Invoice Number</th>
                                             <th>Store Assigned</th>
                                             <th>Customer Name</th>
-                                            <th> created Date & Time</th>
+                                            <th>Created At</th>
+                                            <th>Deleted At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="subscriptionTableBody">
 
+                                    
+                                    @foreach ($invoices as $invoice )
+                                        
                                         <tr role="row">
-                                            <td>1</td>
-                                            <td>hdgfhdhdhdfhdeeed</td>
-                                            <td>hdhdhdhdhdh</td>
-                                            <td>dhdhdhdhd</td>
+                                            <td>{{ $invoice->invoice_number }}</td>
+                                            <td>{{ $invoice->store->store_name }}</td>
+                                            <td>{{ $invoice->customer->name }}</td>
+                                            <td>{{ $invoice->created_at }}</td>
+                                            <td>{{ $invoice->deleted_at }}</td>
                                             <td>
                                                 <a href='' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
                                             </td>
                                         </tr>
+
+                                    @endforeach
 
 
                                     </tbody>
