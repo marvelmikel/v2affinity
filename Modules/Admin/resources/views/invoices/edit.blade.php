@@ -399,8 +399,37 @@ function generateInvoiceNumber() {
         inputElements[i].value = generatedNumber;
     }
 }
+
+
+
+ $(document).ready(function() {
+    $('.add-column-btn').click(function(e) {
+        e.preventDefault();
+        let invoiceitemid = $(this).data('invoiceitemid');
+        console.log(invoiceitemid);
+        $('input[name="item_id"]').val(invoiceitemid);
+        $('#add_item_column_modal').modal('show');
+    });
+
+    $('.add-pricing-column-btn').click(function(e) {
+        e.preventDefault();
+        let invoiceid = $(this).data('invoiceid');
+        $('input[name="invoice_id"]').val(invoiceid);
+        $('#add_pricing_column_modal').modal('show');
+    });
+});
+
+$(document).ready(function() {
+    $('#multiple-checkboxes').multiselect({
+        includeSelectAllOption: true,
+    });
+});
+
+
+
+
 </script>
-                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-                                                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-                                                            @endsection
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+@endsection
