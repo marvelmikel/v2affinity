@@ -109,30 +109,11 @@
                             <div class="form-group col-md-6">
                                 <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Store Name</label>
                                 <select class="form-control select" value="{{ old('store_name') }}" name="store_id" id="">
-                                    @if (Auth::user()->role_id == 2 && Auth::user()->company)
-                                    <!-- For users with role_id = 2 (company role) and a valid company relationship -->
-                                    @if (Auth::user()->store)
-                                    <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif>
-                                        {{ Auth::user()->store->store_name }}
-                                    </option>
-                                    @endif
                                     @foreach (Auth::user()->company->stores ?? [] as $store)
-                                    <option value="{{ $store->id }}" @if (old('store_id')==$store->id) selected @endif>
-                                        {{ $store->store_name }}
+                                    <option value="{{ $store->id }}" @if(old('store_id')==$store->id || $invoice->store_id == $store->id) selected @endif>
+                                    {{ $store->store_name ?? 'N/A' }}
                                     </option>
                                     @endforeach
-                                    @else
-                                    <!-- For users with role_id = 3 or 4 -->
-                                    @if (Auth::user()->store)
-                                    <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif>
-                                        {{ Auth::user()->store->store_name }}
-                                    </option>
-                                    @else
-                                    @php
-                                    throw new \Exception('No store assigned to you yet');
-                                    @endphp
-                                    @endif
-                                    @endif
                                 </select>
 
 
