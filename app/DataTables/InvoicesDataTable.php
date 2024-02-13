@@ -40,9 +40,9 @@ class InvoicesDataTable extends DataTable
                 
                 <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
                 
-                <form action='$deleteUrl' method='POST' style='display:inline'>
+                <form action='$deleteUrl' method='POST' style='display:inline; margin-bottom: 0px;'>
                         " . csrf_field() . "
-                        " . method_field('DELETE') . "
+                        " . method_field('DELETE') ."
                         <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice ?\")'>
                             <i class='voyager-trash'></i>
                         </button>
