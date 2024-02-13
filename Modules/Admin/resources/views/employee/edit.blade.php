@@ -62,12 +62,17 @@
                                 <label for="store_id">Select Store</label>
                                 <select class="form-control" name="store_id" id="store_id" required>
                                     <option value="">Select a Store</option>
-                                    @foreach ($stores as $store)
-                                    <option value="{{ $store->id }}" {{ $employee->store_id == $store->id ? 'selected' : '' }}>
-                                        {{ $store->name }}
+                                    @php
+                                    $company_id = auth()->user()->company_id ?? null; // Initialize $company_id with the user's company ID or null if it's not set
+                                    $stores = \App\Models\Store::where('company_id', $company_id)->get(); // Retrieve stores based on the company_id
+                                    @endphp
+                                    @foreach($stores as $store)
+                                    <option value="{{ $store->id }}" @if(old('store_id')==$store->id || $employee->store_id == $store->id) selected @endif>
+                                        {{ $store->store_name }}
                                     </option>
                                     @endforeach
                                 </select>
+
                             </div>
 
 

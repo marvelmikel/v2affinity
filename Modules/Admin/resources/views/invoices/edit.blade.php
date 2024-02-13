@@ -108,12 +108,14 @@
                         <div class="form-group row">
                             <div class="form-group col-md-6">
                                 <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="name">Store Name</label>
-                                <select class="form-control select" value="{{ old('store_id') }}" name="store_id" id="">
+                                <select class="form-control select" value="{{ old('store_name') }}" name="store_id" id="">
                                     @if (Auth::user()->role_id == 2 && Auth::user()->company)
                                     <!-- For users with role_id = 2 (company role) and a valid company relationship -->
+                                    @if (Auth::user()->store)
                                     <option value="{{ Auth::user()->store->id }}" @if (old('store_id')==Auth::user()->store->id) selected @endif>
                                         {{ Auth::user()->store->store_name }}
                                     </option>
+                                    @endif
                                     @foreach (Auth::user()->company->stores ?? [] as $store)
                                     <option value="{{ $store->id }}" @if (old('store_id')==$store->id) selected @endif>
                                         {{ $store->store_name }}
@@ -132,6 +134,7 @@
                                     @endif
                                     @endif
                                 </select>
+
 
 
                             </div>
@@ -391,45 +394,8 @@ function generateInvoiceNumber() {
         storeShortCode += storeNameParts[i].charAt(0).toUpperCase();
     }
 
-    // Generate the invoice number in the format "INV-{store_name}-{random number}"
-    var generatedNumber = 'INV-' + storeShortCode + '-' + randomNumber;
-
-    var inputElements = document.getElementsByClassName("invoice_number");
-    for (var i = 0; i < inputElements.length; i++) {
-        inputElements[i].value = generatedNumber;
-    }
-}
-
-
-
- $(document).ready(function() {
-    $('.add-column-btn').click(function(e) {
-        e.preventDefault();
-        let invoiceitemid = $(this).data('invoiceitemid');
-        console.log(invoiceitemid);
-        $('input[name="item_id"]').val(invoiceitemid);
-        $('#add_item_column_modal').modal('show');
-    });
-
-    $('.add-pricing-column-btn').click(function(e) {
-        e.preventDefault();
-        let invoiceid = $(this).data('invoiceid');
-        $('input[name="invoice_id"]').val(invoiceid);
-        $('#add_pricing_column_modal').modal('show');
-    });
-});
-
-$(document).ready(function() {
-    $('#multiple-checkboxes').multiselect({
-        includeSelectAllOption: true,
-    });
-});
-
-
-
-
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-@endsection
+    // Generate the invoice number in the format " INV-{store_name}-{random number}" var generatedNumber='INV-' + storeShortCode + '-' + randomNumber; var inputElements=document.getElementsByClassName("invoice_number"); for (var i=0; i < inputElements.length; i++) { inputElements[i].value=generatedNumber; } } $(document).ready(function() { $('.add-column-btn').click(function(e) { e.preventDefault(); let invoiceitemid=$(this).data('invoiceitemid'); console.log(invoiceitemid); $('input[name="item_id" ]').val(invoiceitemid); $('#add_item_column_modal').modal('show'); }); $('.add-pricing-column-btn').click(function(e) { e.preventDefault(); let invoiceid=$(this).data('invoiceid'); $('input[name="invoice_id" ]').val(invoiceid); $('#add_pricing_column_modal').modal('show'); }); }); $(document).ready(function() { $('#multiple-checkboxes').multiselect({ includeSelectAllOption: true, }); }); </script>
+                                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+                                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+                                                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+                                                        @endsection

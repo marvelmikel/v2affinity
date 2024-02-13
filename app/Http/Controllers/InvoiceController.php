@@ -134,11 +134,12 @@ class InvoiceController extends Controller
         $randomNumber = str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
 
         // Extract the first character of each word in the store name and convert to uppercase
-        $storeNameParts = explode(' ', $store->store_name);
+        $storeNameParts = explode(' ', $store->store_name ?? '');
         $storeShortCode = '';
         foreach ($storeNameParts as $part) {
             $storeShortCode .= strtoupper(substr($part, 0, 1));
         }
+        
 
 
         // Generate the invoice number in the format "INV-{store_name}-{random number}"
