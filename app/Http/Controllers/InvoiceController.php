@@ -10,11 +10,10 @@ use App\Models\User;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
-use App\Models\InvoiceLog;
 use App\Models\InvoicePricing;
 use App\Models\Product;
 use App\Models\Store;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Haruncpi\LaravelUserActivity\Models\Log;
 use Illuminate\Http\Request;
 
 
@@ -332,13 +331,16 @@ class InvoiceController extends Controller
     public function delete($id)
     {
         $invoice = Invoice::findOrFail($id);
-        $invoice->logs()->create([
-            'user_id' => auth()->user()->id,
-            'username' => auth()->user()->name,
-            'activity' => 'Invoice delete',
-            'payload' => json_encode($invoice)
-        ]);
 
+        $log = new Log();
+        $log->user_id = auth()->user()->id;
+        $log->log_type = 'delete';
+        $log->table_name = 'invoices';
+        $log->log_date = now();
+        $log->data = json_encode($invoice);
+
+        $log->save();
+        
         $invoice->delete();
         // Redirect back to the initial page
         return redirect()->route('voyager.invoices.index')->with('success', 'Invoice deleted successfully');

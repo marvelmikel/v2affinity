@@ -436,7 +436,25 @@
                 @endphp
                 <div>
                     @if($show_discount)
+
+                   
+
+                     <!-- session messages -->
+                  
+                        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                        @if (session()->has('alert-' . $msg))
+                        
+                        <div id="helper-text-explanation" class="@if(in_array($msg, ['success','info'])) bg-green-100 border-green-500 @else bg-red-100 border-red-500 @endif mb-5 text-sm  p-2">{{ session('alert-' . $msg) }}</div>
+                        
+                        @endif
+                        @endforeach
+                  
+ 
+
+
                     <div class="flex">
+
+                    
                         <div class="my-auto">
                             <b>Discount Code:</b>
                         </div>

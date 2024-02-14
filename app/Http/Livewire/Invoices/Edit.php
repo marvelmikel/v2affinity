@@ -291,4 +291,6 @@ class Edit extends Component
     {
         return view('livewire.invoices.edit');
     }
+
+    
 }

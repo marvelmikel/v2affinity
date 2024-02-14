@@ -61,6 +61,13 @@ trait PaymentGateway
         return $gateway->plan()->all() ?? [];
     }
 
+    /* Retrieve all subscription plans from braintree */
+    public function indexDiscounts()
+    {
+        $gateway = $this->openGateway();
+        return $gateway->discount()->all() ?? [];
+    }
+
     /* Retrieve customer record from braintree */
     public function showCustomer(User $user)
     {
@@ -105,7 +112,7 @@ trait PaymentGateway
                     'existingId' => $key
                 ];
             }
-        }
+        } 
 
         /* Initialize braintree payment connection */
         $gateway = $this->openGateway();

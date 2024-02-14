@@ -368,7 +368,7 @@ function generateInvoiceNumber() {
     var randomNumber = ('0' + Math.floor(Math.random() * 100)).slice(-2);
 
     // Extract the first character of each word in the store name and convert to uppercase
-    var storeNameParts = '<?php echo $store->store_name; ?>'.split(' ');
+    var storeNameParts = '<?php echo $store->store_name ??  "defualt_type_name"; ?>'.split(' ');
     var storeShortCode = '';
     for (var i = 0; i < storeNameParts.length; i++) {
         storeShortCode += storeNameParts[i].charAt(0).toUpperCase();
