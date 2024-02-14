@@ -340,8 +340,10 @@ class Product extends Model
 
                 $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
                 $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'quantity', 'title' => 'Quantity of Product', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
 
                 //add def formular here
                 if ($model->getMeta('unit_price') &&  $model->getMeta('quantity')) {

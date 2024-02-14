@@ -188,7 +188,7 @@ return [
     |
     */
 
-    'primary_color' => '#D55FAE',
+    'primary_color' => ' #C82090;',
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
@@ -245,6 +245,6 @@ return [
                 'width' => 500,
                 'height'=> 500
            ],
-       ]*/
+       ]
     ],
 ];

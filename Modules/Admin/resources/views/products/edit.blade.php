@@ -28,14 +28,14 @@
 
             <div class="card" style="padding: 50px;">
                 <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
-                    <h3><i class="voyager-credit-card"></i> {{ __('Product Attributes') }}</h3>
+                    <h3 class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700"><i class="voyager-credit-card"></i> {{ __('Product Attributes') }}</h3>
                 </div>
                 <div class="clear"></div>
                 <br>
 
                 <table class="table " style="width:100%; margin: 40px 0;">
                     <thead>
-                        <tr>
+                        <tr class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700">
                             <th>Name</th>
                             <th>Value</th>
                             <th>Indentifier</th>
@@ -48,13 +48,18 @@
                         @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width' && $meta->name != 'add_allowance'  && $meta->name != 'default_allowance' && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count' )
+                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width'  && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count'  && $meta->name !='tiles_per_pack')
                                     
                                    @if(in_array($product->type,  ['carpet', 'underlay']) && $meta->name != 'allowance')
-                                        <tr>
-                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
+                                        <tr >
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}" readonly></td>
+                                            <!-- Make Product "type" value Readonly-->
+                                            @if ($meta->name == 'type')
+                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}" readonly></td>
+                                            @else
                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
-                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                             @endif
+                                            <td><input readonly  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
                                             <td>
                                                 <select class="form-control" name="{{ $meta->name }}[]" id="">
                                                     <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
@@ -70,9 +75,14 @@
                                         </tr>
                                     @elseif(in_array($product->type, ['tile', 'rollend', 'others']))
                                         <tr>
-                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"></td>
+                                            <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->title == 'length' ? 'Required Length(m)' : ($meta->title == 'width' ? 'Required Width(m)' : $meta->title) }}"  readonly></td>
+                                             <!-- Make Product "type" value Readonly-->
+                                             @if ($meta->name == 'type')
+                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}" readonly></td>
+                                            @else
                                             <td><input class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->value }}"></td>
-                                            <td><input readonly style="background-color: white;" class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
+                                             @endif
+                                            <td><input readonly  class="form-control" type="text" name="{{ $meta->name }}[]" value="{{ $meta->identifier }}"></td>
                                             <td>
                                                 <select class="form-control" name="{{ $meta->name }}[]" id="">
                                                     <option value="hidden" {{ $meta->visibility === 'hidden' ? 'selected' : '' }}>hidden</option>
@@ -177,9 +187,9 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{
+                        <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn mx-3 pull-right" data-dismiss="modal">{{
                             __('voyager::generic.close') }}</button>
-                        <button type="submit" class="btn btn-primary pull-right" ">{{ __('voyager::generic.save') }}</button>
+                        <button type="submit" style="background-color: #C82090;" class="btn btn-primary mx-3 pull-right" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

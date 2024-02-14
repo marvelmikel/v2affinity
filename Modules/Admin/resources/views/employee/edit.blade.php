@@ -68,7 +68,7 @@
                                     @endphp
                                     @foreach($stores as $store)
                                     <option value="{{ $store->id }}" @if(old('store_id')==$store->id || $employee->store_id == $store->id) selected @endif>
-                                        {{ $store->store_name }}
+                                        {{ $store->store_name ?? 'N/A'  }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -82,7 +82,7 @@
                                     <option value="">Select a Role</option>
                                     @foreach ($usersRegisteredByCompany as $user)
                                     <option value="{{ $user->role_id }}" {{ $employee->role_id == $user->role_id ? 'selected' : '' }}>
-                                        {{ $user->role->name }}
+                                        {{ $user->role->name ?? 'N/A'  }}
                                     </option>
                                     @endforeach
 

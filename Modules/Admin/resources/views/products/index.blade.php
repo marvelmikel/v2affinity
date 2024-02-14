@@ -76,9 +76,9 @@
                             </div>
                             
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{
+                                <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn mx-3 pull-right" data-dismiss="modal">{{
                                     __('voyager::generic.close') }}</button>
-                                <button type="submit" class="btn btn-primary  pull-left" ">{{ __('voyager::generic.save') }}</button>
+                                <button type="submit" style="background-color: #C82090;" class="btn btn-primary  pull-left" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

@@ -36,14 +36,6 @@
                                     </td>
                                 @endif
                             @endforeach
-
-                            <!-- <td>
-                                <input disabled readonly class="form-control " type="text" name="location" value="Select Room Location" required>
-                                <select class="form-control" name="" id="">
-                                    <option selected value=""></option>
-                                </select>
-                            </td> -->
-
                             <td style="min-width: 200px;">
                                 <input disabled readonly class="form-control" type="text" value="Total Price(£)">
                                 <input readonly style="background-color: white;" class="form-control" type="text" value="{{ number_format(\App\Models\InvoiceItem::find($invoiceItem['id'])?->item_total, 2) }}">
