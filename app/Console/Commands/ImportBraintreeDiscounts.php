@@ -48,7 +48,7 @@ class ImportBraintreeDiscounts extends Command
                     ],
                     [
                         'name' => $discount->name,
-                        'discount_id' => $discount->name,
+                        'discount_id' => $discount->id,
                         'description' => $discount->description,
                         'amount' => $discount->amount,
                         'merchant_id' => $discount->merchantId,
