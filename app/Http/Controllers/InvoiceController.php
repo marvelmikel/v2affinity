@@ -13,6 +13,7 @@ use App\Models\InvoiceItemMeta;
 use App\Models\InvoicePricing;
 use App\Models\Product;
 use App\Models\Store;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Haruncpi\LaravelUserActivity\Models\Log;
 use Illuminate\Http\Request;
 
