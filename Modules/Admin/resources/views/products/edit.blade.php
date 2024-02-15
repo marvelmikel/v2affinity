@@ -48,7 +48,7 @@
                         @method('patch')
                             @csrf
                             @foreach($product->meta as $meta)
-                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width'  && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count'  && $meta->name !='tiles_per_pack')
+                                @if($meta->name != 'formular' && $meta->name != 'length' && $meta->name != 'width'  && $meta->name != 'carpet_units' && $meta->name != 'area' && $meta->name !='tiles_count' && $meta->name !='packs_count'  && $meta->name !='tiles_per_pack'  && $meta->name !='add_allowance'  && $meta->name !='add_allowance' && $meta->name !='default_allowance')
                                     
                                    @if(in_array($product->type,  ['carpet', 'underlay']) && $meta->name != 'allowance')
                                         <tr >
