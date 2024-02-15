@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('User Guide v1'))
+@section('page_title', __('Affinity User Guide v1'))
 
 @section('content')
 <div class="page-content container-fluid">
@@ -9,13 +9,26 @@
         <div class="col-md-12">
             <div class="admin-section-title">
                 <h3><i class="voyager-book"></i> {{ __('User Guide v1') }}</h3>
-                <div style="display:flex;">
+                <!-- <div style="display:flex;">
                     testing
-                </div>
+                </div> -->
                 <div class="clear"></div>
                 <div class="card">
                     <div class="card-body" style="overflow-x: auto;">
-                       testing
+                        <div id="pspdfkit" style="height: 100vh"></div>
+                        <script src="{{asset('assets/dist/pspdfkit.js')}}"></script>
+                        <script>
+                            PSPDFKit.load({
+                                    container: "#pspdfkit",
+                                    document: "http://affinity-dev2.test/support-docs/user-guide.pdf",
+                                })
+                                .then(function(instance) {
+                                    console.log("PSPDFKit loaded", instance);
+                                })
+                                .catch(function(error) {
+                                    console.error(error.message);
+                                });
+                        </script>
                     </div>
                 </div>
                 <!-- .row -->

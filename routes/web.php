@@ -107,7 +107,7 @@ Route::group(['prefix' => 'admin'], function () {
     // support docs
     Route::group(['middleware' => 'admin.user' ], function () {
         Route::get('userguide',   [SupportdocsController ::class, 'userguide1'])->name('voyager.supportdoc.userguide');
-
+        
 
     });
 

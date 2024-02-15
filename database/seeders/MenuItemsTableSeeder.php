@@ -319,7 +319,7 @@ class MenuItemsTableSeeder extends Seeder
             'menu_id' => $menu->id,
             'title'   => __('Support Docs'),
             'url'     => '',
-            'route'   => 'voyager.company.index',
+            'route'   => '',
         ]);
         if (!$menuItemCompany->exists) {
             $menuItemCompany->fill([
@@ -335,8 +335,8 @@ class MenuItemsTableSeeder extends Seeder
         $subMenuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
             'title'   => __('User Guide'),
-            'url'     => '',
-            'route'   => 'voyager.supportdoc.userguide',
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
         ]);
         if (!$subMenuItem->exists) {
             $subMenuItem->fill([
@@ -353,8 +353,8 @@ class MenuItemsTableSeeder extends Seeder
         $subMenuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
             'title'   => __('add Carpet & Roll Items'),
-            'url'     => '',
-            'route'   => 'company.subscriptions',
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
         ]);
         if (!$subMenuItem->exists) {
             $subMenuItem->fill([
@@ -369,9 +369,9 @@ class MenuItemsTableSeeder extends Seeder
 
         $subMenuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
-            'title'   => __('add a packed/tile item'),
-            'url'     => '',
-            'route'   => 'company.subscriptions',
+            'title'   => __('add  packed/tile item'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
         ]);
         if (!$subMenuItem->exists) {
             $subMenuItem->fill([
@@ -385,9 +385,9 @@ class MenuItemsTableSeeder extends Seeder
 
         $subMenuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
-            'title'   => __('add a roll end'),
-            'url'     => '',
-            'route'   => 'company.subscriptions',
+            'title'   => __('add  roll end'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
         ]);
         if (!$subMenuItem->exists) {
             $subMenuItem->fill([
@@ -403,8 +403,8 @@ class MenuItemsTableSeeder extends Seeder
         $subMenuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
             'title'   => __('add underlay'),
-            'url'     => '',
-            'route'   => 'company.subscriptions',
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
         ]);
         if (!$subMenuItem->exists) {
             $subMenuItem->fill([
@@ -420,8 +420,8 @@ class MenuItemsTableSeeder extends Seeder
         $subMenuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
             'title'   => __('add other stocks'),
-            'url'     => '',
-            'route'   => 'company.subscriptions',
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
         ]);
         if (!$subMenuItem->exists) {
             $subMenuItem->fill([
@@ -436,9 +436,9 @@ class MenuItemsTableSeeder extends Seeder
 
         $subMenuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
-            'title'   => __('create a new invoice'),
-            'url'     => '',
-            'route'   => 'company.subscriptions',
+            'title'   => __('create new invoice'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
         ]);
         if (!$subMenuItem->exists) {
             $subMenuItem->fill([
