@@ -91,21 +91,6 @@ trait PaymentGateway
         /* Validate input */
         $validated = $request->validated();
 
-        // dd($validated);
-
-        /* Check if addons are provided */
-        // $addons = [];
-        // if($validated['addons']){
-        //     /* Loop and generate addons */
-        //     foreach($validated['addons'] as $key => $item){
-        //         $addons[] = [
-        //              // 'inheritedFromId' => $key,
-        //             'existingId' => $key,
-        //             'quantity' => $item['quantity']
-        //         ];
-        //     }
-        // }
-
         /* Check if discounts are provided */
         $discounts = [];
         if($validated['discounts']){
@@ -113,15 +98,12 @@ trait PaymentGateway
             foreach($validated['discounts'] as $key => $item){
                 $discounts[] = [
                     'inheritedFromId' => $key
-                    // 'existingId' => '£5 off voucher'
                 ];
             }
         } 
 
         /* Initialize braintree payment connection */
         $gateway = $this->openGateway();
-
-        // dd( $discounts);
 
         /* Create subscription on braintree */
         $result = $gateway->subscription()->create([
@@ -130,7 +112,8 @@ trait PaymentGateway
             'addOns' => $validated['addons'],
             'discounts' => [
                 'add' => $discounts
-            ]
+            ],
+            'trialDuration' => 0, //If you specify a trialDuration of 0, we will start the subscription immediately 
         ]);
 
         /* If successful, creating local subscription */
