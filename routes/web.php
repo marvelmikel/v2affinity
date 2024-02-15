@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\SupportdocsController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\Facades\Voyager;
@@ -101,6 +102,13 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('subscription/{subscription}/edit', [SubscriptionController::class, 'edit'])->name('subscription-edit');
         Route::get('subscriptions',   [SubscriptionController::class, 'show'])->name('company.subscriptions');
+    });
+
+    // support docs
+    Route::group(['middleware' => 'admin.user' ], function () {
+        Route::get('userguide',   [SupportdocsController ::class, 'userguide'])->name('voyager.supportdoc.userguide');
+
+
     });
 
 
