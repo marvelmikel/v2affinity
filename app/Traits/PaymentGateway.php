@@ -113,7 +113,9 @@ trait PaymentGateway
             'discounts' => [
                 'add' => $discounts
             ],
-            'trialDuration' => 0, //If you specify a trialDuration of 0, we will start the subscription immediately 
+            'trialPeriod' => false,
+            // 'trialDuration' => 0, //If you specify a trialDuration of 0, we will start the subscription immediately 
+            // 'trialPeriod' => true,
         ]);
 
         /* If successful, creating local subscription */

@@ -525,7 +525,7 @@
                                 $now = \Carbon\Carbon::now();
                                 $diff = $date->diffInDays($now);
                                 @endphp
-                                Free trial {{ $diff }} days remaining
+                                {{-- Free trial {{ $diff }} days remaining --}}
                             </span>
                         </p>
                         @endif

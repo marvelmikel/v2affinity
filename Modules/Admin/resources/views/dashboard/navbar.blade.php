@@ -82,12 +82,13 @@
                 $trial = null;
                 $subscription = auth()->user()->subscriptions->where('status', 'Active')->first();
                 if ($subscription && $subscription->status !== 'Cancelled') {
-                    $trial = \Illuminate\Support\Carbon::parse( $subscription->created_at )->addDays(7);
-                    $trialIsActive = $trial->isFuture();
+                
                 } else {
                     $trial = \Illuminate\Support\Carbon::parse( Auth::user()->company->trial_ends_at );
                     $trialIsActive = \Illuminate\Support\Carbon::parse($trial)->isFuture();
                 }
+
+                
             @endphp
 
             {{-- Show warning message for trial period --}}
