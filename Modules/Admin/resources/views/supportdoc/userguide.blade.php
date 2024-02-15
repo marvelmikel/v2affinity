@@ -20,7 +20,7 @@
                         <script>
                             PSPDFKit.load({
                                     container: "#pspdfkit",
-                                    document: "http://affinity-dev2.test/support-docs/user-guide.pdf",
+                                    document: "{{ env('APP_URL') }}/support-docs/user-guide.pdf",
                                 })
                                 .then(function(instance) {
                                     console.log("PSPDFKit loaded", instance);
