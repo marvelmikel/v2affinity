@@ -173,6 +173,16 @@
                     <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Admin Details</h2>
                     <p class="font-medium lg:text-lg text-slate-500">Please enter your account registration details below.
                     </p>
+
+                    <div class="my-4">
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                            <p id="helper-text-explanation" class="mt-0 text-sm text-red-500 dark:text-red-400">{{ $error }}</p>
+                            @endforeach
+                        @endif
+                    </div>
+
+
                 </div>
                 <div class="grid grid-cols-2 gap-6">
                     <p class="col-span-1">
@@ -508,9 +518,7 @@
                                     wire:model="selected_plan.addons.{{ $addon['id'] }}.quantity" type="number" step="1"
                                     id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"
                                     class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
-
-
-                            </p>
+                            </p>    
 
                             <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
                                 @if(!empty($selected_plan['addons'][$addon['id']]) &&

@@ -27,14 +27,10 @@
                     <a style="color:blueviolet; text-decoration: underline;" onclick="window.location.href='{{ env('APP_URL') }}/forgot-password'">Forgot your password?</a>
                    
                 </div>
-                <a style="color:blueviolet; text-decoration: underline;" onclick="window.location.href='{{ env('APP_URL') }}/register'">Don't have an account?</a>
+                <a  href="/register" style="color:blueviolet; text-decoration: underline;">Don't have an account?</a>
              
             
             </div>
-
-         
-
-            
 
             <button type="submit" class="btn btn-block login-button">
                 <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager::login.loggingin') }}...</span>

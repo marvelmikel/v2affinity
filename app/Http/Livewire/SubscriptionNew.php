@@ -6,6 +6,7 @@ use App\Http\Requests\StoreSubscriptionRequest;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Mail\SubscriptionCreated;
+use App\Models\BraintreeDiscount;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Store;
@@ -34,6 +35,8 @@ class SubscriptionNew extends Component
         'name' => 'RTEUAV',
         'amount' => 25.00,
     ];
+
+    public $selectedDiscount = null;
 
     public $user = [
         'name' => '',
@@ -226,24 +229,61 @@ class SubscriptionNew extends Component
                 }
             }
 
+
             /* Check for any discounts */
-            if ($this->discount_code == $this->discount['name'] && $period == 'month') {
-                $this->total -= $this->discount['amount'];
+              if ($this->selectedDiscount) {
+                $this->total -= $this->selectedDiscount['amount'];
             }
+
         }
     }
 
     
 
+    // public function checkDiscount()
+    // {
+    //     if ($this->discount_code == $this->discount['name']) {
+    //         /* Set discount IDs */
+    //         $this->selected_plan['discounts'][$this->discount['id']] = ['quantity' => 1];
+    //     }
+
+    //     $this->calculate_total('month');
+    // }
+
+
     public function checkDiscount()
     {
-        if ($this->discount_code == $this->discount['name']) {
+
+    
+
+        $discount_code = $this->discount_code;
+        $selectedDiscount = BraintreeDiscount::where('discount_id', $discount_code)->first();
+        if(!$this->selectedDiscount = BraintreeDiscount::where('discount_id', $discount_code)->first() ){
+            // $this->addError('discount_code_error','Invalid or expired discount code.');
+            session()->flash('alert-warning', 'Invalid or expired discount code.');
+            $this->calculate_total('month');
+            return;
+        }
+       
+       
+        
+        session()->flash('alert-success', 'Discount code verified successfully');
+
+        $this->resetErrorBag();
+        $this->resetValidation();
+
+        // $this->step = 3;
+
+
+        if ($selectedDiscount ) {
             /* Set discount IDs */
-            $this->selected_plan['discounts'][$this->discount['id']] = ['quantity' => 1];
+            $this->selected_plan['discounts'][$this->selectedDiscount['discount_id']] = ['quantity' => 1];
         }
 
         $this->calculate_total('month');
     }
+
+
 
     public function render()
     {
