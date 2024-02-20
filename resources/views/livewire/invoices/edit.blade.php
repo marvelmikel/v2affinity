@@ -150,7 +150,7 @@
                 </div>
                 <div style="width: 20%; padding: 8px">
                     <input wire:model="subtotal.vatExclusive" readonly class="form-control" type="text">
-                </div>
+                </div> 
                 <div style="width: 15%; padding: 8px">
                     <select wire:ignore onchange="updatePricingScript({{ $key }})" id="pricing_{{ $key }}" class="form-control" disabled>
                         <option value="{{ $pricing['type'] }}">{{ $pricing['type'] }}</option>

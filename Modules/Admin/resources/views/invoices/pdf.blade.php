@@ -667,14 +667,26 @@
                                 </div>
                             </div>
                         @else
-                            <div class="price_row">
-                                <div class="price_row_title">
-                                    <span>{{ ucfirst($price->name) }} &pound;:</span>
+                            @if( ($price->name == 'discount' || $price->name == 'tax' ) && $price->type == 'percentage')
+                                <div class="price_row">
+                                    <div class="price_row_title">
+                                        <span>{{ ucfirst($price->name) }} &pound;:</span>
+                                    </div>
+                                    <div class="price_row_box">
+                                        {{-- <span>{{ number_format($price->value, 2) }}</span> --}}
+                                          <span>{{ number_format( ($price->value/100) * $invoice->getTotalAttribute() , 2) }}</span>
+                                    </div>
                                 </div>
-                                <div class="price_row_box">
-                                    <span>{{ number_format($price->value, 2) }}</span>
+                            @else
+                                <div class="price_row">
+                                    <div class="price_row_title">
+                                        <span>{{ ucfirst($price->name) }} &pound;:</span>
+                                    </div>
+                                    <div class="price_row_box">
+                                        <span>{{ number_format($price->value, 2) }}</span>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         @endif
 
                     @endif
