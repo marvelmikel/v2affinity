@@ -62,10 +62,20 @@ php artisan db:seed --class=VoyagerDatabaseSeeder
 ```
 
 
-## Braintree command
+## Braintree commands
 
 ```
 php artisan braintree:plans
+```
+
+
+```
+php artisan braintree:discounts
+```
+
+
+```
+php artisan braintree:subscriptions
 ```
 
 ## Compiling Assets
