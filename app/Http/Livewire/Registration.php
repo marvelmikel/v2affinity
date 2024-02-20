@@ -404,6 +404,12 @@ class Registration extends Component
     }
    
 
+    public function updatedSelectedPlan()
+    {
+        $this->calculate_total('month');
+    }
+
+
     public function calculate_total($period)
     {
         if (!empty($this->selected_plan['plan_id'])) {
@@ -463,7 +469,7 @@ class Registration extends Component
 
         $this->calculate_total('month');
     }
-
+ 
     public function render()
     {
         return view('livewire.registration');

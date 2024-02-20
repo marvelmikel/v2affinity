@@ -238,17 +238,11 @@ class SubscriptionNew extends Component
         }
     }
 
-    
+    public function updatedSelectedPlan()
+    {
+        $this->calculate_total('month');
+    }
 
-    // public function checkDiscount()
-    // {
-    //     if ($this->discount_code == $this->discount['name']) {
-    //         /* Set discount IDs */
-    //         $this->selected_plan['discounts'][$this->discount['id']] = ['quantity' => 1];
-    //     }
-
-    //     $this->calculate_total('month');
-    // }
 
 
     public function checkDiscount()

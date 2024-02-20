@@ -523,7 +523,7 @@
                             <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
                                 @if(!empty($selected_plan['addons'][$addon['id']]) &&
                                 !empty($selected_plan['addons'][$addon['id']]['quantity']))
-                                £{{ number_format($addon['amount'] * $selected_plan['addons'][$addon['id']]['quantity'], 2)
+                                    £{{ number_format($addon['amount'] * $selected_plan['addons'][$addon['id']]['quantity'], 2)
                                 }}
                                 @else
                                 £0.00
