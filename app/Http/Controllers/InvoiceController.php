@@ -47,8 +47,9 @@ class InvoiceController extends Controller
 
 
 
-    public function generatePdf(Request $request, Invoice $invoice, Store $storeModel)
+    public function generatePdf(Request $request,  $invoiceId, Store $storeModel)
     {
+        $invoice = Invoice::withTrashed()->find($invoiceId);
         $store = $storeModel::find($invoice->store_id);
 
         if (!$store) {
@@ -204,7 +205,7 @@ class InvoiceController extends Controller
 
     public function show($id)
     {
-        $invoice = Invoice::find($id);
+        $invoice = Invoice::withTrashed()->find($id);
 
         // Fetch related data
         $customer = Customer::find($invoice->customer_id);
@@ -224,7 +225,6 @@ class InvoiceController extends Controller
 
         return view('voyager::invoices.show', compact('invoice', 'customer', 'items', 'pricing', 'store', 'user', 'company'));
     }
-
 
 
     /**
