@@ -52,7 +52,7 @@
                                                 £{{ number_format($plan['price'], 2) }}
                                                 <span class="text-base text-slate-500">/ {{ $period }}</span>
                                             </strong>
-                                            <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
+                                            <span class="font-medium text-slate-400 text-sm">inc. VAT</span>
                                         </p>
                                         <i
                                             class="fa-circle-check fa-solid group-peer-checked:opacity-100 opacity-0 text-2xl text-green-500"></i>
