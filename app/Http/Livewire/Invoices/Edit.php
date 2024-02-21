@@ -269,6 +269,10 @@ class Edit extends Component
     }
 
 
+    public function duplicateInvoiceItem($id){
+       $this->addItem([$id]);
+    }
+
     public function getFormula()
     {
         // Set formula value

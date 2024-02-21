@@ -99,7 +99,7 @@ class Invoice extends Model
 	    parent::boot();
 
 	    static::deleting(function ($model) {
-            $model->items()->delete();
+            // $model->items()->delete();
 	    });
 	}
 }

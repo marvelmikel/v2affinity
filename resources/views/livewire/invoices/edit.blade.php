@@ -43,7 +43,7 @@
 
                             <td colspanss="3">
                                 <button class="btn btn-sm btn-danger" onclick="deleteInvoiceItemScript('{{ $invoiceItem['id'] }}')"><i class="voyager-trash"></i></button>
-                                 <!-- <button class="btn btn-sm btn-success" onclick="" ><i class="voyager-plus"></i></button> -->
+                                <button class="btn btn-sm btn-success" wire:click="duplicateInvoiceItem({{ $invoiceItem['product_id']}} )" title="Duplicate Item" ><i class="voyager-plus"></i></button>
                             </td>
 
                             
