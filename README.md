@@ -92,10 +92,10 @@ npm run dev or npm run build
 For All Users with Role Name e.g Company Admin , Store Manager and Sales been Able to loging kindly login to the admin navigate to roles and do setup for all roles below;
 
 ```
-Note: All Admin Permissions is checked at default and all must be checked.
-- Company Admin :  Only Check = Browse Admin and  Check All = Products , Stores, Invoices, Companies, Employees.
-- Store Manager : Only Check = Browse Admin and Check All = Products, Invoices, Companies, Employees.
-- Sales Person : Only Check = Browse Admin and Invoices, Companies, Employees.
+Note: All User Roles.
+- Company Admin.
+- Store Managers.
+- Sales Person.
 
 ```
 
