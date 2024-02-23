@@ -227,7 +227,7 @@
 @stop
 @section('javascript')
 
-
+ 
  <script type="text/javascript">
         $(function() {
             $.ajaxSetup({
@@ -277,13 +277,15 @@
 
 
         });
-    </script>
+</script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer>
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js">
 </script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">

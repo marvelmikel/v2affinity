@@ -65,7 +65,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('products/{product}/add-product-column',   [ProductController::class, 'addProductColumn'])->name('voyager.products.add-product-column');
         Route::delete('/products/{id}/delete', [ProductController::class, 'destroy'])->name('voyager.products.delete');
         Route::get('/products-meta/{id}/delete', [ProductController::class, 'deleteMeta'])->name('product-meta.delete');
-    });
+    }); 
   
 
       //Store  Routes
