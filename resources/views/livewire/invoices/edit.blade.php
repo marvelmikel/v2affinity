@@ -80,7 +80,7 @@
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th >Product Ttitle</th>
+                                            <th >Product List</th>
                                         </tr>
                                     </thead>
                                     <tbody>
