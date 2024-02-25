@@ -1,7 +1,7 @@
 <div>
     <div class="col-auto">
         <div class="admin-section-title card" style="display:flex; justify-content: space-between;">
-            {{--<h3><i class="voyager-list"></i> {{ __('Invoice Items') }}</h3>--}}
+            
             <div>
                 <a data-toggle="modal" data-target="#add_product_modal" style="background-color:#C82090" class="btn btn-primary"><i class="voyager-plus"></i>Add New Item</a>
             </div>
@@ -54,49 +54,6 @@
             @endforeach
         </div>
 
-        
-
-        <div wire:ignore class="modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title"><i class="voyager-data"></i> Add Invoice item </h4>
-                    </div>
-                    <div>
-                        <div class="modal-body" style="overflow: scroll; min-height: 300px;">
-                            <div>
-                                {{-- <label for="multiple-checkboxes"><strong>Select Products:</strong></label>
-                                <input type="search" id="product-search" class="form-control input-sm" placeholder="Search for products">
-                                <select id="multiple-checkboxes" multiple="multiple">
-                                    @foreach($products->where('company_id', $companyId) as $product)
-                                        <option value="{{ $product->id }}">{{ $product->title }}</option>
-                                    @endforeach
-                                </select> --}}
-                                
-                                <table id="productlistings" class="table table-striped first" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th >Product Ttitle</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                        <div class="modal-footer gap-4">
-                            <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                            <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right" onclick="addItemScript()">{{ __('voyager::generic.add') }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <h3><i class="voyager-credit-card"></i> {{ __('Invoice Pricing') }}</h3>
@@ -207,7 +164,7 @@
 
     <tr>
         <td colspan="3">
-            <a href="#" data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn " style="color:#C82090">
+            <a  data-toggle="modal" data-target="#add_pricing_column_modal" data-invoiceid="{{ $invoice->id  }}" class="btn btn-secondary btn-xs add-pricing-column-btn " style="color:#C82090">
                 <i class="voyager-plus"></i>
                 Add Pricing Item Cost
             </a>
@@ -230,46 +187,96 @@
         </td>
     </tr>
 
-    <div wire:ignore class="modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-data"></i> Add New Pricing</h4>
+    
+</div>
+
+
+{{-- MODALS --}}
+
+ <div wire:ignore class="modal modal-info fade" tabindex="-1" id="add_product_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"><i class="voyager-data"></i> Add Invoice item </h4>
+            </div>
+            <div>
+                <div class="modal-body" style="overflow: scroll; min-height: 300px;">
+                    <div>
+                        {{-- <label for="multiple-checkboxes"><strong>Select Products:</strong></label>
+                        <input type="search" id="product-search" class="form-control input-sm" placeholder="Search for products">
+                        <select id="multiple-checkboxes" multiple="multiple">
+                            @foreach($products->where('company_id', $companyId) as $product)
+                                <option value="{{ $product->id }}">{{ $product->title }}</option>
+                            @endforeach
+                        </select> --}}
+                        
+                        <table id="productlistings" class="table table-striped first" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th >Product Ttitle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
-                <div>
-                    <div class="modal-body" style="overflow:scroll">
-                        <div>
-                            <label for="pricing_name"> Column Name </label>
-                            <input required id="pricing_name" name="pricing_name" type="text" class="form-control">
-                        </div>
-
-                        <div style="margin: 10px 0;">
-                            <label for="value"> Column Value </label>
-                            <input required id="pricing_value" name="pricing_value" type="text" class="form-control">
-                        </div>
-
-                        <input name="pricing_visibility" id="pricing_visibility" value="visible" type="hidden" class="form-control">
-
-                        <div>
-                            <label for="operation">Select Operation</label>
-                            <select required id="pricing_operation" name="pricing_operation" class="form-control">
-                                <option value="+">Add</option>
-                                <option value="-">Subtract</option>
-                            </select>
-                        </div>
-
-                        <input type="hidden" name="invoice_id" class="form-control">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
-                        <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right" onclick="addPricingItemScript()">{{ __('voyager::generic.save') }}</button>
-                    </div>
+                <div class="modal-footer gap-4">
+                    <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+                    <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right" onclick="addItemScript()">{{ __('voyager::generic.add') }}</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<div wire:ignore class="modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="voyager-data"></i> Add New Pricing</h4>
+            </div>
+            <div>
+                <div class="modal-body" style="overflow:scroll">
+                    <div>
+                        <label for="pricing_name"> Column Name </label>
+                        <input required id="pricing_name" name="pricing_name" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin: 10px 0;">
+                        <label for="value"> Column Value </label>
+                        <input required id="pricing_value" name="pricing_value" type="text" class="form-control">
+                    </div>
+
+                    <input name="pricing_visibility" id="pricing_visibility" value="visible" type="hidden" class="form-control">
+
+                    <div>
+                        <label for="operation">Select Operation</label>
+                        <select required id="pricing_operation" name="pricing_operation" class="form-control">
+                            <option value="+">Add</option>
+                            <option value="-">Subtract</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="invoice_id" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 mx-3 pull-right" data-dismiss="modal">{{ __('voyager::generic.close') }}</button>
+                    <button type="submit" class="border-2 border-main-color bg-main-color text-white rounded font-semibold transition ease-in-out hover:opacity-75 duration-300 px-5 py-1.5 livvic-font-semibold px-6 py-1 mb-3 md:mb-0 pull-right" onclick="addPricingItemScript()">{{ __('voyager::generic.save') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @section('javascript')
 
