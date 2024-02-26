@@ -111,7 +111,7 @@
                                 <select class="form-control select" value="{{ old('store_name') }}" name="store_id" id="">
                                     @foreach (Auth::user()->company->stores ?? [] as $store)
                                     <option value="{{ $store->id }}" @if(old('store_id')==$store->id || $invoice->store_id == $store->id) selected @endif>
-                                    {{ $store->store_name ?? 'N/A' }}
+                                        {{ $store->store_name ?? 'N/A' }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -123,8 +123,62 @@
                             <div class="form-group col-md-6">
                                 <label class="font-bold mb-2 text-2xl lg:text-2xl text-slate-700" for="invoice_number">Invoice Number</label>
                                 <span style="border: 1px solid whitesmoke; border-radius: 5px; padding: 2px 10px; background-color:#D95EAD; color:aliceblue" class="float-center cursor-pointer" onclick='generateInvoiceNumber()'>Generate</span>
-                                <input class="form-control invoice_number" type="text" value="{{ $invoice->invoice_number }}" name="invoice_number" id="invoice_number">
+                                <input class="form-control invoice_number" type="text" value="{{ $invoice->invoice_number }}" name="invoice_number" id="invoice_number" placeholder="Type in 'quote' if customer demand if not you can generate invoice number to proceed.">
+                                <script>
+                                    function generateInvoiceNumber() {
+                                        var pattern = /[a-zA-Z0-9_\-\+\.]/;
+
+                                        function getRandomByte() {
+                                            if (window.crypto && window.crypto.getRandomValues) {
+                                                var result = new Uint8Array(1);
+                                                window.crypto.getRandomValues(result);
+                                                return result[0];
+                                            } else if (window.msCrypto && window.msCrypto.getRandomValues) {
+                                                var result = new Uint8Array(1);
+                                                window.msCrypto.getRandomValues(result);
+                                                return result[0];
+                                            } else {
+                                                return Math.floor(Math.random() * 256);
+                                            }
+                                        }
+
+                                        function generate(length) {
+                                            return Array.apply(null, {
+                                                    'length': length
+                                                })
+                                                .map(function() {
+                                                    var result;
+                                                    while (true) {
+                                                        result = String.fromCharCode(getRandomByte());
+                                                        if (pattern.test(result)) {
+                                                            return result;
+                                                        }
+                                                    }
+                                                })
+                                                .join('');
+                                        }
+
+                                        // Generate a unique two-digit random number
+                                        var randomNumber = ('0' + Math.floor(Math.random() * 100)).slice(-2);
+
+                                        // Extract the first character of each word in the store name and convert to uppercase
+                                        var storeNameParts = '<?php echo $store->store_name; ?>'.split(' ');
+                                        var storeShortCode = '';
+                                        for (var i = 0; i < storeNameParts.length; i++) {
+                                            storeShortCode += storeNameParts[i].charAt(0).toUpperCase();
+                                        }
+
+                                        // Generate the invoice number in the format "INV-{store_name}-{random number}"
+                                        var generatedNumber = 'INV-' + storeShortCode + '-' + randomNumber;
+
+                                        var inputElements = document.getElementsByClassName("invoice_number");
+                                        for (var i = 0; i < inputElements.length; i++) {
+                                            inputElements[i].value = generatedNumber;
+                                        }
+                                    }
+                                </script>
                             </div>
+
 
                         </div>
 
@@ -194,93 +248,36 @@
             <livewire:invoices.edit :wire:key="'pricing' . $invoice->id" :invoice="$invoice" :products="$products" />
         </div>
 
-@endsection
+        @endsection
 
-@section('javascript')
-
-<script>
+        @section('javascript')
 
 
-function generateInvoiceNumber() {
-    var pattern = /[a-zA-Z0-9_\-\+\.]/;
+        <script>
+            $(document).ready(function() {
+                $('.add-column-btn').click(function(e) {
+                    e.preventDefault();
+                    let invoiceitemid = $(this).data('invoiceitemid');
+                    console.log(invoiceitemid);
+                    $('input[name="item_id"]').val(invoiceitemid);
+                    $('#add_item_column_modal').modal('show');
+                });
 
-    function getRandomByte() {
-        if (window.crypto && window.crypto.getRandomValues) {
-            var result = new Uint8Array(1);
-            window.crypto.getRandomValues(result);
-            return result[0];
-        } else if (window.msCrypto && window.msCrypto.getRandomValues) {
-            var result = new Uint8Array(1);
-            window.msCrypto.getRandomValues(result);
-            return result[0];
-        } else {
-            return Math.floor(Math.random() * 256);
-        }
-    }
+                $('.add-pricing-column-btn').click(function(e) {
+                    e.preventDefault();
+                    let invoiceid = $(this).data('invoiceid');
+                    $('input[name="invoice_id"]').val(invoiceid);
+                    $('#add_pricing_column_modal').modal('show');
+                });
+            });
 
-    function generate(length) {
-        return Array.apply(null, { 'length': length })
-            .map(function () {
-                var result;
-                while (true) {
-                    result = String.fromCharCode(getRandomByte());
-                    if (pattern.test(result)) {
-                        return result;
-                    }
-                }
-            })
-            .join('');
-    }
-
-    // Generate a unique two-digit random number
-    var randomNumber = ('0' + Math.floor(Math.random() * 100)).slice(-2);
-
-    // Extract the first character of each word in the store name and convert to uppercase
-    var storeNameParts = '<?php echo $store->store_name ??  "defualt_type_name"; ?>'.split(' ');
-    var storeShortCode = '';
-    for (var i = 0; i < storeNameParts.length; i++) {
-        storeShortCode += storeNameParts[i].charAt(0).toUpperCase();
-    }
-
-    // Generate the invoice number in the format "INV-{store_name}-{random number}"
-    var generatedNumber = 'INV-' + storeShortCode + '-' + randomNumber;
-
-    var inputElements = document.getElementsByClassName("invoice_number");
-    for (var i = 0; i < inputElements.length; i++) {
-        inputElements[i].value = generatedNumber;
-    }
-}
-
-
-
- $(document).ready(function() {
-    $('.add-column-btn').click(function(e) {
-        e.preventDefault();
-        let invoiceitemid = $(this).data('invoiceitemid');
-        console.log(invoiceitemid);
-        $('input[name="item_id"]').val(invoiceitemid);
-        $('#add_item_column_modal').modal('show');
-    });
-
-    $('.add-pricing-column-btn').click(function(e) {
-        e.preventDefault();
-        let invoiceid = $(this).data('invoiceid');
-        $('input[name="invoice_id"]').val(invoiceid);
-        $('#add_pricing_column_modal').modal('show');
-    });
-});
-
-$(document).ready(function() {
-    $('#multiple-checkboxes').multiselect({
-        includeSelectAllOption: true,
-    });
-});
-
-
-
-
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-@endsection
+            $(document).ready(function() {
+                $('#multiple-checkboxes').multiselect({
+                    includeSelectAllOption: true,
+                });
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+        @endsection
