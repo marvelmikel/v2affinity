@@ -10,9 +10,11 @@
             <div class="admin-section-title">
                 <h3><i class="voyager-book"></i> {{ __('Products') }}</h3>
                 <div style="display:flex;">
+                @can('add', app(\App\Models\Product::class))
                     <a href="#" style="margin-right:2px"
-                        class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn"><i class="voyager-plus"></i>Add New</a>
-                        
+                        class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn">
+                        <i class="voyager-plus"></i>Add New</a>
+                        @endcan
                 </div>
             </div>
             <div class="clear"></div>
