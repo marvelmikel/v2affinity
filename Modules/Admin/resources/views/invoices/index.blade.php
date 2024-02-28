@@ -10,9 +10,11 @@
             <div class="admin-section-title">
                 <h3><i class="voyager-book"></i> {{ __('Invoices') }}</h3>
                 <div style="display:flex;">
+                @can('add', app(\App\Models\Invoice::class))
                     <a href="{{ route('voyager.invoices.create') }}" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1">
                         <i class="voyager-plus"></i> Add New
                     </a>
+                    @endcan
                 </div>
                 <div class="clear"></div>
                 <div class="card">
