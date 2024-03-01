@@ -26,13 +26,55 @@
     </div><!-- .col-md-12 -->
     @else
     <!-- list of emplee for the company-->
-    <h1 class="page-title">
-        <i class="voyager-company"></i>
-        List of Employees
-    </h1>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-bordered">
+                <div class="panel-body">
+                    <table id="dataTable" class="table table-hover dataTable no-footer" role="grid" aria-describedby="dataTable_info">
+                        <thead>
+                            <tr role="row">
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                            <tr role="row">
+                                <td>1</td>
+                                <td>marvel</td>
+                                <td>gmail</td>
+                                <td>sales person}</td>
+                                <td>shdshhhd </td>
+                            </tr>
+                         
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     @endif
 </div><!-- .page-content container-fluid -->
 @stop
+
+@section('javascript')
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [],
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false
+            }]
+        });
+    });
+</script>
 
 @section('javascript')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
