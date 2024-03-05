@@ -19,6 +19,8 @@ class User extends \Modules\Admin\Models\User implements TwoFactorAuthenticatabl
 {
     use HasApiTokens, HasFactory, Notifiable, Loggable, TwoFactorAuthenticatable ;
 
+    protected $table = 'users'; 
+
     
 
     /**
@@ -45,6 +47,8 @@ class User extends \Modules\Admin\Models\User implements TwoFactorAuthenticatabl
         'password',
         'remember_token',
     ];
+
+
 
     /**
      * The attributes that should be cast.
@@ -106,6 +110,8 @@ class User extends \Modules\Admin\Models\User implements TwoFactorAuthenticatabl
         });
 
     }
+
+    
 
     
 }
