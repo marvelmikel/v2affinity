@@ -25,8 +25,6 @@
                 </div>
             </div>
 
-
-
             <!-- Add  product  modal -->
             <div class="modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
                 <div class="modal-dialog">
@@ -40,8 +38,6 @@
                         <form action="{{ route('voyager.products.store') }}" method="post">
                             @csrf()
                             <div class="modal-body" style="overflow:scroll">
-
-
                                 <div>
                                     <label for=""> Title </label>
                                     <input name="title" type="text" class="form-control"></input>
@@ -51,8 +47,6 @@
                                     <label for=""> Description </label>
                                     <input name="description" type="text" class="form-control"></input>
                                 </div>
-
-
                                 <div style="margin: 10px 0;">
                                     <label for="">Type </label>
                                     <select class="form-control" name="type" id="">
@@ -64,7 +58,6 @@
 
                                     </select>
                                 </div>
-
                                 <div style="margin: 10px 0;">
                                     <label for="">Availability </label>
                                     <select class="form-control" name="in_stock" id="">
