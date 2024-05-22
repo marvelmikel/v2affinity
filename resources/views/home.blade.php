@@ -127,7 +127,7 @@
                 @livewire('faq',['faq_id'=>'faq1','question'=>'What is Affinity ?','answer'=>'Affinity is an all-in-one flooring cost calculator, saving you time and money. The system can be used on any device that has access to the internet.','expanded'=>'show'])
                 @livewire('faq',['faq_id'=>'faq2','question'=>'Is there trial period?','answer'=>'Yes, there is a 7 day, no obligation trial period.'])
                 @livewire('faq',['faq_id'=>'faq3','question'=>'Is there a cancellation policy?','answer'=>'We simply require 30 days cancellation notice.'])
-                @livewire('faq',['faq_id'=>'faq4','question'=>'How much does it cost?','answer'=>'The system costs £125 plus VAT per store. No hidden costs and you can have up to 3 users per store. We can add further users upon request.'])
+                @livewire('faq',['faq_id'=>'faq4','question'=>'How much does it cost?','answer'=>'The system costs £150 It is including VAT per store. No hidden costs and you can have up to 3 users per store. We can add further users upon request.'])
                 <div x-data="{ open: false }" class="accordion-item bg-white border-y border-gray-200">
                     <h2 class="accordion-header mb-0 livvic-font-medium font-bold" id="faq_label_faq5">
                         <button x-on:click="open = ! open" class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none" type="button">
@@ -160,5 +160,9 @@
             </div>
         </div>
     </section>
+
+    <!-- dsicount popup image-->
+    @include('includes.popup');
+
 
 </x-app-layout>

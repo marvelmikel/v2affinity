@@ -291,9 +291,8 @@
                 </li>
                 @endforeach
             </ul>
-            <footer class="flex gap-6 items-center py-2 text-lg" style="border:1px solid #fff">
-                <p class="col-span-12 lg:block w-1/2"></p>
-                <p class="col-span-12 lg:block w-1/6"></p>
+
+            <footer class="flex gap-6 items-center p-2 text-lg justify-between" >
                 <p class="w-1/2 lg:w-1/6 font-semibold text-slate-600 text-sm tracking-wider uppercase">Total</p>
                 <p class="w-1/2 lg:w-1/6 leading-tight">
                     <strong class="text-slate-600 font-semibold">£{{ number_format($extras['total'], 2) }}</strong><br>
@@ -350,7 +349,7 @@
                                 £{{ number_format($plan['price'], 2) }}
                                 <span class="text-base text-slate-500">/ {{ $period }}</span>
                             </strong>
-                            <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
+                            <span class="font-medium text-slate-400 text-sm">inc. VAT</span>
                         </p>
                         <i class="fa-circle-check fa-solid group-peer-checked:opacity-100 opacity-0 text-2xl text-green-500"></i>
                     </div>
@@ -395,7 +394,7 @@
                 @endforeach
             </ul>
         </div>
-        <footer class="flex items-center py-2 text-lg" style="border:1px solid #fff; justify-content: flex-end;">
+        <footer class="flex items-center py-2 text-lg justify-between">
             <p class="col-span-12 lg:block w-1/2"></p>
             <p class="col-span-12 lg:block w-1/6"></p>
             <p class="w-1/2 lg:w-1/6 font-semibold text-slate-600 text-sm tracking-wider uppercase">Total</p>
@@ -505,7 +504,7 @@
                                         £{{ number_format($total, 2) }}
                                         <span class="text-base text-slate-500">/ {{ $period }}</span>
                                     </strong>
-                                    <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
+                                    <span class="font-medium text-slate-400 text-sm">inc. VAT</span>
                                 </p>
                                 <i class="fa-circle-check fa-solid opacity-100 text-2xl text-green-500"></i>
                             </div>
@@ -526,7 +525,7 @@
                                 $now = \Carbon\Carbon::now();
                                 $diff = $date->diffInDays($now);
                                 @endphp
-                                Free trial {{ $diff }} days remaining
+                                {{-- Free trial {{ $diff }} days remaining --}}
                             </span>
                         </p>
                         @endif

@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
 
         /* Daily re-import plans from braintree to register any changes */
         $schedule->command('braintree:plans')->daily();
+        
+        /* everySixHours re-import discounts from braintree to register any changes */
+        $schedule->command('braintree:discounts')->everySixHours();
 
         /* Daily check existing subscriptions are still active */
         $schedule->command('braintree:subscriptions')->daily();

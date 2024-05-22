@@ -56,6 +56,8 @@ class Invoice extends Model
     public function calculateVat(){
         $company = $this->company;
         $vat_percentage = $company->vat_percentage ?? 20;
+
+        // dd($this->calculateSubtotal() ,  $this->calculateSubtotal() * ($vat_percentage/100));
         return $this->calculateSubtotal() * ($vat_percentage/100);
     }
 
@@ -97,7 +99,7 @@ class Invoice extends Model
 	    parent::boot();
 
 	    static::deleting(function ($model) {
-            $model->items()->delete();
+            // $model->items()->delete();
 	    });
 	}
 }

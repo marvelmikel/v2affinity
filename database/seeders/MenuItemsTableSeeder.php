@@ -130,6 +130,22 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('Employees'),
+            'url'     => '',
+            'route'   => 'voyager.employee.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-person',
+                'color'      => null,
+                'parent_id'  => null,
+                'order'      => 8,
+            ])->save();
+        }
+
 
         
 
@@ -144,7 +160,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-tools',
                 'color'      => null,
                 'parent_id'  => null,
-                'order'      => 8,
+                'order'      => 9,
             ])->save();
         }
 
@@ -160,7 +176,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-list',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 9,
+                'order'      => 10,
             ])->save();
         }
 
@@ -176,7 +192,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-data',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 10,
+                'order'      => 11,
             ])->save();
         }
 
@@ -192,7 +208,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-compass',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 11,
+                'order'      => 12,
             ])->save();
         }
 
@@ -208,7 +224,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-bread',
                 'color'      => null,
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 12,
+                'order'      => 13,
             ])->save();
         }
 
@@ -224,7 +240,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-settings',
                 'color'      => null,
                 'parent_id'  => null,
-                'order'      => 13,
+                'order'      => 14,
             ])->save();
         }
 
@@ -240,7 +256,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-company',
                 'color'      => null,
                 'parent_id'  => null,
-                'order'      => 14,
+                'order'      => 15,
             ])->save();
         }
 
@@ -256,7 +272,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-company',
                 'color'      => null,
                 'parent_id'  => $menuItemCompany->id,
-                'order'      => 15,
+                'order'      => 16,
             ])->save();
         }
 
@@ -273,7 +289,7 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-dollar',
                 'color'      => null,
                 'parent_id'  => $menuItemCompany->id,
-                'order'      => 16,
+                'order'      => 17,
             ])->save();
         }
 
@@ -289,48 +305,154 @@ class MenuItemsTableSeeder extends Seeder
                 'icon_class' => 'voyager-logbook',
                 'color'      => null,
                 'parent_id'  => $menuItemCompany->id,
-                'order'      => 17,
-            ])->save();
-        }
-
-
-
-        $menuItem = MenuItem::firstOrNew([
-            'menu_id' => $menu->id,
-            'title'   => __('Employees'),
-            'url'     => '',
-            'route'   => 'voyager.employee.index',
-        ]);
-        if (!$menuItem->exists) {
-            $menuItem->fill([
-                'target'     => '_self',
-                'icon_class' => 'voyager-person',
-                'color'      => null,
-                'parent_id'  => null,
                 'order'      => 18,
             ])->save();
         }
 
 
-        $menuItem = MenuItem::firstOrNew([
+
+      
+
+
+        //Support Docs section 
+        $menuItemCompany = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
             'title'   => __('Support Docs'),
-            'url'     => 'https://affinity-flooring.com/',
-            'route'   => 'https://affinity-flooring.com/',
+            'url'     => '',
+            'route'   => '',
         ]);
-        if (!$menuItem->exists) {
-            $menuItem->fill([
+        if (!$menuItemCompany->exists) {
+            $menuItemCompany->fill([
                 'target'     => '_self',
                 'icon_class' => 'voyager-documentation',
-                'color'      => '',
+                'color'      => null,
                 'parent_id'  => null,
                 'order'      => 19,
             ])->save();
         }
 
-        
 
-        
+        $subMenuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('User Guide'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
+        ]);
+        if (!$subMenuItem->exists) {
+            $subMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-file-text',
+                'color'      => null,
+                'parent_id'  => $menuItemCompany->id,
+                'order'      => 20,
+            ])->save();
+        }
+
+
+
+        $subMenuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('add Carpet & Roll Items'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
+        ]);
+        if (!$subMenuItem->exists) {
+            $subMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-receipt',
+                'color'      => null,
+                'parent_id'  => $menuItemCompany->id,
+                'order'      => 21,
+            ])->save();
+        }
+
+
+        $subMenuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('add  packed/tile item'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
+        ]);
+        if (!$subMenuItem->exists) {
+            $subMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-receipt',
+                'color'      => null,
+                'parent_id'  => $menuItemCompany->id,
+                'order'      => 22,
+            ])->save();
+        }
+
+        $subMenuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('add  roll end'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
+        ]);
+        if (!$subMenuItem->exists) {
+            $subMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-receipt',
+                'color'      => null,
+                'parent_id'  => $menuItemCompany->id,
+                'order'      => 23,
+            ])->save();
+        }
+
+
+        $subMenuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('add underlay'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
+        ]);
+        if (!$subMenuItem->exists) {
+            $subMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-receipt',
+                'color'      => null,
+                'parent_id'  => $menuItemCompany->id,
+                'order'      => 24,
+            ])->save();
+        }
+
+
+        $subMenuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('add other stocks'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
+        ]);
+        if (!$subMenuItem->exists) {
+            $subMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-receipt',
+                'color'      => null,
+                'parent_id'  => $menuItemCompany->id,
+                'order'      => 25,
+            ])->save();
+        }
+
+
+        $subMenuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu->id,
+            'title'   => __('create new invoice'),
+            'url'     => 'http://affinity-dev2.test/support-docs/user-guide.pdf',
+            'route'   => '',
+        ]);
+        if (!$subMenuItem->exists) {
+            $subMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'voyager-receipt',
+                'color'      => null,
+                'parent_id'  => $menuItemCompany->id,
+                'order'      => 26,
+            ])->save();
+        }
+             
+
+    
+
 
 
         

@@ -10,9 +10,11 @@
             <div class="admin-section-title">
                 <h3><i class="voyager-book"></i> {{ __('Products') }}</h3>
                 <div style="display:flex;">
+                @can('add', app(\App\Models\Product::class))
                     <a href="#" style="margin-right:2px"
-                        class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn"><i class="voyager-plus"></i>Add New</a>
-                        
+                        class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn">
+                        <i class="voyager-plus"></i>Add New</a>
+                        @endcan
                 </div>
             </div>
             <div class="clear"></div>
@@ -22,8 +24,6 @@
                     {{ $dataTable->table() }}
                 </div>
             </div>
-
-
 
             <!-- Add  product  modal -->
             <div class="modal modal-info fade" tabindex="-1" id="add_pricing_column_modal" role="dialog">
@@ -38,8 +38,6 @@
                         <form action="{{ route('voyager.products.store') }}" method="post">
                             @csrf()
                             <div class="modal-body" style="overflow:scroll">
-
-
                                 <div>
                                     <label for=""> Title </label>
                                     <input name="title" type="text" class="form-control"></input>
@@ -49,8 +47,6 @@
                                     <label for=""> Description </label>
                                     <input name="description" type="text" class="form-control"></input>
                                 </div>
-
-
                                 <div style="margin: 10px 0;">
                                     <label for="">Type </label>
                                     <select class="form-control" name="type" id="">
@@ -62,7 +58,6 @@
 
                                     </select>
                                 </div>
-
                                 <div style="margin: 10px 0;">
                                     <label for="">Availability </label>
                                     <select class="form-control" name="in_stock" id="">
@@ -76,9 +71,9 @@
                             </div>
                             
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline mx-3 pull-right" data-dismiss="modal">{{
+                                <button type="button" class="border-2 border-main-color text-main-color rounded font-semibold hover:bg-main-color hover:text-white duration-300 transition ease-in-out px-5 py-1.5 livvic-font-semibold px-9 py-1 add-product-btn mx-3 pull-right" data-dismiss="modal">{{
                                     __('voyager::generic.close') }}</button>
-                                <button type="submit" class="btn btn-primary  pull-left" ">{{ __('voyager::generic.save') }}</button>
+                                <button type="submit" style="background-color: #C82090;" class="btn btn-primary  pull-left" ">{{ __('voyager::generic.save') }}</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

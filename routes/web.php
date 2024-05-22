@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\SupportdocsController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\Facades\Voyager;
@@ -64,7 +65,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('products/{product}/add-product-column',   [ProductController::class, 'addProductColumn'])->name('voyager.products.add-product-column');
         Route::delete('/products/{id}/delete', [ProductController::class, 'destroy'])->name('voyager.products.delete');
         Route::get('/products-meta/{id}/delete', [ProductController::class, 'deleteMeta'])->name('product-meta.delete');
-    });
+    }); 
   
 
       //Store  Routes
@@ -85,8 +86,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/employee/{id}/delete', [EmployeeController::class, 'delete'])->name('voyager.employee.delete');
         Route::get('/employee/{employeeId}/edit', [EmployeeController::class, 'edit'])->name('voyager.employee.edit');
         Route::put('/employee/{employeeId}', [EmployeeController::class, 'update'])->name('employee.update');
-        
-       
+
     });
 
     // company profile
@@ -97,8 +97,18 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/company/{companyId}', [CompanyController::class, 'update'])->name('company.update');
     
         Route::get('/company/logs',   [CompanyController::class, 'show'])->name('voyager.company.logs');
+
+        Route::get('/company/{company}/invoices',   [CompanyController::class, 'invoiceHistory'])->name('admin.company.invoice-history');
+
         Route::get('subscription/{subscription}/edit', [SubscriptionController::class, 'edit'])->name('subscription-edit');
         Route::get('subscriptions',   [SubscriptionController::class, 'show'])->name('company.subscriptions');
+    });
+
+    // support docs
+    Route::group(['middleware' => 'admin.user' ], function () {
+        Route::get('userguide',   [SupportdocsController ::class, 'userguide1'])->name('voyager.supportdoc.userguide');
+        
+
     });
 
 

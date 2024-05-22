@@ -10,11 +10,11 @@ use App\Models\User;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceItemMeta;
-use App\Models\InvoiceLog;
 use App\Models\InvoicePricing;
 use App\Models\Product;
 use App\Models\Store;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Haruncpi\LaravelUserActivity\Models\Log;
 use Illuminate\Http\Request;
 
 
@@ -47,8 +47,9 @@ class InvoiceController extends Controller
 
 
 
-    public function generatePdf(Request $request, Invoice $invoice, Store $storeModel)
+    public function generatePdf(Request $request,  $invoiceId, Store $storeModel)
     {
+        $invoice = Invoice::withTrashed()->find($invoiceId);
         $store = $storeModel::find($invoice->store_id);
 
         if (!$store) {
@@ -98,7 +99,7 @@ class InvoiceController extends Controller
         $request->validate([
             'note' => 'sometimes',
             'store_id' => 'required',
-            'customer_email' => 'required',
+            // 'customer_email' => 'required',
             'customer_name' => 'required',
             'customer_address_line_1' => 'required',
             'customer_address_line_2' => 'sometimes',
@@ -134,11 +135,12 @@ class InvoiceController extends Controller
         $randomNumber = str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
 
         // Extract the first character of each word in the store name and convert to uppercase
-        $storeNameParts = explode(' ', $store->store_name);
+        $storeNameParts = explode(' ', $store->store_name ?? '');
         $storeShortCode = '';
         foreach ($storeNameParts as $part) {
             $storeShortCode .= strtoupper(substr($part, 0, 1));
         }
+        
 
 
         // Generate the invoice number in the format "INV-{store_name}-{random number}"
@@ -203,7 +205,7 @@ class InvoiceController extends Controller
 
     public function show($id)
     {
-        $invoice = Invoice::find($id);
+        $invoice = Invoice::withTrashed()->find($id);
 
         // Fetch related data
         $customer = Customer::find($invoice->customer_id);
@@ -223,7 +225,6 @@ class InvoiceController extends Controller
 
         return view('voyager::invoices.show', compact('invoice', 'customer', 'items', 'pricing', 'store', 'user', 'company'));
     }
-
 
 
     /**
@@ -267,11 +268,10 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($id);
         $customer = $invoice->customer;
 
-        if($customer->updateOrCreate(['email' => $request->customer_email], [
+        $customer->fill([
             'company_id' => auth()->user()->company_id,
             'user_id' => auth()->user()->id,
             'name' => $request->customer_name,
-            'email' => $request->customer_email,
             'address_line_1' => $request->customer_address_line_1,
             'address_line_2' => $request->customer_address_line_2,
             'phone' => $request->customer_phone_number,
@@ -279,7 +279,12 @@ class InvoiceController extends Controller
             'address_country' => $request->customer_address_country,
             'address_postcode' => $request->customer_address_postcode,
             'store_id' => $request->store_id,
-        ])){
+        ]);
+        if ($customer->email !== $request->customer_email) {
+            $customer->email = $request->customer_email;
+        }
+
+        if ($customer->save())  {
             $invoice->logs()->create([
                 'user_id' => auth()->user()->id,
                 'username' => auth()->user()->name,
@@ -327,13 +332,16 @@ class InvoiceController extends Controller
     public function delete($id)
     {
         $invoice = Invoice::findOrFail($id);
-        $invoice->logs()->create([
-            'user_id' => auth()->user()->id,
-            'username' => auth()->user()->name,
-            'activity' => 'Invoice delete',
-            'payload' => json_encode($invoice)
-        ]);
 
+        $log = new Log();
+        $log->user_id = auth()->user()->id;
+        $log->log_type = 'delete';
+        $log->table_name = 'invoices';
+        $log->log_date = now();
+        $log->data = json_encode($invoice);
+
+        $log->save();
+        
         $invoice->delete();
         // Redirect back to the initial page
         return redirect()->route('voyager.invoices.index')->with('success', 'Invoice deleted successfully');

@@ -4,6 +4,7 @@
 /public/hot
 /public/storage
 /public/store_logos/*
+/public/users/*
 /public/company_logos/*
 /storage/*.key
 /vendor

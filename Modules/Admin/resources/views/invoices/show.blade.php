@@ -206,7 +206,17 @@
                                     </td>
                                 </tr>
                             @else
-                                 <tr>
+                                 @if( ($price->name == 'discount' || $price->name == 'tax' ) && $price->type == 'percentage')
+                                    <tr>
+                                        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
+                                            {{ strtoupper($price->name) }} £:
+                                        </td>
+                                        <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap bg-slate-300">
+                                            {{ number_format( ($price->value/100) * $invoice->getTotalAttribute() , 2) }}
+                                        </td>
+                                     </tr>
+                                 @else
+                                    <tr>
                                     <td class="border-b-4 border-white p-1 text-sm whitespace-nowrap font-bold text-right">
                                         {{ strtoupper($price->name) }} £:
                                     </td>
@@ -214,6 +224,7 @@
                                         {{ number_format($price->value, 2) }}
                                     </td>
                                 </tr>
+                                 @endif
                             @endif
                         @endif
 

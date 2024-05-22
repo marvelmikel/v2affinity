@@ -22,6 +22,9 @@ class EmployeeController extends Controller
     {
         $user = Auth::user();
         $company_id = $user->company_id;
+
+        $employee = User::where('company_id', $company_id)->get(); // Assuming 'Employee' is your model name
+
         $dataTable->addScope(new class($company_id) implements \Yajra\DataTables\Contracts\DataTableScope
         {
             private $company_id;
@@ -36,8 +39,15 @@ class EmployeeController extends Controller
                 return $query->where('company_id', $this->company_id);
             }
         });
-        return $dataTable->render('voyager::employee.index');
+
+        $employeeData = $employee ? $employee->toArray() : [];
+
+        return $dataTable->render('voyager::employee.index', compact('employeeData', 'employee'));
     }
+
+
+
+
 
     public function create()
     {
@@ -53,11 +63,11 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $request)
     {
         // check subscription feature here
-        if( $subscription = auth()->user()->activeSubscription()  ){
+        if ($subscription = auth()->user()->activeSubscription()) {
             $userFeature = $subscription->features('users');
 
             // dd($userFeature, $subscription);
-            if($userFeature['balance'] < 1){
+            if ($userFeature['balance'] < 1) {
                 return redirect()->back()->with('warning', 'You can not add anymore user, please update your subscription');
             }
         }
@@ -88,16 +98,16 @@ class EmployeeController extends Controller
         $user->store()->associate($store);
         $user->save();
 
-        if($company = Company::find($user->company_id)){
+        if ($company = Company::find($user->company_id)) {
             Mail::to($user)->send(new UserInvitationMail([
                 'name'  => $user->name,
                 'email' => $user->email,
                 'password' => $validatedData['password'],
                 'company_name' => $company->company_name,
-            ]));    
+            ]));
         }
 
-       
+
         // Redirect with success message
         return redirect()->route('voyager.employee.index')->with([
             'message' => 'Successfully created user.',
@@ -144,6 +154,7 @@ class EmployeeController extends Controller
         $employee->email = $validatedData['email'];
         $employee->role_id = $validatedData['role_id'];
         $employee->store_id = $validatedData['store_id'];
+        $employee->password = bcrypt(request()->password);
 
         $employee->save();
 

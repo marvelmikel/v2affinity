@@ -258,7 +258,7 @@ class Edit extends Component
     {
         // Set subtotal amount
         // subtract vat here - 
-        $vat = $this->invoice->calculateVat() ?? 0;
+        $vat = $this->invoice->calculateVat() ?? 0; 
         $subtotal = $this->invoice->calculateSubtotal() ?? 0;
         $this->subtotal = [
             'vatInclusive' => number_format($subtotal,2),
@@ -268,6 +268,10 @@ class Edit extends Component
        
     }
 
+
+    public function duplicateInvoiceItem($id){
+       $this->addItem([$id]);
+    }
 
     public function getFormula()
     {
@@ -291,4 +295,6 @@ class Edit extends Component
     {
         return view('livewire.invoices.edit');
     }
+
+    
 }

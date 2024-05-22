@@ -165,6 +165,11 @@ class SubscriptionsEdit extends Component
         $this->load['edit'] = false;
     }
 
+    public function updatedSelectedPlan()
+    {
+        $this->calcTotal('month');
+    }
+
     public function calcTotal()
     {
         // Set base total

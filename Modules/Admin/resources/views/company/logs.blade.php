@@ -33,8 +33,8 @@
                             @foreach($companyUserLogs as $log)
                             <tr role="row">
                                 <td>{{ $log->id }}</td>
-                                <td>{{ $log->user->company->company_name }}</td>
-                                <td>{{ $log->user->role->name }}</td>
+                                <td>{{ $log->user->company->company_name ?? 'No Company' }}</td>
+                                <td>{{ $log->user->role->name ?? 'No Role' }}</td>
                                 <td>{{ $log->user->name }}</td>
                                 <td>{{ $log->log_type . ' - ' . $log->table_name }}</td>
 

@@ -36,15 +36,19 @@ trait PaymentGateway
             \Braintree\CustomerSearch::id()->is( $user->id )
         ]);
 
+
+
         /* If no customer found, create customer */
         if(empty($exists->_ids)){
-            $exists = $gateway->customer()->create([
+            $existingss = $gateway->customer()->create([
                 'id' => $user->id,
                 'firstName' => $user->first_name,
                 'lastName' => $user->last_name,
                 'email' => $user->email
             ]);
         }
+
+        // dd($exists, $existingss);
 
         /* Create a clientToken for relevant customer */
         $clientToken = $gateway->clientToken()->generate([
@@ -59,6 +63,13 @@ trait PaymentGateway
     {
         $gateway = $this->openGateway();
         return $gateway->plan()->all() ?? [];
+    }
+
+    /* Retrieve all subscription plans from braintree */
+    public function indexDiscounts()
+    {
+        $gateway = $this->openGateway();
+        return $gateway->discount()->all() ?? [];
     }
 
     /* Retrieve customer record from braintree */
@@ -80,32 +91,16 @@ trait PaymentGateway
         /* Validate input */
         $validated = $request->validated();
 
-        // dd($validated);
-
-        /* Check if addons are provided */
-        // $addons = [];
-        // if($validated['addons']){
-        //     /* Loop and generate addons */
-        //     foreach($validated['addons'] as $key => $item){
-        //         $addons[] = [
-        //              // 'inheritedFromId' => $key,
-        //             'existingId' => $key,
-        //             'quantity' => $item['quantity']
-        //         ];
-        //     }
-        // }
-
         /* Check if discounts are provided */
         $discounts = [];
         if($validated['discounts']){
             /* Loop and generate addons */
             foreach($validated['discounts'] as $key => $item){
                 $discounts[] = [
-                    // 'inheritedFromId' => $key
-                    'existingId' => $key
+                    'inheritedFromId' => $key
                 ];
             }
-        }
+        } 
 
         /* Initialize braintree payment connection */
         $gateway = $this->openGateway();
@@ -115,12 +110,12 @@ trait PaymentGateway
             'paymentMethodNonce' => $validated['paymentMethodNonce'],
             'planId' => $validated['plan_id'],
             'addOns' => $validated['addons'],
-            // 'addOns' => [
-            //     'update' => $addons
-            // ],
             'discounts' => [
-                'update' => $discounts
-            ]
+                'add' => $discounts
+            ],
+            'trialPeriod' => false,
+            // 'trialDuration' => 0, //If you specify a trialDuration of 0, we will start the subscription immediately 
+            // 'trialPeriod' => true,
         ]);
 
         /* If successful, creating local subscription */

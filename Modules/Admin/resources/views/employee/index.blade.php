@@ -26,13 +26,24 @@
     </div><!-- .col-md-12 -->
     @else
     <!-- list of emplee for the company-->
-    <h1 class="page-title">
-        <i class="voyager-company"></i>
-        List of Employees
-    </h1>
+    @include('includes.sales-employee-list')
+    <!-- end list of emplee for the company-->
     @endif
 </div><!-- .page-content container-fluid -->
 @stop
+
+@section('javascript')
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [],
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false
+            }]
+        });
+    });
+</script>
 
 @section('javascript')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}

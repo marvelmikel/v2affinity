@@ -104,7 +104,7 @@
                 <header class="bg-blue-400 font-semibold livvic-font-semibold py-1 rounded-t-lg text-center uppercase">Most Popular</header>
                 <div class="p-6 flex flex-col gap-6 items-center">
                     <div class="text-center">
-                        <strong class="block text-4xl font-bold livvic-font-bold">£125 <span class="text-sm text-slate-300 livvic-font-regular font-normal">exc VAT</span></strong>
+                        <strong class="block text-4xl font-bold livvic-font-bold">£150 <span class="text-sm text-slate-300 livvic-font-regular font-normal">inc VAT</span></strong>
                         <span>per month</span>
                     </div>
                     <ul class="text-lg font-medium livvic-font-medium space-y-2">

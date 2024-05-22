@@ -173,6 +173,16 @@
                     <h2 class="font-bold mb-3 text-2xl lg:text-3xl text-slate-700">Admin Details</h2>
                     <p class="font-medium lg:text-lg text-slate-500">Please enter your account registration details below.
                     </p>
+
+                    <div class="my-4">
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                            <p id="helper-text-explanation" class="mt-0 text-sm text-red-500 dark:text-red-400">{{ $error }}</p>
+                            @endforeach
+                        @endif
+                    </div>
+
+
                 </div>
                 <div class="grid grid-cols-2 gap-6">
                     <p class="col-span-1">
@@ -378,7 +388,7 @@
                                         £{{ number_format($plan['price'], 2) }}
                                         <span class="text-base text-slate-500">/ {{ $period }}</span>
                                     </strong>
-                                    <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
+                                    <span class="font-medium text-slate-400 text-sm">inc. VAT</span>
                                 </p>
                                 <i
                                     class="fa-circle-check fa-solid group-peer-checked:opacity-100 opacity-0 text-2xl text-green-500"></i>
@@ -436,7 +446,25 @@
                 @endphp
                 <div>
                     @if($show_discount)
+
+                   
+
+                     <!-- session messages -->
+                  
+                        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                        @if (session()->has('alert-' . $msg))
+                        
+                        <div id="helper-text-explanation" class="@if(in_array($msg, ['success','info'])) bg-green-100 border-green-500 @else bg-red-100 border-red-500 @endif mb-5 text-sm  p-2">{{ session('alert-' . $msg) }}</div>
+                        
+                        @endif
+                        @endforeach
+                  
+ 
+
+
                     <div class="flex">
+
+                    
                         <div class="my-auto">
                             <b>Discount Code:</b>
                         </div>
@@ -490,14 +518,12 @@
                                     wire:model="selected_plan.addons.{{ $addon['id'] }}.quantity" type="number" step="1"
                                     id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"
                                     class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
-
-
-                            </p>
+                            </p>    
 
                             <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
                                 @if(!empty($selected_plan['addons'][$addon['id']]) &&
                                 !empty($selected_plan['addons'][$addon['id']]['quantity']))
-                                £{{ number_format($addon['amount'] * $selected_plan['addons'][$addon['id']]['quantity'], 2)
+                                    £{{ number_format($addon['amount'] * $selected_plan['addons'][$addon['id']]['quantity'], 2)
                                 }}
                                 @else
                                 £0.00

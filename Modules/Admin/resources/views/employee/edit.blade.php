@@ -62,12 +62,17 @@
                                 <label for="store_id">Select Store</label>
                                 <select class="form-control" name="store_id" id="store_id" required>
                                     <option value="">Select a Store</option>
-                                    @foreach ($stores as $store)
-                                    <option value="{{ $store->id }}" {{ $employee->store_id == $store->id ? 'selected' : '' }}>
-                                        {{ $store->name }}
+                                    @php
+                                    $company_id = auth()->user()->company_id ?? null; // Initialize $company_id with the user's company ID or null if it's not set
+                                    $stores = \App\Models\Store::where('company_id', $company_id)->get(); // Retrieve stores based on the company_id
+                                    @endphp
+                                    @foreach($stores as $store)
+                                    <option value="{{ $store->id }}" @if(old('store_id')==$store->id || $employee->store_id == $store->id) selected @endif>
+                                        {{ $store->store_name ?? 'N/A'  }}
                                     </option>
                                     @endforeach
                                 </select>
+
                             </div>
 
 
@@ -77,11 +82,19 @@
                                     <option value="">Select a Role</option>
                                     @foreach ($usersRegisteredByCompany as $user)
                                     <option value="{{ $user->role_id }}" {{ $employee->role_id == $user->role_id ? 'selected' : '' }}>
-                                        {{ $user->role->name }}
+                                        {{ $user->role->name ?? 'N/A'  }}
                                     </option>
                                     @endforeach
 
                                 </select>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="password">Password</label> 
+                                <span style="border: 1px solid whitesmoke; border-radius: 5px; padding: 2px 10px;  background-color:#D95EAD;color:aliceblue" class="float-center cursor-pointer" onclick='password = Password.generate(16), document.getElementsByClassName("password").forEach(input =>{
+                                    input.value = password
+                                })' >Generate</span>
+                                <input class="form-control password" type="text" name="password" id="password" value="{{ $employee->password}}">
                             </div>
                         </div>
                     </div><!-- panel-body -->
@@ -99,6 +112,56 @@
 </div>
 @stop
 @section('javascript')
+<script>
+
+var Password = {
+ 
+ _pattern : /[a-zA-Z0-9_\-\+\.]/,
+ 
+ 
+ _getRandomByte : function()
+ {
+   // http://caniuse.com/#feat=getrandomvalues
+   if(window.crypto && window.crypto.getRandomValues) 
+   {
+     var result = new Uint8Array(1);
+     window.crypto.getRandomValues(result);
+     return result[0];
+   }
+   else if(window.msCrypto && window.msCrypto.getRandomValues) 
+   {
+     var result = new Uint8Array(1);
+     window.msCrypto.getRandomValues(result);
+     return result[0];
+   }
+   else
+   {
+     return Math.floor(Math.random() * 256);
+   }
+ },
+ 
+ generate : function(length)
+ {
+   return Array.apply(null, {'length': length})
+     .map(function()
+     {
+       var result;
+       while(true) 
+       {
+         result = String.fromCharCode(this._getRandomByte());
+         if(this._pattern.test(result))
+         {
+           return result;
+         }
+       }        
+     }, this)
+     .join('');  
+ }    
+   
+};
+
+
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer>
 </script>

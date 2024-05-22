@@ -29,7 +29,6 @@ class UpdateStoreRequest extends FormRequest
         'store_phone' => 'required',
         'address_city' => 'required',
         'address_county' => 'required',
-        'next_invoice_number' => 'required|numeric',
         'address_postcode' => 'required',
         'address_line_1' => 'required',
         'address_line_2' => 'nullable',

@@ -52,7 +52,7 @@
                                                 £{{ number_format($plan['price'], 2) }}
                                                 <span class="text-base text-slate-500">/ {{ $period }}</span>
                                             </strong>
-                                            <span class="font-medium text-slate-400 text-sm">exc. VAT</span>
+                                            <span class="font-medium text-slate-400 text-sm">inc. VAT</span>
                                         </p>
                                         <i
                                             class="fa-circle-check fa-solid group-peer-checked:opacity-100 opacity-0 text-2xl text-green-500"></i>
@@ -86,6 +86,18 @@
                         @endphp
                         <div>
                             @if($show_discount)
+
+                                <!-- session messages -->
+                                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                                    @if (session()->has('alert-' . $msg))
+                                    
+                                    <div id="helper-text-explanation" class="@if(in_array($msg, ['success','info'])) bg-green-100 border-green-500 @else bg-red-100 border-red-500 @endif mb-5 text-sm  p-2">{{ session('alert-' . $msg) }}</div>
+                                    
+                                    @endif
+                                @endforeach
+                  
+
+
                             <div class="flex">
                                 <div class="my-auto">
                                     <b>Discount Code:</b>
@@ -133,16 +145,17 @@
                                             }}</strong><br>
                                         <span class="text-slate-400">per {{ $period }}</span>
                                     </p>
-                                    <p class="col-span-8 lg:col-span-2 flex items-center gap-2">
+                                    
+
+                                     <p class="col-span-8 lg:col-span-2 flex items-center gap-2">
                                         <label for="addons[{{ $addon['id'] }}][quantity]"
                                             class="text-slate-600 font-semibold">Qty:</label>
                                         <input oninput="this.value = Math.abs(this.value); this.dispatchEvent(new Event('change'));"
                                             wire:model="selected_plan.addons.{{ $addon['id'] }}.quantity" type="number" step="1"
                                             id="addons[{{ $addon['id'] }}][quantity]" name="addons[{{ $addon['id'] }}][quantity]"
                                             class="w-full border-slate-300 text-slate-600 shadow-sm rounded" />
+                                    </p>   
 
-
-                                    </p>
 
                                     <p class="hidden lg:block col-span-2 text-slate-600 font-semibold">
                                         @if(!empty($selected_plan['addons'][$addon['id']]) &&
@@ -157,7 +170,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <footer class="flex gap-6 items-center py-2 text-lg">
+                        <footer class="flex gap-6 items-center py-2 text-lg justify-between">
                             <p class="hidden lg:block w-1/2"></p>
                             <p class="hidden lg:block w-1/6"></p>
                             <p class="w-1/2 lg:w-1/6 font-semibold text-slate-600 text-sm tracking-wider uppercase">Total</p>

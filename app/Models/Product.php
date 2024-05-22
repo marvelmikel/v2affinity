@@ -58,27 +58,14 @@ class Product extends Model
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
 
-                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'default_allowance', 'value' => 0, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 0, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'default_allowance', 'value' => 0, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'allowance', 'value' => 0, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
 
 
 
 
                 if ($model->getMeta('length') && $model->getMeta('width')) {
-                    // $unit_length = $model->getMeta('unit_length');
-                    // $unit_width = $model->getMeta('unit_width');
-
-
-                    //now being added 
-                    // $model->meta()->updateOrCreate(['name' => 'unit_area'], [
-                    //     'name' => 'unit_area',
-                    //     'title' => 'Unit Area (㎡)',
-                    //     'value' => "$unit_length->identifier*$unit_width->identifier",
-                    //     'type' => 'formular',
-                    //     'visibility' => 'hidden'
-                    // ]);
-
                     $length = $model->getMeta('length');
                     $width = $model->getMeta('width');
 
@@ -90,7 +77,6 @@ class Product extends Model
                         'visibility' => 'readonly'
                     ]);
                 }
-
 
                 $model->meta()->updateOrCreate(['name' => 'location'], [
                     'name' => 'location',
@@ -107,31 +93,29 @@ class Product extends Model
                     $unit_price = $model->getMeta('unit_price');
                     $area = $model->getMeta('area');
 
-                    // $unit_length = $model->getMeta('unit_length');
+                  
                     $unit_area = $model->getMeta('unit_area');
-                    // $unit_area = "$unit_width->identifier*$unit_length->identifier";
-
                     $allowance = $model->getMeta('allowance');
+
+                     // use code when Allowance & ceil function for approximation is required in the future
+                    // $carpet_units = $model->meta()->updateOrCreate(['name' => 'carpet_units'], [
+                    //     'name' => 'carpet_units',
+                    //     'title' => 'Carpet Units',
+                    //     'value' => "ceil($area->identifier/$unit_area->identifier)",
+                    //     'type' => 'formular',
+                    //     'visibility' => 'hidden',
+                    //     'modifier' => 'ceil'
+                    // ]);
+                     
+                    // Without Allowance & approximation 
                     $carpet_units = $model->meta()->updateOrCreate(['name' => 'carpet_units'], [
                         'name' => 'carpet_units',
                         'title' => 'Carpet Units',
-                        'value' => "ceil($area->identifier/$unit_area->identifier)+($area->identifier/$unit_area->identifier*$allowance->identifier/100)",
-                        'type' => 'formular',
-                        'visibility' => 'hidden',
-                        'modifier' => 'ceil'
-                    ]);
-
-
-
-                    $model->meta()->updateOrCreate(['name' => 'formular'], [
-                        'name' => 'formular',
-                        'title' => 'Formular',
-                        'value' => "$unit_price->identifier*$carpet_units->identifier",
+                        'value' => "$area->identifier / $unit_area->identifier",
                         'type' => 'formular',
                         'visibility' => 'hidden'
                     ]);
-
-
+                    
                     $model->meta()->updateOrCreate(['name' => 'formular'], [
                         'name' => 'formular',
                         'title' => 'Formular',
@@ -158,27 +142,14 @@ class Product extends Model
                 $model->meta()->create(['name' => 'width', 'value' => 0, 'title' => 'Width of Room(m)', 'type' => 'number', 'visibility' => 'visible']);
 
 
-                $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'default_allowance', 'value' => 0, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
-                $model->meta()->create(['name' => 'allowance', 'value' => 0, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'add_allowance', 'value' => 'no', 'title' => 'Allowance checkbox', 'type' => 'checkbox', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'default_allowance', 'value' => 0, 'title' => 'Default Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
+                // $model->meta()->create(['name' => 'allowance', 'value' => 0, 'title' => 'Allowance(%)', 'type' => 'number', 'visibility' => 'hidden']);
 
 
 
 
                 if ($model->getMeta('length') && $model->getMeta('width')) {
-                    // $unit_length = $model->getMeta('unit_length');
-                    // $unit_width = $model->getMeta('unit_width');
-
-
-                    //now being added 
-                    // $model->meta()->updateOrCreate(['name' => 'unit_area'], [
-                    //     'name' => 'unit_area',
-                    //     'title' => 'Unit Area (㎡)',
-                    //     'value' => "$unit_length->identifier*$unit_width->identifier",
-                    //     'type' => 'formular',
-                    //     'visibility' => 'hidden'
-                    // ]);
-
                     $length = $model->getMeta('length');
                     $width = $model->getMeta('width');
 
@@ -212,25 +183,26 @@ class Product extends Model
                     // $unit_area = "$unit_width->identifier*$unit_length->identifier";
 
                     $allowance = $model->getMeta('allowance');
+
+                    // use code when Allowance & ceil function for approximation is required in the future
+                    // $carpet_units = $model->meta()->updateOrCreate(['name' => 'carpet_units'], [
+                    //     'name' => 'carpet_units',
+                    //     'title' => 'Carpet Units',
+                    //     'value' => "ceil($area->identifier/$unit_area->identifier)+($area->identifier/$unit_area->identifier*$allowance->identifier/100)",
+                    //     'type' => 'formular',
+                    //     'visibility' => 'hidden',
+                    //     'modifier' => 'ceil'
+                    // ]);
+
+                    // Without Allowance @ ceil function for approximation
                     $carpet_units = $model->meta()->updateOrCreate(['name' => 'carpet_units'], [
                         'name' => 'carpet_units',
                         'title' => 'Carpet Units',
-                        'value' => "ceil($area->identifier/$unit_area->identifier)+($area->identifier/$unit_area->identifier*$allowance->identifier/100)",
-                        'type' => 'formular',
-                        'visibility' => 'hidden',
-                        'modifier' => 'ceil'
-                    ]);
-
-
-
-                    $model->meta()->updateOrCreate(['name' => 'formular'], [
-                        'name' => 'formular',
-                        'title' => 'Formular',
-                        'value' => "$unit_price->identifier*$carpet_units->identifier",
+                        'value' => "$area->identifier / $unit_area->identifier",
                         'type' => 'formular',
                         'visibility' => 'hidden'
                     ]);
-
+                    
 
                     $model->meta()->updateOrCreate(['name' => 'formular'], [
                         'name' => 'formular',
@@ -368,8 +340,10 @@ class Product extends Model
 
                 $model->meta()->create(['name' => 'title', 'title' => 'Title',  'value' => $model->title, 'type' => 'text', 'visibility' => 'readonly']);
                 $model->meta()->create(['name' => 'description', 'title' => 'Description', 'value' => $model->description, 'type' => 'text', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'unit_price', 'title' => 'Unit Price(£)',  'value' => 1, 'type' => 'number', 'visibility' => 'hidden']);
                 $model->meta()->create(['name' => 'quantity', 'title' => 'Quantity of Product', 'value' => 1, 'type' => 'number', 'visibility' => 'visible']);
+                $model->meta()->create(['name' => 'type', 'title' => 'Type of Product',  'value' => $model->type, 'type' => 'text', 'visibility' => 'hidden']);
 
                 //add def formular here
                 if ($model->getMeta('unit_price') &&  $model->getMeta('quantity')) {

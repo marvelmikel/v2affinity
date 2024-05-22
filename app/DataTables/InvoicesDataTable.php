@@ -26,39 +26,54 @@ class InvoicesDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             // ->addColumn('action'  )
-            ->addColumn('action', function($row){
+            ->addColumn('action', function ($row) {
                 $showUrl = route('voyager.invoices.show', $row->id);
                 $editUrl = route('voyager.invoices.edit', $row->id);
                 $deleteUrl = route('voyager.invoices.delete', $row->id);
                 $logsUrl = route('voyager.invoices.logs', $row->id);
-                
-                $btn = "<div style='display:flex;'>
-                
-                <a href='$logsUrl' style='margin-right:2px' class='btn m- btn-warning btn-xs'><i class='voyager-logbook'></i></a>
 
-                <a href='$showUrl' style='margin-right:2px' class='btn m- btn-primary btn-xs'><i class='voyager-eye'></i></a>
-                
-                <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
-                
-                <form action='$deleteUrl' method='POST' style='display:inline'>
-                        " . csrf_field() . "
-                        " . method_field('DELETE') . "
-                        <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice ?\")'>
-                            <i class='voyager-trash'></i>
-                        </button>
-                    </form>
-                </div>";
+                //checking if Auth user has permission to  edit & delete.
+                $btn = '';
 
-                 return $btn;
+                if (auth()->user()->can('edit', $row) && auth()->user()->can('delete', $row)) {
+                    $btn = "<div style='display:flex;'>
+                                   <a href='$logsUrl' style='margin-right:2px' class='btn btn-warning btn-xs'><i class='voyager-logbook'></i></a>
+                                   <a href='$showUrl' style='margin-right:2px' class='btn btn-primary btn-xs'><i class='voyager-eye'></i></a>
+                                   <a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a>
+                                   <form action='$deleteUrl' method='POST' style='display:inline; margin-bottom: 0px;'>
+                                       " . csrf_field() . "
+                                       " . method_field('DELETE') . "
+                                       <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice ?\")'>
+                                           <i class='voyager-trash'></i>
+                                       </button>
+                                   </form>
+                               </div>";
+
+                } else if (auth()->user()->can('edit', $row)) {
+                    $btn .= "<a href='$editUrl' style='margin-right:2px' class='btn btn-success btn-xs'><i class='voyager-edit'></i></a> 
+                           <a href='$showUrl' style='margin-right:2px' class='btn btn-primary btn-xs'><i class='voyager-eye'></i></a>
+                           <a href='$logsUrl' style='margin-right:2px' class='btn btn-warning btn-xs'><i class='voyager-logbook'></i></a>";
+                           
+
+                }else if (auth()->user()->can('delete', $row)) {
+                    $btn .= "<form action='$deleteUrl' method='POST' style='display:inline; margin-bottom: 0px;'>
+                               " . csrf_field() . "
+                               " . method_field('DELETE') . "
+                               <button type='submit' class='btn btn-danger btn-xs' onclick='return confirm(\"Are you sure you want to delete this Invoice ?\")'>
+                                   <i class='voyager-trash'></i>
+                               </button>
+                           </form>";
+                }
+
+                return $btn;
+
+                // end checking if Auth user has permission to edit & delete.
             })
-         ->rawColumns(['action'])
+            ->rawColumns(['action'])
             ->setRowId('id');
-
-
-            
     }
 
-    
+
 
     /**
      * Get query source of dataTable.
@@ -66,21 +81,21 @@ class InvoicesDataTable extends DataTable
      * @param \App\Models\Invoice $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-   
+
 
     public function query(Invoice $model): QueryBuilder
     {
         $user = Auth::user();
-    
+
         if ($user->hasRole('admin')) {
             return $model->newQuery(); // Allow admin to view all invoices
         }
-    
+
         $companyId = $user->company_id;
         return $model->newQuery()
             ->where('company_id', $companyId);
     }
-    
+
 
     /**
      * Optional method if you want to use html builder.
@@ -90,21 +105,21 @@ class InvoicesDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('invoices-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('add'),
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('invoices-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('add'),
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
     }
 
     /**
@@ -116,10 +131,10 @@ class InvoicesDataTable extends DataTable
     {
         return [
             Column::make('id')
-            ->title('#')
-            ->render('meta.row + meta.settings._iDisplayStart + 1;')
-            ->width(50)
-            ->orderable(false),
+                ->title('#')
+                ->render('meta.row + meta.settings._iDisplayStart + 1;')
+                ->width(50)
+                ->orderable(false),
             Column::make('invoice_number'),
             // Column::make('due_at'),
             // Column::make('paid_at'),
@@ -129,11 +144,11 @@ class InvoicesDataTable extends DataTable
             //     return view('frontend::iadmin.products.actions', ['id' => $id, 'name' => $name]);
             // })->unsortable(),
 
-             Column::computed('action')
-                  ->exportable(true)
-                  ->printable(true)
-                  ->width(60)
-                  ->addClass('text-center'),
+            Column::computed('action')
+                ->exportable(true)
+                ->printable(true)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 
