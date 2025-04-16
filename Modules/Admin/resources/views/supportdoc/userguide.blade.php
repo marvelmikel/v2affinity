@@ -12,7 +12,7 @@
                 <!-- <div style="display:flex;">
                     testing
                 </div> -->
-                <div class="clear"></div>
+                {{-- <div class="clear"></div>
                 <div class="card">
                     <div class="card-body" style="overflow-x: auto;">
                         <div id="pspdfkit" style="height: 100vh"></div>
@@ -30,7 +30,8 @@
                                 });
                         </script>
                     </div>
-                </div>
+                </div> --}}
+                <embed src="{{asset('support-docs/user-guide.pdf')}}" height="2000px" width="1500px" />
                 <!-- .row -->
             </div><!-- .col-md-12 -->
         </div><!-- .page-content container-fluid -->
